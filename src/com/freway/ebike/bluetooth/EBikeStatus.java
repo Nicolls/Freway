@@ -5,6 +5,17 @@ import com.freway.ebike.utils.LogUtils;
 /**骑行状态*/
 public class EBikeStatus {
 	private final static String TAG=EBikeStatus.class.getSimpleName();
+	/*
+	 *  Bit7	/
+		Bit6	短信提醒
+		Bit5	电话呼叫
+		Bit4	后灯0关1开
+		Bit3	前灯0关1开
+		Bit2	骑行状态：0-运动，1-电动,2-助力1,4-助力2,6-助力3
+		Bit1	
+		Bit0	
+	 * 
+	 * */
 	private static int bit_7 = 0;
 	private static int bit_6 = 0;
 	private static int bit_5 = 0;
@@ -14,11 +25,20 @@ public class EBikeStatus {
 	private static int bit_1 = 0;
 	private static int bit_0 = 0;
 	/**当前骑行状态数据*/
-	private static byte bikeData;
-	/**获取骑行数据*/
-	public static byte getBikeData() {
-		return bikeData;
+	private static byte bikeStatus;
+	/**获取骑行状态数据*/
+	public static byte getBikeStatus() {
+		return bikeStatus;
 	}
+	/**获取短信提醒状态*/
+	public static int getReceiveMessageStatus(){
+		return bit_6;
+	}
+	/**获取电话提醒状态*/
+	public static int getPhoneCallStatus(){
+		return bit_5;
+	}
+	
 	/**存储状态的数组*/
 	private final static int[] status = { bit_7, bit_6, bit_5, bit_4, bit_3,
 			bit_2, bit_1, bit_0};
@@ -45,7 +65,7 @@ public class EBikeStatus {
 	 * @param flag 控制值 1 true,0 false
 	 * 通过传入的控制和值设置骑行状态，并返回设置后的状态数据
 	 * */
-	public static byte setBikeData(int control,int flag) {
+	public static synchronized byte  setBikeStatus(int control,int flag) {
 		byte result = 0;
 		switch (control) {
 		case BIKING_SPORT:
@@ -93,8 +113,9 @@ public class EBikeStatus {
 			s+=status[i];
 		}
 		result=Byte.parseByte(s,2);
-		bikeData=result;
-		LogUtils.i(TAG, "根据控制要发出去的二进制数据："+s+"--二进制值："+result);
+		bikeStatus=result;
+		LogUtils.i(TAG, "要发送出去的数据："+s+"--二进制值："+result);
+		LogUtils.i(TAG, "骑行状态："+bit_0+""+bit_1+""+bit_2+" 前灯："+bit_3+" 后灯："+bit_4+" 电话："+bit_5+" 短信："+bit_6);
 		return result;
 	}
 	

@@ -51,7 +51,7 @@ public class BlueToothService extends BaseService {
 	//重链
 	private ReConnectThread mReConnectThread;// 每隔一段时间去链接
 	private static final int RECONNECT_SPACING = 5*1000;// 间隔时间，毫秒
-	private boolean isReconnectRunning = true;//开启断线重新链接
+	private boolean isReconnectRunning = false;//开启断线重新链接
 	//获取数据心跳线程
 	private RequestDataThread mRequestDataThread;// 每隔一段时间去获取数据
 	private static final int REQUESTDATA_SPACING =1000 ;// 间隔时间，毫秒
@@ -80,7 +80,7 @@ public class BlueToothService extends BaseService {
 		}
 	}
 
-	/** 发送数据 */
+	/** 发送数据，提供给外界强制去发数据的通道，而如果只是需要开灯关灯，改变骑行状态等操作，只需要改变com.freway.ebike.bluetooth.EBikeStatus中的值即可 */
 	public static void sendData(Context context, int commandCode, byte[] data) {
 		Intent intent = new Intent(BlueToothConstants.BLUETOOTH_ACTION_SERVER_SEND_DATA);
 		HashMap<String, Object> dataMap = new HashMap<String, Object>();
@@ -234,7 +234,7 @@ public class BlueToothService extends BaseService {
 	}
 
 	/** 扫描设备 */
-	private void doDiscovery() {
+	private  void  doDiscovery() {
 		if (stateEnableStep()) {
 			// If we're already discovering, stop it
 			if (mBluetoothAdapter.isDiscovering()) {
@@ -312,30 +312,7 @@ public class BlueToothService extends BaseService {
 		}
 	};
 
-	/**
-	 * Sends a message.
-	 *
-	 * @param message
-	 *            A string of text to send.
-	 */
-	private void sendData(int commandCode, byte[] data) {
-		byte[] send = ProtocolByteHandler.command(commandCode, data);
-		// Check that we're actually connected before trying anything
-		if (mBlueToothConnction.getState() != BluetoothConnection.STATE_CONNECTED) {
-			Toast.makeText(context, R.string.bluetooth_not_connect, Toast.LENGTH_SHORT).show();
-			return;
-		}
-		if (send != null) {
-			// Get the message bytes and tell the BluetoothChatService to write
-			if(mSendCharacteristic!=null){
-				mBlueToothConnction.sendData(send, mSendCharacteristic);
-			}else{
-				ToastUtils.toast(context, "发送数据的特征值为空！");
-			}
-
-		}
-	}
-
+	
 	/**
 	 * Establish connection with other divice
 	 *
@@ -393,37 +370,81 @@ public class BlueToothService extends BaseService {
 				String uuid="";//特征的uuid
 				// Loops through available GATT Services.
 		        for (BluetoothGattService gattService : gattServices) {
+		        	uuid=gattService.getUuid().toString();
 		        	List<BluetoothGattCharacteristic> gattCharacteristics=gattService.getCharacteristics();
-		            for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
-		                uuid = gattCharacteristic.getUuid().toString();
-		                if(uuid.contains("ffe4")){
-		                	printlnData("找到接收数据的特征值了--ffe4");
-		                	mReceiveCharacteristic=gattCharacteristic;
-		                }
-		                
-		                if(uuid.contains("ffe9")){
-		                	printlnData("找到发送数据的特征值了--ffe9");
-		                	mSendCharacteristic=gattCharacteristic;
-		                }
-		            }
+		        	if(uuid.contains("ffe0")){//监听数据服务
+		        		for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
+			                uuid = gattCharacteristic.getUuid().toString();
+			                if(uuid.contains("ffe4")){//服务"ffe0"下的"ffe4"特征为打开监听数据特征
+			                	printlnData("找到接收数据的特征值了--ffe4");
+			                	mReceiveCharacteristic=gattCharacteristic;
+			                }
+			            }
+		        	}else if(uuid.contains("ffe5")){//发送数据服务
+		        		for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
+			                uuid = gattCharacteristic.getUuid().toString();
+			                if(uuid.contains("ffe9")){//服务"ffe5"下的"ffe9"特征为发送特征
+			                	printlnData("找到发送数据的特征值了--ffe9");
+			                	mSendCharacteristic=gattCharacteristic;
+			                }
+			            }
+		        	}
 		        }
 		        
 		        if(mReceiveCharacteristic!=null&&mSendCharacteristic!=null){//初始化完毕，可以启动心跳包，发送数据了
                 	LogUtils.i(tag, "服务特征值已找到，现在开启线程");
-		        	mBlueToothConnction.setCharacteristicNotification(mReceiveCharacteristic, true);	
-                	mRequestDataThread = new RequestDataThread();
-                	isRequestDataRunning=true;
-    				mRequestDataThread.start();
+                	sendDataHandler.sendEmptyMessageDelayed(0, 2000);//2秒后发数据
+		        	
                 }else{
                 	mBlueToothConnction.setState(BluetoothConnection.STATE_DISCONNECTED);
                 	ToastUtils.toast(context, "未找到服务");
                 }
 				break;
+				
+				default:
+					break;
 			
 			}
 		}
 	};
 	
+	private Handler sendDataHandler=new Handler(){
+
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			LogUtils.i(tag, "sendDataHandler 收到发数据线程请求了");
+			mBlueToothConnction.setCharacteristicNotification(mReceiveCharacteristic, true);	
+        	mRequestDataThread = new RequestDataThread();
+        	isRequestDataRunning=true;
+			mRequestDataThread.start();
+		}
+		
+	};
+	/**
+	 * Sends a message.
+	 *
+	 * @param message
+	 *            A string of text to send.
+	 */
+	private synchronized void sendData(int commandCode, byte[] data) {
+		byte[] send = ProtocolByteHandler.command(commandCode, data);
+		// Check that we're actually connected before trying anything
+		if (mBlueToothConnction.getState() != BluetoothConnection.STATE_CONNECTED) {
+			Toast.makeText(context, R.string.bluetooth_not_connect, Toast.LENGTH_SHORT).show();
+			return;
+		}
+		if (send != null) {
+			// Get the message bytes and tell the BluetoothChatService to write
+			if(mSendCharacteristic!=null){
+				mBlueToothConnction.sendData(send, mSendCharacteristic);
+			}else{
+				ToastUtils.toast(context, "发送数据的特征值为空！");
+			}
+
+		}
+	}
+
 	
 	/**
 	 * This thread runs while server is connect ,for to get bluetooth's data
@@ -433,7 +454,7 @@ public class BlueToothService extends BaseService {
 			LogUtils.i(tag, "BEGIN RequestDataThread:");
 			setName("RequestDataThread");
 			while (isRequestDataRunning) {
-				sendData(CommandCode.SURVEY, new byte[]{EBikeStatus.getBikeData()});//获取蓝牙数据
+				sendData(CommandCode.SURVEY, new byte[]{EBikeStatus.getBikeStatus()});//获取蓝牙数据
 				try {
 					Thread.sleep(REQUESTDATA_SPACING);
 				} catch (InterruptedException e) {

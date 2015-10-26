@@ -62,6 +62,48 @@ public class BlueToothActivity extends BaseActivity {
 		
 		
 	}
+	public void onSport(View view){
+		CheckBox cb=(CheckBox) view;
+		int flag=cb.isChecked()?1:0;
+		EBikeStatus.setBikeStatus(EBikeStatus.BIKING_SPORT, flag);
+	}
+	public void onElc(View view){
+		CheckBox cb=(CheckBox) view;
+		int flag=cb.isChecked()?1:0;
+		EBikeStatus.setBikeStatus(EBikeStatus.BIKING_ELEC, flag);
+	}
+	public void onPower1(View view){
+		CheckBox cb=(CheckBox) view;
+		int flag=cb.isChecked()?1:0;
+		EBikeStatus.setBikeStatus(EBikeStatus.BIKING_HELP_POWER_1, flag);
+	}
+	public void onPower3(View view){
+		CheckBox cb=(CheckBox) view;
+		int flag=cb.isChecked()?1:0;
+		EBikeStatus.setBikeStatus(EBikeStatus.BIKING_HELP_POWER_3, flag);
+	}
+	public void onLightFront(View view){
+		CheckBox cb=(CheckBox) view;
+		int flag=cb.isChecked()?1:0;
+		EBikeStatus.setBikeStatus(EBikeStatus.BIKE_FRONT_LIGHT, flag);
+	}
+	public void onLightBack(View view){
+		CheckBox cb=(CheckBox) view;
+		int flag=cb.isChecked()?1:0;
+		EBikeStatus.setBikeStatus(EBikeStatus.BIKE_BACK_LIGHT, flag);
+	}
+	public void onCall(View view){
+		CheckBox cb=(CheckBox) view;
+		int flag=cb.isChecked()?1:0;
+		EBikeStatus.setBikeStatus(EBikeStatus.PHONE_CALL, flag);
+	}
+	public void onMessage(View view){
+		CheckBox cb=(CheckBox) view;
+		int flag=cb.isChecked()?1:0;
+		EBikeStatus.setBikeStatus(EBikeStatus.RECEIVE_MESSAGE, flag);
+	}
+	
+	
 	 /**
      * The BroadcastReceiver that listens for discovered devices and changes the title when
      * discovery is finished

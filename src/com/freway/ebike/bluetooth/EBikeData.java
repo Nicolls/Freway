@@ -127,7 +127,13 @@ public class EBikeData implements Serializable{
 		}
 		int[]controlArray=ProtocolTool.byteToBitIntArray(controlState);
 		message_notice_get	=controlArray[11];  //短信提醒标志接收完成
+		if(message_notice_get==1&&EBikeStatus.getReceiveMessageStatus()==1){//说明短信接收完成，将发送数据的状态短信设置为0表示已处理短信，暂时没有短信
+			EBikeStatus.setBikeStatus(EBikeStatus.RECEIVE_MESSAGE, 0);
+		}
 		phone_call_get	=controlArray[10];  //电话呼叫标志接收完成
+		if(phone_call_get==1&&EBikeStatus.getPhoneCallStatus()==1){//说明短信接收完成，将发送数据的状态短信设置为0表示已处理短信，暂时没有短信
+			EBikeStatus.setBikeStatus(EBikeStatus.PHONE_CALL, 0);
+		}
 		bat_connect	=controlArray[9];  //电池包连接标志
 		ctrler_overcp	=controlArray[8];  //控制器过流保护
 		ctrler_lowvp	=controlArray[7];  //控制器欠压保护
