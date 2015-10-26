@@ -4,12 +4,76 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
      >
+     
     <include
         android:id="@+id/nav_top_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
         layout="@layout/view_nav_top_bar"
         />
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <CheckBox 
+            android:id="@+id/cb_sport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="运动"
+            android:onClick="onSport"
+            />
+         <CheckBox 
+            android:id="@+id/cb_elc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="电动"
+            android:onClick="onElc"
+            />
+          <CheckBox 
+            android:id="@+id/cb_power1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="助力1"
+            android:onClick="onPower1"
+            />
+            <CheckBox 
+            android:id="@+id/cb_power3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="助力3"
+            android:onClick="onPower3"
+            />
+             <CheckBox 
+            android:id="@+id/cb_light_front"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="前灯"
+            android:onClick="onLightFront"
+            />
+              <CheckBox 
+            android:id="@+id/cb_light_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="后灯"
+            android:onClick="onLightBack"
+            />
+              <CheckBox 
+            android:id="@+id/cb_call"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="电话"
+            android:onClick="onCall"
+            />
+              <CheckBox 
+            android:id="@+id/cb_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="短信"
+            android:onClick="onMessage"
+            />
+        
+    </LinearLayout>
      <TextView 
         android:id="@+id/bluetooth_tv"
         android:layout_width="match_parent"
