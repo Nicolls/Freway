@@ -1,0 +1,51 @@
+package com.freway.ebike.common;
+
+/** 常量类 */
+public class EBConstant {
+	/** 客户端类型 */
+	public static final String CLIENT_TYPE = "EB Android";
+	/** 概览页面资源利用 率html */
+	public static final String APP_DOWNLOAD_APK_NAME = "eBike.apk";
+	 public static final String DEFAULT_HOST="10.0.35.127";
+	public static final int DEFAULT_PORT = 6080;
+	/** 统一时间格式化 */
+	public static final String TIME_FORMAT_STYLE = "yyyy-MM-dd HH:mm:ss";
+
+	/**统一通过startActivityForResult返回成功为result_code_ok=0*/
+	public static final int ACTIVITY_START_FOR_RESULT_CODE_OK = 0;
+	/**统一通过startActivityForResult返回失败为result_code_fail*/
+	public static final int ACTIVITY_START_FOR_RESULT_CODE_FAIL = -1;
+	/** 打开蓝牙 */
+	public static final int ACTIVITY_START_FOR_RESULT_ENABLE_BLUETOOTH = 1001;
+
+	/** Activity之间传递的Intent 名称 */
+	public class IntentExtra {
+		// 验证服务器节点
+		public static final int SEVERCONFIG_VERIFY_STATE_SUCCESS = 1;
+		public static final int SEVERCONFIG_VERIFY_STATE_FAILURE = 0;
+		public static final String EXTRA_SEVERCONFIG_VERIFY_STATE = "SEVERCONFIG_VERIFY_STATE";
+
+		/** ListView传弟Item */
+		public static final String EXTRA_LIST_VIEW_ITEM_DATA = "EXTRA_LIST_VIEW_ITEM_DATA";
+		/** ListView传弟Item data type */
+		public static final String EXTRA_LIST_VIEW_ITEM_DATA_TYPE = "EXTRA_LIST_VIEW_ITEM_DATA_TYPE";
+		/** parentID */
+		public static final String EXTRA_PARENT_ID = "EXTRA_PARENT_ID";
+	}
+
+	/**启动Activity,service,broadcast等的action
+	 * 如果修改了这里也要修改manifext.xm文件
+	 * */
+	public class ContextAction{
+		/**更新app服务*/
+		public static final String ACTION_SERVICE_UPDATEAPP_SERVICE="com.dawning.gridview.service.UpdateAPPService";
+		/**蓝牙服务*/
+		public static final String ACTION_SERVICE_BLUETOOTH="com.freway.bluetooth.BlueToothService";
+		/**蓝牙状态*/
+		public static final String ACTION_BROADCAST_BLUETOOTH_STATE="com.freway.bluetooth.BlueToothStatusReceiver";
+		/**蓝牙数据更新*/
+		public static final String ACTION_BROADCAST_BLUETOOTH_DATE="com.freway.bluetooth.BlueToothDeviceDataReceiver";
+
+	}
+	
+}

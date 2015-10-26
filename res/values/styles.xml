@@ -1,0 +1,163 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <style name="GVLoadingDialog" parent="@android:style/Theme.Dialog"> 
+        <item name="android:windowBackground"> @android:color/transparent </item>  
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+    
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+         <item name="android:windowFullscreen">false</item>
+    </style>
+
+    <!-- 本应用文字风格 -->
+    <style name="GVTextView" parent="@android:style/Widget.TextView">
+        
+    </style>
+    <style name="GVButton" parent="@android:style/Widget.Button">
+        
+    </style>
+    
+    
+    <!-- 导航条文字 -->
+    <style name="NavTopBarText" parent="GVTextView">
+        <item name="android:textSize">@dimen/common_textsize_xl</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:singleLine">true</item>
+    </style>
+    <style name="NavTopBarButton" parent="GVButton">
+        <item name="android:textSize">@dimen/common_textsize_m</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@null</item>
+        <item name="android:src">@null</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:paddingLeft">@dimen/nav_top_bar_btn_horizontal_padding</item>
+        <item name="android:paddingRight">@dimen/nav_top_bar_btn_horizontal_padding</item>
+        <item name="android:paddingTop">@dimen/nav_top_bar_btn_vertical_padding</item>
+        <item name="android:paddingBottom">@dimen/nav_top_bar_btn_vertical_padding</item>
+    </style>
+     <style name="CommonButton" parent="GVButton">
+        <item name="android:textSize">@dimen/common_textsize_l</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:singleLine">true</item>
+    </style>
+    <!-- ListItem Text style -->
+    <!-- double -->
+    <!-- 标题 -->
+         <style name="ItemListTextTitle" parent="GVTextView">
+        <item name="android:textSize">@dimen/common_textsize_l</item>
+        <item name="android:textColor">@color/item_double_title</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+        
+    </style>
+    <!-- 标题种类 -->
+    <style name="ItemListTextTitleKind" parent="GVTextView">
+        <item name="android:textSize">@dimen/common_textsize_m</item>
+        <item name="android:textColor">@color/item_content_num_blue</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+        
+    </style>
+     <!-- 标题内容 -->
+    <style name="ItemListTextContent" parent="GVTextView">
+        <item name="android:textSize">@dimen/common_textsize_m</item>
+        <item name="android:textColor">@color/item_double_content</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+    </style>
+     <!-- 标题内容种类 -->
+         <style name="ItemListTextContentKind" parent="GVTextView">
+        <item name="android:textSize">@dimen/common_textsize_m</item>
+        <item name="android:textColor">@color/item_double_content_kind</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+        
+    </style>
+    <!-- 标题内容数字 -->
+    <style name="ItemListTextContentNum" parent="GVTextView">
+        <item name="android:textSize">@dimen/common_textsize_s</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_margin">@dimen/item_num_margin</item>
+        <item name="android:paddingLeft">@dimen/item_num_padding</item>
+        <item name="android:paddingRight">@dimen/item_num_padding</item>
+        <item name="android:minEms">2</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+    <!-- single -->
+         <!-- 内容种类左 -->
+         <style name="ItemListTextSingleLeft" parent="GVTextView">
+        <item name="android:textSize">@dimen/common_textsize_m</item>
+        <item name="android:textColor">@color/item_single_line_left</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+    </style>
+    
+    <!-- 内容种类右 -->
+         <style name="ItemListTextSingleRight" parent="GVTextView">
+        <item name="android:textSize">@dimen/common_textsize_m</item>
+        <item name="android:textColor">@color/item_single_line_right</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+        
+    </style>
+    
+         <!-- 上下 -->
+         <style name="ItemListTextDetailUp" parent="GVTextView">
+        <item name="android:textSize">@dimen/common_textsize_s</item>
+        <item name="android:textColor">@color/item_detail_line_up</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+        
+    </style>
+    <style name="ItemListTextDetailDown" parent="GVTextView">
+        <item name="android:textSize">@dimen/common_textsize_m</item>
+        <item name="android:textColor">@color/item_detail_line_down</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_marginTop">@dimen/item_detail_line_maringTop</item>
+    </style>
+         
+    
+    
+    <!-- 左右对称文字 -->
+     <style name="TextLeft" parent="GVTextView">
+        <item name="android:textSize">@dimen/common_textsize_l</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_gravity">start</item>
+        <item name="android:gravity">center_vertical|start</item>
+        <item name="android:padding">@dimen/approve_textItem_layout_padding</item>
+    </style>
+     <style name="TextRight" parent="GVTextView">
+        <item name="android:textSize">@dimen/common_textsize_l</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_gravity">end</item>
+        <item name="android:gravity">center_vertical|end</item>
+        <item name="android:padding">@dimen/approve_textItem_layout_padding</item>
+    </style>
+    
+     <!-- Popupwindow anim style -->
+     
+     <style name="PopupAnimation" parent="android:Animation" mce_bogus="1">
+		<item name="android:windowEnterAnimation">@anim/bottom_in</item>
+		<item name="android:windowExitAnimation">@anim/bottom_out</item>
+     </style>
+     
+     
+</resources>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	
+    <string name="app_name">EBike</string>
+    <!-- 测试文字 -->
+    <string name="test">测试</string>
+    <string name="test_title">测试标题</string>
+    <string name="test_content">测试内容</string>
+	<!-- toast提示，弹出框 -->
+	<string name="not_support_bluetooth">您的设备不支持蓝牙</string>
+	<string name="bluetooth_not_connect">蓝牙未链接</string>
+	<string name="request_server_error">登录或者请求出问题</string>
+	<string name="old_password_can_not_null">旧密码不能为空</string>
+	<string name="new_password_can_not_null">新密码不能为空</string>
+	<string name="confirm_new_password_can_not_null">请确认新密码</string>
+	<string name="old_password_enter_wrong">旧密码输入错误,请重新输入</string>
+	<string name="old_password_can_not_equal_new_password">确认密码不匹配,请重新输入</string>
+	<string name="http_request_error">请求服务器异常，请检查网络服务器设置或者联系管理员</string>
+	<string name="http_request_error_relogin">请求服务器异常，请重新登录</string>
+	<string name="honey_tip">温馨提示</string>
+    <!-- UI -->
+    <!-- 通用 -->
+    <string name="back">返回</string>
+    <string name="menu">菜单</string>
+    <string name="home">首页</string>
+    <string name="confirm">确认</string>
+    <string name="ok">ok</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <!-- 登录 -->
+    <string name="username">用户名</string>
+    <string name="account">账户</string>
+    <string name="password">密码</string>
+    <string name="login">登录</string>
+    <string name="setting">设置</string>
+    <string name="forgetpassword">忘记密码</string>
+    <!-- 上拉加载，下拉刷新 -->
+    <string name="head">这里是HeadView</string>
+    <string name="pull_to_refresh">下拉刷新</string>
+    <string name="release_to_refresh">释放立即刷新</string>
+    <string name="refreshing">正在刷新...</string>
+    <string name="refresh_succeed">刷新成功</string>
+    <string name="refresh_fail">刷新失败</string>
+    <string name="pullup_to_load">上拉加载更多</string>
+    <string name="release_to_load">释放立即加载</string>
+    <string name="loading">正在加载...</string>
+    <string name="load_succeed">加载成功</string>
+    <string name="load_fail">加载失败</string>
+	<!-- APP升级 -->
+	<string name="app_update">应用更新</string>
+	<string name="app_update_tip">有新的版本可更新，您确定要更新到最新版本么？</string>
+	<string name="start_download">开始下载</string>
+	<string name="app_downloading">正在下载更新</string>
+	<string name="app_downloaded">下载更新完成</string>
+	<string name="app_updating">版本正在更新中...</string>
+	<string name="app_now_is_newly">当前版本为最新版本</string>
+	<string name="complete">完成</string>
+	<string name="app_download_completed">安装包下载完成，即将安装</string>
+</resources>
