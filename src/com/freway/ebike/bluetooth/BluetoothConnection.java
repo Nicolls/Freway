@@ -52,7 +52,7 @@ public class BluetoothConnection {
     private int mConnectionState = STATE_DISCONNECTED;
 
     //链接状态
-    public static final int STATE_NONE = 0;//什么都没有操作
+    public static final int STATE_NONE = 0;//init do nothing
     public static final int STATE_DISCONNECTED = 1;
     public static final int STATE_CONNECTING = 2;
     public static final int STATE_CONNECTED = 3;
@@ -232,7 +232,6 @@ public class BluetoothConnection {
     /**发送数据*/
     public void sendData(byte[] data,BluetoothGattCharacteristic characteristic){
     	characteristic.setValue(data);
-//    	LogUtils.i(TAG, "我在这里发送数据了"+mBluetoothGatt);
     	if(mBluetoothGatt!=null){
     		mBluetoothGatt.writeCharacteristic(characteristic);
     	}

@@ -8,7 +8,11 @@
     <string name="test_content">测试内容</string>
 	<!-- toast提示，弹出框 -->
 	<string name="not_support_bluetooth">您的设备不支持蓝牙</string>
+	<string name="not_supported_ble">您的设备不支持低功耗蓝牙</string>
 	<string name="bluetooth_not_connect">蓝牙未链接</string>
+	<string name="bluetooth_not_open">蓝牙未打开</string>
+	<string name="bluetooth_service_init_fail">eBike服务初始化失败</string>
+	<string name="bluetooth_service_re_init">重新初始化eBike服务，请稍候...</string>
 	<string name="request_server_error">登录或者请求出问题</string>
 	<string name="old_password_can_not_null">旧密码不能为空</string>
 	<string name="new_password_can_not_null">新密码不能为空</string>

@@ -39,9 +39,6 @@ public class EBikeStatus {
 		return bit_5;
 	}
 	
-	/**存储状态的数组*/
-	private final static int[] status = { bit_7, bit_6, bit_5, bit_4, bit_3,
-			bit_2, bit_1, bit_0};
 	/**运动*/
 	public final static int BIKING_SPORT = 0;
 	/**电动*/
@@ -108,14 +105,17 @@ public class EBikeStatus {
 		default:
 			break;
 		}
+		/**存储状态的数组*/
+		int[] status = { bit_7, bit_6, bit_5, bit_4, bit_3,
+				bit_2, bit_1, bit_0};
 		String s="";
 		for(int i=0;i<status.length;i++){
 			s+=status[i];
 		}
 		result=Byte.parseByte(s,2);
 		bikeStatus=result;
-		LogUtils.i(TAG, "要发送出去的数据："+s+"--二进制值："+result);
-		LogUtils.i(TAG, "骑行状态："+bit_0+""+bit_1+""+bit_2+" 前灯："+bit_3+" 后灯："+bit_4+" 电话："+bit_5+" 短信："+bit_6);
+//		LogUtils.i(TAG, "设置完成后的Ebike数据："+s+"--二进制值："+result);
+//		LogUtils.i(TAG, "骑行状态："+bit_0+""+bit_1+""+bit_2+" 前灯："+bit_3+" 后灯："+bit_4+" 电话："+bit_5+" 短信："+bit_6);
 		return result;
 	}
 	

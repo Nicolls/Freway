@@ -145,30 +145,30 @@ public class BlueToothActivity extends BaseActivity {
     };
     
     public void onStart(View view){
-		BlueToothService.handle(BlueToothActivity.this,BlueToothConstants.HANDLE_SERVER_START,null);
+		BlueToothService.handle(getApplicationContext(),BlueToothConstants.HANDLE_SERVER_START,null);
 
     }
 	
 	public void onSearch(View view){
 		SPUtils.setEBikeAddress(this, "");//重新搜索要设置为空
-		BlueToothService.handle(BlueToothActivity.this,BlueToothConstants.HANDLE_SERVER_SCAN,null);
+		BlueToothService.handle(getApplicationContext(),BlueToothConstants.HANDLE_SERVER_SCAN,null);
 	}
 	
 	public void onReStart(View view){
 		data.clear();
-		BlueToothService.handle(BlueToothActivity.this,BlueToothConstants.HANDLE_SERVER_CONTINUTE,null);
+		BlueToothService.handle(getApplicationContext(),BlueToothConstants.HANDLE_SERVER_CONTINUTE,null);
 	}
 	
 	public void onPause(View view){
-		BlueToothService.handle(BlueToothActivity.this,BlueToothConstants.HANDLE_SERVER_PUASE,null);
+		BlueToothService.handle(getApplicationContext(),BlueToothConstants.HANDLE_SERVER_PUASE,null);
 	}
 	
 	public void onSend(View view){
-		BlueToothService.sendData(this,CommandCode.SURVEY,new byte[]{0});
+		BlueToothService.sendData(getApplicationContext(),CommandCode.SURVEY,new byte[]{0});
 	}
 	
 	public void onStop(View view){
-		BlueToothService.handle(BlueToothActivity.this,BlueToothConstants.HANDLE_SERVER_STOP,null);
+		BlueToothService.handle(getApplicationContext(),BlueToothConstants.HANDLE_SERVER_STOP,null);
 
 	}
 

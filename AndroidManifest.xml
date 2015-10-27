@@ -7,10 +7,13 @@
     <uses-sdk
         android:minSdkVersion="18"
         android:targetSdkVersion="22" />
-
+	<!-- 蓝牙 -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-
+	<!-- 电话 -->
+	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+	<!-- 短信 -->
+	<uses-permission android:name="android.permission.RECEIVE_SMS"/>
     <application
         android:name="com.freway.ebike.common.BaseApplication"
         android:allowBackup="true"

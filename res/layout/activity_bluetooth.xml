@@ -15,12 +15,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:visibility="visible"
         >
         <CheckBox 
             android:id="@+id/cb_sport"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="运动"
+            android:visibility="gone"
             android:onClick="onSport"
             />
          <CheckBox 
@@ -28,6 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="电动"
+            android:visibility="gone"
             android:onClick="onElc"
             />
           <CheckBox 
@@ -42,6 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="助力3"
+            android:visibility="gone"
             android:onClick="onPower3"
             />
              <CheckBox 

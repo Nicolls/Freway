@@ -1,2 +1,0 @@
-# Freway
-first git project
