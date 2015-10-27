@@ -141,6 +141,9 @@ public class BlueToothService extends BaseService {
 							mReceiveCharacteristic, true);// 重新接收
 					break;
 				case BlueToothConstants.HANDLE_SERVER_SCAN:// 扫描
+					SPUtils.setEBikeAddress(BlueToothService.this, "");//UI发送的重新扫描，则清除保存的设备
+					mBluetoothDeviceAddress="";
+					mBlueToothConnction.close();
 					startScanBluetoothDevice();
 					break;
 				case BlueToothConstants.HANDLE_SERVER_CONNECT:// 链接
@@ -545,7 +548,7 @@ public class BlueToothService extends BaseService {
 		public void run() {
 			LogUtils.i(tag, "BEGIN RequestDataThread:");
 			setName("RequestDataThread");
-			while (isRequestDataRunning) {
+			while (isRequestDataRunning&&BluetoothConnection.STATE_CONNECTED==mBlueToothConnction.getState()) {
 				printlnMessage("要发送出去的数据进进制值是："
 						+ EBikeStatus.getBikeStatus()
 						+ " 格式化8位是："
@@ -583,7 +586,7 @@ public class BlueToothService extends BaseService {
 				// "正在跑中"+mBluetoothAdapter+"-"+mBluetoothAdapter.isEnabled()+"--"+mBluetoothAdapter.isDiscovering()+"--"+mBlueToothConnction+"--"+mBlueToothConnction.getState());
 				if (mBluetoothAdapter != null
 						&& mBluetoothAdapter.isEnabled()
-						&& !mBluetoothAdapter.isDiscovering()
+						&& !isScanning
 						&& mBlueToothConnction != null
 						&& BluetoothConnection.STATE_DISCONNECTED == mBlueToothConnction
 								.getState()) {// 可用

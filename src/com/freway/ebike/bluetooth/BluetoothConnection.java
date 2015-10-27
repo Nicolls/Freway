@@ -83,6 +83,9 @@ public class BluetoothConnection {
                 mConnectionState = STATE_DISCONNECTED;
                 Log.i(TAG, "Disconnected from GATT server.");
                 broadcastUpdate(ACTION_GATT_DISCONNECTED,null);
+                if(mBluetoothGatt==null){
+                	mConnectionState = STATE_NONE;
+                }
             }
         }
 
@@ -209,7 +212,6 @@ public class BluetoothConnection {
      * callback.
      */
     public void disconnect() {
-    	mConnectionState=STATE_NONE;
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
             Log.w(TAG, "BluetoothAdapter not initialized");
             return;
@@ -222,12 +224,13 @@ public class BluetoothConnection {
      * released properly.
      */
     public void close() {
-    	mConnectionState=STATE_NONE;
         if (mBluetoothGatt == null) {
             return;
         }
         mBluetoothGatt.close();
         mBluetoothGatt = null;
+        mConnectionState = STATE_NONE;
+       
     }
     /**发送数据*/
     public void sendData(byte[] data,BluetoothGattCharacteristic characteristic){
