@@ -16,7 +16,7 @@ import android.support.v4.app.FragmentPagerAdapter;
  * Fragment左右滑动切换适配器
  * 
  * @param <T>
- *            继承于GVFragment的实体做为数据源模型
+ *            继承于BaseFragment的实体做为数据源模型
  * @author mengjk
  *
  *         2015年5月18日

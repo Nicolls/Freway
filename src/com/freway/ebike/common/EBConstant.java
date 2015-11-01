@@ -6,8 +6,9 @@ public class EBConstant {
 	public static final String CLIENT_TYPE = "EB Android";
 	/** 概览页面资源利用 率html */
 	public static final String APP_DOWNLOAD_APK_NAME = "eBike.apk";
-	 public static final String DEFAULT_HOST="10.0.35.127";
-	public static final int DEFAULT_PORT = 6080;
+	public static final String DEFAULT_HOST="www.ifreway.com/app/index.php";
+	public static final int DEFAULT_PORT = 0;
+	public static final String DEFAULT_KEY="tESTfORaPP2015";//私钥
 	/** 统一时间格式化 */
 	public static final String TIME_FORMAT_STYLE = "yyyy-MM-dd HH:mm:ss";
 

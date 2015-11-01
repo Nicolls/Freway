@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.freway.ebike.R;
+import com.freway.ebike.common.BaseActivity;
+import com.freway.ebike.protocol.CommandCode;
+import com.freway.ebike.protocol.ProtocolByteHandler;
+import com.freway.ebike.utils.SPUtils;
+
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,14 +23,6 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-
-import com.freway.ebike.R;
-import com.freway.ebike.common.BaseActivity;
-import com.freway.ebike.db.DBHelper;
-import com.freway.ebike.db.TravelEntity;
-import com.freway.ebike.protocol.CommandCode;
-import com.freway.ebike.protocol.ProtocolByteHandler;
-import com.freway.ebike.utils.SPUtils;
 
 public class BlueToothActivity extends BaseActivity {
 

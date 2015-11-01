@@ -10,7 +10,7 @@ public class BaseRequest implements Serializable {
 	private boolean isEncrypt = false;
 
 	// 请求提交的类型，默认为get
-	private int reqeustSubmitType = Method.GET;
+	private int reqeustSubmitType = Method.POST;
 	// 请求返回的数据类型，默认为文本数据
 	private ResultDataType resultDataType = ResultDataType.OBJECT;
 

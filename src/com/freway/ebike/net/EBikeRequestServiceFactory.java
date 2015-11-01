@@ -22,18 +22,18 @@ public class EBikeRequestServiceFactory {
 	}
 
 	public static EBikeRequestService getInstance(Context context, int requestMode) {
-		EBikeRequestService mGvRequestService = null;
+		EBikeRequestService mRequestService = null;
 		switch (requestMode) {
 		case REQUEST_APACHE:
 
 			break;
 		case REQUEST_VOLLEY:
-			mGvRequestService = new EBikeRequestServiceVolleyImpl(context);
+			mRequestService = new EBikeRequestServiceVolleyImpl(context);
 			break;
 		default:
-			mGvRequestService = new EBikeRequestServiceVolleyImpl(context);
+			mRequestService = new EBikeRequestServiceVolleyImpl(context);
 			break;
 		}
-		return mGvRequestService;
+		return mRequestService;
 	}
 }

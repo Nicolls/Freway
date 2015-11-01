@@ -22,6 +22,7 @@ public class SPUtils {
 	public static final String SP_HTTP = "SP_HTTP";
 	public static final String SP_HTTP_HOST = "SP_HTTP_HOST";
 	public static final String SP_HTTP_PORT = "SP_HTTP_PORT";
+	public static final String SP_HTTP_KEY = "SP_HTTP_KEY";
 
 	// app相关
 	public static final String SP_APP = "SP_APP";
@@ -35,6 +36,8 @@ public class SPUtils {
 	public static final String SP_USER_AUTO_LOGIN = "SP_USER_AUTO_LOGIN";
 	public static final String SP_USER_SAFE_CODE = "SP_USER_SAFE_CODE";
 	public static final String SP_USER_SAFE_CODE_SWITCH = "SP_USER_SAFE_CODE_SWITCH";
+	public static final String SP_USER_TOKEN = "SP_USER_TOKEN";
+	public static final String SP_USER_TRAVEL_MAP = "SP_USER_TRAVEL_MAP";//地图行程数据
 
 	/** 获取登录用户名 */
 	public static String getUsername(Context context) {
@@ -82,6 +85,25 @@ public class SPUtils {
 		boolean isOk = sp.edit().putString(SP_HTTP_HOST, host).commit();
 		if (isOk) {
 			EBRequest.requestHost = host;
+		}
+		return isOk;
+	}
+	
+	
+	/** 获取私钥 */
+	public static String getServerKey(Context context) {
+		SharedPreferences sp = context.getSharedPreferences(SP_HTTP, Context.MODE_PRIVATE);
+		String key = sp.getString(SP_HTTP_KEY, EBConstant.DEFAULT_KEY);
+		EBRequest.requestKey = key;
+		return key;
+	}
+
+	/** 设置私钥 */
+	public static boolean setServerKey(Context context, String key) {
+		SharedPreferences sp = context.getSharedPreferences(SP_HTTP, Context.MODE_PRIVATE);
+		boolean isOk = sp.edit().putString(SP_HTTP_KEY, key).commit();
+		if (isOk) {
+			EBRequest.requestKey = key;
 		}
 		return isOk;
 	}
@@ -166,6 +188,32 @@ public class SPUtils {
 		return isOk;
 	}
 
+	/** 获取登录token */
+	public static String getToken(Context context) {
+		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+		String token = sp.getString(SP_USER_TOKEN, null);
+		return token;
+	}
+
+	/** 保存登录token */
+	public static boolean setToken(Context context, String token) {
+		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+		boolean isOk = sp.edit().putString(SP_USER_TOKEN, token).commit();
+		return isOk;
+	}
 	
+	/** 获取last travel*/
+	public static String getLastTravel(Context context) {
+		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+		String travel = sp.getString(SP_USER_TRAVEL_MAP,null);
+		return travel;
+	}
+
+	/** 保存last travel*/
+	public static boolean setLastTravel(Context context, String travel) {
+		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+		boolean isOk = sp.edit().putString(SP_USER_TRAVEL_MAP, travel).commit();
+		return isOk;
+	}
 	
 }

@@ -37,9 +37,9 @@ import com.google.gson.JsonSyntaxException;
  */
 public class VolleyGsonRequest<T> extends Request<T> {
 	private static final String TAG = VolleyGsonRequest.class.getSimpleName();
-	private static final String KEY = "eb-token";
-	private static final String ENCYPT_CONTENT = "123";
-	private static final String EB_TOKEN = "OzSBLmLbGPXR0kWccMmFLA==";
+//	private static final String KEY = "eb-token";
+//	private static final String ENCYPT_CONTENT = "123";
+//	private static final String EB_TOKEN = "OzSBLmLbGPXR0kWccMmFLA==";
 	private static List<String> cookies;
 	private static Map<String, String> headers = null;
 	private final Gson gson = new Gson();
@@ -63,7 +63,13 @@ public class VolleyGsonRequest<T> extends Request<T> {
 	public VolleyGsonRequest(Context context, BaseRequest bRquest, Type type, Listener<T> listener,
 			ErrorListener errorListener) {
 		super(bRquest.getReqeustSubmitType(), bRquest.getReqeustURL(), errorListener);
-		LogUtils.systemOut("请求URL:" + bRquest.getReqeustURL());
+		String requestType="";
+		if(bRquest.getReqeustSubmitType()==1){
+			requestType="Post";
+		}else if(bRquest.getReqeustSubmitType()==0){
+			requestType="Get";
+		}
+		LogUtils.systemOut(requestType+"请求URL:" + bRquest.getReqeustURL());
 		this.context = context;
 		this.type = type;
 		this.params = bRquest.getReqeustParam();
@@ -80,10 +86,10 @@ public class VolleyGsonRequest<T> extends Request<T> {
 	public Map<String, String> getHeaders() throws AuthFailureError {
 		if (headers == null) {
 			headers = new HashMap<String, String>();
-			headers.put("Client-Type", "Gridview Android");
-			headers.put("Client-Version", CommonUtil.getAppVersion(context));
-			headers.put("Device-Id", CommonUtil.getPhoneImei(context));
-			headers.put("Gridview-Token", EB_TOKEN);
+//			headers.put("Client-Type", "Gridview Android");
+//			headers.put("Client-Version", CommonUtil.getAppVersion(context));
+//			headers.put("Device-Id", CommonUtil.getPhoneImei(context));
+//			headers.put("Gridview-Token", EB_TOKEN);
 		}
 		StringBuffer cookieBuf = new StringBuffer();
 		if (cookies != null) {
@@ -107,7 +113,7 @@ public class VolleyGsonRequest<T> extends Request<T> {
 		try {
 			if (response.headers.containsKey("Set-Cookie")) {
 				String cookie = response.headers.get("Set-Cookie");
-				if (cookie.contains("GV_JSESSIONID")) {// 如果有sessionID说明重新组织会话，要把cookie删除掉
+				if (cookie.contains("JSESSIONID")) {// 如果有sessionID说明重新组织会话，要把cookie删除掉
 					cookies = null;
 				}
 				if (cookies == null) {

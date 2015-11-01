@@ -34,42 +34,46 @@
         android:orientation="horizontal"
          >
 
-        <Button
-            android:id="@+id/btn_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onLocation"
-            android:text="lo" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onStart"
-            android:text="st" />
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:text="start" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onPauseResume"
-            android:text="PaRe" />
+            android:onClick="onPause"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:text="pause" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onResume"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:text="resume" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onCompleted"
+            android:layout_weight="1"
+            android:textSize="14sp"
             android:text="ok" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onImport"
-            android:text="in" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onPictrue"
-            android:text="pic" />
+            android:onClick="onStop"
+            android:textSize="14sp"
+            android:layout_weight="1"
+            android:text="stop" />
     </LinearLayout>
 
     <fragment

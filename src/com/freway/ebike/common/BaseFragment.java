@@ -26,7 +26,7 @@ import com.freway.ebike.utils.ErrorUtils.SuccessListener;
  *         2015年5月19日
  */
 public abstract class BaseFragment extends Fragment implements DataUpdateListener {
-	protected EBikeRequestService mGVRequestService;
+	protected EBikeRequestService mEBikeRequestService;
 	private String name;
 
 	public BaseFragment(String name) {
@@ -41,10 +41,10 @@ public abstract class BaseFragment extends Fragment implements DataUpdateListene
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mGVRequestService = EBikeRequestServiceFactory.getInstance(getActivity()
+		mEBikeRequestService = EBikeRequestServiceFactory.getInstance(getActivity()
 				.getApplicationContext(), EBikeRequestServiceFactory.REQUEST_VOLLEY);
 		LogUtils.i("setUpdateListener", this.getClass().getName());
-		mGVRequestService.setUptateListener(this);
+		mEBikeRequestService.setUptateListener(this);
 	}
 
 	@Override

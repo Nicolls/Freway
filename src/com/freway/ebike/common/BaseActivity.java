@@ -35,7 +35,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DataUpda
 	public TextView mNavBack;
 	protected View navTop;
 	protected boolean isLog = true;
-	protected EBikeRequestService mGVRequestService;
+	protected EBikeRequestService mEBikeRequestService;
 	protected TextView mTitleView;
 	private LoadingDialog loading;
 	public String tag = "BaseActivity";
@@ -43,9 +43,9 @@ public abstract class BaseActivity extends AppCompatActivity implements DataUpda
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mGVRequestService = EBikeRequestServiceFactory.getInstance(getApplicationContext(),
+		mEBikeRequestService = EBikeRequestServiceFactory.getInstance(getApplicationContext(),
 				EBikeRequestServiceFactory.REQUEST_VOLLEY);
-		mGVRequestService.setUptateListener(this);
+		mEBikeRequestService.setUptateListener(this);
 		tag = this.getClass().getSimpleName();
 		EBikeActivityManager.getAppManager().addActivity(this);
 		LogUtils.i(tag, isLog, "onCreate");
@@ -61,7 +61,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DataUpda
 	}
 
 	public EBikeRequestService getService() {
-		return mGVRequestService;
+		return mEBikeRequestService;
 	}
 
 	/** 初始化导航view */

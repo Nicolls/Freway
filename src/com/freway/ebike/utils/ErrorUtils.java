@@ -46,22 +46,22 @@ public class ErrorUtils {
 				}
 			} else if (obj instanceof EBErrorResponse) {// 登录或者请求出问题
 				EBErrorResponse errorRes = (EBErrorResponse) obj;
-				if (!TextUtils.equals(errorRes.getErrCode(), EBResponse.SUCCESS_CODE) ) {
+				if (!TextUtils.equals(errorRes.getCode(), EBResponse.SUCCESS_CODE) ) {
 					LogUtils.systemOut("登录或者请求出问题：" + errorRes.getText());
 					if(errorLis!=null){
 						errorLis.errorCompleted();
 					}
-					ToastUtils.toast(context, errorRes.getErrMsg());
+					ToastUtils.toast(context, errorRes.getMsg());
 //					alertDialog(context);
 				} else {
 					lis.successCompleted(id, obj);
 				}
 
-			} else if(!TextUtils.equals(((EBResponse) obj).getErrCode(),EBResponse.SUCCESS_CODE)) {// 说明有错误
+			} else if(!TextUtils.equals(((EBResponse) obj).getCode(),EBResponse.SUCCESS_CODE)) {// 说明有错误
 				if(errorLis!=null){
 					errorLis.errorCompleted();
 				}
-				ToastUtils.toast(context, ((EBResponse) obj).getErrMsg());
+				ToastUtils.toast(context, ((EBResponse) obj).getMsg());
 			} else if (!context.isFinishing()) {// activity还存在
 				lis.successCompleted(id, obj);
 			}else{

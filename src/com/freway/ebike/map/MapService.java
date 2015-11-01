@@ -16,13 +16,16 @@
 
 package com.freway.ebike.map;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
+import com.freway.ebike.common.BaseApplication;
+import com.freway.ebike.db.DBHelper;
+import com.freway.ebike.db.Travel;
+import com.freway.ebike.db.TravelLocation;
 import com.freway.ebike.utils.LogUtils;
+import com.freway.ebike.utils.SPUtils;
 import com.freway.ebike.utils.ToastUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -31,78 +34,40 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
-import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
-import com.google.android.gms.maps.LocationSource;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.gson.Gson;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
+import android.content.IntentFilter;
 import android.location.Location;
-import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.text.TextUtils;
 
 public class MapService extends Service implements ConnectionCallbacks,
-		OnConnectionFailedListener, LocationListener, OnMapReadyCallback,
-		OnCameraChangeListener, OnMyLocationButtonClickListener {
+		OnConnectionFailedListener, LocationListener {
 	private final static String TAG = MapService.class.getSimpleName();
-	// These settings are the same as the settings for the map. They will in
-	// fact give you updates
-	// at the maximal rates currently possible.
 	private static final LocationRequest REQUEST = LocationRequest.create()
 			.setInterval(5 * 1000) // 5 seconds
 			.setFastestInterval(16) // 16ms = 60fps
 			.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-	private final IBinder mBinder = new LocalBinder();
 	private GoogleApiClient mGoogleApiClient;
-	private CustomerLocationSource mLocationSource;
-	private ArrayList<TravelLocation> travelRoute = new ArrayList<TravelLocation>();
-	private Location startLocation;// 起始位置
-	private Location endLocation;// 终点位置
-	private Location paintFromLocation;// 开始画位置
-	private Location paintToLocation;// 结束画位置
-	private GoogleMap mGoogleMap;
-	private boolean isRecord = false;
-	private SupportMapFragment mapFragment;
-	private float zoom = CAMERA_INIT_ZOOM;
-	private final static int CAMERA_INIT_ZOOM = 17;// 初始缩放
-	private final static int POLY_LINE_WIDTH = 10;// 线宽
-	private Marker startMarker;
-	private Marker endMarker;
+	private Travel travel;//一个行程
+	private int state=TravelConstant.TRAVEL_STATE_NONE;//状态
 	private Date startTime;
 	private Date endTime;
 	private Date calFromTime;
 	private Date calToTime;
 	private long spendTime;
 	private float distance;
-	private final static double LAT_OFFSET=0.0012893886;
-	private final static double LNG_OFFSET=0.0061154366;
-	private final static float RECORD_DISTANCE=5;//两点记录大于RECORD_DISTANCE米则记录
-	private MapServiceCallback mMapServiceCallback;
-	private boolean isChinaGpsEnable=false;
-	public interface MapServiceCallback {
-		void mapReady();
-		void geocoder(String address);
-	}
-
-	public void setMapServiceCallback(MapServiceCallback mapServiceCallback) {
-		this.mMapServiceCallback = mapServiceCallback;
-	}
-
+	private static final float MUST_MIN_TRAVEL=10;//最短行程10米
+	private static final float RECORD_MIN_DISTANCE=2;//达到记录的最短距离2米
+	private TravelLocation fromLocation;// 开始画位置
+	private TravelLocation toLocation;// 结束画位置
+	private boolean isRecord = false;
+	private TravelLocation currentLocation;//当前的位置
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -110,253 +75,245 @@ public class MapService extends Service implements ConnectionCallbacks,
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
 				.addApi(LocationServices.API).addConnectionCallbacks(this)
 				.addOnConnectionFailedListener(this).build();
-		mLocationSource = new CustomerLocationSource();
-		Locale locale = getResources().getConfiguration().locale;
-        String language = locale.getLanguage();
-        LogUtils.i(TAG, "当前语言是:"+language);
-        if (language.endsWith("zh")){
-        	isChinaGpsEnable=true;
-        }else{
-        	isChinaGpsEnable=false;
-        }
+		//注册广播
+		IntentFilter filter=new IntentFilter(TravelConstant.ACTION_UI_SERICE_TRAVEL_STATE_CHANGE);
+		registerReceiver(mReceiver, filter);
 		ToastUtils.toast(this, "onCreate");
 	}
 
-	public class LocalBinder extends Binder {
-		MapService getService() {
-			return MapService.this;
-		}
-	}
-
-	public void setMapFragment(SupportMapFragment mapFragment) {
-		this.mapFragment = mapFragment;
-		this.mapFragment.getMapAsync(this);
-	}
-
 	@Override
-	public IBinder onBind(Intent intent) {
-		LogUtils.i(TAG, TAG + "onBind");
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		LogUtils.i(TAG, "onStartCommand");
+		ToastUtils.toast(this, "onStartCommand");
 		mGoogleApiClient.connect();
-		ToastUtils.toast(this, "onBind");
-		return mBinder;
+		initData();
+		return super.onStartCommand(intent, flags, startId);
 	}
-
-	@Override
-	public boolean onUnbind(Intent intent) {
-		LogUtils.i(TAG, TAG + "onUnBind");
-		mGoogleApiClient.disconnect();
-		ToastUtils.toast(this, "onUnBind");
-		return super.onUnbind(intent);
-	}
-
-	@Override
-	public void onMapReady(GoogleMap map) {
-		mGoogleMap = map;
-		mGoogleMap.setMyLocationEnabled(true);
-		mGoogleMap.setOnCameraChangeListener(this);
-		if(isChinaGpsEnable){
-			mGoogleMap.setLocationSource(mLocationSource);
-		}else{
-			mGoogleMap.setLocationSource(null);
+	/**初始化数据,初始化完成，要把状态返回到UI，*/
+	private void initData(){
+		String travelData=SPUtils.getLastTravel(this);
+		if(!TextUtils.isEmpty(travelData)){
+			Gson gson=new Gson();
+			travel=gson.fromJson(travelData, Travel.class);
+			state=travel.getState();
+			sendState(state);//广播状态变化
+			if(state==TravelConstant.TRAVEL_STATE_COMPLETED||state==TravelConstant.TRAVEL_STATE_STOP){//如果是停止或者已完成，则需要重新初始化
+				travel=new Travel();
+			}
+			
+			startTime=travel.getStartTime();
+			endTime=travel.getEndTime();
+			if(calFromTime==null){
+				calFromTime=Calendar.getInstance().getTime();
+			}
+			if(calToTime==null){
+				calToTime=Calendar.getInstance().getTime();
+			}
+			spendTime=travel.getSpendTime();
+			distance=travel.getDistance();
+			
+			if(state==TravelConstant.TRAVEL_STATE_START||state==TravelConstant.TRAVEL_STATE_RESUME){
+				isRecord=true;
+			}else{
+				isRecord=false;
+			}
+			if(travel.getId()>=0){//如果存在最后的值，则都要加载路线
+				List<TravelLocation> routes=DBHelper.getInstance(this).listTravelLocation(travel.getId());
+				for(int i=0;i<routes.size();i++){
+					TravelLocation from=routes.get(i);
+					TravelLocation to=null;
+					if((i+1)<routes.size()){
+						to=routes.get(i+1);
+//						to.setDescription("这是我初始化从数据库拿的");
+						broadCastLocation(TravelConstant.ACTION_MAP_SERVICE_LOCATION_CHANGE,toLocation, from, to);
+					}
+				}
+			}
 		}
-		mGoogleMap.moveCamera(CameraUpdateFactory.zoomTo(CAMERA_INIT_ZOOM));
-		if (mMapServiceCallback != null) {
-			mMapServiceCallback.mapReady();
+	}
+	
+	/**监听UI发送的广播*/
+	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			if (TravelConstant.ACTION_UI_SERICE_TRAVEL_STATE_CHANGE.equals(action)) {
+				int state=intent.getIntExtra(TravelConstant.EXTRA_STATE, 0);
+				if(state==TravelConstant.TRAVEL_STATE_START){//开始
+					start();
+				}else if(state==TravelConstant.TRAVEL_STATE_PAUSE){//暂停
+					pause();
+				}else if(state==TravelConstant.TRAVEL_STATE_RESUME){//恢复
+					resume();
+				}else if(state==TravelConstant.TRAVEL_STATE_COMPLETED){//完成
+					completed();
+				}else if(state==TravelConstant.TRAVEL_STATE_STOP){//停止
+					stop();
+				}else if(state==TravelConstant.TRAVEL_STATE_EXIT){//退出应用
+					exit();
+				}
+				sendState(state);//广播状态变化
+			}
 		}
-	}
-
-	@Override
-	public boolean onMyLocationButtonClick() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void onCameraChange(CameraPosition position) {
-//		LogUtils.i(TAG, "zoom=" + position.zoom);
-		this.zoom = position.zoom;
-	}
+	};
 
 	@Override
 	public void onLocationChanged(Location location) {
-		if(isChinaGpsEnable&&mLocationSource!=null){
-			location.setLatitude(location.getLatitude()+LAT_OFFSET);
-			location.setLongitude(location.getLongitude()+LNG_OFFSET);
-			mLocationSource.onMapChange(location);
+		LogUtils.i(TAG, "onLocationChanged" + location.getLatitude() + "--"
+				+ location.getLongitude());
+		TravelLocation travelLocation=new TravelLocation(location);
+		if(travel!=null){
+			travelLocation.setTravelId(travel.getId());
 		}
-//		LogUtils.i(TAG, "locationchange了啦" + location.getLatitude() + "--"
-//				+ location.getLongitude());
-		// ToastUtils.toast(this,
-		// "位置改变"+location.getAltitude()+"--"+location.getLongitude());
-//		LatLng latlng = new LatLng(location.getLatitude(),
-//				location.getLongitude());
-		if (paintFromLocation != null) {
-			paintFromLocation = paintToLocation;
-			paintToLocation = location;
+		float pointDistance=0;
+		if(fromLocation!=null){
+			pointDistance=fromLocation.getLocation().distanceTo(location);
+		}
+		broadCastLocation(TravelConstant.ACTION_MAP_SERVICE_LOCATION_CHANGE,travelLocation,null,null);//当前位置
+		if (fromLocation != null&&pointDistance>RECORD_MIN_DISTANCE) {//当两点距离值大于最小记录距离值，才算是发生距离改变
+			fromLocation = toLocation;
+			toLocation = travelLocation;
 		} else {
-			paintFromLocation = location;
-			paintToLocation = location;
-			startLocation = paintFromLocation;
+			fromLocation = travelLocation;
+			toLocation = travelLocation;
+//			startLocation = paintFromLocation;
 		}
-		recordPolyLine();
-		move();
-		if (isRecord) {//正在记录
-			TravelLocation travel=new TravelLocation();
-			travel.altitude=location.getAltitude();
-			travel.latitude=location.getLatitude();
-			travel.longitude=location.getLongitude();
-			travel.speed=location.getSpeed();
-			travelRoute.add(travel);
-			distance+=paintFromLocation.distanceTo(paintToLocation);
-		}
-	}
-
-	
-	private void move() {
-		if (mGoogleMap != null && paintToLocation != null) {
-			LatLng latlng=new LatLng(paintToLocation.getLatitude(), paintToLocation.getLongitude());
-			CameraUpdate update = CameraUpdateFactory.newLatLngZoom(
-					latlng, this.zoom);
-			mGoogleMap.animateCamera(update);
-		}
-	}
-
-	public Location getCurrentLocation() {
-		return mGoogleMap == null ? null : mGoogleMap.getMyLocation();
-	}
-
-	private Marker addMark(MarkerOptions options) {
-		if (mGoogleMap != null) {
-			return mGoogleMap.addMarker(options);
-		} else {
-			return null;
-		}
-	}
-	
-	public void setChinaGpsEnable(boolean enable){
-		isChinaGpsEnable=enable;
-		if(enable){
-			mGoogleMap.setLocationSource(mLocationSource);
-		}else{
-			mGoogleMap.setLocationSource(null);
-		}
-	}
-
-	public void geocoderCurrentAddress() {
-		String result = "";
-		Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-		Location location = mGoogleMap.getMyLocation();
-		List<Address> addresses = null;
-
-		try {
-			addresses = geocoder.getFromLocation(location.getLatitude(),
-					location.getLongitude(),
-					1);
-		} catch (Exception exception) {
-			LogUtils.e(TAG, exception.getMessage());
-		}
-		if (addresses == null || addresses.size() == 0) {
-			LogUtils.i(TAG, "没有解析到地址");
-		} else {
-			Address address = addresses.get(0);
-			ArrayList<String> addressFragments = new ArrayList<String>();
-			for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
-				addressFragments.add(address.getAddressLine(i));
-				result += address.getAddressLine(i);
+		if (isRecord&&pointDistance>RECORD_MIN_DISTANCE) {// 正在记录，并且两点的距离必须要大于最小记录距离值才记录
+			//判断是开始的位置
+			if(currentLocation==null){//如果是开始，则通知行程开始
+				broadCastLocation(TravelConstant.ACTION_MAP_SERVICE_LOCATION_START,travelLocation,null,null);//当前位置
 			}
-			LogUtils.i(TAG, "解析到地址是：" + result);
-		}
-		if(mMapServiceCallback!=null){
-			mMapServiceCallback.geocoder(result);
+			currentLocation=travelLocation;
+			//向UI发送位置改变，画数据
+			broadCastLocation(TravelConstant.ACTION_MAP_SERVICE_LOCATION_CHANGE,travelLocation,fromLocation,toLocation);//当前位置
+			//记录数据
+//			travelRoute.add(travelLocation);
+			travelLocation.setTravelId(travel.getId());
+			DBHelper.getInstance(this).insertTravelLocation(currentLocation);
+			distance += fromLocation.getLocation().distanceTo(toLocation.getLocation());
 		}
 	}
+	/**广播地址变化*/
+	private void broadCastLocation(String action,TravelLocation current,TravelLocation from,TravelLocation to){
+		Intent intent=new Intent(action);
+		intent.putExtra(TravelConstant.EXTRA_LOCATION_CURRENT, current);
+		intent.putExtra(TravelConstant.EXTRA_LOCATION_FROM, from);
+		intent.putExtra(TravelConstant.EXTRA_LOCATION_TO, to);
+		if(travel!=null){
+			intent.putExtra(TravelConstant.EXTRA_TRAVEL_ID, travel.getId());
+		}
+		sendBroadcast(intent);
+	}
+	
+	/** 广播状态变化 */
+	private void sendState(int state) {
+		BaseApplication.sendStateChangeBroadCast(this, state, false,mReceiver);
 
+	}
+	
+	
 	/** 开始 */
 	public void start() {
+		travel=new Travel();
+		DBHelper.getInstance(this).insertTravel(travel);
+		startTime = Calendar.getInstance().getTime();
+		spendTime = 0;
+		endTime = startTime;
+		calFromTime = startTime;
+		calToTime = startTime;
+//		travelRoute.clear();
+		fromLocation = null;
+		toLocation = null;
+		currentLocation=null;
+//		travelRoute.add(travelLocation);
+		state=TravelConstant.TRAVEL_STATE_START;
+		saveTravel();
 		isRecord = true;
-		startLocation = paintToLocation;
-		startTime=Calendar.getInstance().getTime();
-		spendTime=0;
-		endTime=startTime;
-		calFromTime=startTime;
-		calToTime=startTime;
-		travelRoute.clear();
+		LogUtils.i(TAG, "行程ID－－"+travel.getId());
 	}
 
 	/** 暂停 */
 	public void pause() {
 		isRecord = false;
-		if(travelRoute.size()>0){//如果暂停，将最后那一个设置为暂停标识
-			travelRoute.get(travelRoute.size()-1).isPause=true;;
+		if(currentLocation!=null){
+			currentLocation.setPause(true);
+			DBHelper.getInstance(this).updateTravelLocation(currentLocation);
 		}
-		calToTime=Calendar.getInstance().getTime();
-		long time=calToTime.getTime()-calFromTime.getTime();
-		spendTime+=time;
-		
+		calToTime = Calendar.getInstance().getTime();
+		long time = calToTime.getTime() - calFromTime.getTime();
+		spendTime += time;
+		state=TravelConstant.TRAVEL_STATE_PAUSE;
+		saveTravel();
+
 	}
 
 	/** 恢复 */
 	public void resume() {
 		isRecord = true;
-		calFromTime=Calendar.getInstance().getTime();
+		calFromTime = Calendar.getInstance().getTime();
+		state=TravelConstant.TRAVEL_STATE_RESUME;
+		saveTravel();
 	}
 
 	/** 完成 */
-	public BikeTravel completed() {
+	public void completed() {
 		isRecord = false;
-		endLocation = paintToLocation;
-		endTime=Calendar.getInstance().getTime();
-		calToTime=endTime;
-		long time=calToTime.getTime()-calFromTime.getTime();
-		spendTime+=time;
-		BikeTravel travel=new BikeTravel();
-		travel.setStartTime(startTime);
-		travel.setEndTime(endTime);
-		travel.setSpendTime(spendTime);
-		travel.setTravelRoute(travelRoute);
-		travel.setDistance(distance);
-		MarkerOptions optionsStart = new MarkerOptions();
-		LatLng startLatLng=new LatLng(startLocation.getLatitude(), startLocation.getLongitude());
-		optionsStart
-				.position(startLatLng)
-				.title("起始位置")
-				.icon(BitmapDescriptorFactory
-						.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-		startMarker = addMark(optionsStart);
-
-		MarkerOptions optionsEnd = new MarkerOptions();
-		LatLng endLatLng=new LatLng(endLocation.getLatitude(), endLocation.getLongitude());
-		optionsEnd
-				.position(endLatLng)
-				.title("终点位置")
-				.icon(BitmapDescriptorFactory
-						.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-		endMarker = addMark(optionsEnd);
-		return travel;
-	}
-
-
-	/** 截图 */
-	public void takePicture() {
-
-	}
-
-	private void recordPolyLine() {
-		// ToastUtils.toast(this, "paint");
-		if (mGoogleMap != null && isRecord) {
-			PolylineOptions poly = new PolylineOptions();
-			LatLng from=new LatLng(paintFromLocation.getLatitude(), paintFromLocation.getLongitude());
-			LatLng to=new LatLng(paintToLocation.getLatitude(), paintToLocation.getLongitude());
-			poly.add(from, to).width(POLY_LINE_WIDTH)
-					.color(Color.YELLOW);
-			mGoogleMap.addPolyline(poly);
+		//结束的时候判断，如果行程过短，则返回空，UI收到为空的标识，说明行程过短
+		if(distance<MUST_MIN_TRAVEL){
+			stop();
+			broadCastLocation(TravelConstant.ACTION_MAP_SERVICE_LOCATION_END, null, null, null);
+		}else{
+			endTime = Calendar.getInstance().getTime();
+			calToTime = endTime;
+			long time = calToTime.getTime() - calFromTime.getTime();
+			spendTime += time;
+			state=TravelConstant.TRAVEL_STATE_COMPLETED;
+			saveTravel();
+			DBHelper.getInstance(this).updateTravel(travel);//更新
+			broadCastLocation(TravelConstant.ACTION_MAP_SERVICE_LOCATION_END, toLocation, null, null);
 		}
 	}
-
+	
+	/** 停止 */
+	public void stop() {
+		isRecord=false;
+		DBHelper.getInstance(this).deleteTravel(travel.getId());//停止则删除这条数据
+		state=TravelConstant.TRAVEL_STATE_STOP;
+		saveTravel();
+//		travelRoute.clear();
+		startTime=null;
+		endTime=null;
+		calFromTime=null;
+		calToTime=null;
+		spendTime=0;
+		distance=0;
+		fromLocation=null;
+		toLocation=null;
+	}
+	
+	/**退出应用*/
+	public void exit(){
+		if(state==TravelConstant.TRAVEL_STATE_NONE||state==TravelConstant.TRAVEL_STATE_STOP||state==TravelConstant.TRAVEL_STATE_COMPLETED){//这些情况将不需要记录并且开启定位功能了
+			mGoogleApiClient.disconnect();
+		}
+	}
+	/**将本次行程保存到本地*/
+	private void saveTravel(){
+		if(travel!=null){
+			travel.setState(state);
+			travel.setStartTime(startTime);
+			travel.setEndTime(endTime);
+			travel.setSpendTime(spendTime);
+			travel.setDistance(distance);
+			Gson gson=new Gson();
+			String travelData=gson.toJson(travel);
+			SPUtils.setLastTravel(this, travelData);
+		}
+	}
+	
 	@Override
 	public void onConnectionFailed(ConnectionResult arg0) {
-		// TODO Auto-generated method stub
-
+		LogUtils.i(TAG, "onConnectionFailed");
 	}
 
 	@Override
@@ -368,54 +325,22 @@ public class MapService extends Service implements ConnectionCallbacks,
 
 	@Override
 	public void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
+		mGoogleApiClient.disconnect();
+		state=TravelConstant.TRAVEL_STATE_PAUSE;
+		saveTravel();
+		LogUtils.i(TAG, "onDestroy");
 		ToastUtils.toast(this, "onDestroy");
 	}
 
 	@Override
 	public void onConnectionSuspended(int arg0) {
-		// TODO Auto-generated method stub
-
+		LogUtils.i(TAG, "onConnectionSuspended");
 	}
 
-	/**
-	 * 用于自定义定位
-	 */
-	private static class CustomerLocationSource implements LocationSource {
-		private OnLocationChangedListener mListener;
-
-		/**
-		 * Flag to keep track of the activity's lifecycle. This is not strictly
-		 * necessary in this case because onMapLongPress events don't occur
-		 * while the activity containing the map is paused but is included to
-		 * demonstrate best practices (e.g., if a background service were to be
-		 * used).
-		 */
-		private boolean mPaused;
-
-		@Override
-		public void activate(OnLocationChangedListener listener) {
-			mListener = listener;
-		}
-
-		@Override
-		public void deactivate() {
-			mListener = null;
-		}
-
-		public void onMapChange(Location location) {
-			if (mListener != null && !mPaused) {
-				mListener.onLocationChanged(location);
-			}
-		}
-
-		public void onPause() {
-			mPaused = true;
-		}
-
-		public void onResume() {
-			mPaused = false;
-		}
+	@Override
+	public IBinder onBind(Intent intent) {
+		return null;
 	}
+
 }
