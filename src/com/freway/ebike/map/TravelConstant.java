@@ -1,0 +1,23 @@
+package com.freway.ebike.map;
+
+public class TravelConstant {
+	public static final int TRAVEL_STATE_NONE = 0;
+	public static final int TRAVEL_STATE_START = 1;
+	public static final int TRAVEL_STATE_PAUSE = 2;
+	public static final int TRAVEL_STATE_RESUME = 3;
+	public static final int TRAVEL_STATE_COMPLETED = 4;
+	public static final int TRAVEL_STATE_STOP = 5;
+	public static final int TRAVEL_STATE_EXIT = 6;//退出应用
+	// 用于UI与服务之间传递状态改变的广播
+	public static final String ACTION_UI_SERICE_TRAVEL_STATE_CHANGE = "ACTION_UI_SERICE_TRAVEL_STATE_CHANGE";
+	public static final String EXTRA_STATE = "EXTRA_STATE";
+
+	// MapService发送给UI的广播action
+	public static final String ACTION_MAP_SERVICE_LOCATION_START = "ACTION_MAP_SERVICE_LOCATION_START";
+	public static final String ACTION_MAP_SERVICE_LOCATION_END = "ACTION_MAP_SERVICE_LOCATION_END";
+	public static final String ACTION_MAP_SERVICE_LOCATION_CHANGE = "ACTION_MAP_SERVICE_LOCATION_CHANGE";
+	public static final String EXTRA_LOCATION_CURRENT = "EXTRA_LOCATION_CURRENT";
+	public static final String EXTRA_LOCATION_FROM = "EXTRA_LOCATION_FROM";
+	public static final String EXTRA_LOCATION_TO = "EXTRA_LOCATION_TO";
+	public static final String EXTRA_TRAVEL_ID = "EXTRA_TRAVEL_ID";
+}
