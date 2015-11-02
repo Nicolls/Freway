@@ -32,7 +32,7 @@ public class FrewayHistoryMapActivity extends FragmentActivity implements OnMapR
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map_history);
 		SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-		mMapUtil=new MapUtil(this, supportMapFragment,this);
+		mMapUtil=new MapUtil(this, supportMapFragment);
 		
 	}
 

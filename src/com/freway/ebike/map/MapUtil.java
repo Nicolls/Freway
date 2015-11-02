@@ -4,29 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import com.freway.ebike.common.BaseApplication;
-import com.freway.ebike.db.DBHelper;
-import com.freway.ebike.db.Travel;
-import com.freway.ebike.db.TravelLocation;
-import com.freway.ebike.utils.LogUtils;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
-import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polygon;
-import com.google.android.gms.maps.model.PolygonOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -41,7 +18,30 @@ import android.location.LocationManager;
 import android.os.Handler;
 import android.os.Message;
 
-public class MapUtil implements OnCameraChangeListener, OnMapReadyCallback {
+import com.freway.ebike.common.BaseApplication;
+import com.freway.ebike.db.DBHelper;
+import com.freway.ebike.db.Travel;
+import com.freway.ebike.db.TravelLocation;
+import com.freway.ebike.utils.LogUtils;
+import com.freway.ebike.utils.ScreenUtils;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
+import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+public class MapUtil implements OnCameraChangeListener {
 	private static final String TAG = MapUtil.class.getSimpleName();
 	/** 国内定位纬度偏差 */
 	private static final double LAT_OFFSET = 0.0012893886;
@@ -56,14 +56,11 @@ public class MapUtil implements OnCameraChangeListener, OnMapReadyCallback {
 	private float zoom = CAMERA_INIT_ZOOM;
 	private boolean isChinaGps = false;
 	private Context context;
-	private boolean isReady = false;
 	private Handler mHandler;
 	private Polygon polygon;
-	private OnMapReadyCallback onMapReadyCallback;
 
-	public MapUtil(Context context, SupportMapFragment supportMapFragment, OnMapReadyCallback onMapReadyCallback) {
+	public MapUtil(Context context, SupportMapFragment supportMapFragment) {
 		this.context = context;
-		this.onMapReadyCallback = onMapReadyCallback;
 		init(supportMapFragment);
 	}
 
@@ -78,34 +75,7 @@ public class MapUtil implements OnCameraChangeListener, OnMapReadyCallback {
 		}
 	}
 
-	/** 判断定位是否打开 */
-	public boolean checkGpsEnable() {
-		final LocationManager manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-		if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-			buildAlertMessageNoGps();
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	/** 弹出确认打开Gps对话框 */
-	private void buildAlertMessageNoGps() {
-		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setMessage("Your GPS seems to be disabled, do you want to enable it?").setCancelable(false)
-				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-					public void onClick(@SuppressWarnings("unused") final DialogInterface dialog,
-							@SuppressWarnings("unused") final int id) {
-						context.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-					}
-				}).setNegativeButton("No", new DialogInterface.OnClickListener() {
-					public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-						dialog.cancel();
-					}
-				});
-		final AlertDialog alert = builder.create();
-		alert.show();
-	}
+	
 
 	/** 初始化 */
 	private void init(SupportMapFragment supportMapFragment) {
@@ -119,34 +89,11 @@ public class MapUtil implements OnCameraChangeListener, OnMapReadyCallback {
 			isChinaGps = false;
 		}
 		mLocationSource = new CustomerLocationSource();
-		supportMapFragment.getMapAsync(this);
-	}
-
-	@Override
-	public void onMapReady(GoogleMap map) {
-		this.mGoogleMap = map;
-		if (onMapReadyCallback != null) {
-			onMapReadyCallback.onMapReady(mGoogleMap);
-		}
+		this.mGoogleMap=supportMapFragment.getMap();
 		mGoogleMap.setMyLocationEnabled(true);
 		mGoogleMap.setOnCameraChangeListener(this);
 		mGoogleMap.setLocationSource(mLocationSource);
 		mGoogleMap.moveCamera(CameraUpdateFactory.zoomTo(CAMERA_INIT_ZOOM));
-		isReady = true;
-	}
-
-	/** 获取地图状态 */
-	public boolean getReady() {
-		return isReady;
-	}
-
-	/** 发送状态，因为UI是需要反馈的，所有isSelfReceiver 设置为true */
-	public void sendState(int state) {
-		if (state == TravelConstant.TRAVEL_STATE_START && checkGpsEnable()) {// 在这里判断定位有没有打开
-			BaseApplication.sendStateChangeBroadCast(context, state, true, mReceiver);
-		} else {
-			BaseApplication.sendStateChangeBroadCast(context, state, true, mReceiver);
-		}
 	}
 
 	/** 清空地图 */
@@ -155,7 +102,7 @@ public class MapUtil implements OnCameraChangeListener, OnMapReadyCallback {
 	}
 
 	/** 注册广播 */
-	public void start(Handler handler) {
+	public void startMapService(Handler handler) {
 		this.mHandler = handler;
 		// 注册广播
 		IntentFilter filter = new IntentFilter(TravelConstant.ACTION_MAP_SERVICE_LOCATION_CHANGE);
@@ -170,10 +117,16 @@ public class MapUtil implements OnCameraChangeListener, OnMapReadyCallback {
 		context.startService(intent);
 	}
 
-	/** 注销广播 */
-	public void stop() {
-		sendState(TravelConstant.TRAVEL_STATE_EXIT);
+	/** 退出服务 */
+	public void exit() {
 		context.unregisterReceiver(mReceiver);
+	}
+	
+	/** 停止服务，一般不需要调用 */
+	public void stop() {
+		exit();
+		Intent service = new Intent(context, MapService.class);
+		context.stopService(service);
 	}
 
 	/** 重新格式化位置为国内坐标 */
@@ -347,9 +300,8 @@ public class MapUtil implements OnCameraChangeListener, OnMapReadyCallback {
 				boundsBuilder.include(latlng);
 			}
 			// Move camera to show all markers and locations
-			mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(),
-					((Activity) context).getWindow().getWindowManager().getDefaultDisplay().getWidth(),
-					((Activity) context).getWindow().getWindowManager().getDefaultDisplay().getHeight(), 30));
+			mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(),ScreenUtils.getScreenWidth(context),
+					ScreenUtils.getScreenHeight(context),50));
 		}
 	}
 

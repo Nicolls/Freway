@@ -21,10 +21,16 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/message_text"
+        android:id="@+id/message_map"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
-        android:text="message"
+        android:text="map"
+        />
+    <TextView
+        android:id="@+id/message_bluetooth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:text="blue"
         />
 
     <LinearLayout
@@ -75,7 +81,73 @@
             android:layout_weight="1"
             android:text="stop" />
     </LinearLayout>
-
+ <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        >
+        <CheckBox 
+            android:id="@+id/cb_sport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="sp"
+            android:visibility="gone"
+            android:onClick="onSport"
+            />
+         <CheckBox 
+            android:id="@+id/cb_elc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="elc"
+            android:visibility="gone"
+            android:onClick="onElc"
+            />
+          <CheckBox 
+            android:id="@+id/cb_power1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="P1"
+            android:onClick="onPower1"
+            />
+            <CheckBox 
+            android:id="@+id/cb_power3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="P3"
+            android:visibility="gone"
+            android:onClick="onPower3"
+            />
+             <CheckBox 
+            android:id="@+id/cb_light_front"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="front_l"
+            android:onClick="onLightFront"
+            />
+              <CheckBox 
+            android:id="@+id/cb_light_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="back_l"
+            android:onClick="onLightBack"
+            />
+              <CheckBox 
+            android:id="@+id/cb_call"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="call"
+            android:onClick="onCall"
+            />
+              <CheckBox 
+            android:id="@+id/cb_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="msg"
+            android:onClick="onMessage"
+            />
+        
+    </LinearLayout>
     <fragment
         android:id="@+id/map"
         android:layout_width="match_parent"

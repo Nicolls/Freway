@@ -15,7 +15,7 @@ public class ProtocolByteHandler {
 	/**
 	 * @Fields mEBikeData 返回的蓝牙数据实体
 	 */
-	private static EBikeData mEBikeData=new EBikeData();
+	public static EBikeData mEBikeData=new EBikeData();
 	private static final String TAG="CreateByteCommand";
 	/**
 	 * @Fields EXTRA_CODE 解析数据包时，装入HashMap中的结果码
