@@ -28,7 +28,7 @@ public class EBikeHistoryData implements Serializable {
 	public static  long travel_cadence;
 	public static  double travel_altitude;
 	// 控制器data
-	public static  int data_id=1;
+	public static  int data_id=0;
 	public static  int control_time;
 
 	/**

@@ -148,24 +148,25 @@ public class MapService extends Service implements ConnectionCallbacks,
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
 			if (BlueToothConstants.BLE_SERVER_STATE_CHANAGE.equals(action)) {
-				int state = intent.getIntExtra(BlueToothConstants.EXTRA_STATE,
+				int bleState = intent.getIntExtra(BlueToothConstants.EXTRA_STATE,
 						0);
-				switch (state) {
+				switch (bleState) {
 				case BlueToothConstants.BLE_STATE_NONE:
 
 					break;
 				case BlueToothConstants.BLE_STATE_CONNECTED:
-					if (state == TravelConstant.TRAVEL_STATE_PAUSE) {
-						resume();
+					LogUtils.i(TAG, "map service BLE_STATE_CONNECTED "+EBikeTravelData.travel_state);
+					if (EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_PAUSE) {
+						BaseApplication.sendStateChangeBroadCast(context, TravelConstant.TRAVEL_STATE_RESUME);
 					}
 					break;
 				case BlueToothConstants.BLE_STATE_CONNECTTING:
 
 					break;
 				case BlueToothConstants.BLE_STATE_DISCONNECTED:
-					if (state == TravelConstant.TRAVEL_STATE_START
-							|| state == TravelConstant.TRAVEL_STATE_RESUME) {
-						pause();
+					if (EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_START
+							|| EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_RESUME) {
+						BaseApplication.sendStateChangeBroadCast(context, TravelConstant.TRAVEL_STATE_PAUSE);
 					}
 					break;
 				default:
@@ -177,8 +178,8 @@ public class MapService extends Service implements ConnectionCallbacks,
 
 	@Override
 	public void onLocationChanged(Location location) {
-		LogUtils.i(TAG, "onLocationChanged" + location.getLatitude() + "--"
-				+ location.getLongitude());
+//		LogUtils.i(TAG, "onLocationChanged" + location.getLatitude() + "--"
+//				+ location.getLongitude());
 		TravelLocation travelLocation = new TravelLocation(location);
 		travelLocation.setTravelId(EBikeTravelData.travel_id);
 		travelLocation.setSpeed(EBikeTravelData.travel_insSpeed);

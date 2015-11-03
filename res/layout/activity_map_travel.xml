@@ -23,131 +23,137 @@
     <TextView
         android:id="@+id/message_map"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:text="map"
-        />
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="map" />
+
     <TextView
-        android:id="@+id/message_bluetooth"
+        android:id="@+id/message_bluetooth_state"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:text="blue"
-        />
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="blue_state" />
+
+    <TextView
+        android:id="@+id/message_bluetooth_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="blue_data" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#D000"
-        android:orientation="horizontal"
-         >
-
+        android:orientation="horizontal" >
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:onClick="onStart"
-            android:layout_weight="1"
-            android:textSize="14sp"
-            android:text="start" />
+            android:text="start"
+            android:textSize="14sp" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:onClick="onPause"
-            android:layout_weight="1"
-            android:textSize="14sp"
-            android:text="pause" />
+            android:text="pause"
+            android:textSize="14sp" />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:onClick="onResume"
-            android:layout_weight="1"
-            android:textSize="14sp"
-            android:text="resume" />
+            android:text="resume"
+            android:textSize="14sp" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:onClick="onCompleted"
-            android:layout_weight="1"
-            android:textSize="14sp"
-            android:text="ok" />
-
+            android:text="ok"
+            android:textSize="14sp" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onStop"
-            android:textSize="14sp"
             android:layout_weight="1"
-            android:text="stop" />
+            android:onClick="onStop"
+            android:text="stop"
+            android:textSize="14sp" />
     </LinearLayout>
- <LinearLayout 
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:visibility="visible"
-        >
-        <CheckBox 
+        android:visibility="visible" >
+
+        <CheckBox
             android:id="@+id/cb_sport"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="sp"
-            android:visibility="gone"
             android:onClick="onSport"
-            />
-         <CheckBox 
+            android:text="sp"
+            android:visibility="gone" />
+
+        <CheckBox
             android:id="@+id/cb_elc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="elc"
-            android:visibility="gone"
             android:onClick="onElc"
-            />
-          <CheckBox 
+            android:text="elc"
+            android:visibility="gone" />
+
+        <CheckBox
             android:id="@+id/cb_power1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="P1"
             android:onClick="onPower1"
-            />
-            <CheckBox 
+            android:text="P1" />
+
+        <CheckBox
             android:id="@+id/cb_power3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="P3"
-            android:visibility="gone"
             android:onClick="onPower3"
-            />
-             <CheckBox 
+            android:text="P3"
+            android:visibility="gone" />
+
+        <CheckBox
             android:id="@+id/cb_light_front"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="front_l"
             android:onClick="onLightFront"
-            />
-              <CheckBox 
+            android:text="front_l" />
+
+        <CheckBox
             android:id="@+id/cb_light_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="back_l"
             android:onClick="onLightBack"
-            />
-              <CheckBox 
+            android:text="back_l" />
+
+        <CheckBox
             android:id="@+id/cb_call"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="call"
             android:onClick="onCall"
-            />
-              <CheckBox 
+            android:text="call" />
+
+        <CheckBox
             android:id="@+id/cb_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="msg"
             android:onClick="onMessage"
-            />
-        
+            android:text="msg" />
     </LinearLayout>
+
     <fragment
         android:id="@+id/map"
         android:layout_width="match_parent"

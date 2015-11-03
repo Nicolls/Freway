@@ -2,16 +2,24 @@ package com.freway.ebike.map;
 
 import com.freway.ebike.R;
 import com.freway.ebike.bluetooth.BlueToothConstants;
+import com.freway.ebike.bluetooth.BlueToothScanActivity;
 import com.freway.ebike.bluetooth.BlueToothUtil;
-import com.freway.ebike.bluetooth.EBikeTravelData;
 import com.freway.ebike.bluetooth.EBikeStatus;
+import com.freway.ebike.bluetooth.EBikeTravelData;
 import com.freway.ebike.common.BaseApplication;
+import com.freway.ebike.utils.AlertUtil;
+import com.freway.ebike.utils.LogUtils;
+import com.freway.ebike.utils.SPUtils;
 import com.google.android.gms.maps.SupportMapFragment;
 
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -19,7 +27,8 @@ import android.widget.TextView;
 public class FrewayMapActivity extends FragmentActivity {
 	private static final String TAG = "FrewayMapActivity2";
 	private TextView tvMap;// 消息
-	private TextView tvBlueTooth;// 消息
+	private TextView tvBlueToothData;// 消息
+	private TextView tvBlueToothState;// 消息
 	private MapUtil mMapUtil;
 	private BlueToothUtil mBlueToothUtil;
 	
@@ -29,7 +38,8 @@ public class FrewayMapActivity extends FragmentActivity {
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_map_travel);
 		tvMap = (TextView) findViewById(R.id.message_map);
-		tvBlueTooth = (TextView) findViewById(R.id.message_bluetooth);
+		tvBlueToothState = (TextView) findViewById(R.id.message_bluetooth_state);
+		tvBlueToothData = (TextView) findViewById(R.id.message_bluetooth_data);
 		init();
 	}
 
@@ -39,29 +49,28 @@ public class FrewayMapActivity extends FragmentActivity {
 		mMapUtil=new MapUtil(this, supportMapFragment);
 		mMapUtil.startMapService(handler);
 		mBlueToothUtil=new BlueToothUtil(this,blueHandler);
-		if(EBikeTravelData.travel_state==TravelConstant.TRAVEL_STATE_STOP||EBikeTravelData.travel_state==TravelConstant.TRAVEL_STATE_COMPLETED||EBikeTravelData.travel_state==TravelConstant.TRAVEL_STATE_NONE){
-			//开始同步
-			mBlueToothUtil.handleSyncData(new Handler(){
-				@Override
-				public void handleMessage(Message msg) {
-					super.handleMessage(msg);//在这里去链接发送数据
-					if(msg.what==1){
-						mBlueToothUtil.handleSendData(new Handler(){
-
-							@Override
-							public void handleMessage(Message msg) {
-								super.handleMessage(msg);//在这里更新UI
-								
-								
-							}
-							
-						});
-					}
-					
-				}
-			});
-		}
+		mBlueToothUtil.init(syncHandler,updateUiHandler);
 	}
+	
+	/**同步数据*/
+	private Handler syncHandler=new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			//更新UI
+			LogUtils.i(TAG, "sync data yes ");
+			
+		}
+	};
+	
+	/**更新UI*/
+	private Handler updateUiHandler=new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			//更新UI
+			LogUtils.i(TAG, "update ui yes ");
+			tvBlueToothData.setText(EBikeTravelData.getTravelValueText());
+		}
+	};
 	/**改变状态*/
 	private Handler handler=new Handler(){
 		@Override
@@ -119,16 +128,16 @@ public class FrewayMapActivity extends FragmentActivity {
 				int state = msg.what;
 				switch (state) {
 				case BlueToothConstants.BLE_STATE_NONE:
-					tvMap.setText("ble not init");
+					tvBlueToothState.setText("ble not init");
 					break;
 				case BlueToothConstants.BLE_STATE_CONNECTED:
-					tvMap.setText("ble connected");
+					tvBlueToothState.setText("ble connected");
 					break;
 				case BlueToothConstants.BLE_STATE_CONNECTTING:
-					tvMap.setText("ble connectting");
+					tvBlueToothState.setText("ble connectting");
 					break;
 				case BlueToothConstants.BLE_STATE_DISCONNECTED:
-					tvMap.setText("ble disconnected");
+					tvBlueToothState.setText("ble disconnected");
 					break;
 				default:
 					break;

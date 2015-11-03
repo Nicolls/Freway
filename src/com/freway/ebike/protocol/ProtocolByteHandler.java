@@ -70,7 +70,7 @@ public class ProtocolByteHandler {
 			map.put(EXTRA_DATA, mProtocol.getResultMessage());
 		}else{
 			byte[]data=mProtocol.getParamData();
-			if(CommandCode.SURVEY==cmd){//当前行程数据
+			if(CommandCode.SURVEY_RESULT==cmd){//当前行程数据
 				EBikeTravelData.parseBikeData(data);
 				map.put(EXTRA_DATA, null);
 			}else if(CommandCode.HISTORY==cmd){//历史数据

@@ -14,7 +14,7 @@ public class EBikeTravelData implements Serializable {
 	public static final int WHEEL_VALUE = 2180;
 	// 一次行程的Data
 	public static long travel_id=-1;
-	public static long travel_state=TravelConstant.TRAVEL_STATE_NONE;
+	public static int travel_state=TravelConstant.TRAVEL_STATE_NONE;
 	public static long travel_startTime;
 	public static long travel_endTime;
 	public static int travel_avgSpeed;
@@ -260,7 +260,7 @@ public class EBikeTravelData implements Serializable {
 		}
 	}
 
-	public static String getValueText() {
+	public static String getControlValueText() {
 		String value = "短信提醒标志接收完成" + message_notice_get + "电话呼叫标志接收完成"
 				+ phone_call_get + "电池包连接标志" + bat_connect + "控制器过流保护"
 				+ ctrler_overcp + "控制器欠压保护" + ctrler_lowvp + "能量回收状态"
@@ -274,6 +274,16 @@ public class EBikeTravelData implements Serializable {
 				+ temperature +
 				// "循环次数(次)"+cycle_times+
 				"卡路里" + kcal_value;
+		return value;
+	}
+	
+	public static String getTravelValueText() {
+		String value = "-travel_id:" + travel_id + " -travel_state:"
+				+ travel_state + " -travel_startTime:" + travel_startTime + " -travel_endTime:"
+				+ travel_endTime + " -travel_avgSpeed:" + travel_avgSpeed + " -travel_insSpeed:"
+				+ travel_insSpeed + " -travel_maxSpeed:" + travel_maxSpeed + " -travel_spendTime:" + travel_spendTime
+				+ " -travel_distance:" + travel_distance + " -travel_calorie:" + travel_calorie + " -travel_cadence:"
+				+ travel_cadence + " -travel_altitude:" + travel_altitude ;
 		return value;
 	}
 

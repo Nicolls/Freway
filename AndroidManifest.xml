@@ -80,7 +80,7 @@
             -->
 
         </activity>
-        <activity android:name="com.freway.ebike.bluetooth.BlueToothActivity" >
+        <activity android:name="com.freway.ebike.bluetooth.BlueToothScanActivity" >
 
             <!--
             <intent-filter>

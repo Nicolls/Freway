@@ -4,15 +4,21 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.DialogInterface.OnClickListener;
 import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 
 import com.freway.ebike.R;
 import com.freway.ebike.db.DBHelper;
 import com.freway.ebike.db.Travel;
+import com.freway.ebike.map.TravelConstant;
+import com.freway.ebike.utils.AlertUtil;
+import com.freway.ebike.utils.SPUtils;
 import com.freway.ebike.utils.ToastUtils;
 
 public class BlueToothUtil {
@@ -43,13 +49,40 @@ public class BlueToothUtil {
 	}
 
 	private void startService() {
-		Intent service = new Intent(context, BlueToothService.class);
-		context.startService(service);
 		IntentFilter filter = new IntentFilter(
 				BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT);
 		context.registerReceiver(mHandleReceiver, filter);
 		filter = new IntentFilter(BlueToothConstants.BLE_SERVER_STATE_CHANAGE);
 		context.registerReceiver(mBleStateReceiver, filter);
+		Intent service = new Intent(context, BlueToothService.class);
+		context.startService(service);
+	}
+	/**初始化*/
+	public void init(final Handler syncHandler,final Handler updateUiHandler){
+		handleSendData(updateUiHandler);
+		if(TextUtils.isEmpty(SPUtils.getEBkieAddress(context))){//未绑定
+			AlertUtil.alertNormal(context, "未绑定蓝牙，现在绑定", new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+					toScanBleActivity();
+				}
+			}, new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
+			
+		}
+		else if(EBikeTravelData.travel_state==TravelConstant.TRAVEL_STATE_STOP||EBikeTravelData.travel_state==TravelConstant.TRAVEL_STATE_COMPLETED||EBikeTravelData.travel_state==TravelConstant.TRAVEL_STATE_NONE){
+			//开始同步
+			handleSyncData(syncHandler);
+		}else{
+			handleSendData(updateUiHandler);
+		}
 	}
 
 	/** 退出服务 */
@@ -63,6 +96,11 @@ public class BlueToothUtil {
 		exit();
 		Intent service = new Intent(context, BlueToothService.class);
 		context.stopService(service);
+	}
+	/**去到扫描页面*/
+	public void toScanBleActivity(){
+		Intent intent=new Intent(context,BlueToothScanActivity.class);
+		context.startActivity(intent);
 	}
 
 	/**
@@ -81,7 +119,7 @@ public class BlueToothUtil {
 	}
 	/**设置travel状态*/
 	public void setBikeState(int control, int flag) {
-		EBikeStatus.setBikeStatus(EBikeStatus.BIKING_HELP_POWER_1, flag);
+		EBikeStatus.setBikeStatus(control, flag);
 	}
 	
 	/**接收发送数据返回*/
