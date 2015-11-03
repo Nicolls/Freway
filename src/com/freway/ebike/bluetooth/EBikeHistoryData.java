@@ -28,7 +28,7 @@ public class EBikeHistoryData implements Serializable {
 	public static  long travel_cadence;
 	public static  double travel_altitude;
 	// 控制器data
-	public static  int data_id;
+	public static  int data_id=1;
 	public static  int control_time;
 
 	/**
@@ -65,16 +65,13 @@ public class EBikeHistoryData implements Serializable {
 	 * @param data
 	 * @Description 格式化数据
 	 */
-	public static boolean parseBikeData(byte[] data) {
-		boolean isOk=true;
+	public static void parseHistoryData(byte[] data) {
 		byte[] id = {data[0],data[1]};
 		byte[] time = {data[2],data[3]};
 		byte[] step={data[4],data[5]};
 		byte[] mileage={data[6],data[7]};
 		data_id=ProtocolTool.byteArrayToInt(id);
-		
-		if(data_id!=0){
-			isOk=true;
+		if(data_id>0){
 			accumulated_mileage=ProtocolTool.byteArrayToInt(mileage);
 			stepped_frequency=ProtocolTool.byteArrayToInt(step);
 			control_time=ProtocolTool.byteArrayToInt(time);
@@ -119,10 +116,7 @@ public class EBikeHistoryData implements Serializable {
 				travel_altitude+=travel_altitude;//海拔
 			}
 			
-		}else{//入库
-			isOk=false;
 		}
-		return isOk;
 	}
 	
 

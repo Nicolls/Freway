@@ -38,16 +38,32 @@ public class FrewayMapActivity extends FragmentActivity {
 				.findFragmentById(R.id.map);
 		mMapUtil=new MapUtil(this, supportMapFragment);
 		mMapUtil.startMapService(handler);
-		mBlueToothUtil=new BlueToothUtil(this);
-		if(mBlueToothUtil.isLebAvailable()){
-			mBlueToothUtil.startService(blueHandler);
-		}else{//不支持蓝牙，应用不可用
-			
+		mBlueToothUtil=new BlueToothUtil(this,blueHandler);
+		if(EBikeTravelData.travel_state==TravelConstant.TRAVEL_STATE_STOP||EBikeTravelData.travel_state==TravelConstant.TRAVEL_STATE_COMPLETED||EBikeTravelData.travel_state==TravelConstant.TRAVEL_STATE_NONE){
+			//开始同步
+			mBlueToothUtil.handleSyncData(new Handler(){
+				@Override
+				public void handleMessage(Message msg) {
+					super.handleMessage(msg);//在这里去链接发送数据
+					if(msg.what==1){
+						mBlueToothUtil.handleSendData(new Handler(){
+
+							@Override
+							public void handleMessage(Message msg) {
+								super.handleMessage(msg);//在这里更新UI
+								
+								
+							}
+							
+						});
+					}
+					
+				}
+			});
 		}
 	}
 	/**改变状态*/
 	private Handler handler=new Handler(){
-
 		@Override
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
@@ -100,10 +116,7 @@ public class FrewayMapActivity extends FragmentActivity {
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
 			super.handleMessage(msg);
-			if(msg.what==BlueToothUtil.HANDLER_DATA){
-				tvBlueTooth.setText(EBikeTravelData.getValueText());
-			}else if(msg.what==BlueToothUtil.HANDLER_STATE){
-				int state = (int) msg.obj;
+				int state = msg.what;
 				switch (state) {
 				case BlueToothConstants.BLE_STATE_NONE:
 					tvMap.setText("ble not init");
@@ -120,7 +133,6 @@ public class FrewayMapActivity extends FragmentActivity {
 				default:
 					break;
 				}
-			}
 		}
 		
 	};

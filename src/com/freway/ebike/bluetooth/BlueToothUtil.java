@@ -1,7 +1,5 @@
 package com.freway.ebike.bluetooth;
 
-import java.util.HashMap;
-
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -12,48 +10,51 @@ import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Message;
 
-import com.freway.ebike.common.BaseApplication;
-import com.freway.ebike.map.TravelConstant;
-import com.freway.ebike.protocol.ProtocolByteHandler;
-import com.freway.ebike.utils.SPUtils;
+import com.freway.ebike.R;
+import com.freway.ebike.db.DBHelper;
+import com.freway.ebike.db.Travel;
+import com.freway.ebike.utils.ToastUtils;
 
 public class BlueToothUtil {
 	private Context context;
-	private Handler searchHandler;
-	private Handler dataHandler;
-	public static final int HANDLER_DATA=0;
-	public static final int HANDLER_STATE=1;
-	public BlueToothUtil(Context context) {
+	private Handler scanHandler;
+	private Handler sendDataHandler;
+	private Handler syncHandler;
+	private Handler bleStateHandler;
+	public BlueToothUtil(Context context,Handler bleStateHandler) {
+		this.bleStateHandler=bleStateHandler;
 		this.context = context;
-		Intent service = new Intent(context, BlueToothService.class);
-		context.startService(service);
+		startService();
 	}
-	
-	/**判断是否支持蓝牙*/
-	public boolean isLebAvailable(){
-		boolean isOk=true;
-		if(BluetoothAdapter.getDefaultAdapter()==null){
-			isOk=false;
+
+	/** 判断是否支持蓝牙 */
+	public boolean isLebAvailable() {
+		boolean isOk = true;
+		if (BluetoothAdapter.getDefaultAdapter() == null) {
+			isOk = false;
+			ToastUtils.toast(context, context.getString(R.string.not_support_bluetooth));
 		}
 		if (!context.getPackageManager().hasSystemFeature(
 				PackageManager.FEATURE_BLUETOOTH_LE)) {// 不支持低功耗蓝牙
-			isOk=false;
+			isOk = false;
+			ToastUtils.toast(context, context.getString(R.string.not_supported_ble));
 		}
 		return isOk;
 	}
-	
-	/**开启服务监听*/
-	public void startService(Handler dataHandler) {
-			this.dataHandler=dataHandler;
-			IntentFilter filter = new IntentFilter(BlueToothConstants.BLUETOOTH_ACTION_SERVER_SCAN_RESULT);
-			context.registerReceiver(mDataReceiver, filter);
-			filter = new IntentFilter(BlueToothConstants.BLE_SERVER_STATE_CHANAGE);
-			context.registerReceiver(mBleStateReceiver, filter);
+
+	private void startService() {
+		Intent service = new Intent(context, BlueToothService.class);
+		context.startService(service);
+		IntentFilter filter = new IntentFilter(
+				BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT);
+		context.registerReceiver(mHandleReceiver, filter);
+		filter = new IntentFilter(BlueToothConstants.BLE_SERVER_STATE_CHANAGE);
+		context.registerReceiver(mBleStateReceiver, filter);
 	}
 
 	/** 退出服务 */
 	public void exit() {
-		context.unregisterReceiver(mDataReceiver);
+		context.unregisterReceiver(mHandleReceiver);
 		context.unregisterReceiver(mBleStateReceiver);
 	}
 
@@ -69,39 +70,41 @@ public class BlueToothUtil {
 	 *            void
 	 * @Description 控制服务
 	 */
-	public void handleService(Context context, int flag, String data) {
-		Intent intent = new Intent(
-				BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER);
-		intent.putExtra(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_EXTRA_FLAG,
-				flag);
-		intent.putExtra(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_EXTRA_DATA,
-				data);
-		context.sendBroadcast(intent);
+	private void handleService(int flag, String data) {
+		if(isLebAvailable()){
+			Intent intent = new Intent(
+					BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER);
+			intent.putExtra(BlueToothConstants.EXTRA_HANDLE_TYPE, flag);
+			intent.putExtra(BlueToothConstants.EXTRA_DATA, data);
+			context.sendBroadcast(intent);
+		}
 	}
-
+	/**设置travel状态*/
 	public void setBikeState(int control, int flag) {
 		EBikeStatus.setBikeStatus(EBikeStatus.BIKING_HELP_POWER_1, flag);
 	}
-
-	/** 开始搜索 */
-	public void startScanLeb(Handler searchHandler) {
-		this.searchHandler=searchHandler;
-		IntentFilter filter = new IntentFilter(BlueToothConstants.BLUETOOTH_ACTION_SERVER_SCAN_RESULT);
-		context.registerReceiver(mSearchReceiver, filter);
-		SPUtils.setEBikeAddress(context, "");// 重新搜索要设置为空
-		Intent intent = new Intent(
-				BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER);
-		intent.putExtra(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_EXTRA_FLAG,
-				BlueToothConstants.HANDLE_SERVER_SCAN);
-		intent.putExtra(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_EXTRA_DATA,
-				"");
-		context.sendBroadcast(intent);
-	}
-	/**退出搜索*/
-	public void exitScanLeb(){
-		context.unregisterReceiver(mSearchReceiver);
+	
+	/**接收发送数据返回*/
+	public void handleSendData(Handler sendDataHandler){
+		this.sendDataHandler=sendDataHandler;
 	}
 	
+	/**接收扫描设备返回*/
+	public void handleScanDevice(Handler scanHandler){
+		this.scanHandler = scanHandler;
+		handleService(BlueToothConstants.HANDLE_SERVER_SCAN, null);
+	}
+	
+	/**接收同步数据*/
+	public void handleSyncData(Handler syncHandler){
+		this.syncHandler = syncHandler;
+		handleService(BlueToothConstants.HANDLE_SERVER_SYNC, null);
+	}
+	/**链接蓝牙服务*/
+	public void connectBLE(String address){
+		handleService(BlueToothConstants.HANDLE_SERVER_CONNECT,address);
+	}
+
 	/**
 	 * The BroadcastReceiver that listens for discovered devices and changes the
 	 * title when discovery is finished
@@ -110,15 +113,11 @@ public class BlueToothUtil {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
-			if (BlueToothConstants.BLE_SERVER_STATE_CHANAGE
-					.equals(action)) {// when send data come back
-				int state=intent.getIntExtra(BlueToothConstants.EXTRA_STATE, 0);
-				if(dataHandler!=null){
-					
-					Message msg=Message.obtain();
-					msg.what=HANDLER_STATE;
-					msg.obj=state;
-					dataHandler.sendMessage(msg);
+			if (BlueToothConstants.BLE_SERVER_STATE_CHANAGE.equals(action)) {
+				int state = intent.getIntExtra(BlueToothConstants.EXTRA_STATE,
+						0);
+				if (sendDataHandler != null) {
+					bleStateHandler.sendEmptyMessage(state);
 				}
 			}
 		}
@@ -127,76 +126,55 @@ public class BlueToothUtil {
 	 * The BroadcastReceiver that listens for discovered devices and changes the
 	 * title when discovery is finished
 	 */
-	private final BroadcastReceiver mDataReceiver = new BroadcastReceiver() {
+	private final BroadcastReceiver mHandleReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
-			if (BlueToothConstants.BLUETOOTH_ACTION_SERVER_SEND_RESULT
-					.equals(action)) {// when send data come back
-//				EBikeTravelData ebike = null;
-//				int cmd = 0;
-//				if (intent
-//						.hasExtra(BlueToothConstants.BLUETOOTH_SERVER_EXTRA_DATA)) {
-//					HashMap<String, Object> data = (HashMap<String, Object>) intent
-//							.getSerializableExtra(BlueToothConstants.BLUETOOTH_SERVER_EXTRA_DATA);
-//					cmd = (int) data.get(ProtocolByteHandler.EXTRA_CMD);
-//					ebike = (EBikeTravelData) data
-//							.get(ProtocolByteHandler.EXTRA_DATA);
-//				}
-				Message msg=Message.obtain();
-				msg.what=HANDLER_DATA;
-//				msg.obj=ebike;
-				if(dataHandler!=null){
-					dataHandler.sendMessage(msg);
-				}
-			}
-		}
-	};
-
-	/**
-	 * The BroadcastReceiver that listens for discovered devices and changes the
-	 * title when discovery is finished
-	 */
-	private final BroadcastReceiver mSearchReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			String action = intent.getAction();
-
-			// When discovery finds a device
-			if (BlueToothConstants.BLUETOOTH_ACTION_SERVER_SCAN_RESULT
+			if (BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT
 					.equals(action)) {
-				String name = "";
-				String address = "";
-				if (intent
-						.hasExtra(BlueToothConstants.BLUETOOTH_SERVER_EXTRA_DEVICE)) {
+				int handle = intent.getIntExtra(
+						BlueToothConstants.EXTRA_HANDLE_TYPE, 0);
+				switch (handle) {
+				case BlueToothConstants.HANDLE_SERVER_CONNECT:// 链接
+					
+					break;
+				case BlueToothConstants.HANDLE_SERVER_SCAN:// 扫描
 					BluetoothDevice device = (BluetoothDevice) intent
-							.getParcelableExtra(BlueToothConstants.BLUETOOTH_SERVER_EXTRA_DEVICE);
-					name = device.getName() + "--" + device.getAddress();
-					address = device.getAddress();
-				}
-				if(searchHandler!=null){
-					HashMap<String, String> map = new HashMap<String, String>();
-					map.put("name", name);
-					map.put("address", address);
-					Message msg=Message.obtain();
-					msg.obj=map;
-					searchHandler.sendMessage(msg);
+					.getParcelableExtra(BlueToothConstants.EXTRA_DATA);
+					if(scanHandler!=null){
+						Message msg=Message.obtain();
+						msg.obj=device;
+						scanHandler.sendMessage(msg);
+					}
+					break;
+				case BlueToothConstants.HANDLE_SERVER_SEND_DATA:// 发数据
+					if(sendDataHandler!=null){
+						sendDataHandler.sendEmptyMessage(0);//更新
+					}
+					break;
+				case BlueToothConstants.HANDLE_SERVER_SYNC:// 同步
+					int result=intent.getIntExtra(BlueToothConstants.EXTRA_DATA, 0);
+					//同步完成
+					Travel travel=new Travel();
+					travel.setAltitude(EBikeHistoryData.travel_altitude);
+					travel.setAvgSpeed(EBikeHistoryData.travel_avgSpeed);
+					travel.setCadence(EBikeHistoryData.travel_cadence);
+					travel.setCalorie(EBikeHistoryData.travel_calorie);
+					travel.setDistance(EBikeHistoryData.travel_distance);
+					travel.setEndTime(EBikeHistoryData.travel_endTime);
+					travel.setMaxSpeed(EBikeHistoryData.travel_maxSpeed);
+					travel.setSpendTime(EBikeHistoryData.travel_spendTime);
+					travel.setStartTime(EBikeHistoryData.travel_startTime);
+					DBHelper.getInstance(context).insertTravel(travel);
+					if(syncHandler!=null){
+						syncHandler.sendEmptyMessage(result);//1完成。0同步失败
+					}
+					break;
+					default:
+						break;
 				}
 			}
 		}
 	};
 
-	/**
-	 * 发送数据，提供给外界强制去发数据的通道，而如果只是需要开灯关灯，改变骑行状态等操作，只需要改变com.freway.ebike.bluetooth
-	 * .EBikeStatus中的值即可
-	 */
-	public void sendData(Context context, int commandCode, byte[] data) {
-		Intent intent = new Intent(
-				BlueToothConstants.BLUETOOTH_ACTION_SERVER_SEND_DATA);
-		HashMap<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put(ProtocolByteHandler.EXTRA_CMD, commandCode);
-		dataMap.put(ProtocolByteHandler.EXTRA_DATA, data);
-		intent.putExtra(BlueToothConstants.BLUETOOTH_SERVER_EXTRA_DATA, dataMap);
-		context.sendBroadcast(intent);
-	}
 }

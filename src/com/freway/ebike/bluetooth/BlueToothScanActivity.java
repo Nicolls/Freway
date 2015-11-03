@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -31,16 +32,15 @@ public class BlueToothScanActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_bluetooth_scan);
 		super.initCommonView();
-		mBlueToothUtil=new BlueToothUtil(this);
+		mBlueToothUtil=new BlueToothUtil(this,blueHandler);
 		tv=(TextView) findViewById(R.id.bluetooth_tv);
 		listView=(ListView) findViewById(R.id.bluetooth_listview);
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				String sn=data.get(position).get("address");
-				SPUtils.setEBikeAddress(getApplicationContext(), sn);
-				mBlueToothUtil.handleService(BlueToothScanActivity.this, BlueToothConstants.HANDLE_SERVER_CONNECT, sn);
+				String address=data.get(position).get("address");
+				mBlueToothUtil.connectBLE(address);
 			}
 		});
 		adapter=new SimpleAdapter(this, data, R.layout.item_bluetooth_device, new String[]{"name"}, new int[]{R.id.device_title});
@@ -53,7 +53,7 @@ public class BlueToothScanActivity extends BaseActivity {
 		
 	}
 	public void onSearch(View view){
-		mBlueToothUtil.startScanLeb(searchHandler);
+		mBlueToothUtil.handleScanDevice(searchHandler);
 	}
 	
 	private Handler searchHandler=new Handler(){
@@ -62,11 +62,41 @@ public class BlueToothScanActivity extends BaseActivity {
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
 			super.handleMessage(msg);
-			HashMap<String,String> map=(HashMap<String, String>) msg.obj;
+			BluetoothDevice device = (BluetoothDevice) msg.obj;
+			HashMap<String,String> map=new HashMap<String, String>();
+			map.put("name", device.getName());
+			map.put("address", device.getAddress());
         	if(adapter!=null){
     			data.add(map);
     			adapter.notifyDataSetChanged();
     		}
+		}
+		
+	};
+	
+	private Handler blueHandler=new Handler(){
+
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			super.handleMessage(msg);
+				int state = msg.what;
+				switch (state) {
+				case BlueToothConstants.BLE_STATE_NONE:
+					tv.setText("ble not init");
+					break;
+				case BlueToothConstants.BLE_STATE_CONNECTED:
+					tv.setText("ble connected");
+					break;
+				case BlueToothConstants.BLE_STATE_CONNECTTING:
+					tv.setText("ble connectting");
+					break;
+				case BlueToothConstants.BLE_STATE_DISCONNECTED:
+					tv.setText("ble disconnected");
+					break;
+				default:
+					break;
+				}
 		}
 		
 	};
@@ -75,7 +105,7 @@ public class BlueToothScanActivity extends BaseActivity {
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		mBlueToothUtil.exitScanLeb();
+		mBlueToothUtil.exit();
 	}
 	
 
