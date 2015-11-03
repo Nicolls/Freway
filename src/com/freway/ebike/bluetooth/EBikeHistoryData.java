@@ -66,56 +66,60 @@ public class EBikeHistoryData implements Serializable {
 	 * @Description 格式化数据
 	 */
 	public static void parseHistoryData(byte[] data) {
-		byte[] id = {data[0],data[1]};
-		byte[] time = {data[2],data[3]};
-		byte[] step={data[4],data[5]};
-		byte[] mileage={data[6],data[7]};
-		data_id=ProtocolTool.byteArrayToInt(id);
-		if(data_id>0){
-			accumulated_mileage=ProtocolTool.byteArrayToInt(mileage);
-			stepped_frequency=ProtocolTool.byteArrayToInt(step);
-			control_time=ProtocolTool.byteArrayToInt(time);
-			
-			
-			kcal_value = stepped_frequency / 10 * WHEEL_VALUE * 655 / 21000000;
-			accumulated_mileage = accumulated_mileage * WHEEL_VALUE / 1000; // 需要考虑溢出(m)
-			
-			if(isNewTravel){//新的骑行
-				travel_startTime=control_time;
-				travel_endTime=control_time;
-				travel_avgSpeed=0;
-				travel_maxSpeed=0;
-				travel_spendTime=0;
-				travel_distance=0;
-				travel_calorie=0;
-				travel_cadence=0;
-				travel_altitude=0;
+		if(data!=null&&data.length>=8){
+			byte[] id = {data[0],data[1]};
+			byte[] time = {data[2],data[3]};
+			byte[] step={data[4],data[5]};
+			byte[] mileage={data[6],data[7]};
+			data_id=ProtocolTool.byteArrayToInt(id);
+			if(data_id>0){
+				accumulated_mileage=ProtocolTool.byteArrayToInt(mileage);
+				stepped_frequency=ProtocolTool.byteArrayToInt(step);
+				control_time=ProtocolTool.byteArrayToInt(time);
 				
-				cal_startTime=travel_startTime;
-				cal_endTime=travel_startTime;
-				cal_startDistance=accumulated_mileage;
-				cal_startCalorie=kcal_value;
-				cal_startCadence=stepped_frequency;
-				isNewTravel=false;
-			}else{
 				
-				cal_endTime=control_time;
-				cal_endDistance=accumulated_mileage;
-				cal_endCalorie=kcal_value;
-				cal_endCadence=stepped_frequency;
+				kcal_value = stepped_frequency / 10 * WHEEL_VALUE * 655 / 21000000;
+				accumulated_mileage = accumulated_mileage * WHEEL_VALUE / 1000; // 需要考虑溢出(m)
 				
-				travel_spendTime+=(cal_endTime-cal_startTime);//时长
-				travel_distance+=(cal_endDistance-cal_startDistance);//距离
-				travel_avgSpeed=(int)(travel_distance/travel_spendTime);//平均
-				if(travel_avgSpeed>travel_maxSpeed){//最大
-					travel_maxSpeed=travel_avgSpeed;
+				if(isNewTravel){//新的骑行
+					travel_startTime=control_time;
+					travel_endTime=control_time;
+					travel_avgSpeed=0;
+					travel_maxSpeed=0;
+					travel_spendTime=0;
+					travel_distance=0;
+					travel_calorie=0;
+					travel_cadence=0;
+					travel_altitude=0;
+					
+					cal_startTime=travel_startTime;
+					cal_endTime=travel_startTime;
+					cal_startDistance=accumulated_mileage;
+					cal_startCalorie=kcal_value;
+					cal_startCadence=stepped_frequency;
+					isNewTravel=false;
+				}else{
+					
+					cal_endTime=control_time;
+					cal_endDistance=accumulated_mileage;
+					cal_endCalorie=kcal_value;
+					cal_endCadence=stepped_frequency;
+					
+					travel_spendTime+=(cal_endTime-cal_startTime);//时长
+					travel_distance+=(cal_endDistance-cal_startDistance);//距离
+					travel_avgSpeed=(int)(travel_distance/travel_spendTime);//平均
+					if(travel_avgSpeed>travel_maxSpeed){//最大
+						travel_maxSpeed=travel_avgSpeed;
+					}
+					
+					travel_calorie+=(cal_endCalorie-cal_startCalorie);//卡路里
+					travel_cadence+=(cal_endCadence-cal_startCadence);//踏频
+					travel_altitude+=travel_altitude;//海拔
 				}
 				
-				travel_calorie+=(cal_endCalorie-cal_startCalorie);//卡路里
-				travel_cadence+=(cal_endCadence-cal_startCadence);//踏频
-				travel_altitude+=travel_altitude;//海拔
 			}
-			
+		}else{
+			data_id=0;
 		}
 	}
 	
