@@ -1,5 +1,7 @@
 package com.freway.ebike.db;
 
+import com.freway.ebike.map.TravelConstant;
+
 import android.provider.BaseColumns;
 
 public final class EBikeTable {
@@ -27,7 +29,12 @@ public final class EBikeTable {
         public static final String TABLE_NAME = "travel";
         public static final String COLUMN_STARTTIME = "startTime";
         public static final String COLUMN_ENDTIME = "endTime";
+        public static final String COLUMN_AVGSPEED = "avgSpeed";
+        public static final String COLUMN_MAXSPEED= "maxSpeed";
         public static final String COLUMN_SPENDTIME = "spendTime";
-        public static final String COLUMN_DISTANCE= "distance";
+        public static final String COLUMN_DISTANCE = "distance";
+        public static final String COLUMN_CALORIE = "calorie";
+        public static final String COLUMN_CADENCE = "cadence";
+        public static final String COLUMN_ALTITUDE = "altitude";
     }
 }

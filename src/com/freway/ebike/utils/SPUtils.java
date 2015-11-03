@@ -203,17 +203,17 @@ public class SPUtils {
 	}
 	
 	/** 获取last travel*/
-	public static String getLastTravel(Context context) {
-		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
-		String travel = sp.getString(SP_USER_TRAVEL_MAP,null);
-		return travel;
-	}
+//	public static String getLastTravel(Context context) {
+//		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+//		String travel = sp.getString(SP_USER_TRAVEL_MAP,null);
+//		return travel;
+//	}
 
 	/** 保存last travel*/
-	public static boolean setLastTravel(Context context, String travel) {
-		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
-		boolean isOk = sp.edit().putString(SP_USER_TRAVEL_MAP, travel).commit();
-		return isOk;
-	}
+//	public static boolean setLastTravel(Context context, String travel) {
+//		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+//		boolean isOk = sp.edit().putString(SP_USER_TRAVEL_MAP, travel).commit();
+//		return isOk;
+//	}
 	
 }

@@ -1,7 +1,7 @@
 package com.freway.ebike.protocol;
 import java.util.HashMap;
 
-import com.freway.ebike.bluetooth.EBikeData;
+import com.freway.ebike.bluetooth.EBikeTravelData;
 import com.freway.ebike.bluetooth.EBikeStatus;
 import com.freway.ebike.utils.LogUtils;
 
@@ -11,11 +11,6 @@ import com.freway.ebike.utils.LogUtils;
  * @date 2015年10月25日
  */
 public class ProtocolByteHandler {
-	
-	/**
-	 * @Fields mEBikeData 返回的蓝牙数据实体
-	 */
-	public static EBikeData mEBikeData=new EBikeData();
 	private static final String TAG="CreateByteCommand";
 	/**
 	 * @Fields EXTRA_CODE 解析数据包时，装入HashMap中的结果码
@@ -65,14 +60,19 @@ public class ProtocolByteHandler {
 		Protocol mProtocol = new Protocol();
 		mProtocol.parseBytes(receiveData);
 		HashMap<String,Object> map=new HashMap<String, Object>();
-		map.put(EXTRA_CMD, ProtocolTool.byteArrayToInt(mProtocol.getCommandCode()));
+		int cmd=ProtocolTool.byteArrayToInt(mProtocol.getCommandCode());
+		map.put(EXTRA_CMD, cmd);
 		map.put(EXTRA_CODE, mProtocol.getResultCode());
 		if(mProtocol.getResultCode()!=Protocol.RESULT_OK){//有错误
 			map.put(EXTRA_DATA, mProtocol.getResultMessage());
 		}else{
 			byte[]data=mProtocol.getParamData();
-			mEBikeData.setEBike(data);
-			map.put(EXTRA_DATA, mEBikeData);
+			if(CommandCode.SURVEY==cmd){//当前行程数据
+				EBikeTravelData.parseBikeData(data);
+				map.put(EXTRA_DATA, null);
+			}else if(CommandCode.HISTORY==cmd){//历史数据
+				
+			}
 		}
 		return map;
 	}

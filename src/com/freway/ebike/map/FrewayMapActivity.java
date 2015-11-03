@@ -3,7 +3,7 @@ package com.freway.ebike.map;
 import com.freway.ebike.R;
 import com.freway.ebike.bluetooth.BlueToothConstants;
 import com.freway.ebike.bluetooth.BlueToothUtil;
-import com.freway.ebike.bluetooth.EBikeData;
+import com.freway.ebike.bluetooth.EBikeTravelData;
 import com.freway.ebike.bluetooth.EBikeStatus;
 import com.freway.ebike.common.BaseApplication;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -101,8 +101,7 @@ public class FrewayMapActivity extends FragmentActivity {
 			// TODO Auto-generated method stub
 			super.handleMessage(msg);
 			if(msg.what==BlueToothUtil.HANDLER_DATA){
-				EBikeData data=(EBikeData) msg.obj;
-				tvBlueTooth.setText(data.getValueText());
+				tvBlueTooth.setText(EBikeTravelData.getValueText());
 			}else if(msg.what==BlueToothUtil.HANDLER_STATE){
 				int state = (int) msg.obj;
 				switch (state) {

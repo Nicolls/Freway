@@ -133,19 +133,19 @@ public class BlueToothUtil {
 			String action = intent.getAction();
 			if (BlueToothConstants.BLUETOOTH_ACTION_SERVER_SEND_RESULT
 					.equals(action)) {// when send data come back
-				EBikeData ebike = null;
-				int cmd = 0;
-				if (intent
-						.hasExtra(BlueToothConstants.BLUETOOTH_SERVER_EXTRA_DATA)) {
-					HashMap<String, Object> data = (HashMap<String, Object>) intent
-							.getSerializableExtra(BlueToothConstants.BLUETOOTH_SERVER_EXTRA_DATA);
-					cmd = (int) data.get(ProtocolByteHandler.EXTRA_CMD);
-					ebike = (EBikeData) data
-							.get(ProtocolByteHandler.EXTRA_DATA);
-				}
+//				EBikeTravelData ebike = null;
+//				int cmd = 0;
+//				if (intent
+//						.hasExtra(BlueToothConstants.BLUETOOTH_SERVER_EXTRA_DATA)) {
+//					HashMap<String, Object> data = (HashMap<String, Object>) intent
+//							.getSerializableExtra(BlueToothConstants.BLUETOOTH_SERVER_EXTRA_DATA);
+//					cmd = (int) data.get(ProtocolByteHandler.EXTRA_CMD);
+//					ebike = (EBikeTravelData) data
+//							.get(ProtocolByteHandler.EXTRA_DATA);
+//				}
 				Message msg=Message.obtain();
 				msg.what=HANDLER_DATA;
-				msg.obj=ebike;
+//				msg.obj=ebike;
 				if(dataHandler!=null){
 					dataHandler.sendMessage(msg);
 				}
