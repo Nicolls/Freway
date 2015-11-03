@@ -254,7 +254,6 @@ public class BluetoothConnection {
         }
         mBluetoothGatt.readCharacteristic(characteristic);
     }
-
     /**
      * Enables or disables notification on a give characteristic.
      *

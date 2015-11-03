@@ -1,8 +1,11 @@
 package com.freway.ebike.protocol;
 import java.util.HashMap;
 
+import com.freway.ebike.bluetooth.EBikeHistoryData;
 import com.freway.ebike.bluetooth.EBikeTravelData;
 import com.freway.ebike.bluetooth.EBikeStatus;
+import com.freway.ebike.db.DBHelper;
+import com.freway.ebike.db.Travel;
 import com.freway.ebike.utils.LogUtils;
 
 /**
@@ -71,7 +74,22 @@ public class ProtocolByteHandler {
 				EBikeTravelData.parseBikeData(data);
 				map.put(EXTRA_DATA, null);
 			}else if(CommandCode.HISTORY==cmd){//历史数据
-				
+				if(!EBikeHistoryData.parseBikeData(data)){//读完了
+					Travel travel=new Travel();
+					travel.setAltitude(EBikeHistoryData.travel_altitude);
+					travel.setAvgSpeed(EBikeHistoryData.travel_avgSpeed);
+					travel.setCadence(EBikeHistoryData.travel_cadence);
+					travel.setCalorie(EBikeHistoryData.travel_calorie);
+					travel.setDistance(EBikeHistoryData.travel_distance);
+					travel.setEndTime(EBikeHistoryData.travel_endTime);
+					travel.setMaxSpeed(EBikeHistoryData.travel_maxSpeed);
+					travel.setSpendTime(EBikeHistoryData.travel_spendTime);
+					travel.setStartTime(EBikeHistoryData.travel_startTime);
+					map.put(EXTRA_DATA, travel);
+//					DBHelper.getInstance(context).insertTravel(travel);
+				}else{
+					map.put(EXTRA_DATA, null);
+				}
 			}
 		}
 		return map;

@@ -1,5 +1,6 @@
 package com.freway.ebike.bluetooth;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,6 +24,8 @@ import android.util.Log;
 import com.freway.ebike.R;
 import com.freway.ebike.common.BaseApplication;
 import com.freway.ebike.common.BaseService;
+import com.freway.ebike.db.DBHelper;
+import com.freway.ebike.db.Travel;
 import com.freway.ebike.map.TravelConstant;
 import com.freway.ebike.protocol.CommandCode;
 import com.freway.ebike.protocol.Protocol;
@@ -60,6 +63,13 @@ public class BlueToothService extends BaseService {
 	private static final int REQUESTDATA_SPACING = 1 * 1000;// 间隔时间，毫秒
 	private boolean isRequestDataRunning = true;// 开启获取数据
 	private boolean isRequestData = true;// 判断是否要获取数据
+
+	// 获取历史数据线程
+	private RequestHistoryDataThread mRequestHistoryDataThread;// 每隔一段时间去获取数据
+	private static final int REQUESTHISTORYDATA_SPACING = 1 * 1000;// 间隔时间，毫秒
+	private boolean isRequestHistoryDataRunning = true;// 开启获取数据
+	private boolean isRequestHistoryData = true;// 判断是否要获取数据
+	private List<Travel> historyTravel=new ArrayList<Travel>();
 	// bluetooth gat
 	private BluetoothGattCharacteristic mReceiveCharacteristic; // 接收数据
 	private BluetoothGattCharacteristic mSendCharacteristic; // 发送数据
@@ -74,8 +84,7 @@ public class BlueToothService extends BaseService {
 	// 电话广播
 	private static final String ACTION_PHONE = TelephonyManager.ACTION_PHONE_STATE_CHANGED;
 
-	private int state=TravelConstant.TRAVEL_STATE_NONE;//状态
-	
+	private int state = TravelConstant.TRAVEL_STATE_NONE;// 状态
 
 	/** 监听来自UI的操作链接广播 */
 	private final BroadcastReceiver mHandleReceiver = new BroadcastReceiver() {
@@ -102,8 +111,8 @@ public class BlueToothService extends BaseService {
 						0);
 				switch (handle) {
 				case BlueToothConstants.HANDLE_SERVER_SCAN:// 扫描
-					SPUtils.setEBikeAddress(BlueToothService.this, "");//UI发送的重新扫描，则清除保存的设备
-					mBluetoothDeviceAddress="";
+					SPUtils.setEBikeAddress(BlueToothService.this, "");// UI发送的重新扫描，则清除保存的设备
+					mBluetoothDeviceAddress = "";
 					mBlueToothConnction.close();
 					startScanBluetoothDevice();
 					break;
@@ -118,53 +127,60 @@ public class BlueToothService extends BaseService {
 			}
 		}
 	};
-	
-	/**监听UI发送的状态改变广播*/
+
+	/** 监听UI发送的状态改变广播 */
 	private final BroadcastReceiver mStateReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
-			if (TravelConstant.ACTION_UI_SERICE_TRAVEL_STATE_CHANGE.equals(action)) {
-				state=intent.getIntExtra(TravelConstant.EXTRA_STATE, 0);
-				if(state==TravelConstant.TRAVEL_STATE_START){//开始
+			if (TravelConstant.ACTION_UI_SERICE_TRAVEL_STATE_CHANGE
+					.equals(action)) {
+				state = intent.getIntExtra(TravelConstant.EXTRA_STATE, 0);
+				if (state == TravelConstant.TRAVEL_STATE_START) {// 开始
 					startTravel();
-				}else if(state==TravelConstant.TRAVEL_STATE_PAUSE){//暂停
-					isRequestData=false;
-				}else if(state==TravelConstant.TRAVEL_STATE_RESUME){//恢复
-					isRequestData=true;
-				}else if(state==TravelConstant.TRAVEL_STATE_COMPLETED){//完成
+				} else if (state == TravelConstant.TRAVEL_STATE_PAUSE) {// 暂停
+					isRequestData = false;
+				} else if (state == TravelConstant.TRAVEL_STATE_RESUME) {// 恢复
+					isRequestData = true;
+				} else if (state == TravelConstant.TRAVEL_STATE_COMPLETED) {// 完成
 					stopTravel();
-				}else if(state==TravelConstant.TRAVEL_STATE_STOP){//停止
+				} else if (state == TravelConstant.TRAVEL_STATE_STOP) {// 停止
 					stopTravel();
-				}else if(state==TravelConstant.TRAVEL_STATE_EXIT){//退出应用
+				} else if (state == TravelConstant.TRAVEL_STATE_EXIT) {// 退出应用
 					exitTravel();
 				}
 			}
 		}
 	};
-	/**开始travel*/
-	private void startTravel(){
+
+	/** 开始travel */
+	private void startTravel() {
 		mBlueToothConnction.setCharacteristicNotification(
 				mReceiveCharacteristic, true);
 		mRequestDataThread = new RequestDataThread();
 		isRequestDataRunning = true;
-		isRequestData=true;
+		isRequestData = true;
 		mRequestDataThread.start();
 	}
-	/**停止travel*/
-	private void stopTravel(){
+
+	/** 停止travel */
+	private void stopTravel() {
 		mBlueToothConnction.setCharacteristicNotification(
 				mReceiveCharacteristic, false);
-		if(mRequestDataThread!=null){
+		if (mRequestDataThread != null) {
 			mRequestDataThread.cancel();
 		}
 	}
-	/**退出travel*/
-	private void exitTravel(){
-		if(state==BlueToothConstants.BLE_STATE_NONE||state==TravelConstant.TRAVEL_STATE_COMPLETED||state==TravelConstant.TRAVEL_STATE_STOP){//travel停了
+
+	/** 退出travel */
+	private void exitTravel() {
+		if (state == BlueToothConstants.BLE_STATE_NONE
+				|| state == TravelConstant.TRAVEL_STATE_COMPLETED
+				|| state == TravelConstant.TRAVEL_STATE_STOP) {// travel停了
 			stopService();
 		}
 	}
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -186,7 +202,7 @@ public class BlueToothService extends BaseService {
 		}
 		if (mBlueToothConnction.getState() != BluetoothConnection.STATE_CONNECTED) {// 只要不是在链接的情况下就要重新链接
 			isGoon = true;
-		}else{//已连接
+		} else {// 已连接
 			sendBleState(BlueToothConstants.BLE_STATE_CONNECTED);
 		}
 		LogUtils.i(tag, "isGoon" + isGoon);
@@ -196,7 +212,7 @@ public class BlueToothService extends BaseService {
 			if (!TextUtils.isEmpty(mBluetoothDeviceAddress)) {
 				sendBleState(BlueToothConstants.BLE_STATE_CONNECTTING);
 				startScanBluetoothDevice();
-			}else{
+			} else {
 				sendBleState(BlueToothConstants.BLE_STATE_NONE);
 			}
 		}
@@ -227,7 +243,7 @@ public class BlueToothService extends BaseService {
 	/** 停止服务 */
 	private void stopService() {
 		// Make sure we're not doing discovery anymore
-		if(mBlueToothConnction!=null){
+		if (mBlueToothConnction != null) {
 			mBlueToothConnction.setCharacteristicNotification(
 					mReceiveCharacteristic, false);
 		}
@@ -259,9 +275,10 @@ public class BlueToothService extends BaseService {
 		filter = new IntentFilter(
 				BlueToothConstants.BLUETOOTH_ACTION_SERVER_SEND_DATA);
 		registerReceiver(mHandleReceiver, filter);
-		//注册广播
-		filter=new IntentFilter(TravelConstant.ACTION_UI_SERICE_TRAVEL_STATE_CHANGE);
-				registerReceiver(mStateReceiver, filter);
+		// 注册广播
+		filter = new IntentFilter(
+				TravelConstant.ACTION_UI_SERICE_TRAVEL_STATE_CHANGE);
+		registerReceiver(mStateReceiver, filter);
 		// 注册对蓝牙状态改变的广播
 
 		// register for when device bluetooth enable
@@ -275,8 +292,9 @@ public class BlueToothService extends BaseService {
 		registerReceiver(mReceiver, filter);
 
 	}
-	/**发送状态*/
-	private void sendBleState(int state){
+
+	/** 发送状态 */
+	private void sendBleState(int state) {
 		Intent intent = new Intent(BlueToothConstants.BLE_SERVER_STATE_CHANAGE);
 		intent.putExtra(BlueToothConstants.EXTRA_STATE, state);
 		sendBroadcast(intent);
@@ -364,10 +382,25 @@ public class BlueToothService extends BaseService {
 		if (map != null) {
 
 			int resultCode = (int) map.get(ProtocolByteHandler.EXTRA_CODE);
+			int cmd = (int) map.get(ProtocolByteHandler.EXTRA_CMD);
 			if (resultCode == Protocol.RESULT_OK) {// 数据正确
-				intent.putExtra(BlueToothConstants.BLUETOOTH_SERVER_EXTRA_DATA,
-						map);
-				sendBroadcast(intent);
+				if(cmd==CommandCode.HISTORY){
+					if(map.get(ProtocolByteHandler.EXTRA_DATA)!=null){
+						if(mRequestHistoryDataThread!=null){
+							mRequestHistoryDataThread.cancel();
+						}
+						sendData(CommandCode.HISTORY,
+								new byte[] { EBikeHistoryStatus.setBikeStatus(EBikeHistoryStatus.DATA_END, 0) });//读完数据
+						Travel t=(Travel) map.get(ProtocolByteHandler.EXTRA_DATA);
+						DBHelper.getInstance(getApplicationContext()).insertTravel(t);
+					}else{
+						isRequestHistoryData=true;//
+					}
+				}else{
+					intent.putExtra(BlueToothConstants.BLUETOOTH_SERVER_EXTRA_DATA,
+							map);
+					sendBroadcast(intent);
+				}
 			}
 		}
 	}
@@ -393,7 +426,7 @@ public class BlueToothService extends BaseService {
 					if (isAppInitBluetooth) {// 如果是应用自动关闭蓝牙进行初始化，则在关闭状态触发后，再次打开
 						isAppInitBluetooth = false;
 						mBluetoothAdapter.enable();
-					}else{
+					} else {
 						sendBleState(BlueToothConstants.BLE_STATE_DISCONNECTED);
 					}
 				}
@@ -434,7 +467,7 @@ public class BlueToothService extends BaseService {
 	 */
 	private void connectDevice(String address) {
 		stopScanBluetoothDevice();// 链接停止当前扫描
-		if (mBlueToothConnction != null&&!TextUtils.isEmpty(address)) {
+		if (mBlueToothConnction != null && !TextUtils.isEmpty(address)) {
 			mBlueToothConnction.connect(address);
 		}
 	}
@@ -515,10 +548,12 @@ public class BlueToothService extends BaseService {
 				if (mReceiveCharacteristic != null
 						&& mSendCharacteristic != null) {// 初始化完毕，可以启动心跳包，发送数据了
 					LogUtils.i(tag, "服务特征值已找到，现在开启自动发数据线程");
-					if(state==TravelConstant.TRAVEL_STATE_START||state==TravelConstant.TRAVEL_STATE_RESUME){//说明在运行中
+					if (state == TravelConstant.TRAVEL_STATE_START
+							|| state == TravelConstant.TRAVEL_STATE_RESUME) {// 说明在运行中
 						startTravel();
 					}
-					
+					// 只要链接上蓝牙就要去读取历史数据
+					readHistory();
 				} else {
 					mBlueToothConnction
 							.setState(BluetoothConnection.STATE_DISCONNECTED);
@@ -562,6 +597,71 @@ public class BlueToothService extends BaseService {
 		}
 	}
 
+	/** 开始读历史数据 */
+	private void readHistory() {
+		historyTravel.clear();
+		mBlueToothConnction.setCharacteristicNotification(
+				mReceiveCharacteristic, true);
+		mRequestHistoryDataThread = new RequestHistoryDataThread();
+		isRequestHistoryDataRunning = true;
+		mRequestHistoryDataThread.start();
+	}
+
+	/**
+	 * This thread runs while server is connect ,for to get bluetooth's data
+	 */
+	private class RequestHistoryDataThread extends Thread {
+		public void run() {
+			LogUtils.i(tag, "BEGIN RequestDataThread:");
+			if (mBlueToothConnction.getState() != BluetoothConnection.STATE_CONNECTED) {
+				toastMessage(getString(R.string.bluetooth_not_connect));
+				sendBleState(BlueToothConstants.BLE_STATE_CONNECTTING);
+				connectDevice(mBluetoothDeviceAddress);
+				// state=TravelConstant.TRAVEL_STATE_PAUSE;
+				// BaseApplication.sendStateChangeBroadCast(BlueToothService.this,
+				// state, false, mStateReceiver);
+				return;
+			}else{//先发一个回头祯
+				EBikeHistoryData.start();
+				sendData(CommandCode.HISTORY,
+						new byte[] { EBikeHistoryStatus.setBikeStatus(EBikeHistoryStatus.DATA_INDEX, 0) });// 从头
+			}
+			setName("RequestDataThread");
+			while (isRequestHistoryDataRunning
+					&& BluetoothConnection.STATE_CONNECTED == mBlueToothConnction
+							.getState()) {
+				printlnMessage("要发送出去的数据进进制值是："
+						+ EBikeStatus.getBikeStatus()
+						+ " 格式化8位是："
+						+ ProtocolTool.byteToBitString(new byte[] { EBikeStatus
+								.getBikeStatus() }));
+				
+				while(isRequestHistoryData){//发
+					sendData(CommandCode.HISTORY,
+							new byte[] { EBikeHistoryStatus.setBikeStatus(EBikeHistoryStatus.DATA_NEXT, 0) });// 下一条
+					isRequestHistoryData=false;
+				}
+				sendData(CommandCode.HISTORY,
+						new byte[] { EBikeHistoryStatus.getBikeStatus() });// 获取蓝牙数据
+				try {
+					Thread.sleep(REQUESTHISTORYDATA_SPACING);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			// Reset the ConnectThread because we're done
+			synchronized (BlueToothService.this) {
+				mRequestHistoryDataThread = null;
+				isRequestHistoryData=false;
+			}
+		}
+
+		public void cancel() {
+			isRequestHistoryDataRunning = false;
+		}
+	}
+
 	/**
 	 * This thread runs while server is connect ,for to get bluetooth's data
 	 */
@@ -572,18 +672,21 @@ public class BlueToothService extends BaseService {
 				toastMessage(getString(R.string.bluetooth_not_connect));
 				sendBleState(BlueToothConstants.BLE_STATE_CONNECTTING);
 				connectDevice(mBluetoothDeviceAddress);
-//				state=TravelConstant.TRAVEL_STATE_PAUSE;
-//				BaseApplication.sendStateChangeBroadCast(BlueToothService.this, state, false, mStateReceiver);
+				// state=TravelConstant.TRAVEL_STATE_PAUSE;
+				// BaseApplication.sendStateChangeBroadCast(BlueToothService.this,
+				// state, false, mStateReceiver);
 				return;
 			}
 			setName("RequestDataThread");
-			while (isRequestDataRunning&&BluetoothConnection.STATE_CONNECTED==mBlueToothConnction.getState()) {
+			while (isRequestDataRunning
+					&& BluetoothConnection.STATE_CONNECTED == mBlueToothConnction
+							.getState()) {
 				printlnMessage("要发送出去的数据进进制值是："
 						+ EBikeStatus.getBikeStatus()
 						+ " 格式化8位是："
 						+ ProtocolTool.byteToBitString(new byte[] { EBikeStatus
 								.getBikeStatus() }));
-				if(isRequestData){//如果是暂停，就不需要再发送获取数据的命令了
+				if (isRequestData) {// 如果是暂停，就不需要再发送获取数据的命令了
 					sendData(CommandCode.SURVEY,
 							new byte[] { EBikeStatus.getBikeStatus() });// 获取蓝牙数据
 				}
@@ -615,7 +718,8 @@ public class BlueToothService extends BaseService {
 			while (isReconnectRunning) {
 				// LogUtils.i(tag,
 				// "正在跑中"+mBluetoothAdapter+"-"+mBluetoothAdapter.isEnabled()+"--"+mBluetoothAdapter.isDiscovering()+"--"+mBlueToothConnction+"--"+mBlueToothConnction.getState());
-				if ((state==TravelConstant.TRAVEL_STATE_START||state==TravelConstant.TRAVEL_STATE_RESUME)&&mBluetoothAdapter != null
+				if ((state == TravelConstant.TRAVEL_STATE_START || state == TravelConstant.TRAVEL_STATE_RESUME)
+						&& mBluetoothAdapter != null
 						&& mBluetoothAdapter.isEnabled()
 						&& !isScanning
 						&& mBlueToothConnction != null
