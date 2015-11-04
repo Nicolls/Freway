@@ -17,6 +17,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -36,6 +37,8 @@ import com.freway.ebike.utils.SPUtils;
 import com.freway.ebike.utils.ToastUtils;
 
 public class BlueToothService extends BaseService {
+	/**蓝牙状态*/
+	public static int ble_state=BlueToothConstants.BLE_STATE_NONE;
 	/**
 	 * Bluetooth manager
 	 * */
@@ -68,7 +71,6 @@ public class BlueToothService extends BaseService {
 	private RequestHistoryDataThread mRequestHistoryDataThread;// 每隔一段时间去获取数据
 	private static final int REQUESTHISTORYDATA_SPACING = 1 * 1000;// 间隔时间，毫秒
 	private boolean isRequestHistoryDataRunning = true;// 开启获取数据
-	private boolean isRequestHistoryData = true;// 判断是否要获取数据
 	// bluetooth gat
 	private BluetoothGattCharacteristic mReceiveCharacteristic; // 接收数据
 	private BluetoothGattCharacteristic mSendCharacteristic; // 发送数据
@@ -198,6 +200,7 @@ public class BlueToothService extends BaseService {
 		}
 		if (mBlueToothConnction.getState() != BluetoothConnection.STATE_CONNECTED) {// 只要不是在链接的情况下就要重新链接
 			isGoon = true;
+			sendBleState(BlueToothConstants.BLE_STATE_DISCONNECTED);
 		} else {// 已连接
 			sendBleState(BlueToothConstants.BLE_STATE_CONNECTED);
 		}
@@ -288,6 +291,8 @@ public class BlueToothService extends BaseService {
 
 	/** 发送状态 */
 	private void sendBleState(int state) {
+		ble_state=state;
+//		LogUtils.i(tag, "发送蓝牙链接状态"+state);
 		Intent intent = new Intent(BlueToothConstants.BLE_SERVER_STATE_CHANAGE);
 		intent.putExtra(BlueToothConstants.EXTRA_STATE, state);
 		sendBroadcast(intent);
@@ -356,33 +361,16 @@ public class BlueToothService extends BaseService {
 				connectDevice(device.getAddress());
 			} else {// 如果address为空，则返回广播到的设备
 				printlnMessage("返回扫描到的设备：" + device.getName());
-				broadCastData2UI(BlueToothConstants.HANDLE_SERVER_SCAN, device);
+				broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SCAN_DEVICE, device);
 			}
 		}
 
 	};
 
-	/** 向UI返回收到的解析好了的数据 */
-	private void broadCastData2UI(int handle,Object data) {
-		Intent intent = new Intent(
-				BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT);
-		intent.putExtra(BlueToothConstants.EXTRA_HANDLE_TYPE, handle);
-		switch (handle) {
-		case BlueToothConstants.HANDLE_SERVER_CONNECT:// 链接
-			intent.putExtra(BlueToothConstants.EXTRA_DATA, 1);
-			break;
-		case BlueToothConstants.HANDLE_SERVER_SCAN:// 扫描
-			intent.putExtra(BlueToothConstants.EXTRA_DATA, (BluetoothDevice)data);
-			break;
-		case BlueToothConstants.HANDLE_SERVER_SEND_DATA:// 发数据
-			intent.putExtra(BlueToothConstants.EXTRA_DATA, 1);
-			break;
-		case BlueToothConstants.HANDLE_SERVER_SYNC:// 同步
-			intent.putExtra(BlueToothConstants.EXTRA_DATA, 1);
-			break;
-			default:
-				break;
-		}
+	/** 通知UI对应操作的结果 */
+	private void broadCastData2UI(String action,Parcelable data) {
+		Intent intent = new Intent(action);
+		intent.putExtra(BlueToothConstants.EXTRA_DATA,data);
 		sendBroadcast(intent);
 	}
 
@@ -450,6 +438,9 @@ public class BlueToothService extends BaseService {
 		stopScanBluetoothDevice();// 链接停止当前扫描
 		if (mBlueToothConnction != null && !TextUtils.isEmpty(address)) {
 			mBlueToothConnction.connect(address);
+		}else{//为空则，要重新初始化链接
+			mBlueToothConnction = new BluetoothConnection(this, mHandler);
+			startScanBluetoothDevice();
 		}
 	}
 
@@ -466,7 +457,7 @@ public class BlueToothService extends BaseService {
 			startActivity(discoverableIntent);
 		}
 	}
-
+	
 	/**
 	 * The Handler that gets information back from the BluetoothChatService
 	 */
@@ -476,7 +467,6 @@ public class BlueToothService extends BaseService {
 			switch (msg.what) {
 			case BluetoothConnection.ACTION_GATT_CONNECTED:
 				printlnMessage("链接上蓝牙服务");
-				broadCastData2UI(BlueToothConstants.HANDLE_SERVER_CONNECT, null);
 				SPUtils.setEBikeAddress(getApplicationContext(),
 						mBluetoothDeviceAddress);
 				sendBleState(BlueToothConstants.BLE_STATE_CONNECTED);
@@ -487,7 +477,7 @@ public class BlueToothService extends BaseService {
 						+ ProtocolTool.bytesToHexString(receiveData));
 				HashMap<String, Object> map = ProtocolByteHandler
 						.parseData(receiveData);
-				broadCastData2UI(BlueToothConstants.HANDLE_SERVER_SEND_DATA,null);// 提示UI更新
+				broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA,null);// 提示UI更新
 				break;
 			case BluetoothConnection.ACTION_GATT_DISCONNECTED:
 				if (mRequestDataThread != null) {
@@ -577,6 +567,24 @@ public class BlueToothService extends BaseService {
 
 		}
 	}
+	/**同步数据，完成存储数据*/
+	private void completedSyncData(){
+		LogUtils.i(tag, "数据同步命令发送完成，现在存储历史行程数据 data_id="+EBikeHistoryData.data_id);
+		if (EBikeHistoryData.data_id > 0) {// 说明有读到数据
+			Travel travel = new Travel();
+			travel.setAltitude(EBikeHistoryData.travel_altitude);
+			travel.setAvgSpeed(EBikeHistoryData.travel_avgSpeed);
+			travel.setCadence(EBikeHistoryData.travel_cadence);
+			travel.setCalorie(EBikeHistoryData.travel_calorie);
+			travel.setDistance(EBikeHistoryData.travel_distance);
+			travel.setEndTime(EBikeHistoryData.travel_endTime);
+			travel.setMaxSpeed(EBikeHistoryData.travel_maxSpeed);
+			travel.setSpendTime(EBikeHistoryData.travel_spendTime);
+			travel.setStartTime(EBikeHistoryData.travel_startTime);
+			DBHelper.getInstance(this).insertTravel(travel);
+		}
+	}
+	
 
 	/** 开始读历史数据 */
 	private void syncHistory() {
@@ -630,21 +638,20 @@ public class BlueToothService extends BaseService {
 					sendData(CommandCode.HISTORY,
 							new byte[] { EBikeHistoryStatus.setBikeStatus(
 									EBikeHistoryStatus.DATA_NEXT, 0) });// 下一条
-					isRequestHistoryData = false;
 				}else{
 					LogUtils.i(tag, "记录读取完了");
+					isRequestHistoryDataRunning=false;
 					sendData(CommandCode.HISTORY,
 							new byte[] { EBikeHistoryStatus.setBikeStatus(
 									EBikeHistoryStatus.DATA_END, 0) });// 设置为读完了
-					isRequestHistoryDataRunning=false;
-					broadCastData2UI(BlueToothConstants.HANDLE_SERVER_SYNC, null);
+					completedSyncData();
+//					broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SYNC_DATA, null);
 					break;
 				}
 			}
 			// Reset the ConnectThread because we're done
 			synchronized (BlueToothService.this) {
 				mRequestHistoryDataThread = null;
-				isRequestHistoryData = false;
 			}
 		}
 

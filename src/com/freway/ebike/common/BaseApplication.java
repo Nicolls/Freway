@@ -1,19 +1,21 @@
 package com.freway.ebike.common;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Application;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.location.LocationManager;
+
+import com.freway.ebike.bluetooth.BlueToothConstants;
+import com.freway.ebike.bluetooth.BlueToothService;
 import com.freway.ebike.bluetooth.EBikeTravelData;
 import com.freway.ebike.db.DBHelper;
 import com.freway.ebike.db.Travel;
 import com.freway.ebike.map.TravelConstant;
+import com.freway.ebike.utils.AlertUtil;
 import com.freway.ebike.utils.ToastUtils;
-
-import android.app.AlertDialog;
-import android.app.Application;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.location.LocationManager;
 
 /**
  * Application基类
@@ -36,6 +38,16 @@ public class BaseApplication extends Application{
 	 * @Description 发送状态改变广播
 	 */
 	public static void sendStateChangeBroadCast(Context context,int state){
+		if(state==TravelConstant.TRAVEL_STATE_START||state==TravelConstant.TRAVEL_STATE_RESUME){//要去检查蓝牙有没有断线
+			if(BlueToothService.ble_state!=BlueToothConstants.BLE_STATE_CONNECTED){//未链接，则要提示用户去链接
+//				if(context instanceof Activity){//是activity的话就弹出框
+//					AlertUtil.alertConnectBle(context);
+					ToastUtils.toast(context, "ble dis connected ,and is reconnect now please hold on..");
+					EBikeTravelData.pause();
+//				}
+//				return;
+			}
+		}
 		EBikeTravelData.travel_state=state;
 		if (state == TravelConstant.TRAVEL_STATE_START && checkGpsEnable(context)) {// 在这里判断定位有没有打开
 			Travel travel=new Travel();
@@ -46,6 +58,7 @@ public class BaseApplication extends Application{
 		}else if(state == TravelConstant.TRAVEL_STATE_RESUME){
 			EBikeTravelData.resume();
 		}else if(state==TravelConstant.TRAVEL_STATE_COMPLETED){//存储
+			EBikeTravelData.completed();
 			if (EBikeTravelData.travel_distance < MUST_MIN_TRAVEL) {
 				//数据少，不存储
 				ToastUtils.toast(context, "travel is too short not save");

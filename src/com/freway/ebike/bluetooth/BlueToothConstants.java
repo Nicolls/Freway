@@ -22,14 +22,15 @@ package com.freway.ebike.bluetooth;
  */
 public interface BlueToothConstants {
 	
+	public static final int RESULT_SUCCESS=0;
+	public static final int RESULT_FAIL=-1;
+
+	
     /**
      * @Fields BLUETOOTH_ACTION_HANDLE_SERVER 控制服务
      */
     public static final String BLUETOOTH_ACTION_HANDLE_SERVER="BLUETOOTH_ACTION_HANDLE_SERVER";
-    /**
-     * @Fields BLUETOOTH_ACTION_HANDLE_SERVER 控制服务结果返回
-     */
-    public static final String BLUETOOTH_ACTION_HANDLE_SERVER_RESULT="BLUETOOTH_ACTION_HANDLE_SERVER_RESULT";
+    
     /**
      * @Fields BLUETOOTH_ACTION_HANDLE_EXTRA 操作类型
      */
@@ -56,6 +57,20 @@ public interface BlueToothConstants {
      * @Fields HANDLE_SERVER_SEND_DATA 发送数据
      */
     public static final int HANDLE_SERVER_SEND_DATA=4;
+    
+    /**
+     * @Fields BLUETOOTH_ACTION_HANDLE_SERVER 控制服务扫描结果返回
+     */
+    public static final String BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SCAN_DEVICE="BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SCAN_DEVICE";
+    /**
+     * @Fields BLUETOOTH_ACTION_HANDLE_SERVER 控制服务发送数据结果返回
+     */
+    public static final String BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA="BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA";
+    /**
+     * @Fields BLUETOOTH_ACTION_HANDLE_SERVER 控制服务同步数据结果返回
+     * 已经没有用了，有服务中实现这个action,后期要记得去掉这个同步action。
+     */
+    public static final String BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SYNC_DATA="BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SYNC_DATA";
     
     
     /**蓝牙状态改变*/

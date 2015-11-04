@@ -49,18 +49,18 @@ public class FrewayMapActivity extends FragmentActivity {
 		mMapUtil=new MapUtil(this, supportMapFragment);
 		mMapUtil.startMapService(handler);
 		mBlueToothUtil=new BlueToothUtil(this,blueHandler);
-		mBlueToothUtil.init(syncHandler,updateUiHandler);
+		mBlueToothUtil.initBle(updateUiHandler);
 	}
 	
 	/**同步数据*/
-	private Handler syncHandler=new Handler(){
+	/*private Handler syncHandler=new Handler(){
 		@Override
 		public void handleMessage(Message msg) {
 			//更新UI
 			LogUtils.i(TAG, "sync data yes ");
 			
 		}
-	};
+	};*/
 	
 	/**更新UI*/
 	private Handler updateUiHandler=new Handler(){

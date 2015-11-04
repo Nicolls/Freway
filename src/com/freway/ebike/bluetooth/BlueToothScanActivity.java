@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.freway.ebike.R;
 import com.freway.ebike.common.BaseActivity;
+import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.SPUtils;
 
 public class BlueToothScanActivity extends BaseActivity {
@@ -53,7 +54,7 @@ public class BlueToothScanActivity extends BaseActivity {
 		
 	}
 	public void onSearch(View view){
-		mBlueToothUtil.handleScanDevice(searchHandler);
+		mBlueToothUtil.scanDevice(searchHandler);
 	}
 	
 	private Handler searchHandler=new Handler(){
@@ -78,7 +79,6 @@ public class BlueToothScanActivity extends BaseActivity {
 
 		@Override
 		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
 			super.handleMessage(msg);
 				int state = msg.what;
 				switch (state) {
