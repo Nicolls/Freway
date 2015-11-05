@@ -323,6 +323,8 @@ public class BlueToothService extends BaseService {
 				@Override
 				public void run() {
 					stopScanBluetoothDevice();
+					//扫描结束
+					broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SCAN_DEVICE, BlueToothConstants.RESULT_COMPLETED,null);
 				}
 			}, SCAN_TIME); // 10秒后停止扫描
 			printlnMessage("开始扫描");
@@ -360,16 +362,19 @@ public class BlueToothService extends BaseService {
 				stopScanBluetoothDevice();// 停止扫描
 				connectDevice(device.getAddress());
 			} else {// 如果address为空，则返回广播到的设备
-				printlnMessage("返回扫描到的设备：" + device.getName());
-				broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SCAN_DEVICE, device);
+				if(!TextUtils.isEmpty(device.getAddress())){
+					printlnMessage("返回扫描到的设备：" + device.getName());
+					broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SCAN_DEVICE,BlueToothConstants.RESULT_SUCCESS, device);
+				}
 			}
 		}
 
 	};
 
 	/** 通知UI对应操作的结果 */
-	private void broadCastData2UI(String action,Parcelable data) {
+	private void broadCastData2UI(String action,int status,Parcelable data) {
 		Intent intent = new Intent(action);
+		intent.putExtra(BlueToothConstants.EXTRA_STATUS,status);
 		intent.putExtra(BlueToothConstants.EXTRA_DATA,data);
 		sendBroadcast(intent);
 	}
@@ -477,7 +482,7 @@ public class BlueToothService extends BaseService {
 						+ ProtocolTool.bytesToHexString(receiveData));
 				HashMap<String, Object> map = ProtocolByteHandler
 						.parseData(receiveData);
-				broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA,null);// 提示UI更新
+				broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA,BlueToothConstants.RESULT_SUCCESS,null);// 提示UI更新
 				break;
 			case BluetoothConnection.ACTION_GATT_DISCONNECTED:
 				if (mRequestDataThread != null) {

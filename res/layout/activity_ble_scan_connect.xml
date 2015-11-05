@@ -1,0 +1,58 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/ble_tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ble has been lost ,and now is reconnectting" />
+
+    <TextView
+        android:id="@+id/ble_tv_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ble_tv_title"
+        android:text="ble searching" />
+
+    <LinearLayout
+        android:id="@+id/ble_layout_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/ble_bnt_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onConfirm"
+            android:text="确定" />
+
+        <Button
+            android:id="@+id/ble_bnt_scan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onScan"
+            android:text="扫描" />
+
+        <Button
+            android:id="@+id/ble_bnt_manual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onManual"
+            android:text="手动链接" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/bluetooth_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ble_layout_btn"
+        android:layout_below="@id/ble_tv_message" />
+
+</RelativeLayout>

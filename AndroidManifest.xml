@@ -49,7 +49,7 @@
         <!-- 地图  api_key mac:AIzaSyCdOmLibSAIvOIw5PNAaewKJa3xndMjXAI  windows:AIzaSyD5min8wElQ-_VUQcmmcUIWVVsFyOdG0I0 -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCdOmLibSAIvOIw5PNAaewKJa3xndMjXAI" />
+            android:value="AIzaSyD5min8wElQ-_VUQcmmcUIWVVsFyOdG0I0" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -80,7 +80,7 @@
             -->
 
         </activity>
-        <activity android:name="com.freway.ebike.bluetooth.BlueToothScanActivity" >
+        <activity android:name="com.freway.ebike.bluetooth.BLEScanConnectActivity" android:launchMode="singleTask" android:theme="@style/Theme.AppCompat.Dialog">
 
             <!--
             <intent-filter>

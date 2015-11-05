@@ -69,7 +69,7 @@ public class BlueToothUtil {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
-					toScanBleActivity(context);
+					toBindBleActivity(context,BLEScanConnectActivity.HANDLE_SCAN);
 				}
 			}, new OnClickListener() {
 
@@ -109,9 +109,10 @@ public class BlueToothUtil {
 		context.stopService(service);
 	}
 
-	/** 去到扫描页面 */
-	public static void toScanBleActivity(Context context) {
-		Intent intent = new Intent(context, BlueToothScanActivity.class);
+	/** 去到绑定设备页面 */
+	public static void toBindBleActivity(Context context,int handle) {
+		Intent intent = new Intent(context, BLEScanConnectActivity.class);
+		intent.putExtra(BLEScanConnectActivity.HANDLE_EXTRA, handle);
 		context.startActivity(intent);
 	}
 
@@ -196,6 +197,7 @@ public class BlueToothUtil {
 			if (scanHandler != null) {
 				Message msg = Message.obtain();
 				msg.obj = device;
+				msg.what=intent.getIntExtra(BlueToothConstants.EXTRA_STATUS, BlueToothConstants.RESULT_FAIL);
 				scanHandler.sendMessage(msg);
 			}
 		}
