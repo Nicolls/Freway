@@ -37,6 +37,7 @@ public class SPUtils {
 	public static final String SP_USER_SAFE_CODE = "SP_USER_SAFE_CODE";
 	public static final String SP_USER_SAFE_CODE_SWITCH = "SP_USER_SAFE_CODE_SWITCH";
 	public static final String SP_USER_TOKEN = "SP_USER_TOKEN";
+	public static final String SP_USER_LOGIN_TYPE = "SP_USER_LOGIN_TYPE";
 	public static final String SP_USER_TRAVEL_MAP = "SP_USER_TRAVEL_MAP";//地图行程数据
 
 	/** 获取登录用户名 */
@@ -201,7 +202,19 @@ public class SPUtils {
 		boolean isOk = sp.edit().putString(SP_USER_TOKEN, token).commit();
 		return isOk;
 	}
-	
+	/** 获取登录类型 */
+	public static int getLoginType(Context context) {
+		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+		int loginType = sp.getInt(SP_USER_LOGIN_TYPE, 0);
+		return loginType;
+	}
+
+	/** 保存登录类型 */
+	public static boolean setLoginType(Context context, int loginType) {
+		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+		boolean isOk = sp.edit().putInt(SP_USER_LOGIN_TYPE, loginType).commit();
+		return isOk;
+	}
 	/** 获取last travel*/
 //	public static String getLastTravel(Context context) {
 //		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);

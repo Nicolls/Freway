@@ -10,6 +10,10 @@ import java.io.Serializable;
 public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
 	/**
+	 * @Fields userid 用户ID只有第三方才存在
+	 * */
+	private String userid;
+	/**
 	 * @Fields username 名称
 	 */
 	private String username;
@@ -60,5 +64,11 @@ public class User implements Serializable{
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public String getUserid() {
+		return userid;
+	}
+	public void setUserid(String userid) {
+		this.userid = userid;
 	}
 }

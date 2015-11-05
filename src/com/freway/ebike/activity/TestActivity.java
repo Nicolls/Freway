@@ -26,7 +26,7 @@ public class TestActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_test);
-		super.initCommonView();
+		super.initCommonView("test");
 		messageTv=(TextView) findViewById(R.id.tv_message);
 	}
 

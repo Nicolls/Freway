@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.text.TextUtils;
 
+import com.facebook.FacebookSdk;
 import com.freway.ebike.bluetooth.BLEScanConnectActivity;
 import com.freway.ebike.bluetooth.BlueToothConstants;
 import com.freway.ebike.bluetooth.BlueToothService;
@@ -29,8 +30,12 @@ public class BaseApplication extends Application{
 	private static final float MUST_MIN_TRAVEL = 10;// 最短行程10米
 	@Override
 	public void onCreate() {
-		// TODO Auto-generated method stub
 		super.onCreate();
+		initSdk();
+	}
+	/**初始化第三方sdk*/
+	private void initSdk(){
+		FacebookSdk.sdkInitialize(this.getApplicationContext());
 	}
 	
 	/**

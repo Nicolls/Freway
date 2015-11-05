@@ -2,6 +2,10 @@
 <resources>
 	
     <string name="app_name">EBike</string>
+    
+    <!-- 第三方sdk -->
+    <string name="app_id">1668278680085158</string>
+    
     <!-- 测试文字 -->
     <string name="test">测试</string>
     <string name="test_title">测试标题</string>

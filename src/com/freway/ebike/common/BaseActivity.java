@@ -65,9 +65,12 @@ public abstract class BaseActivity extends AppCompatActivity implements DataUpda
 	}
 
 	/** 初始化导航view */
-	protected void initCommonView() {
+	protected void initCommonView(String title) {
 		navTop = findViewById(R.id.nav_top_bar);
 		mTitleView = (TextView) findViewById(R.id.nav_top_tv_title);
+		if(mTitleView!=null){
+			mTitleView.setText(title);
+		}
 		mNavBack = (TextView) findViewById(R.id.nav_top_tv_left);
 		if (mNavBack != null) {
 			mNavBack.setOnClickListener(new OnClickListener() {
