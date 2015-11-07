@@ -22,7 +22,8 @@ import com.freway.ebike.utils.ToastUtils;
  * */
 public class BaseApplication extends Application{
 
-	private static final float MUST_MIN_TRAVEL = 10;// 最短行程10米
+	public static long travelId=-1;
+	public static int travelState=TravelConstant.TRAVEL_STATE_NONE;
 	@Override
 	public void onCreate() {
 		// TODO Auto-generated method stub
@@ -43,47 +44,32 @@ public class BaseApplication extends Application{
 //				if(context instanceof Activity){//是activity的话就弹出框
 //					AlertUtil.alertConnectBle(context);
 					ToastUtils.toast(context, "ble dis connected ,and is reconnect now please hold on..");
-					EBikeTravelData.pause();
+					state=TravelConstant.TRAVEL_STATE_PAUSE;
+					EBikeTravelData.getInstance(context).pause();
 //				}
 //				return;
 			}
 		}
-		EBikeTravelData.travel_state=state;
+		travelState=state;
+		Intent intent = new Intent(TravelConstant.ACTION_UI_SERICE_TRAVEL_STATE_CHANGE);
+		intent.putExtra(TravelConstant.EXTRA_STATE, travelState);
 		if (state == TravelConstant.TRAVEL_STATE_START && checkGpsEnable(context)) {// 在这里判断定位有没有打开
 			Travel travel=new Travel();
 			DBHelper.getInstance(context).insertTravel(travel);
-			EBikeTravelData.start(travel.getId());
+			travelId=travel.getId();
+			EBikeTravelData.getInstance(context).start(travel.getId());
+			intent.putExtra(TravelConstant.EXTRA_TRAVEL_ID, travelId);
 		}else if(state == TravelConstant.TRAVEL_STATE_PAUSE){
-			EBikeTravelData.pause();
+			EBikeTravelData.getInstance(context).pause();
 		}else if(state == TravelConstant.TRAVEL_STATE_RESUME){
-			EBikeTravelData.resume();
+			EBikeTravelData.getInstance(context).resume();
 		}else if(state==TravelConstant.TRAVEL_STATE_COMPLETED){//存储
-			EBikeTravelData.completed();
-			if (EBikeTravelData.travel_distance < MUST_MIN_TRAVEL) {
-				//数据少，不存储
-				ToastUtils.toast(context, "travel is too short not save");
-			}else{
-				Travel travel=new Travel();
-				travel.setId(EBikeTravelData.travel_id);
-				travel.setAltitude(EBikeTravelData.travel_altitude);
-				travel.setAvgSpeed(EBikeTravelData.travel_avgSpeed);
-				travel.setCadence(EBikeTravelData.travel_cadence);
-				travel.setCalorie(EBikeTravelData.travel_calorie);
-				travel.setDistance(EBikeTravelData.travel_distance);
-				travel.setEndTime(EBikeTravelData.travel_endTime);
-				travel.setMaxSpeed(EBikeTravelData.travel_maxSpeed);
-				travel.setSpendTime(EBikeTravelData.travel_spendTime);
-				travel.setStartTime(EBikeTravelData.travel_startTime);
-				DBHelper.getInstance(context).updateTravel(travel);// 更新
-			}
+			EBikeTravelData.getInstance(context).completed();
 		}else if(state==TravelConstant.TRAVEL_STATE_STOP){
-			EBikeTravelData.stop();
-			DBHelper.getInstance(context).deleteTravel(EBikeTravelData.travel_id);// 停止则删除这条数据
+			EBikeTravelData.getInstance(context).stop();
 		}else{
-			EBikeTravelData.travel_state=TravelConstant.TRAVEL_STATE_NONE;
+			travelState=TravelConstant.TRAVEL_STATE_NONE;
 		}
-		Intent intent = new Intent(TravelConstant.ACTION_UI_SERICE_TRAVEL_STATE_CHANGE);
-		intent.putExtra(TravelConstant.EXTRA_STATE, EBikeTravelData.travel_state);
 		context.sendBroadcast(intent);
 	}
 	

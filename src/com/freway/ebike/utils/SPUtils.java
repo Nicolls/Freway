@@ -37,6 +37,7 @@ public class SPUtils {
 	public static final String SP_USER_SAFE_CODE = "SP_USER_SAFE_CODE";
 	public static final String SP_USER_SAFE_CODE_SWITCH = "SP_USER_SAFE_CODE_SWITCH";
 	public static final String SP_USER_TOKEN = "SP_USER_TOKEN";
+	public static final String SP_USER_TRAVEL_ID = "SP_USER_TRAVEL_ID";//行程ID
 	public static final String SP_USER_TRAVEL_MAP = "SP_USER_TRAVEL_MAP";//地图行程数据
 
 	/** 获取登录用户名 */
@@ -202,15 +203,29 @@ public class SPUtils {
 		return isOk;
 	}
 	
+	/** 获取 travelId*/
+//	public static long getTravelId(Context context) {
+//		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+//		long travelId = sp.getLong(SP_USER_TRAVEL_ID,-1);
+//		return travelId;
+//	}
+
+	/** 保存travelId*/
+//	public static boolean setTravelId(Context context, long travelId) {
+//		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+//		boolean isOk = sp.edit().putLong(SP_USER_TRAVEL_ID, travelId).commit();
+//		return isOk;
+//	}
+	
 	/** 获取last travel*/
-//	public static String getLastTravel(Context context) {
+//	public static String getTravelLast(Context context) {
 //		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
 //		String travel = sp.getString(SP_USER_TRAVEL_MAP,null);
 //		return travel;
 //	}
 
 	/** 保存last travel*/
-//	public static boolean setLastTravel(Context context, String travel) {
+//	public static boolean setTravelLast(Context context, String travel) {
 //		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
 //		boolean isOk = sp.edit().putString(SP_USER_TRAVEL_MAP, travel).commit();
 //		return isOk;

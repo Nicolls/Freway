@@ -68,7 +68,7 @@ public class FrewayMapActivity extends FragmentActivity {
 		public void handleMessage(Message msg) {
 			//更新UI
 			LogUtils.i(TAG, "update ui yes ");
-			tvBlueToothData.setText(EBikeTravelData.getTravelValueText());
+			tvBlueToothData.setText(EBikeTravelData.getInstance(getApplicationContext()).getTravelValueText());
 		}
 	};
 	/**改变状态*/
@@ -149,42 +149,42 @@ public class FrewayMapActivity extends FragmentActivity {
 	public void onSport(View view){
 		CheckBox cb=(CheckBox) view;
 		int flag=cb.isChecked()?1:0;
-		mBlueToothUtil.setBikeState(EBikeStatus.BIKING_SPORT, flag);
+		mBlueToothUtil.setBikeState(this,EBikeStatus.BIKING_SPORT, flag);
 	}
 	public void onElc(View view){
 		CheckBox cb=(CheckBox) view;
 		int flag=cb.isChecked()?1:0;
-		mBlueToothUtil.setBikeState(EBikeStatus.BIKING_ELEC, flag);
+		mBlueToothUtil.setBikeState(this,EBikeStatus.BIKING_ELEC, flag);
 	}
 	public void onPower1(View view){
 		CheckBox cb=(CheckBox) view;
 		int flag=cb.isChecked()?1:0;
-		mBlueToothUtil.setBikeState(EBikeStatus.BIKING_HELP_POWER_1, flag);
+		mBlueToothUtil.setBikeState(this,EBikeStatus.BIKING_HELP_POWER_1, flag);
 	}
 	public void onPower3(View view){
 		CheckBox cb=(CheckBox) view;
 		int flag=cb.isChecked()?1:0;
-		mBlueToothUtil.setBikeState(EBikeStatus.BIKING_HELP_POWER_3, flag);
+		mBlueToothUtil.setBikeState(this,EBikeStatus.BIKING_HELP_POWER_3, flag);
 	}
 	public void onLightFront(View view){
 		CheckBox cb=(CheckBox) view;
 		int flag=cb.isChecked()?1:0;
-		mBlueToothUtil.setBikeState(EBikeStatus.BIKE_FRONT_LIGHT, flag);
+		mBlueToothUtil.setBikeState(this,EBikeStatus.BIKE_FRONT_LIGHT, flag);
 	}
 	public void onLightBack(View view){
 		CheckBox cb=(CheckBox) view;
 		int flag=cb.isChecked()?1:0;
-		mBlueToothUtil.setBikeState(EBikeStatus.BIKE_BACK_LIGHT, flag);
+		mBlueToothUtil.setBikeState(this,EBikeStatus.BIKE_BACK_LIGHT, flag);
 	}
 	public void onCall(View view){
 		CheckBox cb=(CheckBox) view;
 		int flag=cb.isChecked()?1:0;
-		mBlueToothUtil.setBikeState(EBikeStatus.PHONE_CALL, flag);
+		mBlueToothUtil.setBikeState(this,EBikeStatus.PHONE_CALL, flag);
 	}
 	public void onMessage(View view){
 		CheckBox cb=(CheckBox) view;
 		int flag=cb.isChecked()?1:0;
-		mBlueToothUtil.setBikeState(EBikeStatus.RECEIVE_MESSAGE, flag);
+		mBlueToothUtil.setBikeState(this,EBikeStatus.RECEIVE_MESSAGE, flag);
 	}
 	
 	

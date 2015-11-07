@@ -20,7 +20,8 @@ public interface EBikeRequestService {
 	static final int ID_USERINFO=5;
 	/** 修改用户信息 */
 	static final int ID_UPDATEUSERINFO=6;
-	
+	/** 上传行程*/
+	static final int ID_UPLOADTRAVEL=7;
 	
 	/** 方法名 **/
 	/** 普通登录 */
@@ -35,7 +36,8 @@ public interface EBikeRequestService {
 	static final String METHOD_USERINFO="/service/info";
 	/** 修改用户信息 */
 	static final String METHOD_UPDATEUSERINFO="/service/info/update";
-	
+	/** 上传行程*/
+	static final String METHOD_UPLOADTRAVEL="/service/journey/create";
 	
 	/**
 	 * @param dataUpdateListener 监听器
@@ -95,5 +97,22 @@ public interface EBikeRequestService {
 	 * @Description 用户修改信息
 	 */
 	void updateUserInfo(String token,String username,String password,String gender,String birthday,String email);
+	
+	/**
+	 * @param token 登录态token ,从注册/登录接口中获得
+	 * @param type 行程类别，实时行程为0，历史行程为1
+	 * @param stime 开始时间 ，历史行程开始时间为空 2015-10-10 12:31:21
+	 * @param etime 结束时间，历史行程结束时间为空  2015-10-10 12:31:21
+	 * @param distance * 单位:米 总距离
+	 * @param time * 单位:秒 总时间
+	 * @param cadence * 单位:次 总踏频量
+	 * @param calories * 总消耗的卡路里
+	 * @param speedList 当为历史行程是为每百米的平均速度，当为即时行程是为每百秒的平均速度 [10,20,30] 单位 m/s
+	 * @param locationList 移动轨迹，历史行程时为空 [["x1","y1"],["x2","y2"],["x3","y3"]]
+	 * @param maxSpeed 最大速度 * 单位:米/秒
+	 * @return void
+	 * @Description 用户修改信息
+	 */
+	void upLoadTravel(String token,String type,String stime,String etime,String distance,String time,String cadence,String calories,String speedList,String locationList,String maxSpeed);
 	
 }

@@ -1,6 +1,6 @@
 package com.freway.ebike.bluetooth;
 
-import com.freway.ebike.utils.LogUtils;
+import android.content.Context;
 
 /**骑行状态*/
 public class EBikeStatus {
@@ -24,21 +24,6 @@ public class EBikeStatus {
 	private static int bit_2 = 0;
 	private static int bit_1 = 0;
 	private static int bit_0 = 0;
-	/**当前骑行状态数据*/
-	private static byte bikeStatus;
-	/**获取骑行状态数据*/
-	public static byte getBikeStatus() {
-		return bikeStatus;
-	}
-	/**获取短信提醒状态*/
-	public static int getReceiveMessageStatus(){
-		return bit_6;
-	}
-	/**获取电话提醒状态*/
-	public static int getPhoneCallStatus(){
-		return bit_5;
-	}
-	
 	/**运动*/
 	public final static int BIKING_SPORT = 0;
 	/**电动*/
@@ -57,12 +42,38 @@ public class EBikeStatus {
 	public final static int PHONE_CALL = 7;
 	/**短信*/
 	public final static int RECEIVE_MESSAGE = 8;
+	private Context context;
+	private static EBikeStatus mEBikeStatus;
+	private EBikeStatus(Context context){
+		this.context=context;
+	}
+	public static EBikeStatus getInstance(Context context){
+		if(mEBikeStatus==null){
+			mEBikeStatus=new EBikeStatus(context);
+		}
+		return mEBikeStatus;
+	}
+	
+	/**当前骑行状态数据*/
+	private  byte bikeStatus;
+	/**获取骑行状态数据*/
+	public  byte getBikeStatus() {
+		return bikeStatus;
+	}
+	/**获取短信提醒状态*/
+	public  int getReceiveMessageStatus(){
+		return bit_6;
+	}
+	/**获取电话提醒状态*/
+	public  int getPhoneCallStatus(){
+		return bit_5;
+	}
 	/**
 	 * @param control 控制命令
 	 * @param flag 控制值 1 true,0 false
 	 * 通过传入的控制和值设置骑行状态，并返回设置后的状态数据
 	 * */
-	public static synchronized byte  setBikeStatus(int control,int flag) {
+	public  synchronized byte  setBikeStatus(int control,int flag) {
 		byte result = 0;
 		switch (control) {
 		case BIKING_SPORT:

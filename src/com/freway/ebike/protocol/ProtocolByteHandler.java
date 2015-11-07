@@ -3,10 +3,9 @@ import java.util.HashMap;
 
 import com.freway.ebike.bluetooth.EBikeHistoryData;
 import com.freway.ebike.bluetooth.EBikeTravelData;
-import com.freway.ebike.bluetooth.EBikeStatus;
-import com.freway.ebike.db.DBHelper;
-import com.freway.ebike.db.Travel;
 import com.freway.ebike.utils.LogUtils;
+
+import android.content.Context;
 
 /**
  * @author Nicolls
@@ -59,7 +58,7 @@ public class ProtocolByteHandler {
 	 * 操作码如果为CommandCode.ERROR则表示出错，出错信息在对应的值中
 	 * 
 	 * */
-	public static HashMap<String,Object> parseData(byte[]receiveData) {
+	public static HashMap<String,Object> parseData(Context context,byte[]receiveData) {
 		Protocol mProtocol = new Protocol();
 		mProtocol.parseBytes(receiveData);
 		HashMap<String,Object> map=new HashMap<String, Object>();
@@ -71,10 +70,10 @@ public class ProtocolByteHandler {
 		}else{
 			byte[]data=mProtocol.getParamData();
 			if(CommandCode.SURVEY_RESULT==cmd){//当前行程数据
-				EBikeTravelData.parseBikeData(data);
+				EBikeTravelData.getInstance(context).parseBikeData(data);
 				map.put(EXTRA_DATA, null);
 			}else if(CommandCode.HISTORY==cmd){//历史数据
-				EBikeHistoryData.parseHistoryData(data);
+				EBikeHistoryData.getInstance(context).parseHistoryData(data);
 			}
 		}
 		return map;

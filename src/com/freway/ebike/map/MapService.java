@@ -91,15 +91,15 @@ public class MapService extends Service implements ConnectionCallbacks,
 
 	/** 初始化数据,初始化完成，要把状态返回到UI， */
 	private void initData() {
-		if (EBikeTravelData.travel_id > 0) {
-			if (EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_START
-					|| EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_RESUME) {
+		if (BaseApplication.travelId> 0) {
+			if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_START
+					|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_RESUME) {
 				isRecord = true;
 			} else {
 				isRecord = false;
 			}
 			List<TravelLocation> routes = DBHelper.getInstance(this)
-					.listTravelLocation(EBikeTravelData.travel_id);
+					.listTravelLocation(BaseApplication.travelId);
 			for (int i = 0; i < routes.size(); i++) {
 				TravelLocation from = routes.get(i);
 				TravelLocation to = null;
@@ -155,8 +155,8 @@ public class MapService extends Service implements ConnectionCallbacks,
 
 					break;
 				case BlueToothConstants.BLE_STATE_CONNECTED:
-					LogUtils.i(TAG, "map service BLE_STATE_CONNECTED "+EBikeTravelData.travel_state);
-					if (EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_PAUSE) {
+					LogUtils.i(TAG, "map service BLE_STATE_CONNECTED "+BaseApplication.travelState);
+					if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_PAUSE) {
 						BaseApplication.sendStateChangeBroadCast(context, TravelConstant.TRAVEL_STATE_RESUME);
 					}
 					break;
@@ -164,8 +164,8 @@ public class MapService extends Service implements ConnectionCallbacks,
 
 					break;
 				case BlueToothConstants.BLE_STATE_DISCONNECTED:
-					if (EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_START
-							|| EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_RESUME) {
+					if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_START
+							|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_RESUME) {
 						BaseApplication.sendStateChangeBroadCast(context, TravelConstant.TRAVEL_STATE_PAUSE);
 					}
 					break;
@@ -181,8 +181,8 @@ public class MapService extends Service implements ConnectionCallbacks,
 //		LogUtils.i(TAG, "onLocationChanged" + location.getLatitude() + "--"
 //				+ location.getLongitude());
 		TravelLocation travelLocation = new TravelLocation(location);
-		travelLocation.setTravelId(EBikeTravelData.travel_id);
-		travelLocation.setSpeed(EBikeTravelData.travel_insSpeed);
+		travelLocation.setTravelId(BaseApplication.travelId);
+		travelLocation.setSpeed(EBikeTravelData.getInstance(this).insSpeed);
 		travelLocation.setAltitude(location.getAltitude());
 		float pointDistance = 0;
 		if (fromLocation != null) {
@@ -198,7 +198,7 @@ public class MapService extends Service implements ConnectionCallbacks,
 			toLocation = travelLocation;
 		}
 		if (isRecord && pointDistance > RECORD_MIN_DISTANCE) {// 正在记录，并且两点的距离必须要大于最小记录距离值才记录
-			EBikeTravelData.travel_altitude = travelLocation.getLocation()
+			EBikeTravelData.getInstance(this).altitude = travelLocation.getLocation()
 					.getAltitude();
 			// 判断是开始的位置
 			if (currentLocation == null) {// 如果是开始，则通知行程开始
@@ -212,7 +212,7 @@ public class MapService extends Service implements ConnectionCallbacks,
 					TravelConstant.ACTION_MAP_SERVICE_LOCATION_CHANGE,
 					travelLocation, fromLocation, toLocation);// 当前位置
 			// 记录数据
-			travelLocation.setTravelId(EBikeTravelData.travel_id);
+			travelLocation.setTravelId(BaseApplication.travelId);
 			DBHelper.getInstance(this).insertTravelLocation(currentLocation);
 		}
 	}
@@ -233,7 +233,7 @@ public class MapService extends Service implements ConnectionCallbacks,
 		toLocation = null;
 		currentLocation = null;
 		isRecord = true;
-		LogUtils.i(TAG, "行程ID－－" + EBikeTravelData.travel_id);
+		LogUtils.i(TAG, "行程ID－－" + BaseApplication.travelId);
 	}
 
 	/** 暂停 */
@@ -264,9 +264,9 @@ public class MapService extends Service implements ConnectionCallbacks,
 
 	/** 退出应用 */
 	public void exit() {
-		if (EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_NONE
-				|| EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_STOP
-				|| EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_COMPLETED) {// 这些情况将不需要记录并且开启定位功能了
+		if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_NONE
+				|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_STOP
+				|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_COMPLETED) {// 这些情况将不需要记录并且开启定位功能了
 			mGoogleApiClient.disconnect();
 			unregisterReceiver(mStateReceiver);
 			unregisterReceiver(mBleStateReceiver);

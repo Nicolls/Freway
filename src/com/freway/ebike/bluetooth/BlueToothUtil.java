@@ -131,8 +131,8 @@ public class BlueToothUtil {
 	}
 
 	/** 设置travel状态 */
-	public void setBikeState(int control, int flag) {
-		EBikeStatus.setBikeStatus(control, flag);
+	public void setBikeState(Context context,int control, int flag) {
+		EBikeStatus.getInstance(context).setBikeStatus(control, flag);
 	}
 
 	/** 接收发送数据返回 */

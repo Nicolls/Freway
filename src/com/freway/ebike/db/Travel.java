@@ -15,14 +15,51 @@ public class Travel implements Parcelable {
 	static SimpleDateFormat format = new SimpleDateFormat(
 			"yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 	private long id = -1;
+	
+	/**
+	 * @Fields type 行程类别 实时行程0，历史行程1
+	 */
+	private int type;
+	/**
+	 * @Fields sync 是否同步到云端 是为1，否为0
+	 */
+	private int sync;
+	
+	/**
+	 * @Fields startTime 开始时间 ，历史行程开始时间为空  上传时需用格式化成2015-10-10 12:31:21
+	 */
 	private long startTime;
+	/**
+	 * @Fields endTime 结束时间，历史行程结束时间为空  上传时，需要格式化成2015-10-10 12:31:21
+	 */
 	private long endTime;
-	private int avgSpeed;
+	/**
+	 * @Fields avgSpeed 平均速度 单位 m/s
+	 */
+	private int avgSpeed; 
+	/**
+	 * @Fields maxSpeed 最大速度 单位 m/s
+	 */
 	private int maxSpeed;
+	/**
+	 * @Fields spendTime 用时 毫秒 需要格式化成 xx天xx时xx分xx秒
+	 */
 	private long spendTime;
+	/**
+	 * @Fields distance 距离 米
+	 */
 	private float distance;
+	/**
+	 * @Fields calorie 卡路里
+	 */
 	private float calorie;
+	/**
+	 * @Fields cadence 踏频量
+	 */
 	private long cadence;
+	/**
+	 * @Fields altitude 海拔
+	 */
 	private double altitude;
 	public Travel() {}
 	public String formatTime(Date date) {
@@ -53,6 +90,8 @@ public class Travel implements Parcelable {
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeLong(id);
+		dest.writeInt(type);
+		dest.writeInt(sync);
 		dest.writeLong(startTime);
 		dest.writeLong(endTime);
 		dest.writeInt(avgSpeed);
@@ -76,6 +115,8 @@ public class Travel implements Parcelable {
 
 	private Travel(Parcel in) {
 		id = in.readLong();
+		type=in.readInt();
+		sync=in.readInt();
 		startTime = in.readLong();
 		endTime = in.readLong();
 		avgSpeed = in.readInt();
@@ -145,6 +186,18 @@ public class Travel implements Parcelable {
 	}
 	public void setAltitude(double altitude) {
 		this.altitude = altitude;
+	}
+	public int getType() {
+		return type;
+	}
+	public void setType(int type) {
+		this.type = type;
+	}
+	public int getSync() {
+		return sync;
+	}
+	public void setSync(int sync) {
+		this.sync = sync;
 	}
 
 }

@@ -5,20 +5,19 @@ package com.freway.ebike.net;
 
 import java.lang.reflect.Type;
 
-import android.content.Context;
-import android.text.TextUtils;
-
-import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.freway.ebike.model.EBRequest;
 import com.freway.ebike.model.EBResponse;
 import com.freway.ebike.model.RspLogin;
 import com.freway.ebike.model.RspRegister;
+import com.freway.ebike.model.RspUpLoadTravel;
 import com.freway.ebike.model.RspUpdateUserInfo;
 import com.freway.ebike.model.RspUserInfo;
 import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.MD5Tool;
+
+import android.content.Context;
 
 /**
  * 通过volley框架来实现的与服务器交互接口的请求类
@@ -143,6 +142,25 @@ public class EBikeRequestServiceVolleyImpl implements EBikeRequestService {
 		ebReq.setDataParam("birthday", birthday);
 		ebReq.setDataParam("email", email);
 		sendRequest(ebReq, EBikeRequestService.ID_UPDATEUSERINFO, RspUpdateUserInfo.class);
+	}
+
+	@Override
+	public void upLoadTravel(String token, String type, String stime, String etime, String distance, String time,
+			String cadence, String calories, String speedList, String locationList, String maxSpeed) {
+		EBRequest ebReq = new EBRequest(EBikeRequestService.METHOD_UPLOADTRAVEL);
+		ebReq.setDataParam("token", token);
+		ebReq.setDataParam("type", type);
+		ebReq.setDataParam("stime", stime);
+		ebReq.setDataParam("etime", etime);
+		ebReq.setDataParam("distance", distance);
+		ebReq.setDataParam("distance", token);
+		ebReq.setDataParam("time", time);
+		ebReq.setDataParam("cadence", cadence);
+		ebReq.setDataParam("calories", calories);
+		ebReq.setDataParam("speedList", speedList);
+		ebReq.setDataParam("locationList", locationList);
+		ebReq.setDataParam("maxSpeed", maxSpeed);
+		sendRequest(ebReq, EBikeRequestService.ID_UPLOADTRAVEL, RspUpLoadTravel.class);
 	}
 
 }

@@ -130,20 +130,20 @@ public class BlueToothService extends BaseService {
 			String action = intent.getAction();
 			if (TravelConstant.ACTION_UI_SERICE_TRAVEL_STATE_CHANGE
 					.equals(action)) {
-				if (EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_START) {// 开始
+				if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_START) {// 开始
 					if(mRequestHistoryDataThread!=null){
 						mRequestHistoryDataThread.cancel();
 					}
 					startTravel();
-				} else if (EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_PAUSE) {// 暂停
+				} else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_PAUSE) {// 暂停
 					isRequestData = false;
-				} else if (EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_RESUME) {// 恢复
+				} else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_RESUME) {// 恢复
 					isRequestData = true;
-				} else if (EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_COMPLETED) {// 完成
+				} else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_COMPLETED) {// 完成
 					stopTravel();
-				} else if (EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_STOP) {// 停止
+				} else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_STOP) {// 停止
 					stopTravel();
-				} else if (EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_EXIT) {// 退出应用
+				} else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_EXIT) {// 退出应用
 					exitTravel();
 				}
 			}
@@ -172,9 +172,9 @@ public class BlueToothService extends BaseService {
 
 	/** 退出travel */
 	private void exitTravel() {
-		if (EBikeTravelData.travel_state == BlueToothConstants.BLE_STATE_NONE
-				|| EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_COMPLETED
-				|| EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_STOP) {// travel停了
+		if (BaseApplication.travelState == BlueToothConstants.BLE_STATE_NONE
+				|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_COMPLETED
+				|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_STOP) {// travel停了
 			stopService();
 		}
 	}
@@ -402,7 +402,7 @@ public class BlueToothService extends BaseService {
 			} else if (ACTION_SMS.equals(action)) {// 短信
 				sendData = "接收到短信";
 				printlnMessage(sendData);
-				EBikeStatus.setBikeStatus(EBikeStatus.RECEIVE_MESSAGE, 1);
+				EBikeStatus.getInstance(context).setBikeStatus(EBikeStatus.RECEIVE_MESSAGE, 1);
 
 			} else if (ACTION_PHONE.equals(action)) {// 电话
 				sendData = "接收到电话";
@@ -413,7 +413,7 @@ public class BlueToothService extends BaseService {
 				switch (tm.getCallState()) {
 				case TelephonyManager.CALL_STATE_RINGING:
 					printlnMessage("来电");
-					EBikeStatus.setBikeStatus(EBikeStatus.PHONE_CALL, 1);
+					EBikeStatus.getInstance(context).setBikeStatus(EBikeStatus.PHONE_CALL, 1);
 					break;
 				case TelephonyManager.CALL_STATE_OFFHOOK:
 					printlnMessage("挂机");
@@ -476,7 +476,7 @@ public class BlueToothService extends BaseService {
 				printlnMessage("收到数据："
 						+ ProtocolTool.bytesToHexString(receiveData));
 				HashMap<String, Object> map = ProtocolByteHandler
-						.parseData(receiveData);
+						.parseData(BlueToothService.this,receiveData);
 				broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA,null);// 提示UI更新
 				break;
 			case BluetoothConnection.ACTION_GATT_DISCONNECTED:
@@ -519,11 +519,11 @@ public class BlueToothService extends BaseService {
 
 				if (mReceiveCharacteristic != null
 						&& mSendCharacteristic != null) {// 初始化完毕，可以启动心跳包，发送数据了
-					LogUtils.i(tag, "服务特征值已找到，"+EBikeTravelData.travel_state);
-					if (EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_START
-							|| EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_RESUME) {// 说明在运行中
+					LogUtils.i(tag, "服务特征值已找到，"+BaseApplication.travelState);
+					if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_START
+							|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_RESUME) {// 说明在运行中
 						startTravel();
-					}else if(EBikeTravelData.travel_state != TravelConstant.TRAVEL_STATE_PAUSE){
+					}else if(BaseApplication.travelState != TravelConstant.TRAVEL_STATE_PAUSE){
 						syncHistory();//同步历史数据
 					}
 				} else {
@@ -567,24 +567,6 @@ public class BlueToothService extends BaseService {
 
 		}
 	}
-	/**同步数据，完成存储数据*/
-	private void completedSyncData(){
-		LogUtils.i(tag, "数据同步命令发送完成，现在存储历史行程数据 data_id="+EBikeHistoryData.data_id);
-		if (EBikeHistoryData.data_id > 0) {// 说明有读到数据
-			Travel travel = new Travel();
-			travel.setAltitude(EBikeHistoryData.travel_altitude);
-			travel.setAvgSpeed(EBikeHistoryData.travel_avgSpeed);
-			travel.setCadence(EBikeHistoryData.travel_cadence);
-			travel.setCalorie(EBikeHistoryData.travel_calorie);
-			travel.setDistance(EBikeHistoryData.travel_distance);
-			travel.setEndTime(EBikeHistoryData.travel_endTime);
-			travel.setMaxSpeed(EBikeHistoryData.travel_maxSpeed);
-			travel.setSpendTime(EBikeHistoryData.travel_spendTime);
-			travel.setStartTime(EBikeHistoryData.travel_startTime);
-			DBHelper.getInstance(this).insertTravel(travel);
-		}
-	}
-	
 
 	/** 开始读历史数据 */
 	private void syncHistory() {
@@ -609,7 +591,7 @@ public class BlueToothService extends BaseService {
 				// state, false, mStateReceiver);
 				return;
 			} else {// 先发一个回头祯和一个数据
-				EBikeHistoryData.start();
+				EBikeHistoryData.getInstance(BlueToothService.this).start();
 				sendData(CommandCode.HISTORY,
 						new byte[] { EBikeHistoryStatus.setBikeStatus(
 								EBikeHistoryStatus.DATA_INDEX, 0) });// 从头
@@ -633,7 +615,7 @@ public class BlueToothService extends BaseService {
 						+ " 格式化8位是："
 						+ ProtocolTool.byteToBitString(new byte[] { EBikeHistoryStatus
 								.getBikeStatus() }));
-				if (EBikeHistoryData.data_id>0) {//没发完
+				if (EBikeHistoryData.dataId>0) {//没发完
 					LogUtils.i(tag, "记录没有读取完");
 					sendData(CommandCode.HISTORY,
 							new byte[] { EBikeHistoryStatus.setBikeStatus(
@@ -644,7 +626,6 @@ public class BlueToothService extends BaseService {
 					sendData(CommandCode.HISTORY,
 							new byte[] { EBikeHistoryStatus.setBikeStatus(
 									EBikeHistoryStatus.DATA_END, 0) });// 设置为读完了
-					completedSyncData();
 //					broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SYNC_DATA, null);
 					break;
 				}
@@ -679,13 +660,12 @@ public class BlueToothService extends BaseService {
 					&& BluetoothConnection.STATE_CONNECTED == mBlueToothConnction
 							.getState()) {
 				printlnMessage("要发送出去的数据进进制值是："
-						+ EBikeStatus.getBikeStatus()
+						+ EBikeStatus.getInstance(getApplicationContext()).getBikeStatus()
 						+ " 格式化8位是："
-						+ ProtocolTool.byteToBitString(new byte[] { EBikeStatus
-								.getBikeStatus() }));
+						+ ProtocolTool.byteToBitString(new byte[] { EBikeStatus.getInstance(getApplicationContext()).getBikeStatus()}));
 				if (isRequestData) {// 如果是暂停，就不需要再发送获取数据的命令了
 					sendData(CommandCode.SURVEY,
-							new byte[] { EBikeStatus.getBikeStatus() });// 获取蓝牙数据
+							new byte[] { EBikeStatus.getInstance(getApplicationContext()).getBikeStatus()});// 获取蓝牙数据
 				}
 				try {
 					Thread.sleep(REQUESTDATA_SPACING);
@@ -715,7 +695,7 @@ public class BlueToothService extends BaseService {
 			while (isReconnectRunning) {
 				// LogUtils.i(tag,
 				// "正在跑中"+mBluetoothAdapter+"-"+mBluetoothAdapter.isEnabled()+"--"+mBluetoothAdapter.isDiscovering()+"--"+mBlueToothConnction+"--"+mBlueToothConnction.getState());
-				if (EBikeTravelData.travel_state != TravelConstant.TRAVEL_STATE_NONE
+				if (BaseApplication.travelState != TravelConstant.TRAVEL_STATE_NONE
 						&& mBluetoothAdapter != null
 						&& mBluetoothAdapter.isEnabled()
 						&& !isScanning

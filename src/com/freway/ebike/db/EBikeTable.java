@@ -18,6 +18,12 @@ public final class EBikeTable {
         public static final String COLUMN_LOCATION = "location";
     }
     
+    /**平均速度表*/
+    public static abstract class TravelSpeedEntry implements BaseColumns {
+        public static final String TABLE_NAME = "travel_speed";
+        public static final String COLUMN_TRAVEL_ID = "travelId";
+        public static final String COLUMN_SPEED = "speed";
+    }
  	/**蓝牙数据表*/
     public static abstract class TravelBluetoothEntry implements BaseColumns {
         public static final String TABLE_NAME = "travel_bluetooth";
@@ -27,6 +33,8 @@ public final class EBikeTable {
     /**行程表*/
     public static abstract class TravelEntry implements BaseColumns {
         public static final String TABLE_NAME = "travel";
+        public static final String COLUMN_TYPE = "type";
+        public static final String COLUMN_SYNC = "sync";
         public static final String COLUMN_STARTTIME = "startTime";
         public static final String COLUMN_ENDTIME = "endTime";
         public static final String COLUMN_AVGSPEED = "avgSpeed";
