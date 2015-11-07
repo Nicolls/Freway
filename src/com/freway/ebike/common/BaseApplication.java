@@ -7,14 +7,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
+import android.text.TextUtils;
 
+import com.facebook.FacebookSdk;
+import com.freway.ebike.bluetooth.BLEScanConnectActivity;
 import com.freway.ebike.bluetooth.BlueToothConstants;
 import com.freway.ebike.bluetooth.BlueToothService;
+import com.freway.ebike.bluetooth.BlueToothUtil;
 import com.freway.ebike.bluetooth.EBikeTravelData;
 import com.freway.ebike.db.DBHelper;
 import com.freway.ebike.db.Travel;
 import com.freway.ebike.map.TravelConstant;
 import com.freway.ebike.utils.AlertUtil;
+import com.freway.ebike.utils.SPUtils;
 import com.freway.ebike.utils.ToastUtils;
 
 /**
@@ -26,8 +31,12 @@ public class BaseApplication extends Application{
 	public static int travelState=TravelConstant.TRAVEL_STATE_NONE;
 	@Override
 	public void onCreate() {
-		// TODO Auto-generated method stub
 		super.onCreate();
+		initSdk();
+	}
+	/**初始化第三方sdk*/
+	private void initSdk(){
+		FacebookSdk.sdkInitialize(this.getApplicationContext());
 	}
 	
 	/**
@@ -41,13 +50,12 @@ public class BaseApplication extends Application{
 	public static void sendStateChangeBroadCast(Context context,int state){
 		if(state==TravelConstant.TRAVEL_STATE_START||state==TravelConstant.TRAVEL_STATE_RESUME){//要去检查蓝牙有没有断线
 			if(BlueToothService.ble_state!=BlueToothConstants.BLE_STATE_CONNECTED){//未链接，则要提示用户去链接
-//				if(context instanceof Activity){//是activity的话就弹出框
-//					AlertUtil.alertConnectBle(context);
-					ToastUtils.toast(context, "ble dis connected ,and is reconnect now please hold on..");
-					state=TravelConstant.TRAVEL_STATE_PAUSE;
-					EBikeTravelData.getInstance(context).pause();
-//				}
-//				return;
+				if(TextUtils.isEmpty(SPUtils.getEBkieAddress(context))){
+					BlueToothUtil.toBindBleActivity(context,BLEScanConnectActivity.HANDLE_SCAN);
+				}else{
+					BlueToothUtil.toBindBleActivity(context,BLEScanConnectActivity.HANDLE_CONNECT);
+				}
+				return;
 			}
 		}
 		travelState=state;

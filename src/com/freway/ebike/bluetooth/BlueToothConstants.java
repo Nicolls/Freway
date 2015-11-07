@@ -24,8 +24,7 @@ public interface BlueToothConstants {
 	
 	public static final int RESULT_SUCCESS=0;
 	public static final int RESULT_FAIL=-1;
-
-	
+	public static final int RESULT_COMPLETED=1;
     /**
      * @Fields BLUETOOTH_ACTION_HANDLE_SERVER 控制服务
      */
@@ -39,7 +38,10 @@ public interface BlueToothConstants {
      * @Fields BLUETOOTH_ACTION_HANDLE_EXTRA 操作传入的参数
      */
     public static final String EXTRA_DATA="EXTRA_DATA";
-   
+    /**
+     * @Fields BLUETOOTH_ACTION_HANDLE_EXTRA 操作传入的参数
+     */
+    public static final String EXTRA_STATUS="EXTRA_STATUS";
     /**
      * @Fields HANDLE_SERVER_SCAN 扫描
      */

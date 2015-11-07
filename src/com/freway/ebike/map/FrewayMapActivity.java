@@ -2,7 +2,7 @@ package com.freway.ebike.map;
 
 import com.freway.ebike.R;
 import com.freway.ebike.bluetooth.BlueToothConstants;
-import com.freway.ebike.bluetooth.BlueToothScanActivity;
+import com.freway.ebike.bluetooth.BLEScanConnectActivity;
 import com.freway.ebike.bluetooth.BlueToothUtil;
 import com.freway.ebike.bluetooth.EBikeStatus;
 import com.freway.ebike.bluetooth.EBikeTravelData;

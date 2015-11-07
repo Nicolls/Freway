@@ -15,25 +15,4 @@ public class AlertUtil {
 		AlertDialog.Builder builder=new Builder(context);
 		builder.setTitle("tip").setMessage(message).setNegativeButton("no", noClick).setPositiveButton("yes", yesClick).create().show();
 	}
-	/**重新去链接蓝牙*/
-	public static  void alertConnectBle(final Context context){
-		AlertDialog.Builder builder=new Builder(context);
-		builder.setTitle("ble diconnect").setMessage("want to Manual link").
-		setNegativeButton("auto",
-				new OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-				
-			}
-		}).setPositiveButton("manual", new OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-				BlueToothUtil.toScanBleActivity(context);
-			}
-		}).create().show();
-	}
 }

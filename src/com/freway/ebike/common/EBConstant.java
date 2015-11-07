@@ -4,6 +4,12 @@ package com.freway.ebike.common;
 public class EBConstant {
 	/** 客户端类型 */
 	public static final String CLIENT_TYPE = "EB Android";
+	
+	/**登录类型*/
+	public static final int LOGIN_TYPE_NORMAL=0;
+	public static final int LOGIN_TYPE_FACEBOOK=1;
+	public static final int LOGIN_TYPE_TWITTER=2;
+	
 	/** 概览页面资源利用 率html */
 	public static final String APP_DOWNLOAD_APK_NAME = "eBike.apk";
 	public static final String DEFAULT_HOST="www.ifreway.com/app/index.php";
