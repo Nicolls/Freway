@@ -2,23 +2,23 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
         -->
     </style>
 
-     <!-- Application theme. -->
+    <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
-    
-    <style name="GVLoadingDialog" parent="@android:style/Theme.Dialog"> 
-        <item name="android:windowBackground"> @android:color/transparent </item>  
+
+    <style name="GVLoadingDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground"> @android:color/transparent </item>
         <item name="android:backgroundDimEnabled">false</item>
     </style>
     <!-- sign -->
@@ -89,6 +89,7 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">22sp</item>
     </style>
+
     <style name="TopBarRightText">
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_alignParentRight">true</item>
@@ -179,6 +180,7 @@
         <item name="android:paddingLeft">@dimen/battery_state_paddingHorizontal</item>
         <item name="android:paddingRight">@dimen/battery_state_paddingHorizontal</item>
     </style>
+
     <style name="BatteryStateTipText">
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:gravity">center_vertical</item>
@@ -244,7 +246,7 @@
 
     <style name="SpeedStateValueText">
         <item name="android:minEms">2</item>
-         <item name="android:layout_centerInParent">true</item>
+        <item name="android:layout_centerInParent">true</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">22sp</item>
     </style>
@@ -262,23 +264,27 @@
         <item name="android:background">@drawable/profile_icon_ellipse</item>
         <item name="android:layout_gravity">center_horizontal</item>
     </style>
-     <style name="ProfileName">
+
+    <style name="ProfileName">
         <item name="android:layout_marginLeft">@dimen/profile_pic_text_padding</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/white</item>
     </style>
-     <style name="ProfileTravelCountLL">
+
+    <style name="ProfileTravelCountLL">
         <item name="android:layout_weight">1</item>
         <item name="android:background">@drawable/profile_rectangle</item>
         <item name="android:layout_marginLeft">@dimen/profile_total_time_hor_spacing</item>
         <item name="android:layout_marginRight">@dimen/profile_total_time_hor_spacing</item>
         <item name="android:gravity">center</item>
     </style>
+
     <style name="ProfileTotalValue">
         <item name="android:textSize">60sp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:layout_centerHorizontal">true</item>
     </style>
+
     <style name="ProfileTotalUnit">
         <item name="android:layout_marginTop">@dimen/profile_total_time_ver_spacing</item>
         <item name="android:layout_marginBottom">@dimen/profile_total_time_ver_spacing</item>
@@ -286,14 +292,16 @@
         <item name="android:textColor">@color/text_white_smoke</item>
         <item name="android:layout_centerHorizontal">true</item>
     </style>
-     <style name="ProfileNavImageButtonLL">
+
+    <style name="ProfileNavImageButtonLL">
         <item name="android:paddingLeft">@dimen/profile_imagebutton_ll_paddingHorizontal</item>
         <item name="android:paddingRight">@dimen/profile_imagebutton_ll_paddingHorizontal</item>
         <item name="android:paddingTop">@dimen/profile_imagebutton_ll_paddingVertical</item>
         <item name="android:paddingBottom">@dimen/profile_imagebutton_ll_paddingVertical</item>
         <item name="android:background">@drawable/profile_rectangle_selector</item>
     </style>
-     <style name="ProfileNavText">
+
+    <style name="ProfileNavText">
         <item name="android:layout_marginLeft">@dimen/profile_imagebutton_tv_marginLeft</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/text_white_gray</item>
@@ -315,36 +323,61 @@
         <item name="android:background">@drawable/settings_button_rectangle</item>
         <item name="android:padding">@dimen/setting_cicle_btn_padding</item>
     </style>
-     <style name="SettingProfileText">
+
+    <style name="SettingProfileText">
         <item name="android:layout_weight">1</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">14sp</item>
     </style>
+
     <style name="SettingProfileTextLeft" parent="SettingProfileText">
         <item name="android:gravity">left</item>
     </style>
+
     <style name="SettingProfileTextRight" parent="SettingProfileText">
         <item name="android:gravity">right</item>
     </style>
-<style name="SettingMyEbike">
+
+    <style name="SettingMyEbike">
         <item name="android:layout_marginLeft">@dimen/setting_cicle_btn_marginHorizontal</item>
         <item name="android:drawableLeft">@drawable/settings_icon_bike</item>
         <item name="android:paddingLeft">@dimen/setting_cicle_btn_padding</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">14sp</item>
     </style>
-    
- <style name="SettingBtnText">
+
+    <style name="SettingBtnText">
         <item name="android:layout_weight">1</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">14sp</item>
     </style>
+
     <style name="SettingBtnTextLeft" parent="SettingBtnText">
         <item name="android:gravity">left</item>
         <item name="android:layout_gravity">left</item>
     </style>
+
     <style name="SettingBtnTextRight" parent="SettingBtnText">
         <item name="android:gravity">right</item>
         <item name="android:layout_gravity">right</item>
+    </style>
+	<!-- ble -->
+	<style name="BleScanThem" parent="Theme.AppCompat.Dialog">
+       <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+	<style name="BleItemText">
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@color/transparent</item>
+    </style>
+    <style name="BleButton">
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginLeft">@dimen/ble_btn_marginLeft</item>
+        <item name="android:background">@drawable/ble_btn</item>
     </style>
 </resources>

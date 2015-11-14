@@ -64,7 +64,7 @@ public class BlueToothUtil {
 	public void initBle(final Handler updateUiHandler) {
 		receiveSendData(updateUiHandler);
 		if (TextUtils.isEmpty(SPUtils.getEBkieAddress(context))) {// 未绑定
-			AlertUtil.alertNormal(context, "未绑定蓝牙，现在绑定", new OnClickListener() {
+			AlertUtil.alertNormal(context, context.getString(R.string.ble_not_bind), new OnClickListener() {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -86,6 +86,27 @@ public class BlueToothUtil {
 //			// 开始同步
 //			syncData(syncHandler);
 //		}
+	}
+	
+	/** 初始化 */
+	public void bleConnect() {
+		if (BlueToothService.ble_state!=BlueToothConstants.BLE_STATE_CONNECTED) {// 未绑定
+			AlertUtil.alertNormal(context, context.getString(R.string.ble_not_connect), new OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+					toBindBleActivity(context,BLEScanConnectActivity.HANDLE_SCAN);
+				}
+			}, new OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
+
+		}
 	}
 
 	/** 退出服务 */

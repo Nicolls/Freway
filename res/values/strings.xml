@@ -4,7 +4,7 @@
     <string name="app_name">eBike</string>
 
     <!-- 第三方sdk -->
-    <string name="app_id">1668278680085158</string>
+    <string name="app_id">748116458653988</string>
 
     <!-- toast提示，弹出框 -->
     <string name="not_support_bluetooth">您的设备不支持蓝牙</string>
@@ -22,7 +22,19 @@
     <string name="http_request_error">请求服务器异常，请检查网络服务器设置或者联系管理员</string>
     <string name="http_request_error_relogin">请求服务器异常，请重新登录</string>
     <string name="honey_tip">Tip</string>
-    <!-- UI -->
+    <string name="login_failt">login fail</string>
+    <string name="email_incorrect">Email incorrect</string>
+    <string name="confirm_password_not_match">Confirm password not match</string>
+    <string name="email_can_not_be_null">Email can not be null</string>
+    <string name="username_can_not_be_null">Username can not be null</string>
+    <string name="password_can_not_be_null">Password can not be null</string>
+    <string name="confirm_password_can_not_be_null">Confirm password can not be null</string>
+    <!-- ble -->
+    <string name="tip">Tip</string>
+    <string name="scan">Scan</string>
+    <string name="manul">Manul</string>
+    <string name="ble_not_bind">eBike not bind go to bind ebike?</string>
+    <string name="ble_not_connect">eBike not connect go to connect ebike?</string>
     <!-- 通用 -->
     <string name="back">Back</string>
     <string name="menu">Menu</string>
@@ -39,6 +51,7 @@
     <string name="test_value_3">357</string>
     <string name="test_value_4">1200</string>
     <string name="test_value_time">00:00:00</string>
+    <!-- ui -->
     <string name="loading">Loading...</string>
     <string name="email">Email</string>
     <string name="password">Password</string>

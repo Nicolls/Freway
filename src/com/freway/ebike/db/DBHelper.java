@@ -50,7 +50,7 @@ public class DBHelper extends SQLiteOpenHelper {
 						+ " TEXT," + TravelLocationEntry.COLUMN_LOCATION + " TEXT" + ");");
 		// 平均速度表
 		sqliteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TravelSpeedEntry.TABLE_NAME + " (" + TravelSpeedEntry._ID
-				+ " INTEGER PRIMARY KEY AUTOINCREMENT," + TravelSpeedEntry.COLUMN_SPEED + " INTEGER");
+				+ " INTEGER PRIMARY KEY AUTOINCREMENT," + TravelSpeedEntry.COLUMN_TRAVEL_ID + " INTEGER,"+ TravelSpeedEntry.COLUMN_SPEED + " INTEGER"+");");
 
 		// 蓝牙数据表
 		sqliteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TravelBluetoothEntry.TABLE_NAME + " ("
@@ -60,8 +60,9 @@ public class DBHelper extends SQLiteOpenHelper {
 		// 行程表
 		sqliteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TravelEntry.TABLE_NAME + " (" + TravelEntry._ID
 				+ " INTEGER PRIMARY KEY AUTOINCREMENT," 
-				+ TravelEntry.COLUMN_STARTTIME + " INTEGER,"
+				+ TravelEntry.COLUMN_TYPE + " INTEGER,"
 				+ TravelEntry.COLUMN_SYNC + " INTEGER,"
+				+ TravelEntry.COLUMN_STARTTIME + " INTEGER,"
 				+ TravelEntry.COLUMN_ENDTIME + " INTEGER," + TravelEntry.COLUMN_AVGSPEED + " INTEGER,"
 				+ TravelEntry.COLUMN_MAXSPEED + " INTEGER," + TravelEntry.COLUMN_SPENDTIME + " INTEGER,"
 				+ TravelEntry.COLUMN_DISTANCE + " REAL," + TravelEntry.COLUMN_CALORIE + " REAL,"

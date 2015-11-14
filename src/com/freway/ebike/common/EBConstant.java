@@ -2,6 +2,14 @@ package com.freway.ebike.common;
 
 /** 常量类 */
 public class EBConstant {
+	/**UI*/
+	public static final int MODEL_DAY = 0;
+	public static final int MODEL_NIGHT = 1;
+
+	public static final int GEAR0 = 0;
+	public static final int GEAR1 = 1;
+	public static final int GEAR2 = 2;
+	public static final int GEAR3 = 3;
 	/** 客户端类型 */
 	public static final String CLIENT_TYPE = "EB Android";
 	

@@ -1,4 +1,4 @@
-package com.freway.ebike.map;
+package com.freway.ebike.activity;
 
 import com.freway.ebike.R;
 import com.freway.ebike.bluetooth.BlueToothConstants;
@@ -7,6 +7,8 @@ import com.freway.ebike.bluetooth.BlueToothUtil;
 import com.freway.ebike.bluetooth.EBikeStatus;
 import com.freway.ebike.bluetooth.EBikeTravelData;
 import com.freway.ebike.common.BaseApplication;
+import com.freway.ebike.map.MapUtil;
+import com.freway.ebike.map.TravelConstant;
 import com.freway.ebike.utils.AlertUtil;
 import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.SPUtils;

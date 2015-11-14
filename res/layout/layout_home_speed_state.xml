@@ -6,10 +6,9 @@
 
     <ImageView
         android:id="@+id/speed_state_arrow_top"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/model_day_view_background"
-        android:src="@drawable/speed_state_view_arrow_top_day" />
+        android:background="@drawable/speed_state_view_arrow_top_day" />
 
     <RelativeLayout
         android:id="@+id/speed_state_content"
@@ -33,19 +32,20 @@
             android:layout_marginTop="@dimen/speed_state_speed_view_marginTop"
             android:src="@drawable/speed_state_view_holder" />
 
-        <ImageButton
+        <com.freway.ebike.view.ClickImageButton
             android:id="@+id/speed_state_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/speed_state_speed_btn_marginTop"
             android:background="@null"
-            android:src="@drawable/speed_state_btn_selector" />
+            android:src="@drawable/speed_state_view_btn_disable" />
 
         <TextView
             android:id="@+id/speed_state_speed_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="0"
             android:layout_marginTop="@dimen/speed_state_speed_text_marginTop"
             style="@style/SpeedStateSpeedText" />
 
@@ -53,7 +53,7 @@
             android:id="@+id/speed_state_ll_cal_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/speed_state_btn"
+            android:layout_alignBottom="@id/speed_state_cicle_view"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/speed_state_cal_time_marginTop" >
 
@@ -234,8 +234,8 @@
 
     <ImageView
         android:id="@+id/speed_state_arrow_bottom"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/speed_state_view_arrow_bottom_day" />
+        android:background="@drawable/speed_state_view_arrow_bottom_day" />
 
 </LinearLayout>

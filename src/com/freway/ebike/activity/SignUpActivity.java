@@ -1,17 +1,24 @@
 package com.freway.ebike.activity;
 
 import com.freway.ebike.R;
+import com.freway.ebike.common.BaseActivity;
+import com.freway.ebike.model.RspRegister;
+import com.freway.ebike.net.EBikeRequestService;
+import com.freway.ebike.utils.CommonUtil;
 import com.freway.ebike.utils.FontUtil;
+import com.freway.ebike.utils.SPUtils;
+import com.freway.ebike.utils.ToastUtils;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.view.TextureView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class SignUpActivity extends AppCompatActivity {
+public class SignUpActivity extends BaseActivity {
 
 	private TextView mTvSignup;
 	private EditText mEtEmail;
@@ -36,9 +43,7 @@ public class SignUpActivity extends AppCompatActivity {
 			
 			@Override
 			public void onClick(View v) {
-				Intent intent=new Intent(SignUpActivity.this,HomeActivity.class);
-				startActivity(intent);
-				finish();
+				signUp();
 			}
 		});
 	}
@@ -54,6 +59,53 @@ public class SignUpActivity extends AppCompatActivity {
 		
 		//未有的
 		((TextView)findViewById(R.id.sign_title)).setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
+	}
+	
+	private void signUp(){
+		String email=mEtEmail.getText().toString();
+		String password=mEtPassword.getText().toString();
+		String userName=mEtUsername.getText().toString();
+		String confirmPassword=mEtConfirmPassword.getText().toString();
+		if(TextUtils.isEmpty(email)){
+			ToastUtils.toast(this, getString(R.string.email_can_not_be_null));
+			return;
+		}
+		if(TextUtils.isEmpty(userName)){
+			ToastUtils.toast(this, getString(R.string.username_can_not_be_null));
+			return;
+		}
+		if(TextUtils.isEmpty(password)){
+			ToastUtils.toast(this, getString(R.string.password_can_not_be_null));
+			return;
+		}
+		if(TextUtils.isEmpty(confirmPassword)){
+			ToastUtils.toast(this, getString(R.string.confirm_password_can_not_be_null));
+			return;
+		}
+		if(!CommonUtil.isEmail(email)){
+			ToastUtils.toast(this, getString(R.string.email_incorrect));
+			return;
+		}
+		if(!TextUtils.equals(password, confirmPassword)){
+			ToastUtils.toast(this, getString(R.string.confirm_password_not_match));
+			return;
+		}
+		mEBikeRequestService.register(email, userName, password);
+		
+	}
+
+	@Override
+	public void dateUpdate(int id, Object obj) {
+		switch(id){
+		case EBikeRequestService.ID_REGISTER:
+			RspRegister rsp=(RspRegister) obj;
+			SPUtils.setToken(this,rsp.getData().getToken());
+			openActivity(HomeActivity.class, null, true);
+			break;
+			default:
+				break;
+		}
+		
 	}
 
 }

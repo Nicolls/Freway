@@ -10,7 +10,7 @@
 	<color name="model_day_battery_background">#1c2127</color>
 	<!-- <color name="model_night_bar_background1">#1c2127</color>
 	<color name="model_day_bar_background2">#bababa</color> -->
-	
+	<color name="ble_scan_connect_bg">#292f3a</color>
 	<color name="battery_cicle_value_color">#da4129</color>
 	<color name="battery_cicle_bg_color">#1c2027</color>
 	<color name="view_line_color">#bababa</color>
