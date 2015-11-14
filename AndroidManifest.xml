@@ -55,34 +55,24 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name="com.freway.ebike.activity.MainActivity"
+            android:name="com.freway.ebike.activity.SignInActivity"
             android:label="@string/app_name" >
-
-            <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            -->
-
         </activity>
-        <activity
-            android:name="com.freway.ebike.activity.LoginActivity"
-            android:label="@string/app_name" >
-
-            
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            
-
+        <activity android:name="com.freway.ebike.activity.SignUpActivity" >
         </activity>
-        <activity
-            android:name="com.freway.ebike.activity.RegisterActivity"
-            android:label="@string/app_name" />
+        <activity android:name="com.freway.ebike.activity.HomeActivity" >
+        </activity>
+        <activity android:name="com.freway.ebike.activity.ProfileActivity" >
+        </activity>
+        <activity android:name="com.freway.ebike.activity.SettingActivity" >
+        </activity>
+        <activity android:name="com.freway.ebike.activity.WebViewActivity" >
+        </activity>
         <activity
             android:name="com.freway.ebike.activity.TestActivity"
             android:label="@string/app_name" >

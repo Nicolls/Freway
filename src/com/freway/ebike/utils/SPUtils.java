@@ -31,6 +31,7 @@ public class SPUtils {
 	
 	// 用户相关
 	public static final String SP_USER = "SP_USER";
+	public static final String SP_USER_EMAIL = "SP_USER_EMAIL";
 	public static final String SP_USER_USERNAME = "SP_USER_USERNAME";
 	public static final String SP_USER_PASSWORD = "SP_USER_PASSWORD";
 	public static final String SP_USER_AUTO_LOGIN = "SP_USER_AUTO_LOGIN";
@@ -39,9 +40,24 @@ public class SPUtils {
 	public static final String SP_USER_TOKEN = "SP_USER_TOKEN";
 //	public static final String SP_USER_TRAVEL_ID = "SP_USER_TRAVEL_ID";//行程ID
 
-	public static final String SP_USER_LOGIN_TYPE = "SP_USER_LOGIN_TYPE";
+	public static final String SP_USER_SIGNIN_TYPE = "SP_USER_SIGNIN_TYPE";
+	public static final String SP_USER_UI_MODEL = "SP_USER_UI_MODEL";
+	public static final String SP_USER_UNIT_OF_DISTANCE = "SP_USER_UNIT_OF_DISTANCE";
 	public static final String SP_USER_TRAVEL_MAP = "SP_USER_TRAVEL_MAP";//地图行程数据
 
+	/** 获取登录邮箱 */
+	public static String getEmail(Context context) {
+		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+		String email = sp.getString(SP_USER_EMAIL, "");
+		return email;
+	}
+
+	/** 设置登录邮箱 */
+	public static boolean setEmail(Context context, String email) {
+		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+		boolean isOk = sp.edit().putString(SP_USER_EMAIL, email).commit();
+		return isOk;
+	}
 	/** 获取登录用户名 */
 	public static String getUsername(Context context) {
 		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
@@ -220,16 +236,42 @@ public class SPUtils {
 //	}
 	
 	/** 获取登录类型 */
-	public static int getLoginType(Context context) {
+	public static int getSigninType(Context context) {
 		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
-		int loginType = sp.getInt(SP_USER_LOGIN_TYPE, 0);
-		return loginType;
+		int signinType = sp.getInt(SP_USER_SIGNIN_TYPE, 0);
+		return signinType;
 	}
 
 	/** 保存登录类型 */
-	public static boolean setLoginType(Context context, int loginType) {
+	public static boolean setSigninType(Context context, int signinType) {
 		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
-		boolean isOk = sp.edit().putInt(SP_USER_LOGIN_TYPE, loginType).commit();
+		boolean isOk = sp.edit().putInt(SP_USER_SIGNIN_TYPE, signinType).commit();
+		return isOk;
+	}
+	/** 获取行程单位 */
+	public static int getUnitOfDistance(Context context) {
+		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+		int unitOfDistance = sp.getInt(SP_USER_UNIT_OF_DISTANCE, 0);
+		return unitOfDistance;
+	}
+
+	/** 保存行程显示模式 */
+	public static boolean setUnitOfDistance(Context context, int unitOfDistance) {
+		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+		boolean isOk = sp.edit().putInt(SP_USER_UNIT_OF_DISTANCE, unitOfDistance).commit();
+		return isOk;
+	}
+	/** 获取UI显示模式 */
+	public static int getUiModel(Context context) {
+		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+		int model = sp.getInt(SP_USER_UI_MODEL, 0);
+		return model;
+	}
+
+	/** 保存UI显示模式 */
+	public static boolean setUiModel(Context context, int model) {
+		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+		boolean isOk = sp.edit().putInt(SP_USER_UI_MODEL, model).commit();
 		return isOk;
 	}
 	/** 获取last travel*/

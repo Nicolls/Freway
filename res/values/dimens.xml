@@ -1,95 +1,82 @@
 <resources>
 
-    <!-- 文字 大小-->
-    <dimen name="common_textsize_xxl">28sp</dimen>
-    <dimen name="common_textsize_xl">21sp</dimen>
-    <dimen name="common_textsize_l">17sp</dimen>
-    <dimen name="common_textsize_m">15sp</dimen>
-    <dimen name="common_textsize_s">13sp</dimen>
-    <dimen name="common_textsize_xs">11sp</dimen>
-	<!-- 导航条返回图片的padding大小-->
+ <!-- 导航条返回图片的padding大小 -->
     <dimen name="nav_top_bar_btn_horizontal_padding">13dp</dimen>
     <dimen name="nav_top_bar_btn_vertical_padding">10dp</dimen>
-    <dimen name="nav_top_bar_btn_drawablePadding">3dp</dimen>
+    <dimen name="nav_top_bar_btn_drawablePadding">8dp</dimen>
     <!-- 页面加载圆圈大小 -->
     <dimen name="common_loading_size">70dp</dimen>
-        <!-- 服务配置页面padding -->
-    <dimen name="server_config_padding">25dp</dimen>
-    <dimen name="server_config_view_spacing">30dp</dimen>
-    <dimen name="server_config_button_horizontalMargin">15dp</dimen>
-    <!-- 登录页面 -->
-    <dimen name="login_logo_marginTop">80dp</dimen>
-    <dimen name="login_ll_horizontalMargin">30dp</dimen>
-    <dimen name="login_ll_padding">15dp</dimen>
-    <dimen name="login_view_spacing">30dp</dimen>
-    <!-- 首页 -->
-    <dimen name="main_bottom_bar_horizontalPadding">20dp</dimen>
-    <dimen name="main_bottom_bar_verticalPadding">7dp</dimen>
+    <!-- sign in -->
+    <dimen name="sign_logo_marginTop">108dp</dimen>
+    <dimen name="sign_input_layout_margin">35dp</dimen>
+    <dimen name="sign_input_layout_paddingHorizontal">32dp</dimen>
+    <dimen name="sign_input_layout_paddingVertical">25dp</dimen>
+    <dimen name="sign_et_spacing">24dp</dimen>
+    <dimen name="sign_et_paddingHorizontal">8dp</dimen>
+    <dimen name="sign_et_drawable_padding">8dp</dimen>
+    <dimen name="sign_tip_maringVertical">10dp</dimen>
+    <dimen name="sign_btn_spacing">24dp</dimen>
+    <dimen name="sign_btn_fb_twitter_spacing">20dp</dimen>
+    <dimen name="sign_btn_third_margin_right">33dp</dimen>
+    <dimen name="sign_btn_third_margin_bottom">24dp</dimen>
+    <dimen name="sign_btn_sign_up_marginHorizontal">50dp</dimen>
+    <dimen name="sign_btn_sign_up_marginTop">15dp</dimen>
     
-    <dimen name="welcome_title_maringBottom">20dp</dimen>
-    <dimen name="welcome_line_maringHorizontal">50dp</dimen>
-    <dimen name="welcome_line_maringVertical">5dp</dimen>
-    <!-- Item List -->
-     <dimen name="item_grid_layout_paddingHorizontal">15dp</dimen>
-    <dimen name="item_grid_layout_paddingVertical">8dp</dimen>
-    <dimen name="item_layout_paddingHorizontal">15dp</dimen>
-    <dimen name="item_layout_paddingVertical">12dp</dimen>
-    <dimen name="item_small_layout_paddingVertical">6dp</dimen>
-    <dimen name="item_drawable_padding">5dp</dimen>
-    <dimen name="item_tip_marginRight">13dp</dimen>
-    <dimen name="item_arror_marginLeft">5dp</dimen>
-    <dimen name="item_detail_line_maringTop">7dp</dimen>
-    <dimen name="item_num_margin">3dp</dimen>
-    <dimen name="item_num_padding">3dp</dimen>
-    <dimen name="item_grid_spacing">10dp</dimen>
-    <dimen name="item_grid_table_spacing">5dp</dimen>
-    <dimen name="item_grid_table_width">70dp</dimen>
-    <dimen name="item_divider_height">1px</dimen>
-    <!-- 搜索框margin -->
-    <dimen name="search_bar_padding">10dp</dimen>
-    <dimen name="search_bar_search_icon_margin">6dp</dimen>
-    <!-- 申请页面 -->
-    <dimen name="approve_textItem_layout_padding">12dp</dimen>
-    <dimen name="detail_textItem_layout_padding_">10dp</dimen>
-    <!-- 作业详情页面 -->
-    <dimen name="job_detail_grid_marign">5dp</dimen>
-     <dimen name="job_detail_logo_layout_padding">15dp</dimen>
-    <!-- EdittextDrawableLeftPadding -->
-    <dimen name="edit_text_drawable_left">12dp</dimen>
-    <!-- 基本信息详情 -->
-    <dimen name="base_detail_title_maring">15dp</dimen>
+    <!-- custom -->
+    <dimen name="view_line_marginTop">3dp</dimen>
+    <dimen name="view_top_bar_padding">13dp</dimen>
+    <dimen name="icon_title_spacing">7dp</dimen>
+    <dimen name="bike_light_spacing">10dp</dimen>
+    <dimen name="title_value_vertical_spacing">10dp</dimen>
+    <!-- home -->
+    <!-- bike state -->
+    <dimen name="bike_state_paddingHorizontal">20dp</dimen>
+    <dimen name="bike_state_paddingTop">15dp</dimen>
+    <dimen name="bike_state_paddingBottom">3dp</dimen>
     
-    <!-- 我 -->
-    <dimen name="self_logo_padding">30dp</dimen>
-    <dimen name="self_layout_item_paddingHorizontal">17dp</dimen>
-    <dimen name="self_layout_item_paddingVertical">10dp</dimen>
-    <dimen name="self_layout_item_maringBottom">20dp</dimen>
-    <dimen name="self_confirm_btn_maringHorizontal">55dp</dimen>
-    <dimen name="self_confirm_btn_maringVertical">20dp</dimen>
-       <!--刀片 -->
-    <dimen name="blade_component_marginTop">15dp</dimen>
-    <!-- 安全码 -->
-    <dimen name="safe_et_padding">10dp</dimen>
-    <dimen name="safe_et_margin">5dp</dimen>
-    <dimen name="safe_layout_marginHorizontal">25dp</dimen>
-    <dimen name="safe_tv_margin">10dp</dimen>
-     <!-- 详情信息页面编辑按钮-->
-    <dimen name="detail_edit_btn_maring">20dp</dimen>
-    <dimen name="detail_spacing_textview_padding">5dp</dimen>
-     <!-- 引导页面radiobutton marginTop-->
-    <dimen name="guid_rb_btn_marginTop">33dp</dimen>
-    <!-- 反馈页面-->
-    <dimen name="recreate_confirm_marginTop">20dp</dimen>
-    <dimen name="recreate_editText_padding">3dp</dimen>
-    <dimen name="recreate_editText_margin">10dp</dimen>
-    <!-- 概览界面 -->
-    <dimen name="survey_grid_horizontal_spacing">1dp</dimen>
-    <dimen name="survey_grid_vertical_spacing">1dp</dimen>
-    <dimen name="survey_grid_paddingVertical">10dp</dimen>
+     <!-- travel state -->
+     
+    <dimen name="travel_state_paddingHorizontal">20dp</dimen>
+    <dimen name="travel_state_paddingTop">15dp</dimen>
+    <dimen name="travel_state_paddingBottom">3dp</dimen>
     
-    <!-- 监控界面 -->
-    <dimen name="layout_alarm_more_width">65dp</dimen>
-    <dimen name="layout_alarm_more_height">35dp</dimen>
+    <dimen name="travel_state_speedMarginLeft">65dp</dimen>
+    <dimen name="travel_state_speedClearPadding">0dp</dimen><!-- 用于字体本身有padding未解决 -->
+    <dimen name="travel_state_grid_spacing">10dp</dimen>
+    <!-- battery state -->
+     <dimen name="battery_state_paddingHorizontal">20dp</dimen>
+    <dimen name="battery_state_paddingTop">15dp</dimen>
+    <dimen name="battery_state_paddingBottom">3dp</dimen>
+    
+    <!-- speed state -->
+    <dimen name="speed_state_speed_view_marginTop">40dp</dimen>
+    <dimen name="speed_state_speed_btn_marginTop">76dp</dimen>
+    <dimen name="speed_state_speed_text_marginTop">82dp</dimen>
+    <dimen name="speed_state_cal_time_marginTop">28dp</dimen>
+    <dimen name="speed_state_ll_param_marginTop">20dp</dimen>
+    <dimen name="speed_state_param_grid_padding">13dp</dimen>
+    <!-- home -->
+    <dimen name="home_compass_profile_ll_margin">20dp</dimen>
+	<!-- profile -->
+	<dimen name="profile_pic_width_height">130dp</dimen>
+	<dimen name="profile_pic_padding">5dp</dimen>
+	<dimen name="profile_pic_margin">40dp</dimen>
+	<dimen name="profile_name_margin">10dp</dimen>
+	<dimen name="profile_total_time_ver_spacing">5dp</dimen>
+	<dimen name="profile_total_time_hor_spacing">1dp</dimen>
+	<dimen name="profile_pic_text_padding">5dp</dimen>
+	<dimen name="profile_imagebutton_ll_paddingHorizontal">30dp</dimen>
+	<dimen name="profile_imagebutton_ll_paddingVertical">10dp</dimen>
+	<dimen name="profile_imagebutton_tv_marginLeft">60dp</dimen>
+	<!-- setting -->
+	<dimen name="setting_pic_width_height">80dp</dimen>
+	<dimen name="setting_ll_padding_horizontal">30dp</dimen>
+	<dimen name="setting_ll_paddingTop">18dp</dimen>
+	<dimen name="setting_ll_paddingBottom">8dp</dimen>
+	<dimen name="setting_pic_margin">10dp</dimen>
+	<dimen name="setting_cicle_btn_marginTop">10dp</dimen>
+	<dimen name="setting_cicle_btn_marginHorizontal">5dp</dimen>
+	<dimen name="setting_cicle_btn_padding">16dp</dimen>
     
     <!-- 上拉加载，下拉刷新 -->
     <dimen name="pull2refresh_layout_height">60dp</dimen>
@@ -101,15 +88,8 @@
     <dimen name="pull2refresh_time_text_paddingHorizontal">20dp</dimen>
     <!-- 弹出框 -->
     <dimen name="popup_confirm_button_margin">40dp</dimen>
-     <!-- 资 产页面 -->
-    <dimen name="assets_view_list_spacing">20dp</dimen>
-    
     <!-- 没有更多数据 -->
     <dimen name="no_more_data_text_padding">10dp</dimen>
-    
-    <!-- 引导 -->
-    <dimen name="guide_title_magin">7dp</dimen>
-    
     <!-- 更新APP -->
     <dimen name="app_update_nofity_item_margin">5dp</dimen>
 </resources>

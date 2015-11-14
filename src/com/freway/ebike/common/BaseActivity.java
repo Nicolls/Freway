@@ -31,9 +31,6 @@ import com.freway.ebike.view.LoadingDialog;
  *         2015年5月15日
  */
 public abstract class BaseActivity extends AppCompatActivity implements DataUpdateListener {
-	public TextView mNavRightButton;
-	public TextView mNavBack;
-	protected View navTop;
 	protected boolean isLog = true;
 	protected EBikeRequestService mEBikeRequestService;
 	protected TextView mTitleView;
@@ -64,34 +61,6 @@ public abstract class BaseActivity extends AppCompatActivity implements DataUpda
 		return mEBikeRequestService;
 	}
 
-	/** 初始化导航view */
-	protected void initCommonView(String title) {
-		navTop = findViewById(R.id.nav_top_bar);
-		mTitleView = (TextView) findViewById(R.id.nav_top_tv_title);
-		if(mTitleView!=null){
-			mTitleView.setText(title);
-		}
-		mNavBack = (TextView) findViewById(R.id.nav_top_tv_left);
-		if (mNavBack != null) {
-			mNavBack.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					onNavLeft(v);
-				}
-			});
-		}
-		mNavRightButton = (TextView) findViewById(R.id.nav_top_btn_right);
-		if(mNavRightButton!=null){
-			mNavRightButton.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					onNavRight(v);
-				}
-			});
-		}
-	}
 
 	@Override
 	protected void onStart() {

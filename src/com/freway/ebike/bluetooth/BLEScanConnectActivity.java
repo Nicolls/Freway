@@ -45,7 +45,6 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_ble_scan_connect);
-		super.initCommonView("");
 		address=SPUtils.getEBkieAddress(this);
 		handle = getIntent().getIntExtra(HANDLE_EXTRA, HANDLE_CONNECT);
 		mBlueToothUtil = new BlueToothUtil(this, blueHandler);

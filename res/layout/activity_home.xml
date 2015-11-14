@@ -1,0 +1,77 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white" >
+
+    <include
+        android:id="@+id/home_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/view_top_bar_home" />
+
+    <RelativeLayout
+        android:id="@+id/home_content_bike"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/home_top_bar" >
+
+        <include
+            android:id="@+id/home_bike_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/layout_home_bike_state" />
+
+        <include
+            android:id="@+id/home_battery_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/home_bike_state"
+            layout="@layout/layout_home_battery_state"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/home_view_line_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/home_battery_view"
+            layout="@layout/view_line_space" />
+
+        <include
+            android:id="@+id/home_travel_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/home_view_line_top"
+            layout="@layout/layout_home_travel_state" />
+
+        <include
+            android:id="@+id/home_view_line_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/home_travel_state"
+            layout="@layout/view_line_space" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/home_content_map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/home_content_bike"
+        android:background="@drawable/map"
+        android:orientation="vertical" >
+
+       <include 
+           layout="@layout/layout_home_compass"
+           />
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/home_speed_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/home_content_bike"
+        layout="@layout/layout_home_speed_state"
+        android:visibility="gone" />
+
+</RelativeLayout>
