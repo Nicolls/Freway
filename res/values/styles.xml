@@ -380,4 +380,12 @@
         <item name="android:layout_marginLeft">@dimen/ble_btn_marginLeft</item>
         <item name="android:background">@drawable/ble_btn</item>
     </style>
+    <!-- dialog -->
+    <style name="DialogLeftRightText">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:padding">@dimen/dialog_btn_left_right</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_weight">1</item>
+    </style>
 </resources>

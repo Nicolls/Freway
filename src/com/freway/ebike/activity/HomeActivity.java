@@ -90,12 +90,20 @@ public class HomeActivity extends HomeUiActivity implements OnClickListener {
 		
 	}
 	
+	
+	
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		BaseApplication.sendStateChangeBroadCast(this, TravelConstant.TRAVEL_STATE_EXIT);
 		mMapUtil.exit();
 		mBlueToothUtil.exit();
+	}
+	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
 	}
 
 }
