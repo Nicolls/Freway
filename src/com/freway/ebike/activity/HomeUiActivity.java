@@ -56,6 +56,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	private View lineBottomView;
 	private ImageButton mModelBtn;
 	private ImageView mProfileView;
+	private ImageView mLogo;
 	// 车况
 	private BatteryView mBikeStateBatteryView;
 	private TextView mBikeStateBatteryValue;
@@ -151,6 +152,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		lineBottomView = findViewById(R.id.home_view_line_bottom);
 		mProfileView = (ImageView) findViewById(R.id.home_ib_profile);
 		mModelBtn = (ImageButton) findViewById(R.id.home_top_bar_model);
+		mLogo=(ImageView) findViewById(R.id.home_top_bar_logo);
 		// 车况
 		mBikeStateBatteryView = (BatteryView) findViewById(R.id.bike_state_battery_view);
 		mBikeStateBatteryValue = (TextView) findViewById(R.id.bike_state_battery_value);
@@ -311,7 +313,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			public void onClick() {//单击
 				LogUtils.i(tag, "单击"+BaseApplication.travelState);
 				if(BlueToothService.ble_state!=BlueToothConstants.BLE_STATE_CONNECTED){//未连接
-					mBlueToothUtil.bleConnect();
+					mBlueToothUtil.bleConnect(getString(R.string.ble_not_connect),getString(R.string.yes),getString(R.string.no));
 					return;
 				}
 				if(BaseApplication.travelState == TravelConstant.TRAVEL_STATE_PAUSE){
@@ -374,7 +376,73 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	};
 	/** 更新UI的值 */
 	public void updateUiValue() {
-		
+		// 车况
+				mBikeStateBatteryView = (BatteryView) findViewById(R.id.bike_state_battery_view);
+				mBikeStateBatteryValue = (TextView) findViewById(R.id.bike_state_battery_value);
+				mBikeStateBatteryRemaindValue = (TextView) findViewById(R.id.bike_state_battery_remaind_value);
+				mBikeStateBatteryRemaindTitle = (TextView) findViewById(R.id.bike_state_battery_remaind_title);
+				mBikeStateGearIcon = (ImageView) findViewById(R.id.bike_state_gear_icon);
+				mBikeStateGearTitle = (TextView) findViewById(R.id.bike_state_gear_title);
+				mBikeStateGearValue = (TextView) findViewById(R.id.bike_state_gear_value);
+				mBikeStateLightFront = (ImageView) findViewById(R.id.bike_state_light_front_icon);
+				mBikeStateLightBack = (ImageView) findViewById(R.id.bike_state_light_back_icon);
+
+				// 骑行状态
+				mTravelStateSpendTime = (TextView) findViewById(R.id.travel_state_spend_time);
+				mTravelStateCalValue = (TextView) findViewById(R.id.travel_state_cal_value);
+				mTravelStateCalUnit = (TextView) findViewById(R.id.travel_state_cal_unit);
+				mTravelStateSpeedValue = (TextView) findViewById(R.id.travel_state_speed);
+				mTravelStateSpeedUnit = (TextView) findViewById(R.id.travel_state_speed_unit);
+
+				mTravelStateDistanceTitle = (TextView) findViewById(R.id.travel_state_distance_title);
+				mTravelStateDistanceValue = (TextView) findViewById(R.id.travel_state_distance_value);
+				mTravelStateDistanceUnit = (TextView) findViewById(R.id.travel_state_distance_unit);
+
+				mTravelStateAvgSpeedTitle = (TextView) findViewById(R.id.travel_state_avg_title);
+				mTravelStateAvgSpeedValue = (TextView) findViewById(R.id.travel_state_avg_value);
+				mTravelStateAvgSpeedUnit = (TextView) findViewById(R.id.travel_state_avg_unit);
+				mTravelStateAslTitle = (TextView) findViewById(R.id.travel_state_asl_title);
+				mTravelStateAslValue = (TextView) findViewById(R.id.travel_state_asl_value);
+				mTravelStateAslUnit = (TextView) findViewById(R.id.travel_state_asl_unit);
+				mTravelStateCadenceTitle = (TextView) findViewById(R.id.travel_state_cadence_title);
+				mTravelStateCadenceValue = (TextView) findViewById(R.id.travel_state_cadence_value);
+				mTravelStateCadenceUnit = (TextView) findViewById(R.id.travel_state_cadence_unit);
+				// 速度
+				mSpeedStateArrowTopView = (ImageView) findViewById(R.id.speed_state_arrow_top);
+				mSpeedStateArrowBottomView = (ImageView) findViewById(R.id.speed_state_arrow_bottom);
+				mSpeedStateCicleHolder = (ImageView) findViewById(R.id.speed_state_cicle_view);
+				mSpeedStateSpeedView = (SpeedView) findViewById(R.id.speed_state_speed_view);
+				mSpeedStateSpeedText = (TextView) findViewById(R.id.speed_state_speed_text);
+				mSpeedStateSpeedButton = (ClickImageButton) findViewById(R.id.speed_state_btn);
+				mSpeedStateCalValue = (TextView) findViewById(R.id.speed_state_cal_value);
+				mSpeedStateCalUnit = (TextView) findViewById(R.id.speed_state_cal_unit);
+				mSpeedStateSpendTimeValue = (TextView) findViewById(R.id.speed_state_spend_time);
+
+				mSpeedStateDistanceTitle = (TextView) findViewById(R.id.speed_state_distance_title);
+				mSpeedStateDistanceValue = (TextView) findViewById(R.id.speed_state_distance_value);
+				mSpeedStateDistanceUnit = (TextView) findViewById(R.id.speed_state_distance_unit);
+
+				mSpeedStateAvgSpeedTitle = (TextView) findViewById(R.id.speed_state_avg_title);
+				mSpeedStateAvgSpeedValue = (TextView) findViewById(R.id.speed_state_avg_value);
+				mSpeedStateAvgSpeedUnit = (TextView) findViewById(R.id.speed_state_avg_unit);
+
+				mSpeedStateAslTitle = (TextView) findViewById(R.id.speed_state_asl_title);
+				mSpeedStateAslValue = (TextView) findViewById(R.id.speed_state_asl_value);
+				mSpeedStateAslUnit = (TextView) findViewById(R.id.speed_state_asl_unit);
+
+				mSpeedStateCadenceTitle = (TextView) findViewById(R.id.speed_state_cadence_title);
+				mSpeedStateCadenceValue = (TextView) findViewById(R.id.speed_state_cadence_value);
+				mSpeedStateCadenceUnit = (TextView) findViewById(R.id.speed_state_cadence_unit);
+
+				// 电池
+				mBatteryStateBatteryView = (BatteryView) findViewById(R.id.battery_state_battery_view);
+				mBatteryStateBatteryPercent = (TextView) findViewById(R.id.battery_state_battery_percent);
+				mBatteryStateRemaindTip = (TextView) findViewById(R.id.battery_state_remaind_tip);
+				mBatteryStateRemaindValue = (TextView) findViewById(R.id.battery_state_remaind_value);
+				mBatteryStateRemaindUnit = (TextView) findViewById(R.id.battery_state_remaind_unit);
+				mBatteryStateLightFront = (ImageView) findViewById(R.id.battery_state_light_front);
+				mBatteryStateLightBack = (ImageView) findViewById(R.id.battery_state_light_back);
+				mBatteryStateGearText = (TextView) findViewById(R.id.battery_state_gear);
 	}
 	/**BLE stateChange*/
 	public void bleStateChange(int state){
@@ -419,7 +487,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			onProfile();
 			break;
 		case R.id.speed_state_speed_text:// 速度状态下速度值显示text
-			ToastUtils.toast(this, "speed text click");
+//			ToastUtils.toast(this, "speed text click");
 			BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this, TravelConstant.TRAVEL_STATE_PAUSE);
 //			test(TravelConstant.TRAVEL_STATE_PAUSE);
 			break;
@@ -494,9 +562,10 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 
 	private void modelChange() {
 		mBatteryStateBatteryView.onValueChange(EBikeTravelData.getInstance(this).batteryResidueCapacity,
-				SPUtils.getUiModel(this), EBikeTravelData.getInstance(this).assisMode);
+				SPUtils.getUiModel(this), EBikeTravelData.getInstance(this).gear);
 		if (SPUtils.getUiModel(this) == EBConstant.MODEL_NIGHT) {// 由day到night
 			// 电池
+			mLogo.setImageResource(R.drawable.home_freway_logo_night);
 			lineTopView.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
 			lineBottomView.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
 			topBarView.setBackgroundColor(getResources().getColor(R.color.model_night_bar_background));
@@ -526,6 +595,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			mBatteryStateRemaindValue.setTextColor(getResources().getColor(R.color.white));
 			mBatteryStateGearText.setTextColor(getResources().getColor(R.color.white));
 		} else {// 由night到day
+			mLogo.setImageResource(R.drawable.home_freway_logo_day);
 			lineTopView.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));
 			lineBottomView.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));
 			topBarView.setBackgroundColor(getResources().getColor(R.color.model_day_bar_background));

@@ -1,19 +1,46 @@
 package com.freway.ebike.utils;
 
-import com.freway.ebike.R;
-import com.freway.ebike.bluetooth.BlueToothService;
-import com.freway.ebike.bluetooth.BlueToothUtil;
-
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.DialogInterface.OnClickListener;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.TextView;
+
+import com.freway.ebike.R;
 
 public class AlertUtil {
-	public static  void alertNormal(Context context,String message,OnClickListener yesClick,OnClickListener noClick){
-		AlertDialog.Builder builder=new Builder(context);
-		builder.setTitle(context.getString(R.string.tip)).setMessage(message).setNegativeButton(context.getString(R.string.no), noClick).setPositiveButton(context.getString(R.string.yes), yesClick).create().show();
+	public static AlertUtil alertUtil;
+	private static Context context;
+	private AlertDialog dialog;
+	private AlertUtil(){
 	}
+	public static AlertUtil getInstance(Context ctx){
+		context=ctx;
+		if(alertUtil==null){
+			alertUtil=new AlertUtil();
+		}
+		return alertUtil;
+	}
+	public void alertNormal(String message,String leftText,String rightText,OnClickListener leftClick,OnClickListener rightClick){
+		AlertDialog.Builder builder=new Builder(context);
+		View view=LayoutInflater.from(context).inflate(R.layout.layout_dilog_btn_left_right, null);
+		TextView title=(TextView) view.findViewById(R.id.dialog_title);
+		TextView left=(TextView) view.findViewById(R.id.dialog_left);
+		TextView right=(TextView) view.findViewById(R.id.dialog_right);
+		title.setText(message);
+		left.setText(leftText);
+		right.setText(rightText);
+		left.setOnClickListener(leftClick);
+		right.setOnClickListener(rightClick);
+		dialog=builder.setView(view).create();
+		dialog.show();
+//		builder.setMessage(message).setNegativeButton(context.getString(R.string.no), noClick).setPositiveButton(context.getString(R.string.yes), yesClick).create().show();
+	}
+	 public void dismiss(){
+		 if(dialog!=null){
+			 dialog.dismiss();
+		 }
+	 }
 }

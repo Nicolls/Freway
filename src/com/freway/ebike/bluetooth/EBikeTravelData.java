@@ -132,7 +132,8 @@ public class EBikeTravelData implements Serializable {
 	 */
 	public  int elecMode;
 
-
+	/**骑行模式*/
+	public int gear;
 //	/**
 //	 * @fields biking_speed 骑行速度，需要根据车轮大小和控制器返回的速度进行计算
 //	 */
