@@ -14,6 +14,7 @@ import com.freway.ebike.common.EBConstant;
 import com.freway.ebike.map.MapUtil;
 import com.freway.ebike.map.TravelConstant;
 import com.freway.ebike.utils.AlertUtil;
+import com.freway.ebike.utils.CommonUtil;
 import com.freway.ebike.utils.FontUtil;
 import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.SPUtils;
@@ -130,6 +131,8 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	/** 右下角进入个人中心按钮 */
 	private ImageView mProfile;
 
+	//内存中要保存的值
+	private int model=EBConstant.MODEL_DAY;//模式
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -336,6 +339,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	/** 初始化 */
 	private void initData() {
 		// 模式
+		model=SPUtils.getUiModel(this);
 		if (SPUtils.getUiModel(this) == EBConstant.MODEL_DAY) {
 			mModelBtn.setSelected(false);
 		} else {
@@ -377,18 +381,23 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	/** 更新UI的值 */
 	public void updateUiValue() {
 		// 车况
-				mBikeStateBatteryView = (BatteryView) findViewById(R.id.bike_state_battery_view);
-				mBikeStateBatteryValue = (TextView) findViewById(R.id.bike_state_battery_value);
-				mBikeStateBatteryRemaindValue = (TextView) findViewById(R.id.bike_state_battery_remaind_value);
-				mBikeStateBatteryRemaindTitle = (TextView) findViewById(R.id.bike_state_battery_remaind_title);
-				mBikeStateGearIcon = (ImageView) findViewById(R.id.bike_state_gear_icon);
-				mBikeStateGearTitle = (TextView) findViewById(R.id.bike_state_gear_title);
-				mBikeStateGearValue = (TextView) findViewById(R.id.bike_state_gear_value);
-				mBikeStateLightFront = (ImageView) findViewById(R.id.bike_state_light_front_icon);
-				mBikeStateLightBack = (ImageView) findViewById(R.id.bike_state_light_back_icon);
+				mBikeStateBatteryView.onValueChange(EBikeTravelData.getInstance(this).batteryResidueCapacity,model, EBikeTravelData.getInstance(this).gear);
+				mBikeStateBatteryValue.setText(EBikeTravelData.getInstance(this).batteryResidueCapacity+"%");
+				mBikeStateBatteryRemaindValue.setText(EBikeTravelData.getInstance(this).miCapacity+"");
+				mBikeStateGearValue .setText(getString(R.string.gear)+""+EBikeTravelData.getInstance(this).gear);
+				if(EBikeTravelData.getInstance(this).frontLed==EBikeTravelData.ON){
+					mBikeStateLightFront.setSelected(true);
+				}else{
+					mBikeStateLightFront.setSelected(false);
+				}
+				if(EBikeTravelData.getInstance(this).backLed==EBikeTravelData.ON){
+					mBikeStateLightBack.setSelected(true);
+				}else{
+					mBikeStateLightBack.setSelected(false);
+				}
 
 				// 骑行状态
-				mTravelStateSpendTime = (TextView) findViewById(R.id.travel_state_spend_time);
+				mTravelStateSpendTime .setText(CommonUtil.);
 				mTravelStateCalValue = (TextView) findViewById(R.id.travel_state_cal_value);
 				mTravelStateCalUnit = (TextView) findViewById(R.id.travel_state_cal_unit);
 				mTravelStateSpeedValue = (TextView) findViewById(R.id.travel_state_speed);
@@ -557,6 +566,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		} else {
 			SPUtils.setUiModel(this, EBConstant.MODEL_DAY);
 		}
+		model=SPUtils.getUiModel(this);
 		modelChange();
 	}
 

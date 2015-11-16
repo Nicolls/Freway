@@ -15,6 +15,8 @@ import com.freway.ebike.utils.ToastUtils;
 import android.content.Context;
 
 public class EBikeTravelData implements Serializable {
+	public static final int ON=1;
+	public static final int OFF=0;
 	/**
 	 * @Fields serialVersionUID
 	 */

@@ -3,15 +3,19 @@
  */
 package com.freway.ebike.net;
 
+import java.io.File;
 import java.lang.reflect.Type;
 
 import com.android.volley.Response;
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.freway.ebike.model.EBRequest;
 import com.freway.ebike.model.EBResponse;
 import com.freway.ebike.model.RspLogin;
 import com.freway.ebike.model.RspRegister;
 import com.freway.ebike.model.RspUpLoadTravel;
+import com.freway.ebike.model.RspUpdatePhoto;
 import com.freway.ebike.model.RspUpdateUserInfo;
 import com.freway.ebike.model.RspUserInfo;
 import com.freway.ebike.utils.LogUtils;
@@ -23,7 +27,7 @@ import android.content.Context;
  * 通过volley框架来实现的与服务器交互接口的请求类
  * 
  * @author Nicolls
-
+ * 
  */
 public class EBikeRequestServiceVolleyImpl implements EBikeRequestService {
 	protected DataUpdateListener dataUpdateListener;
@@ -45,46 +49,43 @@ public class EBikeRequestServiceVolleyImpl implements EBikeRequestService {
 	}
 
 	/** 集成发送方法 */
-	private <T extends EBResponse> void sendRequest(EBRequest ebRequest, final int methodId,
-			Type type) {
-		//在这里设置参数，和私钥参数
-		//请求参数
-//		String data="{\"email\":\"pwj1230@126.com\",\"username\":\"pwj1230\",\"password\":\"123456\"}";
-//		String s="d6c0cc040d";
-		String data=ebRequest.getDataParam();
+	private <T extends EBResponse> void sendRequest(EBRequest ebRequest, final int methodId, Type type) {
+		// 在这里设置参数，和私钥参数
+		// 请求参数
+		// String
+		// data="{\"email\":\"pwj1230@126.com\",\"username\":\"pwj1230\",\"password\":\"123456\"}";
+		// String s="d6c0cc040d";
+		String data = ebRequest.getDataParam();
 		ebRequest.setReqeustParam("data", data);
-		String s=MD5Tool.md5(MD5Tool.md5(data+EBRequest.requestKey));
-		if(s.length()>=10){
-			s=s.substring(s.length()-10, s.length());
+		String s = MD5Tool.md5(MD5Tool.md5(data + EBRequest.requestKey));
+		if (s.length() >= 10) {
+			s = s.substring(s.length() - 10, s.length());
 		}
 		ebRequest.setReqeustParam("s", s);
-		VolleyGsonRequest<T> request = new VolleyGsonRequest<T>(context, ebRequest, type,
-				new Response.Listener<T>() {
+		VolleyGsonRequest<T> request = new VolleyGsonRequest<T>(context, ebRequest, type, new Response.Listener<T>() {
 
-					@Override
-					public void onResponse(T response) {
-						dataNotify(methodId, response);
-					}
+			@Override
+			public void onResponse(T response) {
+				dataNotify(methodId, response);
+			}
 
-				}, new Response.ErrorListener() {
+		}, new Response.ErrorListener() {
 
-					@Override
-					public void onErrorResponse(VolleyError error) {
-						LogUtils.e(EBikeRequestServiceVolleyImpl.class.getSimpleName(), "请求服务器异常:"
-								+ error.getMessage());
-						dataNotify(ID_REQUEST_ERROR, null);
-					}
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				LogUtils.e(EBikeRequestServiceVolleyImpl.class.getSimpleName(), "请求服务器异常:" + error.getMessage());
+				dataNotify(ID_REQUEST_ERROR, null);
+			}
 
-				});
+		});
 		if (methodId == EBikeRequestService.ID_LOGIN) {// 登录的请求要把所有值还原，比如cookie
 			request.clearCookie();
 		}
 		VolleyRequestQueue.getInstance(context).addToRequestQueue(request);
 	}
 
-
 	@Override
-	public void login(String username,String password) {
+	public void login(String username, String password) {
 		EBRequest ebReq = new EBRequest(EBikeRequestService.METHOD_LOGIN);
 		ebReq.setDataParam("username", username);
 		ebReq.setDataParam("password", password);
@@ -134,7 +135,8 @@ public class EBikeRequestServiceVolleyImpl implements EBikeRequestService {
 	}
 
 	@Override
-	public void updateUserInfo(String token, String username,String password, String gender, String birthday, String email) {
+	public void updateUserInfo(String token, String username, String password, String gender, String birthday,
+			String email) {
 		EBRequest ebReq = new EBRequest(EBikeRequestService.METHOD_UPDATEUSERINFO);
 		ebReq.setDataParam("token", token);
 		ebReq.setDataParam("username", username);
@@ -146,7 +148,7 @@ public class EBikeRequestServiceVolleyImpl implements EBikeRequestService {
 
 	@Override
 	public void upLoadTravel(String token, String type, String stime, String etime, String distance, String time,
-			String cadence, String calories, String speedList, String locationList, String maxSpeed) {
+			String cadence, String calories, String speedList, String locationList, String topSpeed, String avgSpeed) {
 		EBRequest ebReq = new EBRequest(EBikeRequestService.METHOD_UPLOADTRAVEL);
 		ebReq.setDataParam("token", token);
 		ebReq.setDataParam("type", type);
@@ -159,8 +161,38 @@ public class EBikeRequestServiceVolleyImpl implements EBikeRequestService {
 		ebReq.setDataParam("calories", calories);
 		ebReq.setDataParam("speedList", speedList);
 		ebReq.setDataParam("locationList", locationList);
-		ebReq.setDataParam("maxSpeed", maxSpeed);
+		ebReq.setDataParam("topSpeed", topSpeed);
+		ebReq.setDataParam("topSpeed", avgSpeed);
 		sendRequest(ebReq, EBikeRequestService.ID_UPLOADTRAVEL, RspUpLoadTravel.class);
+	}
+
+	@Override
+	public void updatePhoto(String token, String photoPath) {
+
+		EBRequest ebReq = new EBRequest(EBikeRequestService.METHOD_PHOTO);
+		ebReq.setDataParam("token", token);
+		String data = ebReq.getDataParam();
+		ebReq.setReqeustParam("data", data);
+		String s = MD5Tool.md5(MD5Tool.md5(data + EBRequest.requestKey));
+		if (s.length() >= 10) {
+			s = s.substring(s.length() - 10, s.length());
+		}
+		ebReq.setReqeustParam("s", s);
+
+		UploadFileRequest request = new UploadFileRequest(ebReq.getReqeustURL(), new ErrorListener() {
+
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				dataNotify(ID_REQUEST_ERROR, null);
+			}
+		}, new Listener<String>() {
+
+			@Override
+			public void onResponse(String response) {
+				dataNotify(EBikeRequestService.ID_PHOTO, response);
+			}
+		}, "image", new File(photoPath), ebReq.getReqeustParam());
+		VolleyRequestQueue.getInstance(context).addToRequestQueue(request);
 	}
 
 }

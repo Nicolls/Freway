@@ -22,6 +22,8 @@ public interface EBikeRequestService {
 	static final int ID_UPDATEUSERINFO=6;
 	/** 上传行程*/
 	static final int ID_UPLOADTRAVEL=7;
+	/**上传头像*/
+	static final int ID_PHOTO=8;
 	
 	/** 方法名 **/
 	/** 普通登录 */
@@ -38,6 +40,8 @@ public interface EBikeRequestService {
 	static final String METHOD_UPDATEUSERINFO="/service/info/update";
 	/** 上传行程*/
 	static final String METHOD_UPLOADTRAVEL="/service/journey/create";
+	/**上传头像*/
+	static final String METHOD_PHOTO="/service/info/photo";
 	
 	/**
 	 * @param dataUpdateListener 监听器
@@ -109,10 +113,19 @@ public interface EBikeRequestService {
 	 * @param calories * 总消耗的卡路里
 	 * @param speedList 当为历史行程是为每百米的平均速度，当为即时行程是为每百秒的平均速度 [10,20,30] 单位 m/s
 	 * @param locationList 移动轨迹，历史行程时为空 [["x1","y1"],["x2","y2"],["x3","y3"]]
-	 * @param maxSpeed 最大速度 * 单位:米/秒
+	 * @param topSpeed 最大速度 * 单位:米/秒
+	 * @param avgSpeed 平均速度
 	 * @return void
 	 * @Description 用户修改信息
 	 */
-	void upLoadTravel(String token,String type,String stime,String etime,String distance,String time,String cadence,String calories,String speedList,String locationList,String maxSpeed);
+	void upLoadTravel(String token,String type,String stime,String etime,String distance,String time,String cadence,String calories,String speedList,String locationList,String topSpeed,String avgSpeed);
 	
+	/**
+	 * 
+	 * @param token 登录token
+	 * @param photoPath 本地头像路径
+	 * @return void
+	 * @Description 更新用户头像
+	 */
+	void updatePhoto(String token,String photoPath);
 }

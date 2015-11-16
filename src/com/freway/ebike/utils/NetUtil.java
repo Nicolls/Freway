@@ -64,7 +64,7 @@ public class NetUtil implements DataUpdateListener{
 				spList[i]=speeds.get(i).getSpeed();
 			}
 			String speedList=gson.toJson(spList);
-			mEBikeRequestService.upLoadTravel(SPUtils.getToken(context), travel.getType()+"",travel.formatTime(new Date(travel.getStartTime()))+"", travel.formatTime(new Date(travel.getEndTime()))+"", travel.getDistance()+"", travel.getSpendTime()+"", travel.getCadence()+"", travel.getCalorie()+"", speedList, locationList, travel.getMaxSpeed()+"");
+			mEBikeRequestService.upLoadTravel(SPUtils.getToken(context), travel.getType()+"",travel.formatTime(new Date(travel.getStartTime()))+"", travel.formatTime(new Date(travel.getEndTime()))+"", travel.getDistance()+"", travel.getSpendTime()+"", travel.getCadence()+"", travel.getCalorie()+"", speedList, locationList, travel.getMaxSpeed()+"",travel.getAvgSpeed()+"");
 		}
 	}
 	

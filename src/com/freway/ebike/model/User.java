@@ -35,6 +35,10 @@ public class User implements Serializable{
 	 * @Fields email 邮箱
 	 */
 	private String email;
+	/**总里程*/
+	private String total_miles;
+	/**总时间*/
+	private String total_hour;
 	public String getUsername() {
 		return username;
 	}
@@ -70,5 +74,17 @@ public class User implements Serializable{
 	}
 	public void setUserid(String userid) {
 		this.userid = userid;
+	}
+	public String getTotal_miles() {
+		return total_miles;
+	}
+	public void setTotal_miles(String total_miles) {
+		this.total_miles = total_miles;
+	}
+	public String getTotal_hour() {
+		return total_hour;
+	}
+	public void setTotal_hour(String total_hour) {
+		this.total_hour = total_hour;
 	}
 }
