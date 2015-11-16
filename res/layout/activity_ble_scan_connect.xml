@@ -1,12 +1,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/ble_scan_connect_bg"
+    android:paddingLeft="@dimen/ble_connect_ll_paddingHorizontal"
+    android:paddingRight="@dimen/ble_connect_ll_paddingHorizontal"
+    android:paddingTop="@dimen/ble_connect_ll_paddingVertical"
+    android:paddingBottom="@dimen/ble_connect_ll_paddingVertical" >
 
     <TextView
         android:id="@+id/ble_tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/BleItemText"
         android:text="ble has been lost ,and now is reconnectting" />
 
     <TextView
@@ -14,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ble_tv_title"
+        style="@style/BleItemText"
         android:text="ble searching" />
 
     <LinearLayout
@@ -27,25 +34,25 @@
             android:id="@+id/ble_bnt_confirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/BleButton"
             android:onClick="onConfirm"
-            android:text="确定" />
+            android:text="@string/confirm" />
 
         <Button
             android:id="@+id/ble_bnt_scan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/BleButton"
             android:onClick="onScan"
-            android:text="扫描" />
+            android:text="@string/scan" />
 
         <Button
             android:id="@+id/ble_bnt_manual"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/BleButton"
             android:onClick="onManual"
-            android:text="手动链接" />
+            android:text="@string/manul" />
     </LinearLayout>
 
     <ListView

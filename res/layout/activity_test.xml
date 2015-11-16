@@ -9,7 +9,7 @@
         android:id="@+id/nav_top_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
-        layout="@layout/view_nav_top_bar"
+        layout="@layout/view_top_bar_home"
         />
       <TextView 
          android:id="@+id/tv_message"

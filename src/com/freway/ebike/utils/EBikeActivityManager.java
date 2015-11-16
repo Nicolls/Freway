@@ -3,7 +3,7 @@ package com.freway.ebike.utils;
 import java.util.HashMap;
 import java.util.Set;
 
-import com.freway.ebike.activity.LoginActivity;
+import com.freway.ebike.activity.SignInActivity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -103,7 +103,7 @@ public class EBikeActivityManager {
 			SPUtils.cleanLocalData(context);
 		}
 		SPUtils.setAutoLoginState(context, false);
-		Intent intent = new Intent(context, LoginActivity.class);
+		Intent intent = new Intent(context, SignInActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		context.startActivity(intent);
 

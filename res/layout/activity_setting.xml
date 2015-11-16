@@ -1,0 +1,358 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/model_night_view_background"
+    android:orientation="vertical" >
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/view_top_bar_custom" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                style="@style/SettingLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/setting_name_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/SettingProfileTextLeft"
+                    android:text="@string/nick_name"
+                     />
+                <TextView
+                    android:id="@+id/setting_name_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/SettingProfileTextRight"
+                    android:text="@string/test_text"
+                     />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/view_line_color" />
+
+            <LinearLayout
+                style="@style/SettingLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/setting_email_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/SettingProfileTextLeft"
+                    android:text="@string/email"
+                     />
+
+                <TextView
+                    android:id="@+id/setting_email_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                   style="@style/SettingProfileTextRight"
+                    android:text="@string/test_email"
+                     />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/view_line_color" />
+            <!-- gender -->
+
+            <LinearLayout
+                style="@style/SettingLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="0dp"
+                android:paddingTop="0dp" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginRight="@dimen/setting_pic_margin"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        style="@style/SettingLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="0dp"
+                        android:paddingRight="0dp" >
+
+                        <TextView
+                            android:id="@+id/setting_gender_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/SettingProfileTextLeft"
+                            android:text="@string/gender"
+                             />
+
+                        <ImageView
+                            android:id="@+id/setting_gender_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/SettingProfileTextRight"
+                            android:src="@drawable/setting_icon_gender_selector"
+                             />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="@color/view_line_color" />
+
+                    <LinearLayout
+                        style="@style/SettingLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="0dp"
+                        android:paddingRight="0dp" >
+
+                        <TextView
+                            android:id="@+id/setting_age_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/SettingProfileTextLeft"
+                            android:text="@string/age"
+                             />
+
+                        <TextView
+                            android:id="@+id/setting_age_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/SettingProfileTextRight"
+                            android:text="@string/test_value_2"
+                             />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="@color/view_line_color" />
+
+                    <LinearLayout
+                        style="@style/SettingLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="0dp"
+                        android:paddingRight="0dp" >
+
+                        <TextView
+                            android:id="@+id/setting_height_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/SettingProfileTextLeft"
+                            android:text="@string/height_cm"
+                             />
+
+                        <TextView
+                            android:id="@+id/setting_height_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/SettingProfileTextRight"
+                            android:text="@string/test_value_3"
+                             />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="@color/view_line_color" />
+
+                    <LinearLayout
+                        style="@style/SettingLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="0dp"
+                        android:paddingRight="0dp" >
+
+                        <TextView
+                            android:id="@+id/setting_weight_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/SettingProfileTextLeft"
+                            android:text="@string/weight_kg"
+                             />
+
+                        <TextView
+                            android:id="@+id/setting_weight_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/SettingProfileTextRight"
+                            android:text="@string/test_value_2"
+                             />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="@dimen/setting_pic_width_height"
+                    android:layout_height="@dimen/setting_pic_width_height"
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal"
+                    android:background="@drawable/profile_icon_ellipse"
+                    android:padding="@dimen/profile_pic_padding" >
+
+                    <com.freway.ebike.view.HeadPicView
+                        android:id="@+id/profile_head_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/profile_pic_temp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/view_line_color" />
+
+            <LinearLayout
+                style="@style/SettingLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/setting_my_ebike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/SettingMyEbike"
+                    android:text="@string/my_ebike"
+                     />
+
+                <LinearLayout
+                    android:id="@+id/setting_ll_sn"
+                    style="@style/SettingBtnLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/setting_sn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                       	style="@style/SettingBtnTextLeft"
+                        android:text="@string/test_text"
+                        />
+                    <TextView
+                        android:drawableRight="@drawable/settings_button_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/SettingBtnTextRight" />
+                </LinearLayout>
+                 <LinearLayout
+                     android:id="@+id/setting_ll_language"
+                    style="@style/SettingBtnLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/setting_language_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/SettingBtnTextLeft"
+                        android:text="@string/language"
+                         />
+
+                    <TextView
+                        android:id="@+id/setting_language_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/SettingBtnTextRight"
+                        android:text="@string/test_text"
+                         />
+                </LinearLayout>
+                 <LinearLayout
+                    android:id="@+id/setting_ll_unit_distance"
+                    style="@style/SettingBtnLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/setting_unit_distance_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/SettingBtnTextLeft"
+                        android:text="@string/unit_of_distance"
+                         />
+
+                    <TextView
+                        android:id="@+id/setting_unit_distance_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/SettingBtnTextRight"
+                        android:text="@string/test_text"
+                         />
+                </LinearLayout>
+                
+            </LinearLayout>
+             <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/view_line_color" />
+            <!-- about -->
+             <LinearLayout
+                 android:id="@+id/setting_ll_about"
+                style="@style/SettingLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    style="@style/SettingBtnLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/setting_about_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/SettingBtnTextLeft"
+                        android:text="@string/about"
+                        />
+
+                    <TextView
+                        android:id="@+id/setting_about_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/SettingBtnTextRight"
+                        android:text="@string/test_text"
+                         />
+                </LinearLayout>
+                
+                 <LinearLayout
+                     android:id="@+id/setting_ll_exit"
+                    style="@style/SettingBtnLayout"
+                    android:background="@drawable/settings_exitbutton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/setting_tv_exit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/SettingBtnText"
+                        android:gravity="center_horizontal"
+                         />
+
+                </LinearLayout>
+                
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

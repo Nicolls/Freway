@@ -4,12 +4,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.freway.ebike.R;
+import com.freway.ebike.adapter.BleScanAdapter;
+import com.freway.ebike.common.BaseActivity;
+import com.freway.ebike.utils.LogUtils;
+import com.freway.ebike.utils.SPUtils;
+import com.freway.ebike.utils.ToastUtils;
+
 import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.TextUtils;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -17,20 +25,14 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import com.freway.ebike.R;
-import com.freway.ebike.common.BaseActivity;
-import com.freway.ebike.utils.LogUtils;
-import com.freway.ebike.utils.SPUtils;
-import com.freway.ebike.utils.ToastUtils;
-
 public class BLEScanConnectActivity extends BaseActivity implements OnItemClickListener {
 	public static final String HANDLE_EXTRA = "HANDLE_EXTRA";
 	public static final int HANDLE_CONNECT = 1;
 	public static final int HANDLE_SCAN = 2;
 	private static final int HANDLE_NOT_FOUND = 3;
 	private ListView listView;
-	private SimpleAdapter adapter;
-	private List<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
+	private BleScanAdapter adapter;
+	private List<BluetoothDevice> data = new ArrayList<BluetoothDevice>();
 	private BlueToothUtil mBlueToothUtil;
 	private Button mBtnScan;
 	private Button mBtnManual;
@@ -44,8 +46,14 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		WindowManager m = getWindowManager();
+		Display d = m.getDefaultDisplay(); // 为获取屏幕宽、高
+		android.view.WindowManager.LayoutParams p = getWindow().getAttributes(); 
+		p.height = (int) (d.getHeight() * 0.5); // 高度设置为屏幕的0.5
+		p.width = (int) (d.getWidth() * 0.9); // 宽度设置为屏幕的0.9
+		getWindow().setAttributes(p);
 		setContentView(R.layout.activity_ble_scan_connect);
-		super.initCommonView("");
+		
 		address=SPUtils.getEBkieAddress(this);
 		handle = getIntent().getIntExtra(HANDLE_EXTRA, HANDLE_CONNECT);
 		mBlueToothUtil = new BlueToothUtil(this, blueHandler);
@@ -56,8 +64,8 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 		mTvMessage=(TextView) findViewById(R.id.ble_tv_message);
 		listView = (ListView) findViewById(R.id.bluetooth_listview);
 		listView.setOnItemClickListener(this);
-		adapter = new SimpleAdapter(this, data, R.layout.item_bluetooth_device,
-				new String[] { "name" }, new int[] { R.id.device_title });
+		adapter = new BleScanAdapter(this);
+		adapter.setData(data);
 		listView.setAdapter(adapter);
 		handle("");
 	}
@@ -124,11 +132,8 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 			}else if(msg.what==BlueToothConstants.RESULT_SUCCESS){
 				BluetoothDevice device = (BluetoothDevice) msg.obj;
 				LogUtils.i("Blescanconnect", "看我扫到了什么－－"+device.getName());
-				HashMap<String, String> map = new HashMap<String, String>();
-				map.put("name", device.getName());
-				map.put("address", device.getAddress());
 				if (device!=null) {
-					data.add(map);
+					data.add(device);
 					adapter.notifyDataSetChanged();
 				}
 			}
@@ -169,7 +174,7 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		if(position<data.size()){
-			String address = data.get(position).get("address");
+			String address = data.get(position).getAddress();
 			this.address=address;
 			handle=HANDLE_CONNECT;
 			handle("");

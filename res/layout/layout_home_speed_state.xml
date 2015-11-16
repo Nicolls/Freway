@@ -1,0 +1,241 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/speed_state_arrow_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/speed_state_view_arrow_top_day" />
+
+    <RelativeLayout
+        android:id="@+id/speed_state_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/model_day_view_background"
+        android:layout_weight="1" >
+
+      <ImageView
+          	android:id="@+id/speed_state_cicle_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/speed_state_view_cicle_mph" />
+
+        <com.freway.ebike.view.SpeedView
+            android:id="@+id/speed_state_speed_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/speed_state_speed_view_marginTop"
+            android:src="@drawable/speed_state_view_holder" />
+
+        <com.freway.ebike.view.ClickImageButton
+            android:id="@+id/speed_state_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/speed_state_speed_btn_marginTop"
+            android:background="@null"
+            android:src="@drawable/speed_state_view_btn_disable" />
+
+        <TextView
+            android:id="@+id/speed_state_speed_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:layout_marginTop="@dimen/speed_state_speed_text_marginTop"
+            style="@style/SpeedStateSpeedText" />
+
+        <RelativeLayout
+            android:id="@+id/speed_state_ll_cal_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/speed_state_cicle_view"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/speed_state_cal_time_marginTop" >
+
+            <ImageView
+                android:id="@+id/speed_state_cal_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/state_cal" />
+
+            <TextView
+                android:id="@+id/speed_state_cal_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/speed_state_cal_icon"
+                android:layout_toRightOf="@id/speed_state_cal_icon"
+                android:text="@string/test_value_4"
+                style="@style/SpeedStateCalValue" />
+
+            <TextView
+                android:id="@+id/speed_state_cal_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/speed_state_cal_value"
+                android:layout_toRightOf="@id/speed_state_cal_value"
+                android:text="@string/cal"
+                style="@style/SpeedStateCalUnit"/>
+
+            <TextView
+                android:id="@+id/speed_state_spend_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/speed_state_cal_icon"
+                android:layout_marginTop="@dimen/title_value_vertical_spacing"
+                android:layout_toRightOf="@id/speed_state_cal_value"
+                android:text="@string/test_value_time"
+                style="@style/SpeedStateSpendTimeText" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/speed_state_ll_cal_time"
+            android:layout_marginTop="@dimen/speed_state_ll_param_marginTop"
+            android:background="@drawable/speed_state_ll_param"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal" >
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/SpeedStateParamLL"
+                     >
+                    <TextView
+                        android:id="@+id/speed_state_distance_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/distance"
+                        style="@style/SpeedStateTitleText" />
+
+                    <TextView
+                        android:id="@+id/speed_state_distance_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/test_value_3"
+                        style="@style/SpeedStateValueText" />
+
+                    <TextView
+                        android:id="@+id/speed_state_distance_unit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@id/speed_state_distance_value"
+                        android:layout_toRightOf="@id/speed_state_distance_value"
+                        android:text="@string/mi"
+                        style="@style/SpeedStateUnitText" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                   style="@style/SpeedStateParamLL" >
+
+                    <TextView
+                        android:id="@+id/speed_state_avg_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/avg_speed"
+                        style="@style/SpeedStateTitleText" />
+
+                    <TextView
+                        android:id="@+id/speed_state_avg_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/test_value_3"
+                        style="@style/SpeedStateValueText" />
+
+                    <TextView
+                        android:id="@+id/speed_state_avg_unit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@id/speed_state_avg_value"
+                        android:layout_toRightOf="@id/speed_state_avg_value"
+                        android:text="@string/mph"
+                        style="@style/SpeedStateUnitText"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/SpeedStateParamLL" >
+
+                    <TextView
+                        android:id="@+id/speed_state_asl_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/asl"
+                        style="@style/SpeedStateTitleText" />
+
+                    <TextView
+                        android:id="@+id/speed_state_asl_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/test_value_3"
+                       style="@style/SpeedStateValueText" />
+
+                    <TextView
+                        android:id="@+id/speed_state_asl_unit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@id/speed_state_asl_value"
+                        android:layout_toRightOf="@id/speed_state_asl_value"
+                        android:text="@string/mi"
+                        style="@style/SpeedStateUnitText" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/SpeedStateParamLL" >
+
+                    <TextView
+                        android:id="@+id/speed_state_cadence_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/cadence"
+                        style="@style/SpeedStateTitleText"  />
+
+                    <TextView
+                        android:id="@+id/speed_state_cadence_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/test_value_3"
+                        style="@style/SpeedStateValueText"  />
+
+                    <TextView
+                        android:id="@+id/speed_state_cadence_unit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@id/speed_state_cadence_value"
+                        android:layout_toRightOf="@id/speed_state_cadence_value"
+                        android:text="@string/rpm"
+                        style="@style/SpeedStateUnitText"  />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/speed_state_arrow_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/speed_state_view_arrow_bottom_day" />
+
+</LinearLayout>

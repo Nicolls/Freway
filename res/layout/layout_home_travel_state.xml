@@ -1,0 +1,231 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/TravelStatePadding"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical" >
+
+    <RelativeLayout
+        android:id="@+id/travel_state_ll_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        >
+
+        <ImageView
+            android:id="@+id/travel_state_cal_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/state_cal" />
+
+        <TextView
+            android:id="@+id/travel_state_cal_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/travel_state_cal_icon"
+            android:layout_toRightOf="@id/travel_state_cal_icon"
+            android:text="1500"
+            style="@style/TravelStateCalValue" />
+
+        <TextView
+            android:id="@+id/travel_state_cal_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/travel_state_cal_value"
+            android:layout_toRightOf="@id/travel_state_cal_value"
+            android:text="cal"
+            style="@style/TravelStateCalUnit"/>
+
+        <TextView
+            android:id="@+id/travel_state_spend_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/travel_state_cal_icon"
+            android:layout_marginTop="@dimen/title_value_vertical_spacing"
+            android:text="02:10:40"
+            style="@style/TravelStateSpendTimeValue" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/travel_state_ll_middle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:layout_marginLeft="@dimen/travel_state_speedMarginLeft"
+        >
+
+        <TextView
+            android:id="@+id/travel_state_speed"
+            style="@style/TravelStateSpeedValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="30.5" />
+
+        <TextView
+            android:id="@+id/travel_state_speed_unit"
+            style="@style/TravelStateSpeedUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/travel_state_speed"
+            android:layout_toRightOf="@id/travel_state_speed"
+            android:text="mph" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/travel_state_ll_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal" >
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:layout_weight="1" >
+
+                <TextView
+                    android:id="@+id/travel_state_distance_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/distance"
+                    style="@style/TravelStateTitleText" />
+
+                <TextView
+                    android:id="@+id/travel_state_distance_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/travel_state_distance_title"
+                    android:text="@string/test_value_3"
+                    style="@style/TravelStateValueText" />
+
+                <TextView
+                    android:id="@+id/travel_state_distance_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/travel_state_distance_value"
+                    android:layout_toRightOf="@id/travel_state_distance_value"
+                    android:text="@string/mi"
+                    style="@style/TravelStateUnitText" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginLeft="@dimen/travel_state_grid_spacing"
+                android:layout_weight="1" >
+
+                <TextView
+                    android:id="@+id/travel_state_avg_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/avg_speed"
+                    style="@style/TravelStateTitleText" />
+
+                <TextView
+                    android:id="@+id/travel_state_avg_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/travel_state_avg_title"
+                    android:text="@string/test_value_3"
+                    style="@style/TravelStateValueText" />
+
+                <TextView
+                    android:id="@+id/travel_state_avg_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/travel_state_avg_value"
+                    android:layout_toRightOf="@id/travel_state_avg_value"
+                    android:text="@string/mph"
+                    style="@style/TravelStateUnitText"  />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal" >
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:layout_weight="1" >
+
+                <TextView
+                    android:id="@+id/travel_state_asl_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/asl"
+                    style="@style/TravelStateTitleText" />
+
+                <TextView
+                    android:id="@+id/travel_state_asl_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/travel_state_asl_title"
+                    android:text="@string/test_value_3"
+                    style="@style/TravelStateValueText" />
+
+                <TextView
+                    android:id="@+id/travel_state_asl_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/travel_state_asl_value"
+                    android:layout_toRightOf="@id/travel_state_asl_value"
+                    android:text="@string/mi"
+                    style="@style/TravelStateUnitText"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginLeft="@dimen/travel_state_grid_spacing"
+                android:layout_weight="1" >
+
+                <TextView
+                    android:id="@+id/travel_state_cadence_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/cadence"
+                    style="@style/TravelStateTitleText"  />
+
+                <TextView
+                    android:id="@+id/travel_state_cadence_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/travel_state_cadence_title"
+                    android:text="@string/test_value_3"
+                    style="@style/TravelStateValueText" />
+
+                <TextView
+                    android:id="@+id/travel_state_cadence_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/travel_state_cadence_value"
+                    android:layout_toRightOf="@id/travel_state_cadence_value"
+                    android:text="@string/rpm"
+                   style="@style/TravelStateUnitText" />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

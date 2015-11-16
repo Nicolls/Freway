@@ -698,8 +698,8 @@ public class BlueToothService extends BaseService {
 			LogUtils.i(tag, "BEGIN ReConnectThread:");
 			setName("ReConnectThread");
 			while (isReconnectRunning) {
-				// LogUtils.i(tag,
-				// "正在跑中"+mBluetoothAdapter+"-"+mBluetoothAdapter.isEnabled()+"--"+mBluetoothAdapter.isDiscovering()+"--"+mBlueToothConnction+"--"+mBlueToothConnction.getState());
+//				 LogUtils.i(tag,
+//				 "正在跑中"+mBluetoothAdapter+"-"+mBluetoothAdapter.isEnabled()+"--"+mBluetoothAdapter.isDiscovering()+"--"+mBlueToothConnction+"--"+mBlueToothConnction.getState());
 				if (BaseApplication.travelState != TravelConstant.TRAVEL_STATE_NONE
 						&& mBluetoothAdapter != null
 						&& mBluetoothAdapter.isEnabled()

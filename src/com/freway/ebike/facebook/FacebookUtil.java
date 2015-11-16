@@ -35,7 +35,7 @@ import com.freway.ebike.common.BaseActivity;
 import com.freway.ebike.listener.OpenActivityResultListener;
 import com.freway.ebike.model.User;
 import com.freway.ebike.utils.LogUtils;
-
+/**必须先调用setActivity再调用别的方法*/
 public class FacebookUtil implements OpenActivityResultListener {
 	private static final String TAG = FacebookUtil.class.getSimpleName();
 	public static final int STATE_UN_LOGIN = 0;
