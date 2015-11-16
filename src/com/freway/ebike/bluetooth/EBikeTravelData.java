@@ -131,9 +131,6 @@ public class EBikeTravelData implements Serializable {
 	 * @fields elecMode 电动模式
 	 */
 	public  int elecMode;
-
-	/**骑行模式*/
-	public int gear;
 //	/**
 //	 * @fields biking_speed 骑行速度，需要根据车轮大小和控制器返回的速度进行计算
 //	 */
@@ -151,9 +148,9 @@ public class EBikeTravelData implements Serializable {
 	
 
 	/**
-	 * @fields biking_state_change 骑行状态改变标志
+	 * @fields biking_state_change 骑行状态改变标志，也就是档位0运动，1电动2助力1.3助力2.4助力3
 	 */
-	public  int bikingStateChange;
+	public  int gear;
 
 	/**
 	 * @fields batteryResidueCapacity 剩余容量 单位%
@@ -301,7 +298,7 @@ public class EBikeTravelData implements Serializable {
 					bikeData[4], bikeData[5] });
 			batteryAh = ProtocolTool
 					.byteArrayToInt(new byte[] { bikeData[6] });
-			bikingStateChange = ProtocolTool
+			gear = ProtocolTool
 					.byteArrayToInt(new byte[] { bikeData[7] });
 			batteryResidueCapacity = ProtocolTool
 					.byteArrayToInt(new byte[] { bikeData[8] });
@@ -364,7 +361,7 @@ public class EBikeTravelData implements Serializable {
 				+ assisMode + "电动模式" + elecMode + "踏频量（圈）"
 				+ cadence + "骑行速度" + insSpeed + "累积骑行里程"
 				+ distance + "电池的安时数(100mah)" + batteryAh
-				+ "骑行状态改变标志" + bikingStateChange + "剩余容量%"
+				+ "骑行状态改变标志" + gear + "剩余容量%"
 				+ batteryResidueCapacity + "剩余里程" + miCapacity + "温度(℃)"
 				+ temperature +
 				// "循环次数(次)"+cycle_times+
