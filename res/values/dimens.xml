@@ -11,10 +11,12 @@
     <dimen name="ble_connect_ll_paddingVertical">25dp</dimen>
     <dimen name="ble_connect_item_padding">5dp</dimen>
     <dimen name="ble_btn_marginLeft">5dp</dimen>
+    <!-- dialog -->
+    <dimen name="dialog_btn_left_right">10dp</dimen>
     <!-- sign in -->
     <dimen name="sign_logo_marginTop">108dp</dimen>
     <dimen name="sign_input_layout_margin">35dp</dimen>
-    <dimen name="sign_input_layout_paddingHorizontal">32dp</dimen>
+    <dimen name="sign_input_layout_paddingHorizontal">30dp</dimen>
     <dimen name="sign_input_layout_paddingVertical">25dp</dimen>
     <dimen name="sign_et_spacing">24dp</dimen>
     <dimen name="sign_et_paddingHorizontal">8dp</dimen>
