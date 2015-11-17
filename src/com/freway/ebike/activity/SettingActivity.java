@@ -217,7 +217,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 			}
 			break;
 		case R.id.profile_head_view:
-			AlertUtil.getInstance(this).alertNormal(getString(R.string.portrait_settings), getString(R.string.album), getString(R.string.camera),
+			AlertUtil.getInstance(this).alertChoice(getString(R.string.portrait_settings), getString(R.string.album), getString(R.string.camera),
 					new OnClickListener() {
 				
 				@Override
@@ -243,7 +243,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 			
 			break;
 		case R.id.setting_ll_unit_distance:
-			AlertUtil.getInstance(this).alertNormal(getString(R.string.unit_distance_settings), getString(R.string.distance_unit_mph), getString(R.string.distance_unit_mi),
+			AlertUtil.getInstance(this).alertChoice(getString(R.string.unit_distance_settings), getString(R.string.distance_unit_mph), getString(R.string.distance_unit_mi),
 					new OnClickListener() {
 				
 				@Override

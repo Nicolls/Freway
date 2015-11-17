@@ -76,7 +76,7 @@ public class BlueToothUtil {
 	/** 判断Ble是否链接 */
 	public void bleConnect(String message ,String leftText,String rightText) {
 		if (BlueToothService.ble_state != BlueToothConstants.BLE_STATE_CONNECTED) {// 未绑定
-			AlertUtil.getInstance(context).alertNormal( message,leftText,rightText, new OnClickListener() {
+			AlertUtil.getInstance(context).alertChoice( message,leftText,rightText, new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
