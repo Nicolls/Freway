@@ -9,6 +9,8 @@ import android.text.TextUtils;
 
 import com.freway.ebike.common.EBConstant;
 import com.freway.ebike.model.EBRequest;
+import com.freway.ebike.model.User;
+import com.google.gson.Gson;
 
 /**
  * 存储shareprefrence数据工具类
@@ -42,6 +44,7 @@ public class SPUtils {
 
 	public static final String SP_USER_SIGNIN_TYPE = "SP_USER_SIGNIN_TYPE";
 	public static final String SP_USER_UI_MODEL = "SP_USER_UI_MODEL";
+	public static final String SP_USER_PROFILE = "SP_USER_PROFILE";
 	public static final String SP_USER_UNIT_OF_DISTANCE = "SP_USER_UNIT_OF_DISTANCE";
 	public static final String SP_USER_TRAVEL_MAP = "SP_USER_TRAVEL_MAP";//地图行程数据
 
@@ -274,6 +277,28 @@ public class SPUtils {
 		boolean isOk = sp.edit().putInt(SP_USER_UI_MODEL, model).commit();
 		return isOk;
 	}
+	
+	/** 获取UserProfile */
+	public static User getUserProfile(Context context) {
+		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+		String data = sp.getString(SP_USER_PROFILE, "");
+		User user=new User();
+		if(!TextUtils.isEmpty(data)){
+			Gson gson=new Gson();
+			user=gson.fromJson(data, User.class);
+		}
+		return user;
+	}
+
+	/** 保存UserProfile */
+	public static boolean setUserProfile(Context context, User user) {
+		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+		Gson gson=new Gson();
+		String data=gson.toJson(user);
+		boolean isOk = sp.edit().putString(SP_USER_PROFILE, data).commit();
+		return isOk;
+	}
+	
 	/** 获取last travel*/
 //	public static String getTravelLast(Context context) {
 //		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);

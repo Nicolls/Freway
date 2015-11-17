@@ -13,6 +13,9 @@ import com.freway.ebike.net.BaseResponse;
 public class EBResponse extends BaseResponse {
 	/** 返回成功的代码 */
 	public static final String SUCCESS_CODE = "0000";
+	public static final String S_CODE_WRONG = "1001";
+	public static final String TOKEN_INVALID = "1002";
+	public static final String USER_NAME_EXITS = "1005";
 	private static final long serialVersionUID = 273842578285709923L;
 	/** code: 为0000时，为正确的业务返回，非0000时，为异常情况，参照具体接⼝异常说明，此时可以根据需要，向客户端提⽰msg的信息 */
 	private String code;

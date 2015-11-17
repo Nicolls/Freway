@@ -17,6 +17,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:orientation="vertical" >
 
             <LinearLayout
@@ -26,18 +28,18 @@
 
                 <TextView
                     android:id="@+id/setting_name_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     style="@style/SettingProfileTextLeft"
-                    android:text="@string/nick_name"
-                     />
-                <TextView
-                    android:id="@+id/setting_name_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/nick_name" />
+
+                <EditText
+                    android:id="@+id/setting_name_value"
                     style="@style/SettingProfileTextRight"
-                    android:text="@string/test_text"
-                     />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:hint="@string/nick_name" />
             </LinearLayout>
 
             <View
@@ -52,20 +54,19 @@
 
                 <TextView
                     android:id="@+id/setting_email_title"
+                    style="@style/SettingProfileTextLeft"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/SettingProfileTextLeft"
-                    android:text="@string/email"
-                     />
+                    android:text="@string/email" />
 
-                <TextView
+                <EditText
                     android:id="@+id/setting_email_value"
+                    style="@style/SettingProfileTextRight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                   style="@style/SettingProfileTextRight"
-                    android:text="@string/test_email"
-                     />
+                    android:enabled="false"
+                    android:hint="@string/email" />
             </LinearLayout>
 
             <View
@@ -84,8 +85,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginRight="@dimen/setting_pic_margin"
+                    android:layout_weight="1"
                     android:orientation="vertical" >
 
                     <LinearLayout
@@ -97,19 +98,17 @@
 
                         <TextView
                             android:id="@+id/setting_gender_title"
+                            style="@style/SettingProfileTextLeft"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/SettingProfileTextLeft"
-                            android:text="@string/gender"
-                             />
+                            android:text="@string/gender" />
 
                         <ImageView
                             android:id="@+id/setting_gender_view"
+                            style="@style/SettingProfileTextRight"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/SettingProfileTextRight"
-                            android:src="@drawable/setting_icon_gender_selector"
-                             />
+                            android:src="@drawable/setting_icon_gender_selector" />
                     </LinearLayout>
 
                     <View
@@ -126,19 +125,18 @@
 
                         <TextView
                             android:id="@+id/setting_age_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             style="@style/SettingProfileTextLeft"
-                            android:text="@string/age"
-                             />
-
-                        <TextView
-                            android:id="@+id/setting_age_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:text="@string/age" />
+
+                        <EditText
+                            android:id="@+id/setting_age_value"
                             style="@style/SettingProfileTextRight"
-                            android:text="@string/test_value_2"
-                             />
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:enabled="false"
+                            android:hint="@string/age" />
                     </LinearLayout>
 
                     <View
@@ -155,19 +153,18 @@
 
                         <TextView
                             android:id="@+id/setting_height_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             style="@style/SettingProfileTextLeft"
-                            android:text="@string/height_cm"
-                             />
-
-                        <TextView
-                            android:id="@+id/setting_height_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:text="@string/height_cm" />
+
+                        <EditText
+                            android:id="@+id/setting_height_value"
                             style="@style/SettingProfileTextRight"
-                            android:text="@string/test_value_3"
-                             />
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:enabled="false"
+                            android:hint="@string/height_cm" />
                     </LinearLayout>
 
                     <View
@@ -184,19 +181,18 @@
 
                         <TextView
                             android:id="@+id/setting_weight_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             style="@style/SettingProfileTextLeft"
-                            android:text="@string/weight_kg"
-                             />
-
-                        <TextView
-                            android:id="@+id/setting_weight_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:text="@string/weight_kg" />
+
+                        <EditText
+                            android:id="@+id/setting_weight_value"
                             style="@style/SettingProfileTextRight"
-                            android:text="@string/test_value_2"
-                             />
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:enabled="false"
+                            android:hint="@string/weight_kg" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -204,8 +200,8 @@
                     android:layout_width="@dimen/setting_pic_width_height"
                     android:layout_height="@dimen/setting_pic_width_height"
                     android:layout_gravity="center"
-                    android:gravity="center_horizontal"
                     android:background="@drawable/profile_icon_ellipse"
+                    android:gravity="center_horizontal"
                     android:padding="@dimen/profile_pic_padding" >
 
                     <com.freway.ebike.view.HeadPicView
@@ -229,11 +225,10 @@
 
                 <TextView
                     android:id="@+id/setting_my_ebike"
+                    style="@style/SettingMyEbike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/SettingMyEbike"
-                    android:text="@string/my_ebike"
-                     />
+                    android:text="@string/my_ebike" />
 
                 <LinearLayout
                     android:id="@+id/setting_ll_sn"
@@ -243,40 +238,40 @@
 
                     <TextView
                         android:id="@+id/setting_sn"
+                        style="@style/SettingBtnTextLeft"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                       	style="@style/SettingBtnTextLeft"
-                        android:text="@string/test_text"
-                        />
+                        android:text="@string/test_text" />
+
                     <TextView
-                        android:drawableRight="@drawable/settings_button_arrow"
+                        style="@style/SettingBtnTextRight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/SettingBtnTextRight" />
+                        android:drawableRight="@drawable/settings_button_arrow" />
                 </LinearLayout>
-                 <LinearLayout
-                     android:id="@+id/setting_ll_language"
+
+                <LinearLayout
+                    android:id="@+id/setting_ll_language"
                     style="@style/SettingBtnLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" >
 
                     <TextView
                         android:id="@+id/setting_language_title"
+                        style="@style/SettingBtnTextLeft"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/SettingBtnTextLeft"
-                        android:text="@string/language"
-                         />
+                        android:text="@string/language" />
 
                     <TextView
                         android:id="@+id/setting_language_value"
+                        style="@style/SettingBtnTextRight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/SettingBtnTextRight"
-                        android:text="@string/test_text"
-                         />
+                        android:text="@string/test_text" />
                 </LinearLayout>
-                 <LinearLayout
+
+                <LinearLayout
                     android:id="@+id/setting_ll_unit_distance"
                     style="@style/SettingBtnLayout"
                     android:layout_width="match_parent"
@@ -284,29 +279,29 @@
 
                     <TextView
                         android:id="@+id/setting_unit_distance_title"
+                        style="@style/SettingBtnTextLeft"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/SettingBtnTextLeft"
-                        android:text="@string/unit_of_distance"
-                         />
+                        android:text="@string/unit_of_distance" />
 
                     <TextView
                         android:id="@+id/setting_unit_distance_value"
+                        style="@style/SettingBtnTextRight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/SettingBtnTextRight"
-                        android:text="@string/test_text"
-                         />
+                        android:drawableRight="@drawable/settings_button_arrow"
+                        android:text="@string/test_text" />
                 </LinearLayout>
-                
             </LinearLayout>
-             <View
+
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="@color/view_line_color" />
             <!-- about -->
-             <LinearLayout
-                 android:id="@+id/setting_ll_about"
+
+            <LinearLayout
+                android:id="@+id/setting_ll_about"
                 style="@style/SettingLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -319,38 +314,33 @@
 
                     <TextView
                         android:id="@+id/setting_about_title"
+                        style="@style/SettingBtnTextLeft"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/SettingBtnTextLeft"
-                        android:text="@string/about"
-                        />
+                        android:text="@string/about" />
 
                     <TextView
                         android:id="@+id/setting_about_value"
+                        style="@style/SettingBtnTextRight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/SettingBtnTextRight"
-                        android:text="@string/test_text"
-                         />
+                        android:text="@string/test_text" />
                 </LinearLayout>
-                
-                 <LinearLayout
-                     android:id="@+id/setting_ll_exit"
+
+                <LinearLayout
+                    android:id="@+id/setting_ll_exit"
                     style="@style/SettingBtnLayout"
-                    android:background="@drawable/settings_exitbutton"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/settings_exitbutton" >
 
                     <TextView
                         android:id="@+id/setting_tv_exit"
+                        style="@style/SettingBtnText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/SettingBtnText"
-                        android:gravity="center_horizontal"
-                         />
-
+                        android:gravity="center_horizontal" />
                 </LinearLayout>
-                
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -80,6 +80,11 @@ public class BaseApplication extends Application{
 		}
 		context.sendBroadcast(intent);
 	}
+	/**发送退出App的广播*/
+	public static void sendQuitAppBroadCast(Context context){
+		Intent intent = new Intent(TravelConstant.ACTION_UI_SERICE_QUIT_APP);
+		context.sendBroadcast(intent);
+	}
 	
 	/** 判断定位是否打开 */
 	public static boolean checkGpsEnable(Context context) {

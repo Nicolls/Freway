@@ -36,7 +36,7 @@ import com.freway.ebike.listener.OpenActivityResultListener;
 import com.freway.ebike.model.User;
 import com.freway.ebike.utils.LogUtils;
 /**必须先调用setActivity再调用别的方法*/
-public class FacebookUtil implements OpenActivityResultListener {
+public class FacebookUtil  {
 	private static final String TAG = FacebookUtil.class.getSimpleName();
 	public static final int STATE_UN_LOGIN = 0;
 	public static final int STATE_LOGIN_SUCCESS = 1;
@@ -64,7 +64,6 @@ public class FacebookUtil implements OpenActivityResultListener {
 	/** 重置activity */
 	public FacebookUtil setActivity(BaseActivity activity) {
 		this.activity = activity;
-		activity.setOpenActivityResultListener(this);
 		shareDialog = new ShareDialog(activity);
 		shareDialog.registerCallback(callbackManager, shareCallback);
 		return this;
@@ -76,12 +75,14 @@ public class FacebookUtil implements OpenActivityResultListener {
 		if (enable) {// 已绑定过
 			Profile profile = Profile.getCurrentProfile();
 			Message msg = Message.obtain();
-			User user = new User();
-			user.setUserid(profile.getId());
-			user.setUsername(profile.getName());
-			msg.what = STATE_LOGIN_ED;
-			msg.obj = user;
-			handler.sendMessage(msg);
+			if(profile!=null){
+				User user = new User();
+				user.setUserid(profile.getId());
+				user.setUsername(profile.getName());
+				msg.what = STATE_LOGIN_ED;
+				msg.obj = user;
+				handler.sendMessage(msg);
+			}
 			return;
 		}
 		LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -235,9 +236,10 @@ public class FacebookUtil implements OpenActivityResultListener {
 		}
 	};
 
-	@Override
 	public void onOpenActivityResult(int requestCode, int resultCode, Intent data) {
 		LogUtils.i(TAG, "activity result");
-		callbackManager.onActivityResult(requestCode, resultCode, data);
+		if(callbackManager!=null){
+			callbackManager.onActivityResult(requestCode, resultCode, data);
+		}
 	}
 }

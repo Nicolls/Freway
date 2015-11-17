@@ -95,9 +95,6 @@ public class FrewayMapActivity extends FragmentActivity {
 			case TravelConstant.TRAVEL_STATE_STOP:
 				tvMap.setText("user click stop ,none travel");
 				break;
-			case TravelConstant.TRAVEL_STATE_EXIT:
-				tvMap.setText("exit app");
-				break;
 			default:
 				break;
 			}
@@ -193,7 +190,7 @@ public class FrewayMapActivity extends FragmentActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		BaseApplication.sendStateChangeBroadCast(this, TravelConstant.TRAVEL_STATE_EXIT);
+		BaseApplication.sendQuitAppBroadCast(this);
 		mMapUtil.exit();
 		mBlueToothUtil.exit();
 	}

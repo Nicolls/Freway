@@ -51,6 +51,11 @@ public class ErrorUtils {
 					if(errorLis!=null){
 						errorLis.errorCompleted();
 					}
+					if(TextUtils.equals(errorRes.getCode(),EBResponse.TOKEN_INVALID)) {// 说明token失效
+						EBikeActivityManager.getAppManager().reLogin(context, true);
+					}else if(TextUtils.equals(errorRes.getCode(),EBResponse.USER_NAME_EXITS)){//用户存在
+						EBikeActivityManager.getAppManager().reLogin(context, true);
+					}
 					ToastUtils.toast(context, errorRes.getMsg());
 //					alertDialog(context);
 				} else {
@@ -62,7 +67,10 @@ public class ErrorUtils {
 					errorLis.errorCompleted();
 				}
 				ToastUtils.toast(context, ((EBResponse) obj).getMsg());
-			} else if (!context.isFinishing()) {// activity还存在
+			}else if(TextUtils.equals(((EBResponse) obj).getCode(),EBResponse.TOKEN_INVALID)) {// 说明token失效
+				EBikeActivityManager.getAppManager().reLogin(context, true);
+			}
+			else if (!context.isFinishing()) {// activity还存在
 				lis.successCompleted(id, obj);
 			}else{
 				LogUtils.systemOut("数据正常返回但是activity不存在了!");

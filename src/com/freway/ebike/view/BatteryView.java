@@ -24,6 +24,7 @@ public class BatteryView extends ImageView {
 	private Drawable viewDrawable;
 	private RectF cicleRectF;
 
+	private boolean isDrawGear=false;
 	public BatteryView(Context context) {
 		super(context);
 	}
@@ -34,7 +35,11 @@ public class BatteryView extends ImageView {
 
 	private void init(Canvas canvas) {
 		if(cicleBitmapHolder==null){
-			cicleBitmapHolder = BitmapFactory.decodeResource(getResources(), R.drawable.battery_state_percent_bg);
+			if(isDrawGear){
+				cicleBitmapHolder = BitmapFactory.decodeResource(getResources(), R.drawable.battery_state_percent_bg);
+			}else{
+				cicleBitmapHolder = BitmapFactory.decodeResource(getResources(), R.drawable.bike_state_battery_icon);
+			}
 			percentCiclePaint = new Paint();
 			percentCiclePaint.setAntiAlias(true);
 			percentCiclePaint.setColor(Color.parseColor("#da4129"));
@@ -44,11 +49,13 @@ public class BatteryView extends ImageView {
 						cicleBitmapHolder.getWidth() / 2, cicleBitmapHolder.getHeight() / 2);
 			}
 		}
-		if(viewDrawable==null){
-			viewDrawable=getDrawable();
-			viewDrawable.setBounds(0, 0, getWidth(), getHeight());
+		if(isDrawGear){
+			if(viewDrawable==null){
+				viewDrawable=getDrawable();
+				viewDrawable.setBounds(0, 0, getWidth(), getHeight());
+			}
+			viewDrawable.draw(canvas);
 		}
-		viewDrawable.draw(canvas);
 	}
 
 	@Override
@@ -68,43 +75,51 @@ public class BatteryView extends ImageView {
 		}
 		canvas.restore();
 	}
-
-	public void onValueChange(int percent, int model, int gear) {
+	
+	/**
+	 * @param percent 百分比
+	 * @param model 模式，日间夜间
+	 * @param gear  档位
+	 */
+	public void onValueChange(int percent, int model, int gear,boolean isDrawGear) {
 		Log.i("hudu", "p=" + percent);
-		switch (gear) {
-		case EBConstant.GEAR0:
-			if (model == EBConstant.MODEL_NIGHT) {
-				setImageResource(R.drawable.nightmabiao_battery_gear0);
-			} else {
-				setImageResource(R.drawable.daymabiao_battery_gear0);
-			}
-			break;
-		case EBConstant.GEAR1:
-			if (model == EBConstant.MODEL_NIGHT) {
-				setImageResource(R.drawable.nightmabiao_battery_gear1);
-			} else {
-				setImageResource(R.drawable.daymabiao_battery_gear1);
-			}
-			break;
-		case EBConstant.GEAR2:
-			if (model == EBConstant.MODEL_NIGHT) {
-				setImageResource(R.drawable.nightmabiao_battery_gear2);
-			} else {
-				setImageResource(R.drawable.daymabiao_battery_gear2);
-			}
-			break;
-		case EBConstant.GEAR3:
-			if (model == EBConstant.MODEL_NIGHT) {
-				setImageResource(R.drawable.nightmabiao_battery_gear3);
-			} else {
-				setImageResource(R.drawable.daymabiao_battery_gear3);
-			}
-			break;
-			default:
+		this.isDrawGear=isDrawGear;
+		if(isDrawGear){
+			switch (gear) {
+			case EBConstant.GEAR0:
+				if (model == EBConstant.MODEL_NIGHT) {
+					setImageResource(R.drawable.nightmabiao_battery_gear0);
+				} else {
+					setImageResource(R.drawable.daymabiao_battery_gear0);
+				}
 				break;
+			case EBConstant.GEAR1:
+				if (model == EBConstant.MODEL_NIGHT) {
+					setImageResource(R.drawable.nightmabiao_battery_gear1);
+				} else {
+					setImageResource(R.drawable.daymabiao_battery_gear1);
+				}
+				break;
+			case EBConstant.GEAR2:
+				if (model == EBConstant.MODEL_NIGHT) {
+					setImageResource(R.drawable.nightmabiao_battery_gear2);
+				} else {
+					setImageResource(R.drawable.daymabiao_battery_gear2);
+				}
+				break;
+			case EBConstant.GEAR3:
+				if (model == EBConstant.MODEL_NIGHT) {
+					setImageResource(R.drawable.nightmabiao_battery_gear3);
+				} else {
+					setImageResource(R.drawable.daymabiao_battery_gear3);
+				}
+				break;
+				default:
+					break;
+			}
+			viewDrawable=getDrawable();
+			viewDrawable.setBounds(0, 0, getWidth(), getHeight());
 		}
-		viewDrawable=getDrawable();
-		viewDrawable.setBounds(0, 0, getWidth(), getHeight());
 		if (percent > 50) {
 			startAngle = 360f - ((90f / 50) * (percent - 50));
 			sweepAngle = 180f + 2 * ((90f / 50) * (percent - 50));

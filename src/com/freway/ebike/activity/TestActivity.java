@@ -1,5 +1,12 @@
 package com.freway.ebike.activity;
 
+import java.io.File;
+
+import android.os.Bundle;
+import android.os.Environment;
+import android.view.View;
+import android.widget.TextView;
+
 import com.freway.ebike.R;
 import com.freway.ebike.common.BaseActivity;
 import com.freway.ebike.model.RspLogin;
@@ -10,10 +17,6 @@ import com.freway.ebike.net.EBikeRequestService;
 import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.SPUtils;
 import com.freway.ebike.utils.ToastUtils;
-
-import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
 
 public class TestActivity extends BaseActivity {
 
@@ -93,11 +96,22 @@ public class TestActivity extends BaseActivity {
 	}
 	
 	public void onUpdateInfo(View view){
-		mEBikeRequestService.updateUserInfo(SPUtils.getToken(this), SPUtils.getUsername(this),SPUtils.getPassword(this), "", "1898-12-09", "123@gmail.com");
+		mEBikeRequestService.updateUserInfo(SPUtils.getToken(this),null);
 	}
 	
 	public void onUpLoadTravel(View view){
 		mEBikeRequestService.upLoadTravel(SPUtils.getToken(this), "1", "", "", "1000", "3000", "100", "1000", "[10,20,30]", "[[\"x1\",\"y1\"],[\"x2\",\"y2\"],[\"x3\",\"y3\"]]", "80","65");
+	}
+	
+	public void onUpLoadPhoto(View view){
+		String photoPath=Environment.getExternalStorageDirectory().getAbsolutePath()+"/login_bg.png";
+		File file=new File(photoPath);
+		if(file.exists()){
+			System.out.println("找到 图片了");
+			mEBikeRequestService.updatePhoto("s1ucl1KehmpthZJYqJydnlhtW5NiZZhdamNmap1TZJNyaWxtYJeGtg==", photoPath);
+		}else{
+			System.out.println("文件不存在");
+		}
 	}
 
 }

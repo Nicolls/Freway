@@ -6,10 +6,19 @@ public class EBConstant {
 	public static final int MODEL_DAY = 0;
 	public static final int MODEL_NIGHT = 1;
 
+	public static final int DISTANCE_UNIT_MPH = 0;
+	public static final int DISTANCE_UNIT_MI = 1;
+	
 	public static final int GEAR0 = 0;
 	public static final int GEAR1 = 1;
 	public static final int GEAR2 = 2;
 	public static final int GEAR3 = 3;
+	
+	//登录类型
+	public static final int SIGN_NORMAL=0;
+	public static final int SIGN_FACE_BOOK=1;
+	public static final int SIGN_TWITTER=2;
+
 	/** 客户端类型 */
 	public static final String CLIENT_TYPE = "EB Android";
 	

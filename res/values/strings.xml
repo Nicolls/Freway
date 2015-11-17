@@ -4,7 +4,7 @@
     <string name="app_name">eBike</string>
 
     <!-- 第三方sdk -->
-    <string name="app_id">748116458653988</string>
+    <string name="app_id">1668278680085158</string>
 
     <!-- toast提示，弹出框 -->
     <string name="not_support_bluetooth">您的设备不支持蓝牙</string>
@@ -36,6 +36,7 @@
     <string name="ble_not_bind">eBike not bind go to bind ebike?</string>
     <string name="ble_not_connect">eBike not connect go to connect ebike?</string>
     <!-- 通用 -->
+    <string name="can_not_be_null">Can not be null</string>
     <string name="back">Back</string>
     <string name="menu">Menu</string>
     <string name="home">Home</string>
@@ -66,6 +67,8 @@
     <string name="cal">cal</string>
     <string name="mph">mph</string>
     <string name="rpm">rpm</string>
+    <string name="distance_unit_mph">Mph</string>
+    <string name="distance_unit_mi">Mi</string>
     <string name="distance">DISTANCE</string>
     <string name="avg_speed">AVG.SPEED</string>
     <string name="asl">ASL</string>
@@ -94,6 +97,7 @@
     <string name="about">ABOUT</string>
     <string name="version">Version</string>
     <string name="exit">EXIT</string>
+    <string name="unit_distance_settings">Unit Distance Settings</string>
     <string name="portrait_settings">Portrait Settings</string>
     <string name="album">Album</string>
     <string name="camera">Camera</string>

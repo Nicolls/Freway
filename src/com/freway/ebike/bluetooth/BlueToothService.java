@@ -72,8 +72,8 @@ public class BlueToothService extends BaseService {
 	private static final int REQUESTHISTORYDATA_SPACING = 1 * 1000;// 间隔时间，毫秒
 	private boolean isRequestHistoryDataRunning = true;// 开启获取数据
 	// bluetooth gat
-	private BluetoothGattCharacteristic mReceiveCharacteristic; // 接收数据
-	private BluetoothGattCharacteristic mSendCharacteristic; // 发送数据
+	private static BluetoothGattCharacteristic mReceiveCharacteristic; // 接收数据
+	private static BluetoothGattCharacteristic mSendCharacteristic; // 发送数据
 
 	// 蓝牙是否处于扫描状态
 	private boolean isScanning = false;
@@ -143,9 +143,10 @@ public class BlueToothService extends BaseService {
 					stopTravel();
 				} else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_STOP) {// 停止
 					stopTravel();
-				} else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_EXIT) {// 退出应用
-					exitTravel();
-				}
+				} 
+			}else if (TravelConstant.ACTION_UI_SERICE_QUIT_APP
+					.equals(action)) {//退出app
+				exitTravel();
 			}
 		}
 	};
@@ -153,8 +154,10 @@ public class BlueToothService extends BaseService {
 	/** 开始travel */
 	private void startTravel() {
 		LogUtils.i(tag, "蓝牙服务中开始travel了");
-		mBlueToothConnction.setCharacteristicNotification(
-				mReceiveCharacteristic, true);
+		if(mReceiveCharacteristic!=null){
+			mBlueToothConnction.setCharacteristicNotification(
+					mReceiveCharacteristic, true);
+		}
 		mRequestDataThread = new RequestDataThread();
 		isRequestDataRunning = true;
 		isRequestData = true;
@@ -163,8 +166,10 @@ public class BlueToothService extends BaseService {
 
 	/** 停止travel */
 	private void stopTravel() {
-		mBlueToothConnction.setCharacteristicNotification(
-				mReceiveCharacteristic, false);
+		if(mBlueToothConnction!=null&&mReceiveCharacteristic!=null){
+			mBlueToothConnction.setCharacteristicNotification(
+					mReceiveCharacteristic, false);
+		}
 		if (mRequestDataThread != null) {
 			mRequestDataThread.cancel();
 		}
@@ -242,7 +247,7 @@ public class BlueToothService extends BaseService {
 	/** 停止服务 */
 	private void stopService() {
 		// Make sure we're not doing discovery anymore
-		if (mBlueToothConnction != null) {
+		if (mBlueToothConnction != null&&mReceiveCharacteristic!=null) {
 			mBlueToothConnction.setCharacteristicNotification(
 					mReceiveCharacteristic, false);
 		}
@@ -274,6 +279,10 @@ public class BlueToothService extends BaseService {
 		// 注册广播
 		filter = new IntentFilter(
 				TravelConstant.ACTION_UI_SERICE_TRAVEL_STATE_CHANGE);
+		registerReceiver(mStateReceiver, filter);
+		//退出app监听
+		filter = new IntentFilter(
+				TravelConstant.ACTION_UI_SERICE_QUIT_APP);
 		registerReceiver(mStateReceiver, filter);
 		// 注册对蓝牙状态改变的广播
 
@@ -575,8 +584,10 @@ public class BlueToothService extends BaseService {
 
 	/** 开始读历史数据 */
 	private void syncHistory() {
-		mBlueToothConnction.setCharacteristicNotification(
-				mReceiveCharacteristic, true);
+		if(mReceiveCharacteristic!=null){
+			mBlueToothConnction.setCharacteristicNotification(
+					mReceiveCharacteristic, true);
+		}
 		mRequestHistoryDataThread = new RequestHistoryDataThread();
 		isRequestHistoryDataRunning = true;
 		mRequestHistoryDataThread.start();

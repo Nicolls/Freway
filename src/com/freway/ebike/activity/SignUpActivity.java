@@ -98,9 +98,10 @@ public class SignUpActivity extends BaseActivity {
 	public void dateUpdate(int id, Object obj) {
 		switch(id){
 		case EBikeRequestService.ID_REGISTER:
-			RspRegister rsp=(RspRegister) obj;
-			SPUtils.setToken(this,rsp.getData().getToken());
-			openActivity(HomeActivity.class, null, true);
+//			RspRegister rsp=(RspRegister) obj;
+//			SPUtils.setToken(this,rsp.getData().getToken());
+//			openActivity(HomeActivity.class, null, true);
+			finish();
 			break;
 			default:
 				break;

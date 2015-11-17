@@ -13,9 +13,10 @@ public class TravelConstant {
 	public static final int TRAVEL_STATE_RESUME = 3;
 	public static final int TRAVEL_STATE_COMPLETED = 4;
 	public static final int TRAVEL_STATE_STOP = 5;
-	public static final int TRAVEL_STATE_EXIT = 6;//退出应用
+//	public static final int TRAVEL_STATE_EXIT = 6;//退出应用
 	// 用于UI与服务之间传递状态改变的广播
 	public static final String ACTION_UI_SERICE_TRAVEL_STATE_CHANGE = "ACTION_UI_SERICE_TRAVEL_STATE_CHANGE";
+	public static final String ACTION_UI_SERICE_QUIT_APP = "ACTION_UI_SERICE_QUIT_APP";//退出app发送的广播
 	public static final String EXTRA_STATE = "EXTRA_STATE";
 	
 

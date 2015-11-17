@@ -6,6 +6,8 @@ package com.freway.ebike.net;
 import java.io.File;
 import java.lang.reflect.Type;
 
+import android.content.Context;
+
 import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
@@ -18,10 +20,9 @@ import com.freway.ebike.model.RspUpLoadTravel;
 import com.freway.ebike.model.RspUpdatePhoto;
 import com.freway.ebike.model.RspUpdateUserInfo;
 import com.freway.ebike.model.RspUserInfo;
+import com.freway.ebike.model.User;
 import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.MD5Tool;
-
-import android.content.Context;
 
 /**
  * 通过volley框架来实现的与服务器交互接口的请求类
@@ -30,6 +31,7 @@ import android.content.Context;
  * 
  */
 public class EBikeRequestServiceVolleyImpl implements EBikeRequestService {
+	private static final String TAG=EBikeRequestServiceVolleyImpl.class.getSimpleName();
 	protected DataUpdateListener dataUpdateListener;
 	private Context context;
 
@@ -135,14 +137,13 @@ public class EBikeRequestServiceVolleyImpl implements EBikeRequestService {
 	}
 
 	@Override
-	public void updateUserInfo(String token, String username, String password, String gender, String birthday,
-			String email) {
+	public void updateUserInfo(String token, User user) {
 		EBRequest ebReq = new EBRequest(EBikeRequestService.METHOD_UPDATEUSERINFO);
 		ebReq.setDataParam("token", token);
-		ebReq.setDataParam("username", username);
-		ebReq.setDataParam("gender", gender);
-		ebReq.setDataParam("birthday", birthday);
-		ebReq.setDataParam("email", email);
+		ebReq.setDataParam("username", user.getUsername());
+		ebReq.setDataParam("gender", user.getGender());
+		ebReq.setDataParam("birthday", user.getBirthday());
+		ebReq.setDataParam("email", user.getEmail());
 		sendRequest(ebReq, EBikeRequestService.ID_UPDATEUSERINFO, RspUpdateUserInfo.class);
 	}
 
@@ -167,32 +168,41 @@ public class EBikeRequestServiceVolleyImpl implements EBikeRequestService {
 	}
 
 	@Override
-	public void updatePhoto(String token, String photoPath) {
+	public void updatePhoto(final String token, final String photoPath) {
+		File file=new File(photoPath);
+		if(file.exists()){
+			EBRequest ebReq = new EBRequest(EBikeRequestService.METHOD_PHOTO);
+			ebReq.setDataParam("token", token);
+			String data = ebReq.getDataParam();
+			ebReq.setReqeustParam("data", data);
+			String s = MD5Tool.md5(MD5Tool.md5(data + EBRequest.requestKey));
+			if (s.length() >= 10) {
+				s = s.substring(s.length() - 10, s.length());
+			}
+			ebReq.setReqeustParam("s", s);
+			UploadFileRequest request = new UploadFileRequest(ebReq.getReqeustURL(), new ErrorListener() {
 
-		EBRequest ebReq = new EBRequest(EBikeRequestService.METHOD_PHOTO);
-		ebReq.setDataParam("token", token);
-		String data = ebReq.getDataParam();
-		ebReq.setReqeustParam("data", data);
-		String s = MD5Tool.md5(MD5Tool.md5(data + EBRequest.requestKey));
-		if (s.length() >= 10) {
-			s = s.substring(s.length() - 10, s.length());
+				@Override
+				public void onErrorResponse(VolleyError error) {
+					LogUtils.e(TAG, error.getMessage());
+					LogUtils.i(TAG, "上传图片失败，"+error.getMessage());
+					dataNotify(ID_REQUEST_ERROR, null);
+				}
+			}, new Listener<String>() {
+
+				@Override
+				public void onResponse(String response) {
+					LogUtils.i(TAG, "上传图片返回:"+response);
+					RspUpdatePhoto updatePhoto=new RspUpdatePhoto();
+					updatePhoto.setText(response);
+					dataNotify(EBikeRequestService.ID_PHOTO, updatePhoto);
+				}
+			},"login_bg", file, ebReq.getReqeustParam());
+			VolleyRequestQueue.getInstance(context).addToRequestQueue(request);
+		}else{
+			LogUtils.e(TAG, "文件不存在");
 		}
-		ebReq.setReqeustParam("s", s);
-
-		UploadFileRequest request = new UploadFileRequest(ebReq.getReqeustURL(), new ErrorListener() {
-
-			@Override
-			public void onErrorResponse(VolleyError error) {
-				dataNotify(ID_REQUEST_ERROR, null);
-			}
-		}, new Listener<String>() {
-
-			@Override
-			public void onResponse(String response) {
-				dataNotify(EBikeRequestService.ID_PHOTO, response);
-			}
-		}, "image", new File(photoPath), ebReq.getReqeustParam());
-		VolleyRequestQueue.getInstance(context).addToRequestQueue(request);
+		
 	}
 
 }

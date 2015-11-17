@@ -61,22 +61,25 @@ public class HomeActivity extends HomeUiActivity implements OnClickListener {
 			super.handleMessage(msg);
 				int state = msg.what;
 				bleStateChange(state);
+				String text="";
 				switch (state) {
 				case BlueToothConstants.BLE_STATE_NONE:
-					tvBle.setText("ble not init");
+					text="ble not init";
 					break;
 				case BlueToothConstants.BLE_STATE_CONNECTED:
-					tvBle.setText("ble connected");
+					text="ble connected";
 					break;
 				case BlueToothConstants.BLE_STATE_CONNECTTING:
-					tvBle.setText("ble connectting");
+					text="ble connectting";
 					break;
 				case BlueToothConstants.BLE_STATE_DISCONNECTED:
-					tvBle.setText("ble disconnected");
+					text="ble disconnected";
 					break;
 				default:
 					break;
 				}
+				text=text+"----"+BaseApplication.travelState;
+				tvBle.setText(text);
 		}
 		
 	};
@@ -95,7 +98,7 @@ public class HomeActivity extends HomeUiActivity implements OnClickListener {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		BaseApplication.sendStateChangeBroadCast(this, TravelConstant.TRAVEL_STATE_EXIT);
+		BaseApplication.sendQuitAppBroadCast(this);
 		mMapUtil.exit();
 		mBlueToothUtil.exit();
 	}

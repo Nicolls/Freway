@@ -1,6 +1,7 @@
 package com.freway.ebike.activity;
 
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 import com.freway.ebike.R;
 import com.freway.ebike.bluetooth.BLEScanConnectActivity;
@@ -18,6 +19,7 @@ import com.freway.ebike.utils.CommonUtil;
 import com.freway.ebike.utils.FontUtil;
 import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.SPUtils;
+import com.freway.ebike.utils.TimeUtils;
 import com.freway.ebike.utils.ToastUtils;
 import com.freway.ebike.view.BatteryView;
 import com.freway.ebike.view.ClickImageButton;
@@ -60,7 +62,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	private ImageView mLogo;
 	// 车况
 	private BatteryView mBikeStateBatteryView;
-	private TextView mBikeStateBatteryValue;
+	private TextView mBikeStateBatteryPercent;
 	private TextView mBikeStateBatteryRemaindValue;
 	private TextView mBikeStateBatteryRemaindTitle;
 	private ImageView mBikeStateGearIcon;
@@ -133,6 +135,8 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 
 	//内存中要保存的值
 	private int model=EBConstant.MODEL_DAY;//模式
+	private int distanUnit=EBConstant.DISTANCE_UNIT_MPH;
+	private float speed=0;//由于单位有变化，所以，这里的速度是用来保存临时转化的值并显示在UI上
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -141,6 +145,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		initFontStyle();
 		intClick();
 		initData();
+		updateUiValue();
 	}
 
 	private void initView() {
@@ -158,7 +163,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		mLogo=(ImageView) findViewById(R.id.home_top_bar_logo);
 		// 车况
 		mBikeStateBatteryView = (BatteryView) findViewById(R.id.bike_state_battery_view);
-		mBikeStateBatteryValue = (TextView) findViewById(R.id.bike_state_battery_value);
+		mBikeStateBatteryPercent = (TextView) findViewById(R.id.bike_state_battery_value);
 		mBikeStateBatteryRemaindValue = (TextView) findViewById(R.id.bike_state_battery_remaind_value);
 		mBikeStateBatteryRemaindTitle = (TextView) findViewById(R.id.bike_state_battery_remaind_title);
 		mBikeStateGearIcon = (ImageView) findViewById(R.id.bike_state_gear_icon);
@@ -229,7 +234,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	/** 设置字体风格 */
 	private void initFontStyle() {
 		// 车况
-		mBikeStateBatteryValue.setTypeface(FontUtil.get(this, FontUtil.STYLE_DINCOND_BOLD));
+		mBikeStateBatteryPercent.setTypeface(FontUtil.get(this, FontUtil.STYLE_DINCOND_BOLD));
 		mBikeStateBatteryRemaindValue.setTypeface(FontUtil.get(this, FontUtil.STYLE_DINCOND_BOLD));
 		mBikeStateBatteryRemaindTitle.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_MEDIUM));
 		mBikeStateGearTitle.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_MEDIUM));
@@ -338,6 +343,13 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 
 	/** 初始化 */
 	private void initData() {
+		//单位
+		distanUnit=SPUtils.getUnitOfDistance(this);
+		if(distanUnit==EBConstant.DISTANCE_UNIT_MPH){
+			mSpeedStateCicleHolder.setImageResource(R.drawable.speed_state_view_cicle_mph);
+		}else{
+			mSpeedStateCicleHolder.setImageResource(R.drawable.speed_state_view_cicle_mi);
+		}
 		// 模式
 		model=SPUtils.getUiModel(this);
 		if (SPUtils.getUiModel(this) == EBConstant.MODEL_DAY) {
@@ -347,6 +359,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		}
 		modelChange();
 		// 骑行状态
+		LogUtils.i(tag, "这个是一打开我的页面后看到的状态:"+BaseApplication.travelState);
 		travelStateHandler.sendEmptyMessage(BaseApplication.travelState);
 		uiInitCompleted();
 	}
@@ -381,10 +394,10 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	/** 更新UI的值 */
 	public void updateUiValue() {
 		// 车况
-				mBikeStateBatteryView.onValueChange(EBikeTravelData.getInstance(this).batteryResidueCapacity,model, EBikeTravelData.getInstance(this).gear);
-				mBikeStateBatteryValue.setText(EBikeTravelData.getInstance(this).batteryResidueCapacity+"%");
+				mBikeStateBatteryView.onValueChange(EBikeTravelData.getInstance(this).batteryResidueCapacity,model, EBikeTravelData.getInstance(this).gear,false);
+				mBikeStateBatteryPercent.setText(EBikeTravelData.getInstance(this).batteryResidueCapacity+"%");
 				mBikeStateBatteryRemaindValue.setText(EBikeTravelData.getInstance(this).miCapacity+"");
-				mBikeStateGearValue .setText(getString(R.string.gear)+""+EBikeTravelData.getInstance(this).gear);
+				mBikeStateGearValue .setText(EBikeTravelData.getInstance(this).gear+"");
 				if(EBikeTravelData.getInstance(this).frontLed==EBikeTravelData.ON){
 					mBikeStateLightFront.setSelected(true);
 				}else{
@@ -397,61 +410,51 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 				}
 
 				// 骑行状态
-				mTravelStateSpendTime .setText(CommonUtil.);
-				mTravelStateCalValue = (TextView) findViewById(R.id.travel_state_cal_value);
-				mTravelStateCalUnit = (TextView) findViewById(R.id.travel_state_cal_unit);
-				mTravelStateSpeedValue = (TextView) findViewById(R.id.travel_state_speed);
-				mTravelStateSpeedUnit = (TextView) findViewById(R.id.travel_state_speed_unit);
+				mTravelStateSpendTime .setText(TimeUtils.formatTimeMillisToHMS(EBikeTravelData.getInstance(this).spendTime)+"");
+				mTravelStateCalValue.setText(EBikeTravelData.getInstance(this).calorie+"");
+				mTravelStateSpeedValue.setText(EBikeTravelData.getInstance(this).insSpeed+"");
 
-				mTravelStateDistanceTitle = (TextView) findViewById(R.id.travel_state_distance_title);
-				mTravelStateDistanceValue = (TextView) findViewById(R.id.travel_state_distance_value);
-				mTravelStateDistanceUnit = (TextView) findViewById(R.id.travel_state_distance_unit);
+				mTravelStateDistanceValue.setText(EBikeTravelData.getInstance(this).distance+"");
 
-				mTravelStateAvgSpeedTitle = (TextView) findViewById(R.id.travel_state_avg_title);
-				mTravelStateAvgSpeedValue = (TextView) findViewById(R.id.travel_state_avg_value);
-				mTravelStateAvgSpeedUnit = (TextView) findViewById(R.id.travel_state_avg_unit);
-				mTravelStateAslTitle = (TextView) findViewById(R.id.travel_state_asl_title);
-				mTravelStateAslValue = (TextView) findViewById(R.id.travel_state_asl_value);
-				mTravelStateAslUnit = (TextView) findViewById(R.id.travel_state_asl_unit);
-				mTravelStateCadenceTitle = (TextView) findViewById(R.id.travel_state_cadence_title);
-				mTravelStateCadenceValue = (TextView) findViewById(R.id.travel_state_cadence_value);
-				mTravelStateCadenceUnit = (TextView) findViewById(R.id.travel_state_cadence_unit);
+				mTravelStateAvgSpeedValue.setText(EBikeTravelData.getInstance(this).avgSpeed+"");
+				mTravelStateAslValue.setText(EBikeTravelData.getInstance(this).altitude+"");
+				mTravelStateCadenceValue.setText(EBikeTravelData.getInstance(this).cadence+"");
 				// 速度
-				mSpeedStateArrowTopView = (ImageView) findViewById(R.id.speed_state_arrow_top);
-				mSpeedStateArrowBottomView = (ImageView) findViewById(R.id.speed_state_arrow_bottom);
-				mSpeedStateCicleHolder = (ImageView) findViewById(R.id.speed_state_cicle_view);
-				mSpeedStateSpeedView = (SpeedView) findViewById(R.id.speed_state_speed_view);
-				mSpeedStateSpeedText = (TextView) findViewById(R.id.speed_state_speed_text);
-				mSpeedStateSpeedButton = (ClickImageButton) findViewById(R.id.speed_state_btn);
-				mSpeedStateCalValue = (TextView) findViewById(R.id.speed_state_cal_value);
-				mSpeedStateCalUnit = (TextView) findViewById(R.id.speed_state_cal_unit);
-				mSpeedStateSpendTimeValue = (TextView) findViewById(R.id.speed_state_spend_time);
+				if(distanUnit==EBConstant.DISTANCE_UNIT_MPH){
+					speed=EBikeTravelData.getInstance(this).insSpeed;
+					mSpeedStateSpeedView.onValueChange(speed,SpeedView.MAX_SPEED_MPH);
+				}else{
+					speed=EBikeTravelData.getInstance(this).insSpeed*1.6f;
+					mSpeedStateSpeedView.onValueChange(speed,SpeedView.MAX_SPEED_KM_H);
+				}
+				
+				mSpeedStateSpeedText.setText(speed+"");
+				mSpeedStateCalValue.setText(EBikeTravelData.getInstance(this).calorie+"");
+				mSpeedStateSpendTimeValue.setText(TimeUtils.formatTimeMillisToHMS(EBikeTravelData.getInstance(this).spendTime)+"");
 
-				mSpeedStateDistanceTitle = (TextView) findViewById(R.id.speed_state_distance_title);
-				mSpeedStateDistanceValue = (TextView) findViewById(R.id.speed_state_distance_value);
-				mSpeedStateDistanceUnit = (TextView) findViewById(R.id.speed_state_distance_unit);
+				mSpeedStateDistanceValue.setText(EBikeTravelData.getInstance(this).distance+"");
 
-				mSpeedStateAvgSpeedTitle = (TextView) findViewById(R.id.speed_state_avg_title);
-				mSpeedStateAvgSpeedValue = (TextView) findViewById(R.id.speed_state_avg_value);
-				mSpeedStateAvgSpeedUnit = (TextView) findViewById(R.id.speed_state_avg_unit);
+				mSpeedStateAvgSpeedValue.setText(EBikeTravelData.getInstance(this).avgSpeed+"");
 
-				mSpeedStateAslTitle = (TextView) findViewById(R.id.speed_state_asl_title);
-				mSpeedStateAslValue = (TextView) findViewById(R.id.speed_state_asl_value);
-				mSpeedStateAslUnit = (TextView) findViewById(R.id.speed_state_asl_unit);
+				mSpeedStateAslValue.setText(EBikeTravelData.getInstance(this).altitude+"");
 
-				mSpeedStateCadenceTitle = (TextView) findViewById(R.id.speed_state_cadence_title);
-				mSpeedStateCadenceValue = (TextView) findViewById(R.id.speed_state_cadence_value);
-				mSpeedStateCadenceUnit = (TextView) findViewById(R.id.speed_state_cadence_unit);
+				mSpeedStateCadenceValue.setText(EBikeTravelData.getInstance(this).cadence+"");
 
 				// 电池
-				mBatteryStateBatteryView = (BatteryView) findViewById(R.id.battery_state_battery_view);
-				mBatteryStateBatteryPercent = (TextView) findViewById(R.id.battery_state_battery_percent);
-				mBatteryStateRemaindTip = (TextView) findViewById(R.id.battery_state_remaind_tip);
-				mBatteryStateRemaindValue = (TextView) findViewById(R.id.battery_state_remaind_value);
-				mBatteryStateRemaindUnit = (TextView) findViewById(R.id.battery_state_remaind_unit);
-				mBatteryStateLightFront = (ImageView) findViewById(R.id.battery_state_light_front);
-				mBatteryStateLightBack = (ImageView) findViewById(R.id.battery_state_light_back);
-				mBatteryStateGearText = (TextView) findViewById(R.id.battery_state_gear);
+				mBatteryStateBatteryView.onValueChange(EBikeTravelData.getInstance(this).batteryResidueCapacity, model, EBikeTravelData.getInstance(this).gear,true);
+				mBatteryStateBatteryPercent.setText(EBikeTravelData.getInstance(this).batteryResidueCapacity+"%");
+				mBatteryStateRemaindValue.setText(EBikeTravelData.getInstance(this).miCapacity+"");
+				if(EBikeTravelData.getInstance(this).frontLed==EBikeTravelData.ON){
+					mBatteryStateLightFront.setSelected(true);
+				}else{
+					mBatteryStateLightFront.setSelected(false);
+				}
+				if(EBikeTravelData.getInstance(this).backLed==EBikeTravelData.ON){
+					mBatteryStateLightBack.setSelected(true);
+				}else{
+					mBatteryStateLightBack.setSelected(false);
+				}
+				mBatteryStateGearText.setText(getString(R.string.gear)+EBikeTravelData.getInstance(this).gear+"");
 	}
 	/**BLE stateChange*/
 	public void bleStateChange(int state){
@@ -572,7 +575,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 
 	private void modelChange() {
 		mBatteryStateBatteryView.onValueChange(EBikeTravelData.getInstance(this).batteryResidueCapacity,
-				SPUtils.getUiModel(this), EBikeTravelData.getInstance(this).gear);
+				SPUtils.getUiModel(this), EBikeTravelData.getInstance(this).gear,true);
 		if (SPUtils.getUiModel(this) == EBConstant.MODEL_NIGHT) {// 由day到night
 			// 电池
 			mLogo.setImageResource(R.drawable.home_freway_logo_night);

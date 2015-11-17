@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.freway.ebike.bluetooth.BlueToothConstants;
+import com.freway.ebike.bluetooth.BlueToothService;
 import com.freway.ebike.bluetooth.EBikeTravelData;
 import com.freway.ebike.common.BaseApplication;
 import com.freway.ebike.db.DBHelper;
@@ -75,6 +76,8 @@ public class MapService extends Service implements ConnectionCallbacks,
 		IntentFilter filter = new IntentFilter(
 				TravelConstant.ACTION_UI_SERICE_TRAVEL_STATE_CHANGE);
 		registerReceiver(mStateReceiver, filter);
+		filter = new IntentFilter(TravelConstant.ACTION_UI_SERICE_QUIT_APP);//退出app
+		registerReceiver(mBleStateReceiver, filter);
 		filter = new IntentFilter(BlueToothConstants.BLE_SERVER_STATE_CHANAGE);
 		registerReceiver(mBleStateReceiver, filter);
 		ToastUtils.toast(this, "onCreate");
@@ -132,9 +135,10 @@ public class MapService extends Service implements ConnectionCallbacks,
 					completed();
 				} else if (state == TravelConstant.TRAVEL_STATE_STOP) {// 停止
 					stop();
-				} else if (state == TravelConstant.TRAVEL_STATE_EXIT) {// 退出应用
-					exit();
 				}
+			}else if (TravelConstant.ACTION_UI_SERICE_QUIT_APP
+					.equals(action)) {//退出应用
+				exit();
 			}
 		}
 	};
@@ -156,18 +160,20 @@ public class MapService extends Service implements ConnectionCallbacks,
 					break;
 				case BlueToothConstants.BLE_STATE_CONNECTED:
 					LogUtils.i(TAG, "map service BLE_STATE_CONNECTED "+BaseApplication.travelState);
-					if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_PAUSE) {
-						BaseApplication.sendStateChangeBroadCast(context, TravelConstant.TRAVEL_STATE_RESUME);
-					}
+					//问题     原先是，当ble断开时，自动暂停，那现在做成断开时不用自动暂停。
+//					if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_PAUSE) {
+//						BaseApplication.sendStateChangeBroadCast(context, TravelConstant.TRAVEL_STATE_RESUME);
+//					}
 					break;
 				case BlueToothConstants.BLE_STATE_CONNECTTING:
 
 					break;
 				case BlueToothConstants.BLE_STATE_DISCONNECTED:
-					if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_START
-							|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_RESUME) {
-						BaseApplication.sendStateChangeBroadCast(context, TravelConstant.TRAVEL_STATE_PAUSE);
-					}
+					//问题     原先是，当ble断开时，自动暂停，那现在做成断开时不用自动暂停,但是这个线要画成别的颜色，用来区分。
+//					if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_START
+//							|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_RESUME) {
+//						BaseApplication.sendStateChangeBroadCast(context, TravelConstant.TRAVEL_STATE_PAUSE);
+//					}
 					break;
 				default:
 					break;
@@ -207,6 +213,13 @@ public class MapService extends Service implements ConnectionCallbacks,
 						travelLocation, null, null);// 当前位置
 			}
 			currentLocation = travelLocation;
+			
+			//如果ble断开，则把这些点都设置为停止状态，
+			if(BlueToothService.ble_state!=BlueToothConstants.BLE_STATE_CONNECTED){
+				currentLocation.setPause(true);
+				toLocation.setPause(true);
+			}
+			
 			// 向UI发送位置改变，画数据
 			broadCastLocation(
 					TravelConstant.ACTION_MAP_SERVICE_LOCATION_CHANGE,
@@ -242,6 +255,9 @@ public class MapService extends Service implements ConnectionCallbacks,
 		if (currentLocation != null) {
 			currentLocation.setPause(true);
 			DBHelper.getInstance(this).updateTravelLocation(currentLocation);
+			broadCastLocation(
+					TravelConstant.ACTION_MAP_SERVICE_LOCATION_CHANGE,
+					currentLocation, currentLocation, currentLocation);
 		}
 	}
 

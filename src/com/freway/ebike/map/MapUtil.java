@@ -48,17 +48,18 @@ public class MapUtil implements OnCameraChangeListener {
 	/** 国内定位精度偏差 */
 	private static final double LNG_OFFSET = 0.0061154366;
 	/** 纠正角度偏差 */
-	private static final double ANGLE_OFFSET = 0.0000007;
+//	private static final double ANGLE_OFFSET = 0.0000007;
+	private static final double ANGLE_OFFSET = 0;
 	private final static int CAMERA_INIT_ZOOM = 17;// 初始缩放
 	private final static int CAMERA_MAX_ZOOM = 18;// 最大缩放
-	private final static int POLY_LINE_WIDTH = 5;// 线宽
+	private final static int POLY_LINE_WIDTH = 3;// 线宽
 	private GoogleMap mGoogleMap;
 	private float zoom = CAMERA_INIT_ZOOM;
 	private boolean isChinaGps = false;
 	private Context context;
 	private Handler mHandler;
 	private Polygon polygon;
-
+	private TravelLocation mLastLocation;
 	public MapUtil(Context context, SupportMapFragment supportMapFragment) {
 		this.context = context;
 		init(supportMapFragment);
@@ -142,15 +143,19 @@ public class MapUtil implements OnCameraChangeListener {
 	public void drawPolyLine(GoogleMap map, TravelLocation paintFromLocation, TravelLocation paintToLocation,
 			boolean showSpeedColor) {
 		// ToastUtils.toast(this, "paint");
-		if (!paintFromLocation.isPause()) {
+//		if (!paintFromLocation.isPause()) {
 			PolylineOptions poly = new PolylineOptions();
 			LatLng from = new LatLng(paintFromLocation.getLocation().getLatitude() - ANGLE_OFFSET,
 					paintFromLocation.getLocation().getLongitude() - ANGLE_OFFSET);
 			LatLng to = new LatLng(paintToLocation.getLocation().getLatitude(),
 					paintToLocation.getLocation().getLongitude());
-			poly.add(from, to).width(POLY_LINE_WIDTH).color(Color.YELLOW);
+			if(paintFromLocation.isPause()){
+				poly.add(from, to).width(POLY_LINE_WIDTH).color(Color.YELLOW);
+			}else{
+				poly.add(from, to).width(POLY_LINE_WIDTH).color(Color.RED);
+			}
 			map.addPolyline(poly);
-		}
+//		}
 	}
 
 	/** 完成行程 */
@@ -191,6 +196,7 @@ public class MapUtil implements OnCameraChangeListener {
 			TravelLocation current = intent.getParcelableExtra(TravelConstant.EXTRA_LOCATION_CURRENT);
 			TravelLocation from = intent.getParcelableExtra(TravelConstant.EXTRA_LOCATION_FROM);
 			TravelLocation to = intent.getParcelableExtra(TravelConstant.EXTRA_LOCATION_TO);
+			mLastLocation=to;
 			if (TravelConstant.ACTION_UI_SERICE_TRAVEL_STATE_CHANGE.equals(action)) {// 状态改变
 				if (mHandler != null) {
 					mHandler.sendEmptyMessage(state);
@@ -217,6 +223,9 @@ public class MapUtil implements OnCameraChangeListener {
 					// LogUtils.i(TAG, to.getDescription()+"--");
 					from = formatLocationWithChina(from);
 					to = formatLocationWithChina(to);
+					if(mLastLocation.isPause()){//如果是暂停,把暂停的这条画出来
+						drawPolyLine(mGoogleMap, mLastLocation, from, false);
+					}
 					drawPolyLine(mGoogleMap, from, to, false);
 				}
 			}

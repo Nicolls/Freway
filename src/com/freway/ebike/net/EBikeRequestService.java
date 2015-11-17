@@ -1,4 +1,7 @@
 package com.freway.ebike.net;
+
+import com.freway.ebike.model.User;
+
 /**
  * @author Nicolls
  * @Description 请求服务器接口类
@@ -6,6 +9,11 @@ package com.freway.ebike.net;
  */
 public interface EBikeRequestService {
 
+	/**
+	 * 接口测试
+	 * http://www.ifreway.com/app/index.php/service/test
+	 * */
+	/**请求出错*/
 	static final int ID_REQUEST_ERROR = -1;
 	/** 方法ID **/
 	/** 普通登录 */
@@ -92,15 +100,10 @@ public interface EBikeRequestService {
 	void userInfo(String token);
 	/**
 	 * @param token 登录态token ,从注册/登录接口中获得
-	 * @param username 用户名
-	 * @param password 用户密码
-	 * @param gender 性别 female 或male
-	 * @param birthday 生日 如 1988-10-12
-	 * @param email 用户邮箱地址
-	 * @return void
+	 * @param user 用户信息
 	 * @Description 用户修改信息
 	 */
-	void updateUserInfo(String token,String username,String password,String gender,String birthday,String email);
+	void updateUserInfo(String token,User user);
 	
 	/**
 	 * @param token 登录态token ,从注册/登录接口中获得

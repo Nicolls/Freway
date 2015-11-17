@@ -35,6 +35,19 @@ public class User implements Serializable{
 	 * @Fields email 邮箱
 	 */
 	private String email;
+	
+	/**
+	 * 身高
+	 */
+	private String height;
+	/**
+	 * 体重
+	 */
+	private String weight;
+	/**
+	 * 年龄
+	 */
+	private String age;
 	/**总里程*/
 	private String total_miles;
 	/**总时间*/
@@ -86,5 +99,23 @@ public class User implements Serializable{
 	}
 	public void setTotal_hour(String total_hour) {
 		this.total_hour = total_hour;
+	}
+	public String getHeight() {
+		return height;
+	}
+	public void setHeight(String height) {
+		this.height = height;
+	}
+	public String getWeight() {
+		return weight;
+	}
+	public void setWeight(String weight) {
+		this.weight = weight;
+	}
+	public String getAge() {
+		return age;
+	}
+	public void setAge(String age) {
+		this.age = age;
 	}
 }

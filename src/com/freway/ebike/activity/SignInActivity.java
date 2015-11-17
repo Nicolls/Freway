@@ -1,15 +1,6 @@
 package com.freway.ebike.activity;
 
-import com.freway.ebike.R;
-import com.freway.ebike.common.BaseActivity;
-import com.freway.ebike.facebook.FacebookUtil;
-import com.freway.ebike.model.RspLogin;
-import com.freway.ebike.model.User;
-import com.freway.ebike.utils.CommonUtil;
-import com.freway.ebike.utils.FontUtil;
-import com.freway.ebike.utils.SPUtils;
-import com.freway.ebike.utils.ToastUtils;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,6 +9,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.freway.ebike.R;
+import com.freway.ebike.common.BaseActivity;
+import com.freway.ebike.facebook.FacebookUtil;
+import com.freway.ebike.model.RspLogin;
+import com.freway.ebike.model.User;
+import com.freway.ebike.net.EBikeRequestService;
+import com.freway.ebike.utils.CommonUtil;
+import com.freway.ebike.utils.FontUtil;
+import com.freway.ebike.utils.LogUtils;
+import com.freway.ebike.utils.SPUtils;
+import com.freway.ebike.utils.ToastUtils;
 
 public class SignInActivity extends BaseActivity {
 
@@ -44,8 +47,7 @@ public class SignInActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-				openActivity(HomeActivity.class, null, false);
-//				onSignin();
+				onSignin();
 			}
 		});
 		mTvSignup.setOnClickListener(new OnClickListener() {
@@ -79,33 +81,35 @@ public class SignInActivity extends BaseActivity {
 		String email=mEtEmail.getText().toString();
 		String password=mEtPassword.getText().toString();
 		if(TextUtils.isEmpty(email)){
-			ToastUtils.toast(this, getString(R.string.email_can_not_be_null));
+			ToastUtils.toast(this, getString(R.string.username_can_not_be_null));
 			return;
 		}
 		if(TextUtils.isEmpty(password)){
 			ToastUtils.toast(this, getString(R.string.password_can_not_be_null));
 			return;
 		}
-		if(!CommonUtil.isEmail(email)){
-			ToastUtils.toast(this, getString(R.string.email_incorrect));
-			return;
-		}
+//		if(!CommonUtil.isEmail(email)){
+//			ToastUtils.toast(this, getString(R.string.email_incorrect));
+//			return;
+//		}
 		mEBikeRequestService.login(email, password);
 	}
 
 	public void onSignup() {
-		openActivity(SignUpActivity.class, null, true);
+		openActivity(SignUpActivity.class, null, false);
 	}
 
 	public void onSigninFacebook(View view) {
-		showLoading(true);
+//		showLoading(true);
 		FacebookUtil.getInstance().setActivity(this).bind(new Handler(){
 
 			@Override
 			public void handleMessage(Message msg) {
 				super.handleMessage(msg);
-				hideLoading();
+//				hideLoading();
+				LogUtils.i(tag, "Facebook返回");
 				if(msg.what!=FacebookUtil.STATE_LOGIN_FAIL){//没有错
+					LogUtils.i(tag, "Facebook登录成功");
 					User user=(User) msg.obj;
 					mEBikeRequestService.loginFaceBook(user.getUserid(), user.getUsername(), user.getGender(), user.getBirthday(), user.getPhoto(), user.getEmail());
 				}else{
@@ -122,21 +126,20 @@ public class SignInActivity extends BaseActivity {
 	}
 
 	@Override
-	public void dateUpdate(int id, Object obj) {
-		/*switch(id){
-		case EBikeRequestService.ID_LOGIN:
-			openActivity(HomeActivity.class, null, true);
-			break;
-		case EBikeRequestService.ID_LOGINFACEBOOK:
-			openActivity(HomeActivity.class, null, true);
-			break;
-			default:
-				break;
-		}*/
+	public void dateUpdate(int id, Object obj) {//不管是哪种登录回来的都是一样的
 		if(obj instanceof RspLogin){
 			RspLogin rspLogin=(RspLogin) obj;
 			SPUtils.setToken(getApplicationContext(), rspLogin.getData().getToken());
+			openActivity(HomeActivity.class, null, true);
 		}
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		LogUtils.i(tag, "Activity打开回来了");
+		FacebookUtil.getInstance().onOpenActivityResult(requestCode, resultCode, data);
+	}
+
+	
 }
