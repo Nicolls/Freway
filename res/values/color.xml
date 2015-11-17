@@ -15,6 +15,7 @@
 	<color name="battery_cicle_bg_color">#1c2027</color>
 	<color name="view_line_color">#bababa</color>
 	<color name="red_shallow">#da4129</color>
+	<color name="hint_color">#66251E</color>
 	<color name="red_deep">#e10019</color>
   	
 	<color name="text_gray_shallow">#909090</color><!-- 浅灰 -->

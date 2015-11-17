@@ -106,7 +106,7 @@
     <string name="ebike_not_found_tip">eBike not found.please make sure the bike electric system has been open</string>
     <!-- APP升级 -->
     <string name="app_update">App Update</string>
-    <string name="app_update_tip">new app version provide want to update?</string>
+    <string name="app_update_tip">new app version provide,want to update?</string>
     <string name="start_download">start download</string>
     <string name="app_downloading">downloading</string>
     <string name="app_downloaded">downloaded</string>

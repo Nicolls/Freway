@@ -338,6 +338,13 @@
         <item name="android:gravity">right</item>
     </style>
 
+	<style name="SettingProfileEditRight" parent="SettingProfileText">
+		<item name="android:textColorHint">@color/hint_color</item>
+        <item name="android:gravity">right|bottom</item>
+        <item name="android:enabled">false</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:background">@null</item>
+    </style>
     <style name="SettingMyEbike">
         <item name="android:layout_marginLeft">@dimen/setting_cicle_btn_marginHorizontal</item>
         <item name="android:drawableLeft">@drawable/settings_icon_bike</item>

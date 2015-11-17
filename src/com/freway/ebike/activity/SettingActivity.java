@@ -1,22 +1,15 @@
 package com.freway.ebike.activity;
 
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.freway.ebike.R;
 import com.freway.ebike.bluetooth.BLEScanConnectActivity;
 import com.freway.ebike.bluetooth.BlueToothUtil;
 import com.freway.ebike.common.BaseActivity;
 import com.freway.ebike.common.EBConstant;
-import com.freway.ebike.map.MapUtil;
 import com.freway.ebike.model.RspUserInfo;
 import com.freway.ebike.model.User;
 import com.freway.ebike.net.EBikeRequestService;
+import com.freway.ebike.service.UpdateAPPService;
+import com.freway.ebike.service.UpdateAPPService.UpdateAppListener;
 import com.freway.ebike.utils.AlertUtil;
 import com.freway.ebike.utils.CommonUtil;
 import com.freway.ebike.utils.EBkieViewUtils;
@@ -25,7 +18,18 @@ import com.freway.ebike.utils.SPUtils;
 import com.freway.ebike.utils.ToastUtils;
 import com.freway.ebike.view.HeadPicView;
 
-public class SettingActivity extends BaseActivity implements OnClickListener {
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+public class SettingActivity extends BaseActivity implements OnClickListener,UpdateAppListener {
 
 	private static final String GENDER_MAN="man";
 	private static final String GENDER_WOMEN="women";
@@ -65,6 +69,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 
 	private boolean isEdit=false;
 	private User user;
+	private boolean isNeed2Update = false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -173,7 +178,11 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 			weightValue.setText(user.getWeight());
 			mHeadView = (HeadPicView) findViewById(R.id.profile_head_view);
 			EBkieViewUtils.displayPhoto(this, mHeadView, user.getPhoto());
-			snValue.setText(SPUtils.getEBkieAddress(this));
+			if(!TextUtils.isEmpty(SPUtils.getEBkieAddress(this))){
+				snValue.setText(SPUtils.getEBkieAddress(this));
+			}else{
+				snValue.setText(getString(R.string.ble_not_bind));
+			}
 //			languageValue = (TextView) findViewById(R.id.setting_language_value);
 			if(SPUtils.getUnitOfDistance(this)==EBConstant.DISTANCE_UNIT_MPH){
 				unitDistanceValue.setText(getString(R.string.distance_unit_mph));
@@ -265,16 +274,41 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 			});
 			break;
 		case R.id.setting_ll_about:
+//			if (isNeed2Update) {
+				AlertUtil.getInstance(this).alertConfirm(getString(R.string.app_update_tip), getString(R.string.confirm), new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						AlertUtil.getInstance(SettingActivity.this).dismiss();
+						updateApk();
+					}
+				});
 
+//			} else {
+//				ToastUtils.toast(SettingActivity.this, getString(R.string.app_now_is_newly));
+//			}
+			
 			break;
 		case R.id.setting_ll_exit:
-
+			finish();
 			break;
 		default:
 			break;
 		}
 	}
 
+	/** 版本更新 */
+	private void updateApk() {
+		final String downloadUrl = "http://www.saner5.com/index.aspx?appId=1&appDownLoadCount=55&appDownloadUrl=upload/app/2014_07_17_17_44_48ear.apk";
+		ToastUtils.toast(SettingActivity.this, getString(R.string.start_download));
+		aoubtValue.setText(getString(R.string.app_downloading));
+		Intent intent = new Intent(UpdateAPPService.class.getName());
+		intent.putExtra(UpdateAPPService.INTENT_DOWNLOAD_URL, downloadUrl);
+		UpdateAPPService.setUpdateAppListener(SettingActivity.this);
+		SettingActivity.this.startService(intent);
+	}
+	
+	
 	private void setEditState(boolean isEdit){
 		nameValue.setEnabled(isEdit);
 		emailValue.setEnabled(isEdit);
@@ -330,6 +364,23 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 			default:
 				break;
 		}
+	}
+
+	@Override
+	public void updateAppCompleted(String message) {
+		if (SettingActivity.this != null && aoubtValue != null) {
+			aoubtValue.setSelected(false);
+			aoubtValue.setText(CommonUtil.getAppVersion(this));
+			ToastUtils.toast(this, message);
+		}
+	}
+
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		user=SPUtils.getUserProfile(this);
+		updateUiUser(user);
 	}
 
 }

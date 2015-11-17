@@ -144,8 +144,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		initView();
 		initFontStyle();
 		intClick();
-		initData();
-		updateUiValue();
+//		initData();//这个已经由onResume来做了
 	}
 
 	private void initView() {
@@ -359,8 +358,8 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		}
 		modelChange();
 		// 骑行状态
-		LogUtils.i(tag, "这个是一打开我的页面后看到的状态:"+BaseApplication.travelState);
 		travelStateHandler.sendEmptyMessage(BaseApplication.travelState);
+		updateUiValue();
 		uiInitCompleted();
 	}
 
@@ -648,8 +647,17 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 
 	@Override
 	public void dateUpdate(int id, Object obj) {
-		// TODO Auto-generated method stub
 
 	}
+
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		initData();
+	}
+	
+	
 
 }

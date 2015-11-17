@@ -129,6 +129,13 @@
 		
         <!-- 服务 -->
         <service
+            android:name="com.freway.ebike.service.UpdateAPPService"
+            android:enabled="true" >
+            <intent-filter>
+                <action android:name="com.freway.ebike.service.UpdateAPPService" />
+            </intent-filter>
+        </service>
+        <service
             android:permission="com.freway.ebike.map.MapService.FREWAY_MAP"
             android:name="com.freway.ebike.map.MapService"
             android:exported="true"

@@ -35,10 +35,9 @@
 
                 <EditText
                     android:id="@+id/setting_name_value"
-                    style="@style/SettingProfileTextRight"
+                    style="@style/SettingProfileEditRight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:enabled="false"
                     android:hint="@string/nick_name" />
             </LinearLayout>
 
@@ -61,11 +60,9 @@
 
                 <EditText
                     android:id="@+id/setting_email_value"
-                    style="@style/SettingProfileTextRight"
+                    style="@style/SettingProfileEditRight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:enabled="false"
                     android:hint="@string/email" />
             </LinearLayout>
 
@@ -101,6 +98,7 @@
                             style="@style/SettingProfileTextLeft"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|left"
                             android:text="@string/gender" />
 
                         <ImageView
@@ -132,10 +130,9 @@
 
                         <EditText
                             android:id="@+id/setting_age_value"
-                            style="@style/SettingProfileTextRight"
+                            style="@style/SettingProfileEditRight"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:enabled="false"
                             android:hint="@string/age" />
                     </LinearLayout>
 
@@ -160,10 +157,9 @@
 
                         <EditText
                             android:id="@+id/setting_height_value"
-                            style="@style/SettingProfileTextRight"
+                            style="@style/SettingProfileEditRight"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:enabled="false"
                             android:hint="@string/height_cm" />
                     </LinearLayout>
 
@@ -188,10 +184,9 @@
 
                         <EditText
                             android:id="@+id/setting_weight_value"
-                            style="@style/SettingProfileTextRight"
+                            style="@style/SettingProfileEditRight"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:enabled="false"
                             android:hint="@string/weight_kg" />
                     </LinearLayout>
                 </LinearLayout>
