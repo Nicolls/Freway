@@ -325,14 +325,14 @@ public class EBikeTravelData implements Serializable {
 					.byteArrayToInt(new byte[] { bikeData[6] });
 			gear = ProtocolTool
 					.byteArrayToInt(new byte[] { bikeData[7] });
-			//下面对骑行状态进行转换。骑行状态：0-运动，1-电动 2-助力1,4-助力2,6-助力3
+			//下面对骑行状态进行转换。骑行状态：0-运动，1-电动 2-助力1,3-助力2,4-助力3
 			if(gear==0){
 				gear=0;
 			}else if(gear==2){
 				gear=1;
-			}else if(gear==4){
+			}else if(gear==3){
 				gear=2;
-			}else if(gear==6){
+			}else if(gear==4){
 				gear=3;
 			}
 			

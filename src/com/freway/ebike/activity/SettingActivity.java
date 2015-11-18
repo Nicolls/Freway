@@ -1,10 +1,25 @@
 package com.freway.ebike.activity;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.freway.ebike.R;
 import com.freway.ebike.bluetooth.BLEScanConnectActivity;
 import com.freway.ebike.bluetooth.BlueToothUtil;
 import com.freway.ebike.common.BaseActivity;
 import com.freway.ebike.common.EBConstant;
+import com.freway.ebike.crop.BitmapUtil;
+import com.freway.ebike.crop.CropHandler;
+import com.freway.ebike.crop.CropHelper;
+import com.freway.ebike.crop.CropParams;
 import com.freway.ebike.model.RspUserInfo;
 import com.freway.ebike.model.User;
 import com.freway.ebike.net.EBikeRequestService;
@@ -14,26 +29,16 @@ import com.freway.ebike.utils.AlertUtil;
 import com.freway.ebike.utils.CommonUtil;
 import com.freway.ebike.utils.EBkieViewUtils;
 import com.freway.ebike.utils.FontUtil;
+import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.SPUtils;
 import com.freway.ebike.utils.ToastUtils;
 import com.freway.ebike.view.HeadPicView;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+public class SettingActivity extends BaseActivity implements OnClickListener, UpdateAppListener, CropHandler {
 
-public class SettingActivity extends BaseActivity implements OnClickListener,UpdateAppListener {
+	private static final String GENDER_MAN = "man";
+	private static final String GENDER_WOMEN = "women";
 
-	private static final String GENDER_MAN="man";
-	private static final String GENDER_WOMEN="women";
-	
 	private ImageView iconButton;
 	private ImageView leftButton;
 	private TextView rightButton;
@@ -67,9 +72,12 @@ public class SettingActivity extends BaseActivity implements OnClickListener,Upd
 	private View aboutLL;
 	private View exitLL;
 
-	private boolean isEdit=false;
+	private CropParams mCropParams;
+	private boolean isEdit = false;
 	private User user;
 	private boolean isNeed2Update = false;
+	private String photoPath="";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -81,7 +89,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener,Upd
 	}
 
 	private void initView() {
-		iconButton=(ImageView) findViewById(R.id.top_bar_right_icon);
+		iconButton = (ImageView) findViewById(R.id.top_bar_right_icon);
 		leftButton = (ImageView) findViewById(R.id.top_bar_left);
 		rightButton = (TextView) findViewById(R.id.top_bar_right);
 		titleTv = (TextView) findViewById(R.id.top_bar_title);
@@ -155,22 +163,23 @@ public class SettingActivity extends BaseActivity implements OnClickListener,Upd
 	}
 
 	private void initData() {
+		mCropParams = new CropParams(this);
 		iconButton.setImageResource(R.drawable.settings_confirm_red);
 		iconButton.setVisibility(View.GONE);
-		titleTv.setText(getString(R.string.settings)+"");
-		rightButton.setText(getString(R.string.edit)+"");
-		user=SPUtils.getUserProfile(this);
+		titleTv.setText(getString(R.string.settings) + "");
+		rightButton.setText(getString(R.string.edit) + "");
+		user = SPUtils.getUserProfile(this);
 		updateUiUser(user);
 		mEBikeRequestService.userInfo(SPUtils.getToken(this));
 	}
-	
-	private void updateUiUser(User user){
-		if(user!=null){
+
+	private void updateUiUser(User user) {
+		if (user != null) {
 			nameValue.setText(user.getUsername());
 			emailValue.setText(user.getEmail());
-			if(TextUtils.equals(GENDER_MAN, user.getGender())){//男
+			if (TextUtils.equals(GENDER_MAN, user.getGender())) {// 男
 				genderView.setSelected(true);
-			}else{
+			} else {
 				genderView.setSelected(false);
 			}
 			ageValue.setText(user.getAge());
@@ -178,15 +187,16 @@ public class SettingActivity extends BaseActivity implements OnClickListener,Upd
 			weightValue.setText(user.getWeight());
 			mHeadView = (HeadPicView) findViewById(R.id.profile_head_view);
 			EBkieViewUtils.displayPhoto(this, mHeadView, user.getPhoto());
-			if(!TextUtils.isEmpty(SPUtils.getEBkieAddress(this))){
+			if (!TextUtils.isEmpty(SPUtils.getEBkieAddress(this))) {
 				snValue.setText(SPUtils.getEBkieAddress(this));
-			}else{
+			} else {
 				snValue.setText(getString(R.string.ble_not_bind));
 			}
-//			languageValue = (TextView) findViewById(R.id.setting_language_value);
-			if(SPUtils.getUnitOfDistance(this)==EBConstant.DISTANCE_UNIT_MPH){
+			// languageValue = (TextView)
+			// findViewById(R.id.setting_language_value);
+			if (SPUtils.getUnitOfDistance(this) == EBConstant.DISTANCE_UNIT_MPH) {
 				unitDistanceValue.setText(getString(R.string.distance_unit_mph));
-			}else{
+			} else {
 				unitDistanceValue.setText(getString(R.string.distance_unit_mi));
 			}
 			aoubtValue.setText(CommonUtil.getAppVersion(this));
@@ -200,94 +210,104 @@ public class SettingActivity extends BaseActivity implements OnClickListener,Upd
 			finish();
 			break;
 		case R.id.top_bar_right:
-			if(isEdit==false){
+			if (isEdit == false) {
 				rightButton.setVisibility(View.GONE);
 				iconButton.setVisibility(View.VISIBLE);
-				isEdit=true;
+				isEdit = true;
 				setEditState(isEdit);
 			}
 			break;
 		case R.id.top_bar_right_icon:
-			if(completedEdit()){
+			if (completedEdit()) {
 				rightButton.setVisibility(View.VISIBLE);
 				iconButton.setVisibility(View.GONE);
-				isEdit=false;
+				isEdit = false;
 				setEditState(isEdit);
-				mEBikeRequestService.updateUserInfo(SPUtils.getToken(this),user);
+				mEBikeRequestService.updateUserInfo(SPUtils.getToken(this), user);
 			}
 			break;
 		case R.id.setting_gender_view:
-			if(v.isSelected()){//
+			if (v.isSelected()) {//
 				user.setGender(GENDER_MAN);
 				v.setSelected(false);
-			}else{
+			} else {
 				user.setGender(GENDER_WOMEN);
 				v.setSelected(true);
 			}
 			break;
 		case R.id.profile_head_view:
-			AlertUtil.getInstance(this).alertChoice(getString(R.string.portrait_settings), getString(R.string.album), getString(R.string.camera),
-					new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					//album
-					AlertUtil.getInstance(SettingActivity.this).dismiss();
-					
-				}
-			}, new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					//camera
-					AlertUtil.getInstance(SettingActivity.this).dismiss();
-					
-				}
-			});
+			mCropParams.refreshUri();
+			AlertUtil.getInstance(this).alertChoice(getString(R.string.portrait_settings), getString(R.string.album),
+					getString(R.string.camera), new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							// album
+							AlertUtil.getInstance(SettingActivity.this).dismiss();
+							mCropParams.enable = true;
+							mCropParams.compress = false;
+							Intent intent = CropHelper.buildGalleryIntent(mCropParams);
+							startActivityForResult(intent, CropHelper.REQUEST_CROP);
+						}
+					}, new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							// camera
+							AlertUtil.getInstance(SettingActivity.this).dismiss();
+							mCropParams.enable = true;
+							mCropParams.compress = false;
+							Intent intent = CropHelper.buildCameraIntent(mCropParams);
+							startActivityForResult(intent, CropHelper.REQUEST_CAMERA);
+
+						}
+					});
 			break;
 		case R.id.setting_ll_sn:
 			BlueToothUtil.toBindBleActivity(this, BLEScanConnectActivity.HANDLE_SCAN);
 			break;
 		case R.id.setting_ll_language:
-			
+
 			break;
 		case R.id.setting_ll_unit_distance:
-			AlertUtil.getInstance(this).alertChoice(getString(R.string.unit_distance_settings), getString(R.string.distance_unit_mph), getString(R.string.distance_unit_mi),
-					new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					//mph
-					AlertUtil.getInstance(SettingActivity.this).dismiss();
-					SPUtils.setUnitOfDistance(getApplicationContext(), EBConstant.DISTANCE_UNIT_MPH);
-					unitDistanceValue.setText(getString(R.string.distance_unit_mph));
-				}
-			}, new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					//mi
-					AlertUtil.getInstance(SettingActivity.this).dismiss();
-					SPUtils.setUnitOfDistance(getApplicationContext(), EBConstant.DISTANCE_UNIT_MI);
-					unitDistanceValue.setText(getString(R.string.distance_unit_mi));
-				}
-			});
+			AlertUtil.getInstance(this).alertChoice(getString(R.string.unit_distance_settings),
+					getString(R.string.distance_unit_mph), getString(R.string.distance_unit_mi), new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							// mph
+							AlertUtil.getInstance(SettingActivity.this).dismiss();
+							SPUtils.setUnitOfDistance(getApplicationContext(), EBConstant.DISTANCE_UNIT_MPH);
+							unitDistanceValue.setText(getString(R.string.distance_unit_mph));
+						}
+					}, new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							// mi
+							AlertUtil.getInstance(SettingActivity.this).dismiss();
+							SPUtils.setUnitOfDistance(getApplicationContext(), EBConstant.DISTANCE_UNIT_MI);
+							unitDistanceValue.setText(getString(R.string.distance_unit_mi));
+						}
+					});
 			break;
 		case R.id.setting_ll_about:
-//			if (isNeed2Update) {
-				AlertUtil.getInstance(this).alertConfirm(getString(R.string.app_update_tip), getString(R.string.confirm), new OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						AlertUtil.getInstance(SettingActivity.this).dismiss();
-						updateApk();
-					}
-				});
+			// if (isNeed2Update) {
+			AlertUtil.getInstance(this).alertConfirm(getString(R.string.app_update_tip), getString(R.string.confirm),
+					new OnClickListener() {
 
-//			} else {
-//				ToastUtils.toast(SettingActivity.this, getString(R.string.app_now_is_newly));
-//			}
-			
+						@Override
+						public void onClick(View v) {
+							AlertUtil.getInstance(SettingActivity.this).dismiss();
+							updateApk();
+						}
+					});
+
+			// } else {
+			// ToastUtils.toast(SettingActivity.this,
+			// getString(R.string.app_now_is_newly));
+			// }
+
 			break;
 		case R.id.setting_ll_exit:
 			finish();
@@ -307,30 +327,30 @@ public class SettingActivity extends BaseActivity implements OnClickListener,Upd
 		UpdateAPPService.setUpdateAppListener(SettingActivity.this);
 		SettingActivity.this.startService(intent);
 	}
-	
-	
-	private void setEditState(boolean isEdit){
+
+	private void setEditState(boolean isEdit) {
 		nameValue.setEnabled(isEdit);
+		nameValue.requestFocus();
 		emailValue.setEnabled(isEdit);
 		ageValue.setEnabled(isEdit);
 		heightValue.setEnabled(isEdit);
 		weightValue.setEnabled(isEdit);
 		mHeadView.setEnabled(isEdit);
 	}
-	
-	private boolean completedEdit(){
-		boolean isOk=true;
-		String nickName=nameValue.getText().toString();
-		String email=emailValue.getText().toString();
-		String age=ageValue.getText().toString();
-		String height=heightValue.getText().toString();
-		String weight=weightValue.getText().toString();
-		if(TextUtils.isEmpty(nickName)){
-			ToastUtils.toast(this, getString(R.string.nick_name)+""+getString(R.string.can_not_be_null));
+
+	private boolean completedEdit() {
+		boolean isOk = true;
+		String nickName = nameValue.getText().toString();
+		String email = emailValue.getText().toString();
+		String age = ageValue.getText().toString();
+		String height = heightValue.getText().toString();
+		String weight = weightValue.getText().toString();
+		if (TextUtils.isEmpty(nickName)) {
+			ToastUtils.toast(this, getString(R.string.nick_name) + "" + getString(R.string.can_not_be_null));
 			return false;
 		}
-		if(TextUtils.isEmpty(email)){
-			ToastUtils.toast(this, getString(R.string.email)+""+getString(R.string.can_not_be_null));
+		if (TextUtils.isEmpty(email)) {
+			ToastUtils.toast(this, getString(R.string.email) + "" + getString(R.string.can_not_be_null));
 			return false;
 		}
 		user.setUsername(nickName);
@@ -338,31 +358,37 @@ public class SettingActivity extends BaseActivity implements OnClickListener,Upd
 		user.setAge(age);
 		user.setHeight(height);
 		user.setWeight(weight);
-		if(genderView.isSelected()){
+		if (genderView.isSelected()) {
 			user.setGender(GENDER_WOMEN);
-		}else{
+		} else {
 			user.setGender(GENDER_MAN);
 		}
 		SPUtils.setUserProfile(this, user);
 		return isOk;
 	}
-	
+
 	@Override
 	public void dateUpdate(int id, Object obj) {
-		switch(id){
+		switch (id) {
 		case EBikeRequestService.ID_UPDATEUSERINFO:
 			SPUtils.setUserProfile(this, user);
+			if(!TextUtils.isEmpty(photoPath)){
+				mEBikeRequestService.updatePhoto(SPUtils.getToken(this), photoPath);
+			}
 			break;
 		case EBikeRequestService.ID_USERINFO:
-			RspUserInfo info=(RspUserInfo) obj;
-			User user=info.getData();
-			if(user!=null){
+			RspUserInfo info = (RspUserInfo) obj;
+			User user = info.getData();
+			if (user != null) {
 				updateUiUser(user);
 				SPUtils.setUserProfile(this, user);
 			}
 			break;
-			default:
-				break;
+		case EBikeRequestService.ID_PHOTO:
+			
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -375,12 +401,55 @@ public class SettingActivity extends BaseActivity implements OnClickListener,Upd
 		}
 	}
 
-
 	@Override
 	protected void onResume() {
 		super.onResume();
-		user=SPUtils.getUserProfile(this);
+		user = SPUtils.getUserProfile(this);
 		updateUiUser(user);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		CropHelper.handleResult(this, requestCode, resultCode, data);
+		if (requestCode == 1) {
+			LogUtils.e(tag, "onActivityResult");
+		}
+	}
+
+	@Override
+	public void onPhotoCropped(Uri uri) {
+		LogUtils.i(tag, "onPhotoCropped Uri in path: " + uri.getPath());
+		photoPath=uri.getPath();
+		if (!mCropParams.compress)
+			mHeadView.setImageBitmap(mHeadView.toRoundBitmap(BitmapUtil.decodeUriAsBitmap(this, uri)));
+	}
+
+	@Override
+	public void onCompressed(Uri uri) {
+		LogUtils.i(tag, "onCompressed in path: " + uri.getPath());
+		photoPath=uri.getPath();
+		mHeadView.setImageBitmap(mHeadView.toRoundBitmap(BitmapUtil.decodeUriAsBitmap(this, uri)));
+	}
+
+	@Override
+	public void onCancel() {
+		LogUtils.i(tag, "pic onCancel");
+	}
+
+	@Override
+	public void onFailed(String message) {
+		LogUtils.i(tag, "pic onFailed");
+	}
+
+	@Override
+	public void handleIntent(Intent intent, int requestCode) {
+		LogUtils.i(tag, "pic handleIntent");
+		startActivityForResult(intent, requestCode);
+	}
+
+	@Override
+	public CropParams getCropParams() {
+		return mCropParams;
 	}
 
 }

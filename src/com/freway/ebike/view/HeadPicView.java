@@ -26,6 +26,7 @@ public class HeadPicView extends ImageView{
 		setImageBitmap(toRoundBitmap(bit));
 	}
 
+	
 	/**
 	 * 转换图片成圆形
 	 * 
