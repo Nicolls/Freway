@@ -160,7 +160,7 @@ public class MapService extends Service implements ConnectionCallbacks,
 					break;
 				case BlueToothConstants.BLE_STATE_CONNECTED:
 					LogUtils.i(TAG, "map service BLE_STATE_CONNECTED "+BaseApplication.travelState);
-					//问题     原先是，当ble断开时，自动暂停，那现在做成断开时不用自动暂停。
+					//mark     原先是，当ble断开时，自动暂停，那现在做成断开时不用自动暂停。
 //					if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_PAUSE) {
 //						BaseApplication.sendStateChangeBroadCast(context, TravelConstant.TRAVEL_STATE_RESUME);
 //					}
@@ -169,7 +169,7 @@ public class MapService extends Service implements ConnectionCallbacks,
 
 					break;
 				case BlueToothConstants.BLE_STATE_DISCONNECTED:
-					//问题     原先是，当ble断开时，自动暂停，那现在做成断开时不用自动暂停,但是这个线要画成别的颜色，用来区分。
+					//mark     原先是，当ble断开时，自动暂停，那现在做成断开时不用自动暂停,但是这个线要画成别的颜色，用来区分。
 //					if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_START
 //							|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_RESUME) {
 //						BaseApplication.sendStateChangeBroadCast(context, TravelConstant.TRAVEL_STATE_PAUSE);
@@ -205,7 +205,7 @@ public class MapService extends Service implements ConnectionCallbacks,
 		}
 		if (isRecord && pointDistance > RECORD_MIN_DISTANCE) {// 正在记录，并且两点的距离必须要大于最小记录距离值才记录
 			EBikeTravelData.getInstance(this).altitude = travelLocation.getLocation()
-					.getAltitude();
+					.getAltitude()/1000;//海拔单位，改成km
 			// 判断是开始的位置
 			if (currentLocation == null) {// 如果是开始，则通知行程开始
 				broadCastLocation(

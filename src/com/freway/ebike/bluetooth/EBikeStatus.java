@@ -1,5 +1,7 @@
 package com.freway.ebike.bluetooth;
 
+import com.freway.ebike.common.EBConstant;
+
 import android.content.Context;
 
 /**骑行状态*/
@@ -42,6 +44,9 @@ public class EBikeStatus {
 	public final static int PHONE_CALL = 7;
 	/**短信*/
 	public final static int RECEIVE_MESSAGE = 8;
+	/**发送短信的次数*/
+	private int sendMessageTime=0;
+	private static final int SEND_MESSAGE_MAX_TIMES=3;
 	private Context context;
 	private static EBikeStatus mEBikeStatus;
 	private EBikeStatus(Context context){
@@ -58,6 +63,14 @@ public class EBikeStatus {
 	private  byte bikeStatus;
 	/**获取骑行状态数据*/
 	public  byte getBikeStatus() {
+		//在这里判断，如果是接收到短信，那么要发送三次
+		if(sendMessageTime>=SEND_MESSAGE_MAX_TIMES){
+			bit_6=EBConstant.OFF;
+			sendMessageTime=0;
+		}
+		if(bit_6==EBConstant.ON){
+			sendMessageTime++;
+		}
 		return bikeStatus;
 	}
 	/**获取短信提醒状态*/

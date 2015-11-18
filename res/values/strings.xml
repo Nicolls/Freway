@@ -36,6 +36,7 @@
     <string name="ble_not_bind">eBike not bind go to bind ebike?</string>
     <string name="ble_not_connect">eBike not connect go to connect ebike?</string>
     <!-- 通用 -->
+    <string name="battery_connect_exception">Battery Connect Exception,Please Check!</string>
     <string name="can_not_be_null">Can not be null</string>
     <string name="back">Back</string>
     <string name="menu">Menu</string>
@@ -67,8 +68,8 @@
     <string name="cal">cal</string>
     <string name="mph">mph</string>
     <string name="rpm">rpm</string>
-    <string name="distance_unit_mph">Mph</string>
-    <string name="distance_unit_mi">Mi</string>
+    <string name="distance_unit_mph">mph</string>
+    <string name="distance_unit_mi">km/h</string>
     <string name="distance">DISTANCE</string>
     <string name="avg_speed">AVG.SPEED</string>
     <string name="asl">ASL</string>

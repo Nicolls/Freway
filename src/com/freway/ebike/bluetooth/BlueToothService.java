@@ -25,6 +25,7 @@ import android.util.Log;
 import com.freway.ebike.R;
 import com.freway.ebike.common.BaseApplication;
 import com.freway.ebike.common.BaseService;
+import com.freway.ebike.common.EBConstant;
 import com.freway.ebike.db.DBHelper;
 import com.freway.ebike.db.Travel;
 import com.freway.ebike.map.TravelConstant;
@@ -111,7 +112,7 @@ public class BlueToothService extends BaseService {
 				case BlueToothConstants.HANDLE_SERVER_SYNC:// 同步
 					// 默认只有链接上蓝牙才去同步
 					if(mBlueToothConnction.getState()==BluetoothConnection.STATE_CONNECTED){
-						syncHistory();
+//						syncHistory();//mark  如果想同步历史记录，则打开此处
 					}else{//没有连接就去扫描，并连接
 						startScanBluetoothDevice();
 					}
@@ -427,10 +428,11 @@ public class BlueToothService extends BaseService {
 				switch (tm.getCallState()) {
 				case TelephonyManager.CALL_STATE_RINGING:
 					printlnMessage("来电");
-					EBikeStatus.getInstance(context).setBikeStatus(EBikeStatus.PHONE_CALL, 1);
+					EBikeStatus.getInstance(context).setBikeStatus(EBikeStatus.PHONE_CALL, EBConstant.ON);
 					break;
 				case TelephonyManager.CALL_STATE_OFFHOOK:
 					printlnMessage("挂机");
+					EBikeStatus.getInstance(context).setBikeStatus(EBikeStatus.PHONE_CALL, EBConstant.OFF);
 					break;
 
 				case TelephonyManager.CALL_STATE_IDLE:
@@ -538,7 +540,7 @@ public class BlueToothService extends BaseService {
 							|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_RESUME) {// 说明在运行中
 						startTravel();
 					}else if(BaseApplication.travelState != TravelConstant.TRAVEL_STATE_PAUSE){
-						syncHistory();//同步历史数据
+//						syncHistory();//mark 同步历史数据
 					}
 				} else {
 					mBlueToothConnction

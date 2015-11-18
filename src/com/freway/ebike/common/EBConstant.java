@@ -14,6 +14,8 @@ public class EBConstant {
 	public static final int GEAR2 = 2;
 	public static final int GEAR3 = 3;
 	
+	public static final int ON=1;
+	public static final int OFF=0;
 	//登录类型
 	public static final int SIGN_NORMAL=0;
 	public static final int SIGN_FACE_BOOK=1;
