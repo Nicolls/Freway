@@ -1,11 +1,9 @@
 package com.freway.ebike.bluetooth;
 
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -16,11 +14,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.freway.ebike.R;
-import com.freway.ebike.db.DBHelper;
-import com.freway.ebike.db.Travel;
 import com.freway.ebike.map.TravelConstant;
 import com.freway.ebike.utils.AlertUtil;
-import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.SPUtils;
 import com.freway.ebike.utils.ToastUtils;
 
@@ -32,8 +27,10 @@ public class BlueToothUtil {
 	// private Handler syncHandler;
 	private Handler bleStateHandler;
 
-	public BlueToothUtil(Context context, Handler bleStateHandler) {
+	private Handler travelStateHandler;
+	public BlueToothUtil(Context context, Handler bleStateHandler,Handler travelStateHandler) {
 		this.bleStateHandler = bleStateHandler;
+		this.travelStateHandler=travelStateHandler;
 		this.context = context;
 		startService();
 	}
@@ -54,7 +51,9 @@ public class BlueToothUtil {
 
 	private void startService() {
 		IntentFilter filter = new IntentFilter(BlueToothConstants.BLE_SERVER_STATE_CHANAGE);
-		context.registerReceiver(mBleStateReceiver, filter);
+		context.registerReceiver(mStateReceiver, filter);
+		filter = new IntentFilter(TravelConstant.ACTION_UI_SERICE_TRAVEL_STATE_CHANGE);
+		context.registerReceiver(mStateReceiver, filter);
 		Intent service = new Intent(context, BlueToothService.class);
 		context.startService(service);
 	}
@@ -102,10 +101,7 @@ public class BlueToothUtil {
 		if (sendDataHandler != null) {
 			context.unregisterReceiver(mSendDataReceiver);
 		}
-		// if(syncHandler!=null){
-		// context.unregisterReceiver(mSyncReceiver);
-		// }
-		context.unregisterReceiver(mBleStateReceiver);
+		context.unregisterReceiver(mStateReceiver);
 	}
 
 	/** 停止服务，一般不需要调用 */
@@ -172,18 +168,21 @@ public class BlueToothUtil {
 	}
 
 	/**
-	 * 蓝牙状态改变
+	 * 蓝牙或者骑行状态改变
 	 */
-	private final BroadcastReceiver mBleStateReceiver = new BroadcastReceiver() {
+	private final BroadcastReceiver mStateReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
-
+			int state = intent.getIntExtra(TravelConstant.EXTRA_STATE, 0);
 			if (BlueToothConstants.BLE_SERVER_STATE_CHANAGE.equals(action)) {
-				int state = intent.getIntExtra(BlueToothConstants.EXTRA_STATE, 0);
 				// LogUtils.i(TAG, "接收到蓝牙状态的改变"+state);
 				if (bleStateHandler != null) {
 					bleStateHandler.sendEmptyMessage(state);
+				}
+			}else if (TravelConstant.ACTION_UI_SERICE_TRAVEL_STATE_CHANGE.equals(action)) {// 状态改变
+				if (travelStateHandler != null) {
+					travelStateHandler.sendEmptyMessage(state);
 				}
 			}
 		}

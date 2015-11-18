@@ -8,6 +8,10 @@ import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.telephony.TelephonyManager;
@@ -87,5 +91,17 @@ public class CommonUtil {
         Matcher m = p.matcher(email);
         return m.matches();
     }
+
+    
+    /** 判断谷歌服务是否可用 */
+	public static boolean checkGoogleServiceAvailable(Activity context, int RQS_GooglePlayServices) {
+		int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
+		if (resultCode == ConnectionResult.SUCCESS) {
+			return true;
+		} else {
+			GooglePlayServicesUtil.getErrorDialog(resultCode, context, RQS_GooglePlayServices);
+			return false;
+		}
+	}
 
 }

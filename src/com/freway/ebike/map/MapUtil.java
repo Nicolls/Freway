@@ -57,26 +57,12 @@ public class MapUtil implements OnCameraChangeListener {
 	private float zoom = CAMERA_INIT_ZOOM;
 	private boolean isChinaGps = false;
 	private Context context;
-	private Handler mHandler;
 	private Polygon polygon;
 	private TravelLocation mLastLocation;
 	public MapUtil(Context context, SupportMapFragment supportMapFragment) {
 		this.context = context;
 		init(supportMapFragment);
 	}
-
-	/** 判断谷歌服务是否可用 */
-	public boolean checkGoogleServiceAvailable(Activity context, int RQS_GooglePlayServices) {
-		int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
-		if (resultCode == ConnectionResult.SUCCESS) {
-			return true;
-		} else {
-			GooglePlayServicesUtil.getErrorDialog(resultCode, context, RQS_GooglePlayServices);
-			return false;
-		}
-	}
-
-	
 
 	/** 初始化 */
 	private void init(SupportMapFragment supportMapFragment) {
@@ -103,16 +89,13 @@ public class MapUtil implements OnCameraChangeListener {
 	}
 
 	/** 注册广播 */
-	public void startMapService(Handler handler) {
-		this.mHandler = handler;
+	public void startMapService() {
 		// 注册广播
 		IntentFilter filter = new IntentFilter(TravelConstant.ACTION_MAP_SERVICE_LOCATION_CHANGE);
 		context.registerReceiver(mReceiver, filter);
 		filter = new IntentFilter(TravelConstant.ACTION_MAP_SERVICE_LOCATION_START);
 		context.registerReceiver(mReceiver, filter);
 		filter = new IntentFilter(TravelConstant.ACTION_MAP_SERVICE_LOCATION_END);
-		context.registerReceiver(mReceiver, filter);
-		filter = new IntentFilter(TravelConstant.ACTION_UI_SERICE_TRAVEL_STATE_CHANGE);
 		context.registerReceiver(mReceiver, filter);
 		Intent intent = new Intent(context, MapService.class);
 		context.startService(intent);
@@ -197,11 +180,7 @@ public class MapUtil implements OnCameraChangeListener {
 			TravelLocation from = intent.getParcelableExtra(TravelConstant.EXTRA_LOCATION_FROM);
 			TravelLocation to = intent.getParcelableExtra(TravelConstant.EXTRA_LOCATION_TO);
 			mLastLocation=to;
-			if (TravelConstant.ACTION_UI_SERICE_TRAVEL_STATE_CHANGE.equals(action)) {// 状态改变
-				if (mHandler != null) {
-					mHandler.sendEmptyMessage(state);
-				}
-			} else if (TravelConstant.ACTION_MAP_SERVICE_LOCATION_START.equals(action)) {// 起点
+			if (TravelConstant.ACTION_MAP_SERVICE_LOCATION_START.equals(action)) {// 起点
 				if (current != null)
 					LogUtils.i(TAG,
 							"起点：" + current.getLocation().getLatitude() + "--" + current.getLocation().getLongitude());

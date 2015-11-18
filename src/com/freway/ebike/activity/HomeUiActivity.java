@@ -145,6 +145,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		initFontStyle();
 		intClick();
 		// initData();//这个已经由onResume来做了
+		uiInitCompleted();
 	}
 
 	private void initView() {
@@ -362,7 +363,6 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		// 骑行状态
 		travelStateHandler.sendEmptyMessage(BaseApplication.travelState);
 		updateUiValue();
-		uiInitCompleted();
 	}
 
 	protected abstract void uiInitCompleted();

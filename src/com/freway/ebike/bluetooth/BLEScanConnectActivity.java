@@ -56,7 +56,7 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 		
 		address=SPUtils.getEBkieAddress(this);
 		handle = getIntent().getIntExtra(HANDLE_EXTRA, HANDLE_CONNECT);
-		mBlueToothUtil = new BlueToothUtil(this, blueHandler);
+		mBlueToothUtil = new BlueToothUtil(this, blueHandler,null);
 		mBtnScan=(Button) findViewById(R.id.ble_bnt_scan);
 		mBtnManual=(Button) findViewById(R.id.ble_bnt_manual);
 		mBtnConfirm=(Button) findViewById(R.id.ble_bnt_confirm);
@@ -165,9 +165,10 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 
 	@Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
-		mBlueToothUtil.exit();
+		if(mBlueToothUtil!=null){
+			mBlueToothUtil.exit();
+		}
 	}
 
 	@Override
