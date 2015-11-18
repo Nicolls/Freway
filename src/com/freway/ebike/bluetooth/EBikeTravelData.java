@@ -6,6 +6,7 @@ import java.util.Calendar;
 import android.content.Context;
 import android.os.Handler;
 
+import com.freway.ebike.R;
 import com.freway.ebike.common.BaseApplication;
 import com.freway.ebike.db.DBHelper;
 import com.freway.ebike.db.Travel;
@@ -257,7 +258,7 @@ public class EBikeTravelData implements Serializable {
 		}
 		if (distance < MUST_MIN_TRAVEL) {
 			//数据少，不存储
-			ToastUtils.toast(context, "travel is too short not save");
+			ToastUtils.toast(context, context.getString(R.string.travel_too_short_not_save));
 			BaseApplication.travelId=-1;
 		}else{
 			Travel travel=new Travel();

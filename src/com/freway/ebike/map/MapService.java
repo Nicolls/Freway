@@ -80,13 +80,13 @@ public class MapService extends Service implements ConnectionCallbacks,
 		registerReceiver(mBleStateReceiver, filter);
 		filter = new IntentFilter(BlueToothConstants.BLE_SERVER_STATE_CHANAGE);
 		registerReceiver(mBleStateReceiver, filter);
-		ToastUtils.toast(this, "onCreate");
+//		ToastUtils.toast(this, "onCreate");
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		LogUtils.i(TAG, "onStartCommand");
-		ToastUtils.toast(this, "onStartCommand");
+//		ToastUtils.toast(this, "onStartCommand");
 		mGoogleApiClient.connect();
 		initData();
 		return super.onStartCommand(intent, flags, startId);
@@ -296,7 +296,7 @@ public class MapService extends Service implements ConnectionCallbacks,
 
 	@Override
 	public void onConnected(Bundle arg0) {
-		ToastUtils.toast(this, "onConnected");
+//		ToastUtils.toast(this, "onConnected");
 		LocationServices.FusedLocationApi.requestLocationUpdates(
 				mGoogleApiClient, REQUEST, this); // 位置变化监听
 	}
@@ -308,7 +308,7 @@ public class MapService extends Service implements ConnectionCallbacks,
 		unregisterReceiver(mStateReceiver);
 		unregisterReceiver(mBleStateReceiver);
 		LogUtils.i(TAG, "onDestroy");
-		ToastUtils.toast(this, "onDestroy");
+//		ToastUtils.toast(this, "onDestroy");
 	}
 
 	@Override

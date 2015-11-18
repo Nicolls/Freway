@@ -127,7 +127,7 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 					handle=HANDLE_NOT_FOUND;
 					handle("");
 				}else{
-					ToastUtils.toast(getApplicationContext(), "scan completed");
+					ToastUtils.toast(getApplicationContext(), getString(R.string.ble_scan_compledted));
 				}
 			}else if(msg.what==BlueToothConstants.RESULT_SUCCESS){
 				BluetoothDevice device = (BluetoothDevice) msg.obj;
@@ -153,7 +153,7 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 					@Override
 					public void run() {
 						if(bleState==BlueToothConstants.BLE_STATE_CONNECTED){
-							ToastUtils.toast(getApplicationContext(), "ble is connected");
+							ToastUtils.toast(getApplicationContext(), getString(R.string.ble_connected));
 							finish();
 						}
 					}

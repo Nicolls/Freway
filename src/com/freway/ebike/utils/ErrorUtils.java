@@ -80,23 +80,4 @@ public class ErrorUtils {
 		}
 	}
 
-	/** 对话框 */
-	private static void alertDialog(final Context context) {
-		AlertDialog.Builder builer = new AlertDialog.Builder(context);
-
-		AlertDialog dialog = builer
-				.setTitle(context.getString(R.string.honey_tip))
-				.setMessage(context.getString(R.string.http_request_error_relogin))
-				.setPositiveButton(context.getString(R.string.confirm),
-						new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								dialog.dismiss();
-								EBikeActivityManager.getAppManager().reLogin(context, false);
-							}
-						}).create();
-		dialog.setCancelable(false);
-		dialog.show();
-	}
 }
