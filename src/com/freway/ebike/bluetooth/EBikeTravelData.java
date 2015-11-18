@@ -3,6 +3,9 @@ package com.freway.ebike.bluetooth;
 import java.io.Serializable;
 import java.util.Calendar;
 
+import android.content.Context;
+import android.os.Handler;
+
 import com.freway.ebike.common.BaseApplication;
 import com.freway.ebike.db.DBHelper;
 import com.freway.ebike.db.Travel;
@@ -12,8 +15,6 @@ import com.freway.ebike.protocol.ProtocolTool;
 import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.NetUtil;
 import com.freway.ebike.utils.ToastUtils;
-
-import android.content.Context;
 
 public class EBikeTravelData implements Serializable {
 	/**

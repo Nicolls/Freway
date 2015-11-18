@@ -493,7 +493,10 @@ public class BlueToothService extends BaseService {
 						+ ProtocolTool.bytesToHexString(receiveData));
 				HashMap<String, Object> map = ProtocolByteHandler
 						.parseData(BlueToothService.this,receiveData);
-				broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA,BlueToothConstants.RESULT_SUCCESS,null);// 提示UI更新
+//				broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA,BlueToothConstants.RESULT_SUCCESS,null);// 提示UI更新   //mark 现改成，发送数据的时候就提示UI更新，因为需要流畅的时间显示
+				if(!isRequestData){//由于最后一次暂停 了，可能是没有发送出去。所以要把最后一次更新到UI上
+					broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA,BlueToothConstants.RESULT_SUCCESS,null);
+				}
 				break;
 			case BluetoothConnection.ACTION_GATT_DISCONNECTED:
 				if (mRequestDataThread != null) {
@@ -644,7 +647,6 @@ public class BlueToothService extends BaseService {
 					sendData(CommandCode.HISTORY,
 							new byte[] { EBikeHistoryStatus.setBikeStatus(
 									EBikeHistoryStatus.DATA_END, 0) });// 设置为读完了
-//					broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SYNC_DATA, null);
 					break;
 				}
 			}
@@ -682,6 +684,7 @@ public class BlueToothService extends BaseService {
 						+ " 格式化8位是："
 						+ ProtocolTool.byteToBitString(new byte[] { EBikeStatus.getInstance(getApplicationContext()).getBikeStatus()}));
 				if (isRequestData) {// 如果是暂停，就不需要再发送获取数据的命令了
+					broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA,BlueToothConstants.RESULT_SUCCESS,null);
 					sendData(CommandCode.SURVEY,
 							new byte[] { EBikeStatus.getInstance(getApplicationContext()).getBikeStatus()});// 获取蓝牙数据
 				}

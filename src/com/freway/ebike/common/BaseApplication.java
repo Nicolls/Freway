@@ -1,12 +1,13 @@
 package com.freway.ebike.common;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 
 import com.facebook.FacebookSdk;
@@ -18,9 +19,7 @@ import com.freway.ebike.bluetooth.EBikeTravelData;
 import com.freway.ebike.db.DBHelper;
 import com.freway.ebike.db.Travel;
 import com.freway.ebike.map.TravelConstant;
-import com.freway.ebike.utils.AlertUtil;
 import com.freway.ebike.utils.SPUtils;
-import com.freway.ebike.utils.ToastUtils;
 
 /**
  * Application基类
@@ -47,7 +46,7 @@ public class BaseApplication extends Application{
 	 * @return void
 	 * @Description 发送状态改变广播
 	 */
-	public static void sendStateChangeBroadCast(Context context,int state){
+	public static void sendStateChangeBroadCast(final Context context,int state){
 		if(state==TravelConstant.TRAVEL_STATE_START||state==TravelConstant.TRAVEL_STATE_RESUME){//要去检查蓝牙有没有断线
 			if(BlueToothService.ble_state!=BlueToothConstants.BLE_STATE_CONNECTED){//未链接，则要提示用户去链接
 				if(TextUtils.isEmpty(SPUtils.getEBkieAddress(context))){
