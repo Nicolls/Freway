@@ -211,6 +211,14 @@
         <item name="android:layout_gravity">center_horizontal</item>
     </style>
     <!-- speed state -->
+    <style name="SpeedStateTipText">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:background">@color/speed_state_tip_text_bg</item>
+        <item name="android:padding">@dimen/speed_state_speed_tip_padding</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginTop">@dimen/speed_state_speed_tip_marginTop</item>
+    </style>
     <style name="SpeedStateSpeedText">
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">75sp</item>

@@ -95,6 +95,7 @@ public class SignInActivity extends BaseActivity {
 //			ToastUtils.toast(this, getString(R.string.email_incorrect));
 //			return;
 //		}
+		showLoading(true);
 		mEBikeRequestService.login(email, password);
 	}
 

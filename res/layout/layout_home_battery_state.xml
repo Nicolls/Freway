@@ -61,7 +61,7 @@
             android:layout_toRightOf="@id/battery_state_remaind_value"
             android:layout_alignBaseline="@id/battery_state_remaind_value"
             style="@style/BatteryStateUnitText"
-            android:text="@string/mi" />
+            android:text="@string/km" />
     </RelativeLayout>
 
     <RelativeLayout 

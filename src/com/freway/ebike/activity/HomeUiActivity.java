@@ -1,10 +1,16 @@
 package com.freway.ebike.activity;
 
-import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.freway.ebike.R;
-import com.freway.ebike.bluetooth.BLEScanConnectActivity;
 import com.freway.ebike.bluetooth.BlueToothConstants;
 import com.freway.ebike.bluetooth.BlueToothService;
 import com.freway.ebike.bluetooth.BlueToothUtil;
@@ -14,29 +20,15 @@ import com.freway.ebike.common.BaseApplication;
 import com.freway.ebike.common.EBConstant;
 import com.freway.ebike.map.MapUtil;
 import com.freway.ebike.map.TravelConstant;
-import com.freway.ebike.utils.AlertUtil;
-import com.freway.ebike.utils.CommonUtil;
 import com.freway.ebike.utils.FontUtil;
 import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.SPUtils;
 import com.freway.ebike.utils.TimeUtils;
-import com.freway.ebike.utils.ToastUtils;
 import com.freway.ebike.view.BatteryView;
 import com.freway.ebike.view.ClickImageButton;
 import com.freway.ebike.view.ClickImageButton.ClickListener;
+import com.freway.ebike.view.FlickTextView;
 import com.freway.ebike.view.SpeedView;
-
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 public abstract class HomeUiActivity extends BaseActivity implements OnClickListener {
 
@@ -99,6 +91,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	private ImageView mSpeedStateCicleHolder;
 	private SpeedView mSpeedStateSpeedView;
 	private TextView mSpeedStateSpeedText;
+	private FlickTextView mSpeedStateTipText;
 	private ClickImageButton mSpeedStateSpeedButton;
 	private TextView mSpeedStateCalValue;
 	private TextView mSpeedStateCalUnit;
@@ -198,6 +191,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		mSpeedStateCicleHolder = (ImageView) findViewById(R.id.speed_state_cicle_view);
 		mSpeedStateSpeedView = (SpeedView) findViewById(R.id.speed_state_speed_view);
 		mSpeedStateSpeedText = (TextView) findViewById(R.id.speed_state_speed_text);
+		mSpeedStateTipText=(FlickTextView) findViewById(R.id.speed_state_tip_text);
 		mSpeedStateSpeedButton = (ClickImageButton) findViewById(R.id.speed_state_btn);
 		mSpeedStateCalValue = (TextView) findViewById(R.id.speed_state_cal_value);
 		mSpeedStateCalUnit = (TextView) findViewById(R.id.speed_state_cal_unit);
@@ -262,8 +256,9 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		mTravelStateCadenceValue.setTypeface(FontUtil.get(this, FontUtil.STYLE_DINCOND_BOLD));
 		mTravelStateCadenceUnit.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_MEDIUM));
 
+		//速度
 		mSpeedStateSpeedText.setTypeface(FontUtil.get(this, FontUtil.STYLE_DINCOND_BOLD));
-
+		mSpeedStateTipText.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
 		mSpeedStateCalValue.setTypeface(FontUtil.get(this, FontUtil.STYLE_DINCOND_BOLD));
 		mSpeedStateCalUnit.setTypeface(FontUtil.get(this, FontUtil.STYLE_DINCOND_BOLD));
 		mSpeedStateSpendTimeValue.setTypeface(FontUtil.get(this, FontUtil.STYLE_DINCOND_BOLD));
@@ -362,6 +357,8 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		modelChange();
 		// 骑行状态
 		travelStateHandler.sendEmptyMessage(BaseApplication.travelState);
+		//蓝牙状态
+		bleStateChange(BlueToothService.ble_state);
 		updateUiValue();
 	}
 
@@ -377,15 +374,18 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			if (state == TravelConstant.TRAVEL_STATE_PAUSE) {// 暂停
 				mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
 				mSpeedStateSpeedText.setVisibility(View.GONE);
-				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_pause);
+				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_pause_enable);
+				mSpeedStateTipText.showTip(getString(R.string.tip_click_twice_to_end_the_trial));
 			} else if (state == TravelConstant.TRAVEL_STATE_START || state == TravelConstant.TRAVEL_STATE_RESUME) {
-				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_start);
+				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_start_enable);
 				mSpeedStateSpeedButton.setVisibility(View.GONE);
 				mSpeedStateSpeedText.setVisibility(View.VISIBLE);
+				mSpeedStateTipText.hideTip();
 			} else {// 无，停止，完成，退出
 				mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
-				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_start);
+				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_start_enable);
 				mSpeedStateSpeedText.setVisibility(View.GONE);
+				mSpeedStateTipText.hideTip();
 			}
 
 		}
@@ -412,7 +412,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		mBikeStateBatteryView.onValueChange(EBikeTravelData.getInstance(this).batteryResidueCapacity, model,
 				EBikeTravelData.getInstance(this).gear, false);
 		mBikeStateBatteryPercent.setText(EBikeTravelData.getInstance(this).batteryResidueCapacity + "%");
-		mBikeStateBatteryRemaindValue.setText(EBikeTravelData.getInstance(this).remaindTravelCapacity + "");
+		mBikeStateBatteryRemaindValue.setText(EBikeTravelData.getInstance(this).remaindTravelCapacity + ""+getString(R.string.km));
 		mBikeStateGearValue.setText(EBikeTravelData.getInstance(this).gear + "");
 		if (EBikeTravelData.getInstance(this).frontLed == EBConstant.ON) {
 			mBikeStateLightFront.setSelected(true);
@@ -496,11 +496,18 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
 			mSpeedStateSpeedText.setVisibility(View.GONE);
 			// mSpeedStateSpeedButton.setClickable(false);
-			mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_disable);
+			if(BaseApplication.travelState==TravelConstant.TRAVEL_STATE_PAUSE){
+				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_pause_disable);
+			}else{
+				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_start_disable);
+			}
+			mSpeedStateTipText.showTip(getString(R.string.tip_ebike_disconnect));
+			
 		}
 	}
 
 	/** 只是用来测试按钮的 */
+	/*
 	private void test(int state) {
 		// 按钮
 		if (state == TravelConstant.TRAVEL_STATE_PAUSE) {// 暂停
@@ -516,7 +523,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_start);
 			mSpeedStateSpeedText.setVisibility(View.INVISIBLE);
 		}
-	}
+	}*/
 
 	@Override
 	public void onClick(View v) {
