@@ -46,14 +46,6 @@ public class TwitterWebActivity extends Activity {
 		});
 	}
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK && mWebview.canGoBack()) {
-			mWebview.goBack();
-			return true;
-		}
-		return false;
-	}
 
 	private class OAuthWebViewClient extends WebViewClient {
 
@@ -89,6 +81,15 @@ public class TwitterWebActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+	}
+
+	@Override
+	public void onBackPressed() {
+		if(mWebview.canGoBack()){
+			mWebview.goBack();
+		}else{
+			super.onBackPressed();
+		}
 	}
 
 }

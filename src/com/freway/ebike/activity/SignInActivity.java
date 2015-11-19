@@ -114,6 +114,7 @@ public class SignInActivity extends BaseActivity {
 				if(msg.what!=EBConstant.STATE_LOGIN_FAIL){//没有错
 					LogUtils.i(tag, "Facebook登录成功");
 					User user=(User) msg.obj;
+					mEtEmail.setText(user.getUsername()+"");
 					LogUtils.i(tag, "Facebook用户名是："+user.getUsername()+"--photo="+user.getPhoto());
 					showLoading(true);
 					mEBikeRequestService.loginFaceBook(user.getUserid(), user.getUsername(), user.getGender(), user.getBirthday(), user.getPhoto(), user.getEmail());
@@ -139,6 +140,7 @@ public class SignInActivity extends BaseActivity {
 					if(msg.what!=EBConstant.STATE_LOGIN_FAIL){//没有错
 						LogUtils.i(tag, "Twtitter登录成功");
 						User user=(User) msg.obj;
+						mEtEmail.setText(user.getUsername()+"");
 						LogUtils.i(tag, "twitter用户名是："+user.getUsername()+"--photo="+user.getPhoto());
 						showLoading(true);
 						mEBikeRequestService.loginFaceBook(user.getUserid(), user.getUsername(), user.getGender(), user.getBirthday(), user.getPhoto(), user.getEmail());
