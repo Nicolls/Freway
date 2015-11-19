@@ -30,6 +30,7 @@ import android.widget.TextView;
  */
 public class FlickTextView extends TextView {
 	private static final int FLICK_TIME=600;//闪烁文字的间隔时间毫秒
+	private boolean isShow=true;
 	public FlickTextView(Context context) {
 		super(context);
 	}
@@ -43,14 +44,17 @@ public class FlickTextView extends TextView {
 	}
 	
 	public void showTip(String title){
+		isShow=true;
+		System.out.println("show"+isShow);
 		setVisibility(View.VISIBLE);
 		setText(title+"");
+		
 		handler.sendEmptyMessage(1);
 	}
 	public void hideTip(){
+		isShow=false;
+		System.out.println("hide"+isShow);
 		setVisibility(View.GONE);
-		handler.sendEmptyMessage(-1);
-		handler.sendEmptyMessage(-1);
 	}
 	
 	private Handler handler=new Handler(){
@@ -58,16 +62,16 @@ public class FlickTextView extends TextView {
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
-			if(msg.what==-1){//hide
-				handler.removeMessages(0);
-				handler.removeMessages(1);
-			}
-			else if(msg.what==1){//visble
-				setVisibility(View.VISIBLE);
-				sendEmptyMessageDelayed(0, FLICK_TIME);
-			}else{//invisible
-				setVisibility(View.INVISIBLE);
-				sendEmptyMessageDelayed(1, FLICK_TIME);
+			if(isShow){
+				if(msg.what==1){//visble
+					System.out.println("visble");
+					setVisibility(View.VISIBLE);
+					sendEmptyMessageDelayed(0, FLICK_TIME);
+				}else{//invisible
+					System.out.println("invisible");
+					setVisibility(View.INVISIBLE);
+					sendEmptyMessageDelayed(1, FLICK_TIME);
+				}
 			}
 		}
 		

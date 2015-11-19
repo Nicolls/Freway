@@ -39,7 +39,7 @@
     <string name="cancel">Cancel</string>
     <string name="travel_too_short_not_save">travel is too short not save</string>
     <string name="battery_connect_exception">Battery Connect Exception,Please Check!</string>
-    <string name="can_not_be_null">Can not be null</string>
+    <string name="can_not_be_null"> Can not be null</string>
     <string name="login_cancel">Cancel Sign</string>
     <string name="login_fail">Sign Fail</string>
     <string name="back">Back</string>
@@ -75,6 +75,7 @@
     <string name="gear">GEAR</string>
     <string name="cal">cal</string>
     <string name="mph">mph</string>
+    <string name="km_h">km/h</string>
     <string name="rpm">rpm</string>
     <string name="distance_unit_mph">mph</string>
     <string name="distance_unit_mi">km/h</string>

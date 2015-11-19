@@ -380,12 +380,16 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_start_enable);
 				mSpeedStateSpeedButton.setVisibility(View.GONE);
 				mSpeedStateSpeedText.setVisibility(View.VISIBLE);
-				mSpeedStateTipText.hideTip();
+				if(BlueToothService.ble_state==BlueToothConstants.BLE_STATE_CONNECTED){
+					mSpeedStateTipText.hideTip();
+				}
 			} else {// 无，停止，完成，退出
 				mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_start_enable);
 				mSpeedStateSpeedText.setVisibility(View.GONE);
-				mSpeedStateTipText.hideTip();
+				if(BlueToothService.ble_state==BlueToothConstants.BLE_STATE_CONNECTED){
+					mSpeedStateTipText.hideTip();
+				}
 			}
 
 		}
@@ -438,8 +442,14 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		mTravelStateCadenceValue.setText(EBikeTravelData.getInstance(this).cadence + "");
 		if (distanUnit == EBConstant.DISTANCE_UNIT_MPH) {
 			mSpeedStateSpeedView.onValueChange(speed, SpeedView.MAX_SPEED_MPH);
+			mSpeedStateAvgSpeedUnit.setText(getString(R.string.mph));
+			mTravelStateAvgSpeedUnit.setText(getString(R.string.mph));
+			mTravelStateSpeedUnit.setText(getString(R.string.mph));
 		} else {
 			mSpeedStateSpeedView.onValueChange(speed, SpeedView.MAX_SPEED_KM_H);
+			mSpeedStateAvgSpeedUnit.setText(getString(R.string.km_h));
+			mTravelStateAvgSpeedUnit.setText(getString(R.string.km_h));
+			mTravelStateSpeedUnit.setText(getString(R.string.km_h));
 		}
 
 		mSpeedStateSpeedText.setText(speed + "");

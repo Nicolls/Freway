@@ -164,6 +164,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 
 	private void initData() {
 		mCropParams = new CropParams(this);
+		mHeadView.setEnabled(false);
 		iconButton.setImageResource(R.drawable.settings_confirm_red);
 		iconButton.setVisibility(View.GONE);
 		titleTv.setText(getString(R.string.settings) + "");
@@ -351,6 +352,10 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 		}
 		if (TextUtils.isEmpty(email)) {
 			ToastUtils.toast(this, getString(R.string.email) + "" + getString(R.string.can_not_be_null));
+			return false;
+		}
+		if (!CommonUtil.isEmail(email)) {
+			ToastUtils.toast(this, getString(R.string.email) + "" + getString(R.string.email_incorrect));
 			return false;
 		}
 		user.setUsername(nickName);

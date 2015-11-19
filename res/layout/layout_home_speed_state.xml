@@ -48,6 +48,7 @@
             android:visibility="gone"
             android:text="@string/tip_click_twice_to_end_the_trial"
             style="@style/SpeedStateTipText" />
+         
         
         <TextView
             android:id="@+id/speed_state_speed_text"
