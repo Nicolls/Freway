@@ -12,10 +12,12 @@ import android.widget.TextView;
 
 import com.freway.ebike.R;
 import com.freway.ebike.common.BaseActivity;
+import com.freway.ebike.common.EBConstant;
 import com.freway.ebike.facebook.FacebookUtil;
 import com.freway.ebike.model.RspLogin;
 import com.freway.ebike.model.User;
 import com.freway.ebike.net.EBikeRequestService;
+import com.freway.ebike.twitter.TwitterUtils;
 import com.freway.ebike.utils.CommonUtil;
 import com.freway.ebike.utils.FontUtil;
 import com.freway.ebike.utils.LogUtils;
@@ -29,6 +31,7 @@ public class SignInActivity extends BaseActivity {
 	private EditText mEtEmail;
 	private EditText mEtPassword;
 	private int signinType;
+	private TwitterUtils mTwitterUtils;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -100,7 +103,7 @@ public class SignInActivity extends BaseActivity {
 	}
 
 	public void onSigninFacebook(View view) {
-//		showLoading(true);
+		showLoading(true);
 		FacebookUtil.getInstance().setActivity(this).bind(new Handler(){
 
 			@Override
@@ -108,9 +111,11 @@ public class SignInActivity extends BaseActivity {
 				super.handleMessage(msg);
 //				hideLoading();
 				LogUtils.i(tag, "Facebook返回");
-				if(msg.what!=FacebookUtil.STATE_LOGIN_FAIL){//没有错
+				if(msg.what!=EBConstant.STATE_LOGIN_FAIL){//没有错
 					LogUtils.i(tag, "Facebook登录成功");
 					User user=(User) msg.obj;
+					LogUtils.i(tag, "Facebook用户名是："+user.getUsername()+"--photo="+user.getPhoto());
+					showLoading(true);
 					mEBikeRequestService.loginFaceBook(user.getUserid(), user.getUsername(), user.getGender(), user.getBirthday(), user.getPhoto(), user.getEmail());
 				}else{
 					ToastUtils.toast(getApplicationContext(), getString(R.string.login_failt));
@@ -122,11 +127,33 @@ public class SignInActivity extends BaseActivity {
 	}
 
 	public void onSignInTwitter(View view) {
-
+		showLoading(true);
+		if(mTwitterUtils==null){
+			mTwitterUtils=new TwitterUtils(this);
+			mTwitterUtils.bind(new Handler(){
+				@Override
+				public void handleMessage(Message msg) {
+					super.handleMessage(msg);
+//					hideLoading();
+					LogUtils.i(tag, "Twtitter返回");
+					if(msg.what!=EBConstant.STATE_LOGIN_FAIL){//没有错
+						LogUtils.i(tag, "Twtitter登录成功");
+						User user=(User) msg.obj;
+						LogUtils.i(tag, "twitter用户名是："+user.getUsername()+"--photo="+user.getPhoto());
+						showLoading(true);
+						mEBikeRequestService.loginFaceBook(user.getUserid(), user.getUsername(), user.getGender(), user.getBirthday(), user.getPhoto(), user.getEmail());
+					}else{
+						ToastUtils.toast(getApplicationContext(), getString(R.string.login_failt));
+					}
+					
+				}
+			});
+		}
 	}
 
 	@Override
 	public void dateUpdate(int id, Object obj) {//不管是哪种登录回来的都是一样的
+		hideLoading();
 		if(obj instanceof RspLogin){
 			RspLogin rspLogin=(RspLogin) obj;
 			SPUtils.setToken(getApplicationContext(), rspLogin.getData().getToken());
@@ -138,8 +165,19 @@ public class SignInActivity extends BaseActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		LogUtils.i(tag, "Activity打开回来了");
-		FacebookUtil.getInstance().onOpenActivityResult(requestCode, resultCode, data);
+		if(requestCode==TwitterUtils.REQ_TWITTER){
+			mTwitterUtils.onActivityResult(requestCode, resultCode, data);
+		}else{
+			FacebookUtil.getInstance().onOpenActivityResult(requestCode, resultCode, data);
+		}
 	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		hideLoading();
+	}
+
 
 	
 }

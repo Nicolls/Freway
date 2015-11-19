@@ -2,6 +2,13 @@ package com.freway.ebike.common;
 
 /** 常量类 */
 public class EBConstant {
+	/**第三方登录分享*/
+	public static final int STATE_UN_LOGIN = 0;
+	public static final int STATE_LOGIN_SUCCESS = 1;
+	public static final int STATE_LOGIN_FAIL = 2;
+	public static final int STATE_LOGIN_ED = 3;
+	public static final int STATE_SHARE_SUCCESS = 4;
+	public static final int STATE_SHARE_FAIL = 5;
 	/**UI*/
 	public static final int MODEL_DAY = 0;
 	public static final int MODEL_NIGHT = 1;

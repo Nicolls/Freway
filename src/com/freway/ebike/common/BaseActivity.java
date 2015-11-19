@@ -95,6 +95,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DataUpda
 	@Override
 	protected void onDestroy() {
 		EBikeActivityManager.getAppManager().removeActivity(this);
+		hideLoading();
 		super.onDestroy();
 		LogUtils.i(tag, isLog, "onDestroy");
 	}

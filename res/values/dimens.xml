@@ -13,6 +13,7 @@
     <dimen name="ble_btn_marginLeft">5dp</dimen>
     <!-- dialog -->
     <dimen name="dialog_btn_left_right">10dp</dimen>
+    <dimen name="twitter_web_progress_marginRight">20dp</dimen>
     <!-- sign in -->
     <dimen name="sign_logo_marginTop">108dp</dimen>
     <dimen name="sign_input_layout_margin">35dp</dimen>

@@ -32,18 +32,14 @@ import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
 import com.freway.ebike.common.BaseActivity;
+import com.freway.ebike.common.EBConstant;
 import com.freway.ebike.listener.OpenActivityResultListener;
+import com.freway.ebike.model.EBErrorResponse;
 import com.freway.ebike.model.User;
 import com.freway.ebike.utils.LogUtils;
 /**必须先调用setActivity再调用别的方法*/
 public class FacebookUtil  {
 	private static final String TAG = FacebookUtil.class.getSimpleName();
-	public static final int STATE_UN_LOGIN = 0;
-	public static final int STATE_LOGIN_SUCCESS = 1;
-	public static final int STATE_LOGIN_FAIL = 2;
-	public static final int STATE_LOGIN_ED = 3;
-	public static final int STATE_SHARE_SUCCESS = 4;
-	public static final int STATE_SHARE_FAIL = 5;
 	private static final String PUBLISH_PERMISSION = "publish_actions";
 	private BaseActivity activity;
 	private CallbackManager callbackManager = CallbackManager.Factory.create();
@@ -79,7 +75,7 @@ public class FacebookUtil  {
 				User user = new User();
 				user.setUserid(profile.getId());
 				user.setUsername(profile.getName());
-				msg.what = STATE_LOGIN_ED;
+				msg.what = EBConstant.STATE_LOGIN_ED;
 				msg.obj = user;
 				handler.sendMessage(msg);
 			}
@@ -118,7 +114,7 @@ public class FacebookUtil  {
 												.getJSONObject("data").getString("url"));
 									}
 									Message msg = Message.obtain();
-									msg.what = STATE_LOGIN_SUCCESS;
+									msg.what = EBConstant.STATE_LOGIN_SUCCESS;
 									msg.obj = user;
 									handler.sendMessage(msg);
 								} catch (Exception e) {
@@ -132,16 +128,16 @@ public class FacebookUtil  {
 			public void onCancel() {
 //				ToastUtils.toast(activity, "登录取消");
 				Message msg = Message.obtain();
-				msg.what = STATE_LOGIN_FAIL;
-				msg.obj = "取消登录";
+				msg.what = EBConstant.STATE_LOGIN_FAIL;
+				msg.obj = "cancel sign";
 				handler.sendMessage(msg);
 			}
 
 			@Override
 			public void onError(FacebookException exception) {
 				Message msg = Message.obtain();
-				msg.what = STATE_LOGIN_FAIL;
-				msg.obj = "验证失败";
+				msg.what = EBConstant.STATE_LOGIN_FAIL;
+				msg.obj = "sign fail";
 				handler.sendMessage(msg);
 //				if (exception instanceof FacebookAuthorizationException) {
 //					ToastUtils.toast(activity, "验证失败");
@@ -223,7 +219,7 @@ public class FacebookUtil  {
 		public void onError(FacebookException error) {
 			Log.d("HelloFacebook", String.format("Error: %s", error.toString()));
 			if (shareHandler != null) {
-				shareHandler.sendEmptyMessage(STATE_SHARE_FAIL);
+				shareHandler.sendEmptyMessage(EBConstant.STATE_SHARE_FAIL);
 			}
 		}
 
@@ -231,7 +227,7 @@ public class FacebookUtil  {
 		public void onSuccess(Sharer.Result result) {
 			Log.d("HelloFacebook", "Success!");
 			if (shareHandler != null) {
-				shareHandler.sendEmptyMessage(STATE_LOGIN_SUCCESS);
+				shareHandler.sendEmptyMessage(EBConstant.STATE_LOGIN_SUCCESS);
 			}
 		}
 	};

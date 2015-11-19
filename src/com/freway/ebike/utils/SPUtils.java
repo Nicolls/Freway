@@ -34,6 +34,7 @@ public class SPUtils {
 	// 用户相关
 	public static final String SP_USER = "SP_USER";
 	public static final String SP_USER_EMAIL = "SP_USER_EMAIL";
+	public static final String SP_USER_USERID = "SP_USER_USERID";
 	public static final String SP_USER_USERNAME = "SP_USER_USERNAME";
 	public static final String SP_USER_PASSWORD = "SP_USER_PASSWORD";
 	public static final String SP_USER_AUTO_LOGIN = "SP_USER_AUTO_LOGIN";
@@ -61,6 +62,21 @@ public class SPUtils {
 		boolean isOk = sp.edit().putString(SP_USER_EMAIL, email).commit();
 		return isOk;
 	}
+	
+	/** 获取登录用户ID */
+	public static String getUserId(Context context) {
+		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+		String userId = sp.getString(SP_USER_USERID, "");
+		return userId;
+	}
+
+	/** 设置登录用户ID */
+	public static boolean setUserIde(Context context, String userId) {
+		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+		boolean isOk = sp.edit().putString(SP_USER_USERID, userId).commit();
+		return isOk;
+	}
+	
 	/** 获取登录用户名 */
 	public static String getUsername(Context context) {
 		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);

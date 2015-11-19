@@ -61,6 +61,13 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+                <!-- 第三方Twitter 当浏览器返回时可以打开这个Activity用于登录-->
+                <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.APP_BROWSER"/>
+                <data android:scheme="http" android:host="@string/call_back_url"/>
+            </intent-filter>
             </intent-filter>
         </activity>
         <activity android:name="com.freway.ebike.activity.SignUpActivity" >
@@ -86,7 +93,7 @@
             
 
         </activity>
-        <activity android:name="com.freway.ebike.bluetooth.BLEScanConnectActivity" android:launchMode="singleTask" android:theme="@style/BleScanThem">
+        <activity android:name="com.freway.ebike.bluetooth.BLEScanConnectActivity" android:launchMode="singleTask" android:theme="@style/DialogNoTitleNoActionBar">
 
             <!--
             <intent-filter>
@@ -107,6 +114,12 @@
             </intent-filter> -->
         </activity>
         <activity android:name="com.freway.ebike.map.FrewayHistoryMapActivity" >
+        </activity>
+        <!-- 第三方Twitter -->
+         <activity 
+            android:name="com.freway.ebike.twitter.TwitterWebActivity"
+            android:screenOrientation="portrait"
+            >
         </activity>
 		<!-- 第三方facebook -->
 		 <activity android:name="com.facebook.FacebookActivity"
