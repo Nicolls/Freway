@@ -177,6 +177,8 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 		if(position<data.size()){
 			String address = data.get(position).getAddress();
 			this.address=address;
+			SPUtils.setEBikeName(getApplicationContext(),
+					data.get(position).getName());
 			handle=HANDLE_CONNECT;
 			handle("");
 		}

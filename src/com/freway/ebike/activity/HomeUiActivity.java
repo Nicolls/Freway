@@ -370,26 +370,22 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
 			super.handleMessage(msg);
-			int state = msg.what;
+			int state = msg.what;//所有的行程操作都必须是链接上BLE了才能有作用，因为没有链接的话，显示一定是灰色的
 			if (state == TravelConstant.TRAVEL_STATE_PAUSE) {// 暂停
 				mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
 				mSpeedStateSpeedText.setVisibility(View.GONE);
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_pause_enable);
 				mSpeedStateTipText.showTip(getString(R.string.tip_click_twice_to_end_the_trial));
-			} else if (state == TravelConstant.TRAVEL_STATE_START || state == TravelConstant.TRAVEL_STATE_RESUME) {
+			} else if (BlueToothService.ble_state==BlueToothConstants.BLE_STATE_CONNECTED&&(state == TravelConstant.TRAVEL_STATE_START || state == TravelConstant.TRAVEL_STATE_RESUME)) {
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_start_enable);
 				mSpeedStateSpeedButton.setVisibility(View.GONE);
 				mSpeedStateSpeedText.setVisibility(View.VISIBLE);
-				if(BlueToothService.ble_state==BlueToothConstants.BLE_STATE_CONNECTED){
-					mSpeedStateTipText.hideTip();
-				}
-			} else {// 无，停止，完成，退出
+				mSpeedStateTipText.hideTip();
+			} else if(BlueToothService.ble_state==BlueToothConstants.BLE_STATE_CONNECTED){// 无，停止，完成，退出
 				mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
-				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_start_enable);
 				mSpeedStateSpeedText.setVisibility(View.GONE);
-				if(BlueToothService.ble_state==BlueToothConstants.BLE_STATE_CONNECTED){
-					mSpeedStateTipText.hideTip();
-				}
+				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_start_enable);
+				mSpeedStateTipText.hideTip();
 			}
 
 		}

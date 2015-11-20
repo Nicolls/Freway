@@ -30,6 +30,7 @@ public class SPUtils {
 	public static final String SP_APP = "SP_APP";
 	public static final String SP_APP_ENTER = "SP_APP_ENTER";
 	public static final String SP_APP_EBIKE_ADDRESS = "SP_APP_EBIKE_ADDRESS";
+	public static final String SP_APP_EBIKE_NAME = "SP_APP_EBIKE_NAME";
 	
 	// 用户相关
 	public static final String SP_USER = "SP_USER";
@@ -212,6 +213,20 @@ public class SPUtils {
 		context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE).edit().clear().commit();
 	}
 
+	/** 获取ebike name */
+	public static String getEBkieName(Context context) {
+		SharedPreferences sp = context.getSharedPreferences(SP_APP, Context.MODE_PRIVATE);
+		String name = sp.getString(SP_APP_EBIKE_NAME, null);
+		return name;
+	}
+
+	/** 保存ebike name */
+	public static boolean setEBikeName(Context context, String name) {
+		SharedPreferences sp = context.getSharedPreferences(SP_APP, Context.MODE_PRIVATE);
+		boolean isOk = sp.edit().putString(SP_APP_EBIKE_NAME, name).commit();
+		return isOk;
+	}
+	
 	/** 获取ebike address */
 	public static String getEBkieAddress(Context context) {
 		SharedPreferences sp = context.getSharedPreferences(SP_APP, Context.MODE_PRIVATE);

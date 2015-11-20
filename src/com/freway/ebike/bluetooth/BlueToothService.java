@@ -100,6 +100,7 @@ public class BlueToothService extends BaseService {
 				switch (handle) {
 				case BlueToothConstants.HANDLE_SERVER_SCAN:// 扫描
 					SPUtils.setEBikeAddress(BlueToothService.this, "");// UI发送的重新扫描，则清除保存的设备
+					SPUtils.setEBikeName(BlueToothService.this, "");
 					mBluetoothDeviceAddress = "";
 					mBlueToothConnction.close();
 					startScanBluetoothDevice();

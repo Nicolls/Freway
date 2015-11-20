@@ -37,6 +37,7 @@
     <string name="ble_not_connect">eBike not connect go to connect ebike?</string>
     <!-- 通用 -->
     <string name="cancel">Cancel</string>
+    <string name="english">English</string>
     <string name="travel_too_short_not_save">travel is too short not save</string>
     <string name="battery_connect_exception">Battery Connect Exception,Please Check!</string>
     <string name="can_not_be_null"> Can not be null</string>
@@ -60,7 +61,7 @@
     <string name="test_value_time">00:00:00</string>
     <!-- ui -->
     <string name="tip_click_twice_to_end_the_trial">Click twice to end the trial</string>
-    <string name="tip_ebike_disconnect">EBike disconnect travel need connect</string>
+    <string name="tip_ebike_disconnect">eBike disconnect</string>
     <string name="loading">Loading...</string>
     <string name="email">Email</string>
     <string name="password">Password</string>

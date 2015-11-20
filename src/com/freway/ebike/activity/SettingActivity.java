@@ -189,7 +189,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			mHeadView = (HeadPicView) findViewById(R.id.profile_head_view);
 			EBkieViewUtils.displayPhoto(this, mHeadView, user.getPhoto());
 			if (!TextUtils.isEmpty(SPUtils.getEBkieAddress(this))) {
-				snValue.setText(SPUtils.getEBkieAddress(this));
+				snValue.setText(SPUtils.getEBkieName(this));
 			} else {
 				snValue.setText(getString(R.string.ble_not_bind));
 			}
