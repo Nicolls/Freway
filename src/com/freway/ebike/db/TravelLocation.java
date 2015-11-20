@@ -8,7 +8,7 @@ public class TravelLocation implements Parcelable{
 	private long id;
 	private long travelId;
 	private Location location;
-	private int speed;
+	private float speed;
 	private double altitude;
 	private boolean isPause;
 	private String description;
@@ -24,7 +24,7 @@ public class TravelLocation implements Parcelable{
 		dest.writeLong(id);
 		dest.writeLong(travelId);
 		dest.writeParcelable(location, flags);
-		dest.writeInt(speed);
+		dest.writeFloat(speed);
 		dest.writeDouble(altitude);
 		dest.writeInt(isPause ? 1 : 0);
 		dest.writeString(description);
@@ -42,7 +42,7 @@ public class TravelLocation implements Parcelable{
 		id=in.readLong();
 		travelId=in.readLong();
 		location = in.readParcelable(null);
-		speed=in.readInt();
+		speed=in.readFloat();
 		altitude=in.readDouble();
 		isPause= in.readInt() != 0;
 		description=in.readString();
@@ -77,10 +77,10 @@ public class TravelLocation implements Parcelable{
 	public void setTravelId(long travelId) {
 		this.travelId = travelId;
 	}
-	public int getSpeed() {
+	public float getSpeed() {
 		return speed;
 	}
-	public void setSpeed(int speed) {
+	public void setSpeed(float speed) {
 		this.speed = speed;
 	}
 	public double getAltitude() {

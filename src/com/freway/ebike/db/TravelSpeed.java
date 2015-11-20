@@ -6,7 +6,7 @@ import android.os.Parcelable;
 public class TravelSpeed implements Parcelable{
 	private long id;
 	private long travelId;
-	private int speed;
+	private float speed;
 	public TravelSpeed(){}
 	@Override
 	public int describeContents() {
@@ -16,7 +16,7 @@ public class TravelSpeed implements Parcelable{
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeLong(id);
 		dest.writeLong(travelId);
-		dest.writeInt(speed);
+		dest.writeFloat(speed);
 	}
 	public static final Parcelable.Creator<TravelSpeed> CREATOR = new Parcelable.Creator<TravelSpeed>() {
 		public TravelSpeed createFromParcel(Parcel in) {
@@ -30,7 +30,7 @@ public class TravelSpeed implements Parcelable{
 	private TravelSpeed(Parcel in) {
 		id=in.readLong();
 		travelId=in.readLong();
-		speed=in.readInt();
+		speed=in.readFloat();
 	}
 	public long getId() {
 		return id;
@@ -44,10 +44,10 @@ public class TravelSpeed implements Parcelable{
 	public void setTravelId(long travelId) {
 		this.travelId = travelId;
 	}
-	public int getSpeed() {
+	public float getSpeed() {
 		return speed;
 	}
-	public void setSpeed(int speed) {
+	public void setSpeed(float speed) {
 		this.speed = speed;
 	}
 

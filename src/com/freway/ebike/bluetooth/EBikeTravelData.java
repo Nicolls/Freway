@@ -2,6 +2,7 @@ package com.freway.ebike.bluetooth;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Random;
 
 import android.content.Context;
 
@@ -12,6 +13,7 @@ import com.freway.ebike.db.Travel;
 import com.freway.ebike.db.TravelSpeed;
 import com.freway.ebike.map.TravelConstant;
 import com.freway.ebike.protocol.ProtocolTool;
+import com.freway.ebike.utils.CommonUtil;
 import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.NetUtil;
 import com.freway.ebike.utils.ToastUtils;
@@ -58,15 +60,15 @@ public class EBikeTravelData implements Serializable {
 	/**
 	 * @Fields avgSpeed 平均速度 单位km/h
 	 */
-	public int avgSpeed;
+	public float avgSpeed;
 	/**
 	 * @Fields insSpeed 瞬时速度 单位km/h
 	 */
-	public int insSpeed;
+	public float insSpeed;
 	/**
 	 * @Fields maxSpeed 最大速度 单位km/h
 	 */
-	public int maxSpeed;
+	public float maxSpeed;
 	/**
 	 * @Fields spendTime 行程时间 毫秒
 	 */
@@ -74,16 +76,16 @@ public class EBikeTravelData implements Serializable {
 	/**
 	 * @Fields distance 行程距离 单位 km
 	 */
-	public int distance;
+	public float distance;
 	/**
 	 * @Fields calorie 卡路里 单位cal
 	 */
-	public int calorie;
+	public float calorie;
 
 	/**
 	 * @Fields cadence 踏频量（圈）单位 圈/每分钟
 	 */
-	public int cadence;
+	public float cadence;
 	/**
 	 * @Fields altitude 海拔 单位 km
 	 */
@@ -165,7 +167,7 @@ public class EBikeTravelData implements Serializable {
 	/**
 	 * @fields miCapacity 剩余里程km
 	 */
-	public int remaindTravelCapacity;
+	public float remaindTravelCapacity;
 	/**
 	 * @fields temperature 温度(℃)
 	 */
@@ -184,15 +186,15 @@ public class EBikeTravelData implements Serializable {
 	// private long cal_startTime;
 	// private long cal_tempTime;
 	// private long cal_endTime;
-	private long cal_startDistance;
-	private long cal_tempDistance;
-	private long cal_endDistance;
-	private long cal_startCalorie;
-	private long cal_tempCalorie;
-	private long cal_endCalorie;
-	private long cal_startCadence;
-	private long cal_tempCadence;
-	private long cal_endCadence;
+	private float cal_startDistance;
+	private float cal_tempDistance;
+	private float cal_endDistance;
+	private float cal_startCalorie;
+	private float cal_tempCalorie;
+	private float cal_endCalorie;
+	private float cal_startCadence;
+	private float cal_tempCadence;
+	private float cal_endCadence;
 	private boolean isNewTravel = true;
 	private Context context;
 	private static EBikeTravelData mEBikeTravelData;
@@ -342,7 +344,6 @@ public class EBikeTravelData implements Serializable {
 			// cycle_times=ProtocolTool.byteArrayToInt(new
 			// byte[]{bikeData[10],bikeData[11]});
 		}
-
 		cal_tempCalorie = cal_tempCadence / 10 * WHEEL_VALUE * 655 / 21000000;// 圈/每分钟
 		insSpeed = insSpeed * 1200 * WHEEL_VALUE / 1000 / 1000;// 单位：km/h
 		insSpeed=formatSpeed(insSpeed);
@@ -351,6 +352,7 @@ public class EBikeTravelData implements Serializable {
 			batteryAh = 78;
 		}
 		remaindTravelCapacity = batteryResidueCapacity * batteryAh * 12 / 780;// 公里（千米）
+		simulateData();//模拟数据
 		if (isNewTravel) {// 新的骑行
 			insSpeed = 0;
 			avgSpeed = 0;
@@ -371,13 +373,12 @@ public class EBikeTravelData implements Serializable {
 			cal_endDistance = cal_tempDistance;
 			cal_endCalorie = cal_tempCalorie;
 			cal_endCadence = cal_tempCadence;
-
 			if (insSpeed > maxSpeed) {// 最大
 				maxSpeed = insSpeed;
 			}
 			// spendTime+=(cal_endTime-cal_startTime);//时长
 			distance += (cal_endDistance - cal_startDistance);// 距离
-			avgSpeed = (int) (distance / spendTime);// 平均
+			avgSpeed = distance / spendTime;// 平均
 			calorie += (cal_endCalorie - cal_startCalorie);// 卡路里
 			cadence += (cal_endCadence - cal_startCadence);// 踏频
 			altitude += altitude;// 海拔
@@ -388,14 +389,25 @@ public class EBikeTravelData implements Serializable {
 				DBHelper.getInstance(context).insertTravelSpeed(travelSpeed);
 			}
 			if (spendTime != 0 && spendTime % (CADENCE_TIME * 1000) == 0) {// 每60秒记录一个踏频
-				cadence = (int) ((cal_endCadence - cal_startCadence) / 60);
+				cadence =(cal_endCadence - cal_startCadence) / 60;
 				cal_startCadence = cal_endCadence;
 			}
 			cal_startDistance = cal_tempDistance;
 			cal_startCalorie = cal_tempCalorie;
+			formatFloat2OneAccuracy();
 		}
 	}
 
+	/**格式化值为需求精度*/
+	private void formatFloat2OneAccuracy(){
+		insSpeed=CommonUtil.formatFloatAccuracy(insSpeed, 1);
+		maxSpeed=CommonUtil.formatFloatAccuracy(maxSpeed, 1);
+		avgSpeed=CommonUtil.formatFloatAccuracy(avgSpeed, 1);
+		distance=CommonUtil.formatFloatAccuracy(distance, 3);
+		cadence=CommonUtil.formatFloatAccuracy(cadence, 0);
+		calorie=CommonUtil.formatFloatAccuracy(calorie, 0);
+	}
+	
 	public String getControlValueText() {
 		String value = "短信提醒标志接收完成" + messageNoticeGet + "电话呼叫标志接收完成" + phoneCallGet + "电池包连接标志" + batConnect
 				+ "控制器过流保护" + ctrlerOvercp + "控制器欠压保护" + ctrlerLowvp + "能量回收状态" + energyCycle + "控制器故障" + ctrlerErr
@@ -416,10 +428,31 @@ public class EBikeTravelData implements Serializable {
 		return value;
 	}
 
+	/**数据模拟*/
+	Random r=new Random();
+	private void simulateData(){
+		if(insSpeed>=10){
+			backLed=0;
+			frontLed=1;
+			gear=1;
+			batteryResidueCapacity=50;
+		}else{
+			backLed=1;
+			frontLed=0;
+			gear=0;
+			batteryResidueCapacity=35;
+		}
+		insSpeed=13+r.nextInt(10);
+		insSpeed=formatSpeed(insSpeed);
+		cal_tempCadence=65+r.nextInt(10);
+		cal_tempDistance=r.nextInt(5)+distance;
+		cal_tempCalorie = cal_tempCadence / 10 * WHEEL_VALUE * 655 / 21000000+calorie;// 圈/每分钟
+		
+	}
 	
 	/**分段显示速度法*/
 	int speed_tmp = 0;
-	private int formatSpeed(int speed_val) {
+	private int formatSpeed(float speed_val) {
 		float avg = 0;
 		if (speed_val == 0) {
 			speed_tmp = 0;

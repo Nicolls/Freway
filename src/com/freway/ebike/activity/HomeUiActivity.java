@@ -20,6 +20,7 @@ import com.freway.ebike.common.BaseApplication;
 import com.freway.ebike.common.EBConstant;
 import com.freway.ebike.map.MapUtil;
 import com.freway.ebike.map.TravelConstant;
+import com.freway.ebike.utils.CommonUtil;
 import com.freway.ebike.utils.FontUtil;
 import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.SPUtils;
@@ -403,8 +404,8 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		float cadence=EBikeTravelData.getInstance(this).cadence;
 		String spendTime=TimeUtils.formatTimeMillisToHMS(EBikeTravelData.getInstance(this).spendTime) + "";
 		if (distanUnit == EBConstant.DISTANCE_UNIT_MPH) {
-			speed = speed / 1.6f;
-			avgSpeed = avgSpeed / 1.6f;
+			speed = CommonUtil.formatFloatAccuracy(speed / 1.6f, 1);
+			avgSpeed = CommonUtil.formatFloatAccuracy(avgSpeed / 1.6f,1);
 		}
 		altitude=altitude*1000;//由km->m
 		distance=distance*1000;//由km->m

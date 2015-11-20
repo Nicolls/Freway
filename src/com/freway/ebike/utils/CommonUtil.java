@@ -5,6 +5,7 @@ package com.freway.ebike.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,8 +32,7 @@ public class CommonUtil {
 	 *            上下文
 	 * */
 	public static String getPhoneImei(Context context) {
-		TelephonyManager tm = (TelephonyManager) context
-				.getSystemService(Context.TELEPHONY_SERVICE);
+		TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 		return tm.getDeviceId();// String
 	}
 
@@ -75,25 +75,23 @@ public class CommonUtil {
 		}
 		return scriptCode + "\n" + sb.toString();
 	}
-	
+
 	// 判断是否为手机号
-    public static boolean isPhone(String inputText) {
-        Pattern p = Pattern
-                .compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
-        Matcher m = p.matcher(inputText);
-        return m.matches();
-    }
+	public static boolean isPhone(String inputText) {
+		Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+		Matcher m = p.matcher(inputText);
+		return m.matches();
+	}
 
-    // 判断格式是否为email
-    public static boolean isEmail(String email) {
-        String str = "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$";
-        Pattern p = Pattern.compile(str);
-        Matcher m = p.matcher(email);
-        return m.matches();
-    }
+	// 判断格式是否为email
+	public static boolean isEmail(String email) {
+		String str = "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$";
+		Pattern p = Pattern.compile(str);
+		Matcher m = p.matcher(email);
+		return m.matches();
+	}
 
-    
-    /** 判断谷歌服务是否可用 */
+	/** 判断谷歌服务是否可用 */
 	public static boolean checkGoogleServiceAvailable(Activity context, int RQS_GooglePlayServices) {
 		int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
 		if (resultCode == ConnectionResult.SUCCESS) {
@@ -102,6 +100,22 @@ public class CommonUtil {
 			GooglePlayServicesUtil.getErrorDialog(resultCode, context, RQS_GooglePlayServices);
 			return false;
 		}
+	}
+
+	/**
+	 * 格式化浮点数为某一精度，4舍5入
+	 * 
+	 * @param f
+	 *            要格式化浮点值
+	 * @param accuracy
+	 *            精度数,2表示保留两位小数
+	 * */
+	public static float formatFloatAccuracy(float f, int accuracy) {
+		float temp = f;
+		BigDecimal bd = new BigDecimal((double) f);
+		bd = bd.setScale(accuracy, BigDecimal.ROUND_HALF_UP);
+		temp = bd.floatValue();
+		return temp;
 	}
 
 }

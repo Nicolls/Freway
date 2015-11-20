@@ -47,10 +47,10 @@ public class DBHelper extends SQLiteOpenHelper {
 				.execSQL("CREATE TABLE IF NOT EXISTS " + TravelLocationEntry.TABLE_NAME + " (" + TravelLocationEntry._ID
 						+ " INTEGER PRIMARY KEY AUTOINCREMENT," + TravelLocationEntry.COLUMN_TRAVEL_ID + " INTEGER,"
 						+ TravelLocationEntry.COLUMN_ISPAUSE + " INTEGER," + TravelLocationEntry.COLUMN_DESCRIPTION
-						+ " TEXT," + TravelLocationEntry.COLUMN_LOCATION + " TEXT" + ");");
+						+ " TEXT," + TravelLocationEntry.COLUMN_LOCATION + " TEXT," + TravelLocationEntry.COLUMN_SPEED + " REAL"+");");
 		// 平均速度表
 		sqliteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TravelSpeedEntry.TABLE_NAME + " (" + TravelSpeedEntry._ID
-				+ " INTEGER PRIMARY KEY AUTOINCREMENT," + TravelSpeedEntry.COLUMN_TRAVEL_ID + " INTEGER,"+ TravelSpeedEntry.COLUMN_SPEED + " INTEGER"+");");
+				+ " INTEGER PRIMARY KEY AUTOINCREMENT," + TravelSpeedEntry.COLUMN_TRAVEL_ID + " INTEGER,"+ TravelSpeedEntry.COLUMN_SPEED + " REAL"+");");
 
 		// 蓝牙数据表
 		sqliteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TravelBluetoothEntry.TABLE_NAME + " ("
@@ -63,10 +63,10 @@ public class DBHelper extends SQLiteOpenHelper {
 				+ TravelEntry.COLUMN_TYPE + " INTEGER,"
 				+ TravelEntry.COLUMN_SYNC + " INTEGER,"
 				+ TravelEntry.COLUMN_STARTTIME + " INTEGER,"
-				+ TravelEntry.COLUMN_ENDTIME + " INTEGER," + TravelEntry.COLUMN_AVGSPEED + " INTEGER,"
-				+ TravelEntry.COLUMN_MAXSPEED + " INTEGER," + TravelEntry.COLUMN_SPENDTIME + " INTEGER,"
+				+ TravelEntry.COLUMN_ENDTIME + " INTEGER," + TravelEntry.COLUMN_AVGSPEED + " REAL,"
+				+ TravelEntry.COLUMN_MAXSPEED + " REAL," + TravelEntry.COLUMN_SPENDTIME + " INTEGER,"
 				+ TravelEntry.COLUMN_DISTANCE + " REAL," + TravelEntry.COLUMN_CALORIE + " REAL,"
-				+ TravelEntry.COLUMN_CADENCE + " INTEGER," + TravelEntry.COLUMN_ALTITUDE + " REAL" + ");");
+				+ TravelEntry.COLUMN_CADENCE + " REAL," + TravelEntry.COLUMN_ALTITUDE + " REAL" + ");");
 
 		// + " TEXT DEFAULT 'false'," + DevicesColumns.ONLINE +
 		// " TEXT DEFAULT 'true');");
@@ -131,12 +131,12 @@ public class DBHelper extends SQLiteOpenHelper {
 			travel.setType(result.getInt(result.getColumnIndex(TravelEntry.COLUMN_TYPE)));
 			travel.setSync(result.getInt(result.getColumnIndex(TravelEntry.COLUMN_SYNC)));
 			travel.setAltitude(result.getDouble(result.getColumnIndex(TravelEntry.COLUMN_ALTITUDE)));
-			travel.setAvgSpeed(result.getInt(result.getColumnIndex(TravelEntry.COLUMN_AVGSPEED)));
-			travel.setCadence(result.getInt(result.getColumnIndex(TravelEntry.COLUMN_CADENCE)));
+			travel.setAvgSpeed(result.getFloat(result.getColumnIndex(TravelEntry.COLUMN_AVGSPEED)));
+			travel.setCadence(result.getFloat(result.getColumnIndex(TravelEntry.COLUMN_CADENCE)));
 			travel.setCalorie(result.getFloat(result.getColumnIndex(TravelEntry.COLUMN_CALORIE)));
 			travel.setDistance(result.getFloat(result.getColumnIndex(TravelEntry.COLUMN_DISTANCE)));
 			travel.setEndTime(result.getLong(result.getColumnIndex(TravelEntry.COLUMN_ENDTIME)));
-			travel.setMaxSpeed(result.getInt(result.getColumnIndex(TravelEntry.COLUMN_MAXSPEED)));
+			travel.setMaxSpeed(result.getFloat(result.getColumnIndex(TravelEntry.COLUMN_MAXSPEED)));
 			travel.setSpendTime(result.getLong(result.getColumnIndex(TravelEntry.COLUMN_SPENDTIME)));
 			travel.setStartTime(result.getLong(result.getColumnIndex(TravelEntry.COLUMN_STARTTIME)));
 			list.add(travel);
@@ -157,12 +157,12 @@ public class DBHelper extends SQLiteOpenHelper {
 			travel.setType(result.getInt(result.getColumnIndex(TravelEntry.COLUMN_TYPE)));
 			travel.setSync(result.getInt(result.getColumnIndex(TravelEntry.COLUMN_SYNC)));
 			travel.setAltitude(result.getDouble(result.getColumnIndex(TravelEntry.COLUMN_ALTITUDE)));
-			travel.setAvgSpeed(result.getInt(result.getColumnIndex(TravelEntry.COLUMN_AVGSPEED)));
-			travel.setCadence(result.getInt(result.getColumnIndex(TravelEntry.COLUMN_CADENCE)));
+			travel.setAvgSpeed(result.getFloat(result.getColumnIndex(TravelEntry.COLUMN_AVGSPEED)));
+			travel.setCadence(result.getFloat(result.getColumnIndex(TravelEntry.COLUMN_CADENCE)));
 			travel.setCalorie(result.getFloat(result.getColumnIndex(TravelEntry.COLUMN_CALORIE)));
 			travel.setDistance(result.getFloat(result.getColumnIndex(TravelEntry.COLUMN_DISTANCE)));
 			travel.setEndTime(result.getLong(result.getColumnIndex(TravelEntry.COLUMN_ENDTIME)));
-			travel.setMaxSpeed(result.getInt(result.getColumnIndex(TravelEntry.COLUMN_MAXSPEED)));
+			travel.setMaxSpeed(result.getFloat(result.getColumnIndex(TravelEntry.COLUMN_MAXSPEED)));
 			travel.setSpendTime(result.getLong(result.getColumnIndex(TravelEntry.COLUMN_SPENDTIME)));
 			travel.setStartTime(result.getLong(result.getColumnIndex(TravelEntry.COLUMN_STARTTIME)));
 			break;
@@ -184,12 +184,12 @@ public class DBHelper extends SQLiteOpenHelper {
 			travel.setType(result.getInt(result.getColumnIndex(TravelEntry.COLUMN_TYPE)));
 			travel.setSync(result.getInt(result.getColumnIndex(TravelEntry.COLUMN_SYNC)));
 			travel.setAltitude(result.getDouble(result.getColumnIndex(TravelEntry.COLUMN_ALTITUDE)));
-			travel.setAvgSpeed(result.getInt(result.getColumnIndex(TravelEntry.COLUMN_AVGSPEED)));
-			travel.setCadence(result.getInt(result.getColumnIndex(TravelEntry.COLUMN_CADENCE)));
+			travel.setAvgSpeed(result.getFloat(result.getColumnIndex(TravelEntry.COLUMN_AVGSPEED)));
+			travel.setCadence(result.getFloat(result.getColumnIndex(TravelEntry.COLUMN_CADENCE)));
 			travel.setCalorie(result.getFloat(result.getColumnIndex(TravelEntry.COLUMN_CALORIE)));
 			travel.setDistance(result.getFloat(result.getColumnIndex(TravelEntry.COLUMN_DISTANCE)));
 			travel.setEndTime(result.getLong(result.getColumnIndex(TravelEntry.COLUMN_ENDTIME)));
-			travel.setMaxSpeed(result.getInt(result.getColumnIndex(TravelEntry.COLUMN_MAXSPEED)));
+			travel.setMaxSpeed(result.getFloat(result.getColumnIndex(TravelEntry.COLUMN_MAXSPEED)));
 			travel.setSpendTime(result.getLong(result.getColumnIndex(TravelEntry.COLUMN_SPENDTIME)));
 			travel.setStartTime(result.getLong(result.getColumnIndex(TravelEntry.COLUMN_STARTTIME)));
 			list.add(travel);
@@ -217,6 +217,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		contentValues.put(TravelLocationEntry.COLUMN_DESCRIPTION, travelLocation.getDescription());
 		contentValues.put(TravelLocationEntry.COLUMN_LOCATION,
 				travelLocation.getLocation() == null ? "" : gson.toJson(travelLocation.getLocation()));
+		contentValues.put(TravelLocationEntry.COLUMN_SPEED, travelLocation.getSpeed());
 		long id = sqliteDatabase.insert(TravelLocationEntry.TABLE_NAME, null, contentValues);
 		travelLocation.setId(id);
 		LogUtils.i(TAG, "insertTravelLocation" + id);
@@ -231,6 +232,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		contentValues.put(TravelLocationEntry.COLUMN_DESCRIPTION, travelLocationEntry.getDescription());
 		contentValues.put(TravelLocationEntry.COLUMN_LOCATION,
 				travelLocationEntry.getLocation() == null ? "" : gson.toJson(travelLocationEntry.getLocation()));
+		contentValues.put(TravelLocationEntry.COLUMN_SPEED, travelLocationEntry.getSpeed());
 		int row = sqliteDatabase.update(TravelLocationEntry.TABLE_NAME, contentValues, TravelLocationEntry._ID + "=?",
 				new String[] { travelLocationEntry.getId() + "" });
 		LogUtils.i(TAG, "updateTravelLocation" + row);
@@ -250,6 +252,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			travel.setPause(
 					result.getInt(result.getColumnIndex(TravelLocationEntry.COLUMN_ISPAUSE)) == 1 ? true : false);
 			travel.setDescription(result.getString(result.getColumnIndex(TravelLocationEntry.COLUMN_DESCRIPTION)));
+			travel.setSpeed(result.getFloat(result.getColumnIndex(TravelLocationEntry.COLUMN_SPEED)));
 			list.add(travel);
 		}
 		LogUtils.i(TAG, "listTravelLocation" + list.size());

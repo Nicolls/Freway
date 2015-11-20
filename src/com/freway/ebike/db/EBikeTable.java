@@ -16,6 +16,7 @@ public final class EBikeTable {
         public static final String COLUMN_ISPAUSE = "isPause";
         public static final String COLUMN_DESCRIPTION = "description";
         public static final String COLUMN_LOCATION = "location";
+        public static final String COLUMN_SPEED = "speed";
     }
     
     /**平均速度表*/

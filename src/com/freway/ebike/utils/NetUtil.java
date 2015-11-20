@@ -59,7 +59,7 @@ public class NetUtil implements DataUpdateListener{
 				loList.add(temp);
 			}
 			String locationList=gson.toJson(loList);
-			int[]spList=new int[speeds.size()];
+			float[]spList=new float[speeds.size()];
 			for(int i=0;i<speeds.size();i++){
 				spList[i]=speeds.get(i).getSpeed();
 			}

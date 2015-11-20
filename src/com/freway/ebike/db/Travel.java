@@ -36,11 +36,11 @@ public class Travel implements Parcelable {
 	/**
 	 * @Fields avgSpeed 平均速度 单位 m/s
 	 */
-	private int avgSpeed; 
+	private float avgSpeed; 
 	/**
 	 * @Fields maxSpeed 最大速度 单位 m/s
 	 */
-	private int maxSpeed;
+	private float maxSpeed;
 	/**
 	 * @Fields spendTime 用时 毫秒 需要格式化成 xx天xx时xx分xx秒
 	 */
@@ -56,7 +56,7 @@ public class Travel implements Parcelable {
 	/**
 	 * @Fields cadence 踏频量
 	 */
-	private long cadence;
+	private float cadence;
 	/**
 	 * @Fields altitude 海拔
 	 */
@@ -94,12 +94,12 @@ public class Travel implements Parcelable {
 		dest.writeInt(sync);
 		dest.writeLong(startTime);
 		dest.writeLong(endTime);
-		dest.writeInt(avgSpeed);
-		dest.writeInt(maxSpeed);
+		dest.writeFloat(avgSpeed);
+		dest.writeFloat(maxSpeed);
 		dest.writeLong(spendTime);
 		dest.writeFloat(distance);
 		dest.writeFloat(calorie);
-		dest.writeLong(cadence);
+		dest.writeFloat(cadence);
 		dest.writeDouble(altitude);
 	}
 
@@ -119,12 +119,12 @@ public class Travel implements Parcelable {
 		sync=in.readInt();
 		startTime = in.readLong();
 		endTime = in.readLong();
-		avgSpeed = in.readInt();
-		maxSpeed = in.readInt();
+		avgSpeed = in.readFloat();
+		maxSpeed = in.readFloat();
 		spendTime = in.readLong();
 		distance = in.readFloat();
 		calorie = in.readFloat();
-		cadence = in.readLong();
+		cadence = in.readFloat();
 		altitude = in.readDouble();
 	}
 	public long getId() {
@@ -145,16 +145,16 @@ public class Travel implements Parcelable {
 	public void setEndTime(long endTime) {
 		this.endTime = endTime;
 	}
-	public int getAvgSpeed() {
+	public float getAvgSpeed() {
 		return avgSpeed;
 	}
-	public void setAvgSpeed(int avgSpeed) {
+	public void setAvgSpeed(float avgSpeed) {
 		this.avgSpeed = avgSpeed;
 	}
-	public int getMaxSpeed() {
+	public float getMaxSpeed() {
 		return maxSpeed;
 	}
-	public void setMaxSpeed(int maxSpeed) {
+	public void setMaxSpeed(float maxSpeed) {
 		this.maxSpeed = maxSpeed;
 	}
 	public long getSpendTime() {
@@ -178,7 +178,7 @@ public class Travel implements Parcelable {
 	public float getCadence() {
 		return cadence;
 	}
-	public void setCadence(long cadence) {
+	public void setCadence(float cadence) {
 		this.cadence = cadence;
 	}
 	public double getAltitude() {
