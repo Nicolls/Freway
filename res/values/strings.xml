@@ -4,7 +4,7 @@
     <string name="app_name">eBike</string>
 
     <!-- 第三方sdk -->
-    <string name="app_id">1668278680085158</string>
+    <string name="app_id">748116458653988</string>
 	<string name="call_back_url">www.saner5.com</string>
     <!-- toast提示，弹出框 -->
     <string name="not_support_bluetooth">"your phone didn't support eBike"</string>
@@ -38,7 +38,8 @@
     <!-- 通用 -->
     <string name="cancel">Cancel</string>
     <string name="english">English</string>
-    <string name="travel_too_short_not_save">travel is too short not save</string>
+    <string name="travel_save">save this travel?</string>
+    <string name="travel_too_short_not_save">travel is too short will not save</string>
     <string name="battery_connect_exception">Battery Connect Exception,Please Check!</string>
     <string name="can_not_be_null"> Can not be null</string>
     <string name="login_cancel">Cancel Sign</string>

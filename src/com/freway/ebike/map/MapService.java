@@ -205,7 +205,7 @@ public class MapService extends Service implements ConnectionCallbacks,
 		}
 		if (isRecord && pointDistance > RECORD_MIN_DISTANCE) {// 正在记录，并且两点的距离必须要大于最小记录距离值才记录
 			EBikeTravelData.getInstance(this).altitude = travelLocation.getLocation()
-					.getAltitude()/1000;//海拔单位，改成km
+					.getAltitude()/1000f;//海拔单位，改成km
 			// 判断是开始的位置
 			if (currentLocation == null) {// 如果是开始，则通知行程开始
 				broadCastLocation(
