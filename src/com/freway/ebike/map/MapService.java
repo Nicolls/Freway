@@ -59,7 +59,7 @@ public class MapService extends Service implements ConnectionCallbacks,
 			.setFastestInterval(16) // 16ms = 60fps
 			.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 	private GoogleApiClient mGoogleApiClient;
-	private static final float RECORD_MIN_DISTANCE = 2;// 达到记录的最短距离2米
+	private static final float RECORD_MIN_DISTANCE = 2;// 达到记录的最短距离2米，但是实时 是不管多少都要画在地图上
 	private TravelLocation fromLocation;// 开始画位置
 	private TravelLocation toLocation;// 结束画位置
 	private boolean isRecord = false;
@@ -203,9 +203,9 @@ public class MapService extends Service implements ConnectionCallbacks,
 			fromLocation = travelLocation;
 			toLocation = travelLocation;
 		}
-		if (isRecord && pointDistance > RECORD_MIN_DISTANCE) {// 正在记录，并且两点的距离必须要大于最小记录距离值才记录
+		if (isRecord) {// 正在记录
 			EBikeTravelData.getInstance(this).altitude = travelLocation.getLocation()
-					.getAltitude()/1000f;//海拔单位，改成km
+					.getAltitude();//海拔
 			// 判断是开始的位置
 			if (currentLocation == null) {// 如果是开始，则通知行程开始
 				broadCastLocation(
@@ -225,8 +225,10 @@ public class MapService extends Service implements ConnectionCallbacks,
 					TravelConstant.ACTION_MAP_SERVICE_LOCATION_CHANGE,
 					travelLocation, fromLocation, toLocation);// 当前位置
 			// 记录数据
-			travelLocation.setTravelId(BaseApplication.travelId);
-			DBHelper.getInstance(this).insertTravelLocation(currentLocation);
+			if(pointDistance > RECORD_MIN_DISTANCE){//在过最小记录才去记录这个数据
+				travelLocation.setTravelId(BaseApplication.travelId);
+				DBHelper.getInstance(this).insertTravelLocation(currentLocation);
+			}
 		}
 	}
 

@@ -31,7 +31,7 @@ import com.freway.ebike.view.LoadingDialog;
  *         2015年5月15日
  */
 public abstract class BaseActivity extends AppCompatActivity implements DataUpdateListener {
-	protected boolean isLog = true;
+//	protected boolean isLog = true;
 	protected EBikeRequestService mEBikeRequestService;
 	protected TextView mTitleView;
 	private LoadingDialog loading;
@@ -45,7 +45,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DataUpda
 		mEBikeRequestService.setUptateListener(this);
 		tag = this.getClass().getSimpleName();
 		EBikeActivityManager.getAppManager().addActivity(this);
-		LogUtils.i(tag, isLog, "onCreate");
+		LogUtils.i(tag, "onCreate");
 		setContentLayout();
 	}
 	
@@ -65,31 +65,31 @@ public abstract class BaseActivity extends AppCompatActivity implements DataUpda
 	@Override
 	protected void onStart() {
 		super.onStart();
-		LogUtils.i(tag, isLog, "onStart");
+		LogUtils.i(tag, "onStart");
 	}
 
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-		LogUtils.i(tag, isLog, "onRestart");
+		LogUtils.i(tag,  "onRestart");
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		LogUtils.i(tag, isLog, "onResume");
+		LogUtils.i(tag,  "onResume");
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		LogUtils.i(tag, isLog, "onPause");
+		LogUtils.i(tag,  "onPause");
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		LogUtils.i(tag, isLog, "onStop");
+		LogUtils.i(tag,  "onStop");
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DataUpda
 		EBikeActivityManager.getAppManager().removeActivity(this);
 		hideLoading();
 		super.onDestroy();
-		LogUtils.i(tag, isLog, "onDestroy");
+		LogUtils.i(tag, "onDestroy");
 	}
 
 

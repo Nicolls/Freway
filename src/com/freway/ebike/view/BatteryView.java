@@ -82,7 +82,6 @@ public class BatteryView extends ImageView {
 	 * @param gear  档位
 	 */
 	public void onValueChange(int percent, int model, int gear,boolean isDrawGear) {
-		Log.i("hudu", "p=" + percent);
 		this.isDrawGear=isDrawGear;
 		if(isDrawGear){
 			switch (gear) {

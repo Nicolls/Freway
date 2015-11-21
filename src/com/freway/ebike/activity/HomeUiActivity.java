@@ -142,6 +142,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		initView();
 		initFontStyle();
 		intClick();
+		defaultUIState();
 		// initData();//这个已经由onResume来做了
 		uiInitCompleted();
 	}
@@ -417,6 +418,15 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		updateUiValue();
 	}
 
+	/**默认的UI显示状态*/
+	private void defaultUIState(){
+		bikeStateView.setVisibility(View.VISIBLE);
+		travelStateView.setVisibility(View.GONE);
+		speedStateView.setVisibility(View.VISIBLE);
+		batteryStateView.setVisibility(View.GONE);
+		lineTopView.setVisibility(View.GONE);
+		lineBottomView.setVisibility(View.GONE);
+	}
 	protected abstract void uiInitCompleted();
 
 	/** 改变状态 */
@@ -471,7 +481,6 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		cadence = CommonUtil.formatFloatAccuracy(cadence, 0);
 		calorie = CommonUtil.formatFloatAccuracy(calorie, 0,BigDecimal.ROUND_UP);
 		// 转换
-		altitude = altitude * 1000;// 由km->m
 		distance = distance * 1000;// 由km->m
 
 		// 车况

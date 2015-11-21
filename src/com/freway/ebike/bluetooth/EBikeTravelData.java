@@ -84,7 +84,7 @@ public class EBikeTravelData implements Serializable {
 	 */
 	public float cadence;
 	/**
-	 * @Fields altitude 海拔 单位 km
+	 * @Fields altitude 海拔 单位mi
 	 */
 	public double altitude;
 	/**
@@ -184,9 +184,9 @@ public class EBikeTravelData implements Serializable {
 	// private long cal_tempTime;
 	// private long cal_endTime;
 
-//	private double cal_startAltitude;
-//	public double cal_tempAltitude;// 这个值有地图来提供
-//	private double cal_endAltitude;
+	// private double cal_startAltitude;
+	// public double cal_tempAltitude;// 这个值有地图来提供
+	// private double cal_endAltitude;
 	private float cal_startDistance;
 	private float cal_tempDistance;
 	private float cal_endDistance;
@@ -196,7 +196,7 @@ public class EBikeTravelData implements Serializable {
 	private float cal_startCadence;
 	private float cal_tempCadence;
 	private float cal_endCadence;
-	private float cal_recordCadence;//记录的总踏频量
+	private float cal_recordCadence;// 记录的总踏频量
 	private boolean isNewTravel = true;
 	private Context context;
 	private static EBikeTravelData mEBikeTravelData;
@@ -204,10 +204,11 @@ public class EBikeTravelData implements Serializable {
 	private boolean isCalUiTime = true;// 是否显示
 	private boolean isPauseTime = true;// 是否计算
 	private SpendTimeThread spendTimeThread = null;
-	//存储连续速度为0的点，每一秒存一个，如果连续为0的点超过5个就暂停骑行。
-	private static final int MAX_LIMIT_ZERO_SPEED=5;
-	private int zeroSpeed=0;
+	// 存储连续速度为0的点，每一秒存一个，如果连续为0的点超过5个就暂停骑行。
+	private static final int MAX_LIMIT_ZERO_SPEED = 5;
+	private int zeroSpeed = 0;
 	private NetUtil netUtil;
+
 	private EBikeTravelData(Context context) {
 		this.context = context;
 	}
@@ -220,7 +221,7 @@ public class EBikeTravelData implements Serializable {
 	}
 
 	public void start(long id) {
-		zeroSpeed=0;
+		zeroSpeed = 0;
 		travelId = id;
 		isNewTravel = true;
 		startTime = Calendar.getInstance().getTimeInMillis();
@@ -233,10 +234,10 @@ public class EBikeTravelData implements Serializable {
 	}
 
 	public void pause() {
-		zeroSpeed=0;
+		zeroSpeed = 0;
 		insSpeed = 0;
 		// cal_startTime=cal_endTime;
-//		cal_startAltitude = cal_endAltitude;
+		// cal_startAltitude = cal_endAltitude;
 		cal_startDistance = cal_endDistance;
 		cal_startCalorie = cal_endCalorie;
 		cal_startCadence = cal_endCadence;
@@ -245,13 +246,13 @@ public class EBikeTravelData implements Serializable {
 	}
 
 	public void resume() {
-		zeroSpeed=0;
+		zeroSpeed = 0;
 		isNewTravel = false;
 		isPauseTime = false;
 	}
 
 	public void stop() {
-		zeroSpeed=0;
+		zeroSpeed = 0;
 		if (spendTimeThread != null) {
 			spendTimeThread.cancel();
 		}
@@ -261,7 +262,7 @@ public class EBikeTravelData implements Serializable {
 	}
 
 	public void completed() {
-		zeroSpeed=0;
+		zeroSpeed = 0;
 		isNewTravel = false;
 		isPauseTime = true;
 		endTime = Calendar.getInstance().getTimeInMillis();
@@ -288,8 +289,8 @@ public class EBikeTravelData implements Serializable {
 			travel.setSpendTime(spendTime);
 			travel.setStartTime(startTime);
 			DBHelper.getInstance(context).updateTravel(travel);// 更新
-			if(netUtil==null){
-				netUtil=new NetUtil(context);
+			if (netUtil == null) {
+				netUtil = new NetUtil(context);
 			}
 			netUtil.uploadLocalRecord();// 更新数据后，上传
 		}
@@ -366,7 +367,7 @@ public class EBikeTravelData implements Serializable {
 			batteryAh = 78;
 		}
 		remaindTravelCapacity = batteryResidueCapacity * batteryAh * 12 / 780;// 公里（千米）
-		simulateData();// 模拟数据
+//		simulateData();// 模拟数据
 		if (isNewTravel) {// 新的骑行
 			insSpeed = 0;
 			avgSpeed = 0;
@@ -378,14 +379,14 @@ public class EBikeTravelData implements Serializable {
 
 			// cal_startTime=startTime;
 			// cal_endTime=startTime;
-//			cal_startAltitude = cal_tempAltitude;
+			// cal_startAltitude = cal_tempAltitude;
 			cal_startDistance = cal_tempDistance;
 			cal_startCalorie = cal_tempCalorie;
 			cal_startCadence = cal_tempCadence;
 			isNewTravel = false;
 		} else {
 			// cal_endTime=Calendar.getInstance().getTimeInMillis();
-//			cal_endAltitude = cal_tempAltitude;
+			// cal_endAltitude = cal_tempAltitude;
 			cal_endDistance = cal_tempDistance;
 			cal_endCalorie = cal_tempCalorie;
 			cal_endCadence = cal_tempCadence;
@@ -393,23 +394,23 @@ public class EBikeTravelData implements Serializable {
 				maxSpeed = insSpeed;
 			}
 			// spendTime+=(cal_endTime-cal_startTime);//时长
-//			if ((cal_endAltitude - cal_startAltitude) > 0) {// 上坡的时候，才计算值
-//				altitude += (cal_endAltitude - cal_startAltitude);// 海拔
-//			}
+			// if ((cal_endAltitude - cal_startAltitude) > 0) {// 上坡的时候，才计算值
+			// altitude += (cal_endAltitude - cal_startAltitude);// 海拔
+			// }
 			distance += (cal_endDistance - cal_startDistance);// 距离
 			avgSpeed = distance / (spendTime / 1000) * 60 * 60;// 平均 km/h
 			calorie += (cal_endCalorie - cal_startCalorie);// 卡路里
-			System.out.println("卡路里总的＝"+calorie);
+			System.out.println("卡路里总的＝" + calorie);
 			cal_recordCadence += (cal_endCadence - cal_startCadence);// 踏频
 			altitude += altitude;// 海拔
 			cadence = cal_recordCadence / (spendTime / 1000) * 60f;// 每分钟踏频量
 
-//			cal_startAltitude = cal_tempAltitude;
+			// cal_startAltitude = cal_tempAltitude;
 			cal_startDistance = cal_tempDistance;
 			cal_startCalorie = cal_tempCalorie;
 			cal_startCadence = cal_endCadence;
 			formatFloat2OneAccuracy();
-			if (spendTime != 0 && (spendTime % (RECORD_TIME_FRE * 1000))== 0) {// 每百秒存储一个速度
+			if (spendTime != 0 && (spendTime % (RECORD_TIME_FRE * 1000)) == 0) {// 每百秒存储一个速度
 				TravelSpeed travelSpeed = new TravelSpeed();
 				travelSpeed.setTravelId(travelId);
 				travelSpeed.setSpeed(avgSpeed);
@@ -489,14 +490,14 @@ public class EBikeTravelData implements Serializable {
 			while (isCalUiTime) {
 				if (!isPauseTime) {
 					spendTime += 1000;
-					if(insSpeed==0){
+					if (insSpeed == 0) {
 						zeroSpeed++;
-						if(zeroSpeed>MAX_LIMIT_ZERO_SPEED){//超过数值
-							zeroSpeed=0;
+						if (zeroSpeed > MAX_LIMIT_ZERO_SPEED) {// 超过数值
+							zeroSpeed = 0;
 							BaseApplication.sendStateChangeBroadCast(context, TravelConstant.TRAVEL_STATE_PAUSE);
 						}
-					}else{
-						zeroSpeed=0;
+					} else {
+						zeroSpeed = 0;
 					}
 				}
 				try {

@@ -61,7 +61,7 @@ public class BlueToothService extends BaseService {
 	// 重链
 	private ReConnectThread mReConnectThread;// 每隔一段时间去链接
 	private static final int RECONNECT_SPACING = 5 * 1000;// 间隔时间，毫秒
-	private boolean isReconnectRunning = true;// 开启断线重新链接
+	private boolean isReconnectRunning = false;// 开启断线重新链接
 	// 获取数据心跳线程
 	private RequestDataThread mRequestDataThread;// 每隔一段时间去获取数据
 	private static final int REQUESTDATA_SPACING = 1 * 1000;// 间隔时间，毫秒
