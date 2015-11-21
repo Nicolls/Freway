@@ -1,8 +1,10 @@
 package com.freway.ebike.bluetooth;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
@@ -21,6 +23,7 @@ import android.os.Parcelable;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.TextureView;
 
 import com.freway.ebike.R;
 import com.freway.ebike.common.BaseApplication;
@@ -33,9 +36,13 @@ import com.freway.ebike.protocol.CommandCode;
 import com.freway.ebike.protocol.Protocol;
 import com.freway.ebike.protocol.ProtocolByteHandler;
 import com.freway.ebike.protocol.ProtocolTool;
+import com.freway.ebike.utils.CommonUtil;
+import com.freway.ebike.utils.JsonUtils;
 import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.SPUtils;
 import com.freway.ebike.utils.ToastUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class BlueToothService extends BaseService {
 	/**蓝牙状态*/
@@ -118,11 +125,46 @@ public class BlueToothService extends BaseService {
 						startScanBluetoothDevice();
 					}
 					break;
+				case BlueToothConstants.HANDLE_SERVER_SEND_DATA:// 发送数据
+					Gson gson=new Gson();
+					String str=intent.getStringExtra(BlueToothConstants.EXTRA_DATA);
+					byte[]data=gson.fromJson(str, byte[].class);
+					if(data!=null){
+						if(data.length>0){
+							int cmd=data[0];
+							byte[]sendData=new byte[data.length-1];
+							for(int i=0;i<sendData.length;i++){
+								sendData[i]=data[i+1];
+							}
+							if(mBlueToothConnction!=null&&mReceiveCharacteristic!=null){//开启数据监听
+								LogUtils.i(tag, "监听数据");
+								mBlueToothConnction.setCharacteristicNotification(
+										mReceiveCharacteristic, true);
+							}
+							//mark 加上这个，是因为，如果一设置好监听就发送请求数据包，将得不到数据，所以要做一个延迟处理，设置监听后500毫秒再发送请求数据包
+							Message msg=Message.obtain();
+							msg.what=cmd;
+							msg.obj=sendData;
+							sendDataControl.sendMessageDelayed(msg, 500);
+						}
+					}
+					break;
 				default:
 					break;
 				}
 			}
 		}
+	};
+	
+	private Handler sendDataControl=new Handler(){
+
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			super.handleMessage(msg);
+			sendData(msg.what,(byte[])msg.obj);
+		}
+		
 	};
 
 	/** 监听UI发送的状态改变广播 */
@@ -486,6 +528,11 @@ public class BlueToothService extends BaseService {
 				printlnMessage("链接上蓝牙服务");
 				SPUtils.setEBikeAddress(getApplicationContext(),
 						mBluetoothDeviceAddress);
+				if(mBlueToothConnction!=null&&mReceiveCharacteristic!=null){//开启数据监听
+					LogUtils.i(tag, "监听数据");
+					mBlueToothConnction.setCharacteristicNotification(
+							mReceiveCharacteristic, true);
+				}
 				sendBleState(BlueToothConstants.BLE_STATE_CONNECTED);
 				break;
 			case BluetoothConnection.ACTION_DATA_AVAILABLE:
@@ -494,10 +541,10 @@ public class BlueToothService extends BaseService {
 						+ ProtocolTool.bytesToHexString(receiveData));
 				HashMap<String, Object> map = ProtocolByteHandler
 						.parseData(BlueToothService.this,receiveData);
-//				broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA,BlueToothConstants.RESULT_SUCCESS,null);// 提示UI更新   //mark 现改成，发送数据的时候就提示UI更新，因为需要流畅的时间显示
-				if(!isRequestData){//由于最后一次暂停 了，可能是没有发送出去。所以要把最后一次更新到UI上
-					broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA,BlueToothConstants.RESULT_SUCCESS,null);
-				}
+				broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA,BlueToothConstants.RESULT_SUCCESS,null);// 提示UI更新   //mark 现改成，发送数据的时候就提示UI更新，因为需要流畅的时间显示
+//				if(!isRequestData){//由于最后一次暂停 了，可能是没有发送出去。所以要把最后一次更新到UI上
+//					broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA,BlueToothConstants.RESULT_SUCCESS,null);
+//				}//mark 再次打开上面的广播UI，是因为如果是手动发送数据，就会出现，这次数据返回前，先更新UI，而数据回到这里后，没有更新UI，之前考虑到会耗性能，不过现在觉得一秒内发2，到3次广播，也是可以的。
 				break;
 			case BluetoothConnection.ACTION_GATT_DISCONNECTED:
 				if (mRequestDataThread != null) {
@@ -572,6 +619,7 @@ public class BlueToothService extends BaseService {
 	 */
 	private synchronized void sendData(int commandCode, byte[] data) {
 		byte[] send = ProtocolByteHandler.command(commandCode, data);
+		LogUtils.i(tag, "发送出去的数据包16进制为："+ProtocolTool.bytesToHexString(send));
 		// Check that we're actually connected before trying anything
 		if (mBlueToothConnction.getState() != BluetoothConnection.STATE_CONNECTED) {
 			toastMessage(getString(R.string.bluetooth_not_connect));

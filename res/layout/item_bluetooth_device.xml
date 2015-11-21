@@ -18,5 +18,12 @@
         android:id="@+id/device_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        style="@style/BleItemText" />
+    <TextView
+        android:id="@+id/device_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/device_title"
         style="@style/BleItemText" />
 </RelativeLayout>

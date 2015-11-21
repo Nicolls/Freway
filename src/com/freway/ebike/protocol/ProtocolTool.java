@@ -42,11 +42,13 @@ public class ProtocolTool {
      */  
     public static String byteToBitString(byte[] bytes) {  
     	String result="";
-    	for(int i=0;i<bytes.length;i++){
-    		byte temp=bytes[i];
-    		for(int j=0;j<8;j++){
-    			result=result+(byte) ((temp >>7-j) & 0x1) ;
-    		}
+    	if(bytes!=null){
+    		for(int i=0;i<bytes.length;i++){
+        		byte temp=bytes[i];
+        		for(int j=0;j<8;j++){
+        			result=result+(byte) ((temp >>7-j) & 0x1) ;
+        		}
+        	}
     	}
     	return result;
     }  
@@ -145,15 +147,15 @@ public class ProtocolTool {
 		if (src == null || src.length <= 0) {
 			return null;
 		}
-		if(src.length>3){
-			for (int i = 3; i >= 0; i--) {
-				int v = src[i] & 0xFF;
-				String hv = Integer.toHexString(v);
-				if (hv.length() < 2) {
-					stringBuilder.append(0);
-				}
-				stringBuilder.append(hv);
+		
+		for(int i=0;i<src.length;i++){
+			String temp=Integer.toHexString(src[i]);
+			if(temp.length()<2){
+				temp="0"+temp;
+			}else if(temp.length()>2){
+				temp=temp.substring(temp.length()-2,temp.length());
 			}
+			stringBuilder.append(temp);
 		}
 		return stringBuilder.toString();
 	}

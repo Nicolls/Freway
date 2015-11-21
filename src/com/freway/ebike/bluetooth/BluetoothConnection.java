@@ -110,7 +110,8 @@ public class BluetoothConnection {
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt,
                                             BluetoothGattCharacteristic characteristic) {
-            broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic.getValue());
+//        	LogUtils.i(TAG,"蓝牙数据响应");
+        	broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic.getValue());
         }
     };
     
@@ -236,6 +237,7 @@ public class BluetoothConnection {
     public void sendData(byte[] data,BluetoothGattCharacteristic characteristic){
     	characteristic.setValue(data);
     	if(mBluetoothGatt!=null){
+//    		LogUtils.i(TAG,"发送数据="+data);
     		mBluetoothGatt.writeCharacteristic(characteristic);
     	}
     }

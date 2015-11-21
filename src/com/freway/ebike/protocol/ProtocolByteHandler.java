@@ -13,7 +13,11 @@ import android.content.Context;
  * @date 2015年10月25日
  */
 public class ProtocolByteHandler {
+	
 	private static final String TAG="CreateByteCommand";
+	
+	
+	public static byte[]packData;//mark 加这个是为了给蓝牙工程师调试用的，显示数据，发布版本的时候，应该把它去掉
 	/**
 	 * @Fields EXTRA_CODE 解析数据包时，装入HashMap中的结果码
 	 */
@@ -59,6 +63,7 @@ public class ProtocolByteHandler {
 	 * 
 	 * */
 	public static HashMap<String,Object> parseData(Context context,byte[]receiveData) {
+		packData=receiveData;
 		Protocol mProtocol = new Protocol();
 		mProtocol.parseBytes(receiveData);
 		HashMap<String,Object> map=new HashMap<String, Object>();

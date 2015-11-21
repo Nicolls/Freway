@@ -41,8 +41,11 @@ public  class BleScanAdapter extends EBBaseAdapter<BluetoothDevice> {
 		}
 		ImageView icon = (ImageView) convertView.findViewById(R.id.device_select);
 		TextView title = (TextView) convertView.findViewById(R.id.device_title);
+		TextView address = (TextView) convertView.findViewById(R.id.device_address);
 		BluetoothDevice device=dataList.get(position);
 		title.setText(device.getName());
+		address.setText(device.getAddress());
+		address.setVisibility(View.GONE);//mark 当用于蓝牙模块测试时，把它设置为visble，这样方便调试，发布时应该设置为gone
 		convertView.setTag(dataList.get(position));
 		return convertView;
 	}

@@ -208,7 +208,6 @@ public class EBikeTravelData implements Serializable {
 	private static final int MAX_LIMIT_ZERO_SPEED = 5;
 	private int zeroSpeed = 0;
 	private NetUtil netUtil;
-
 	private EBikeTravelData(Context context) {
 		this.context = context;
 	}
@@ -398,12 +397,15 @@ public class EBikeTravelData implements Serializable {
 			// altitude += (cal_endAltitude - cal_startAltitude);// 海拔
 			// }
 			distance += (cal_endDistance - cal_startDistance);// 距离
-			avgSpeed = distance / (spendTime / 1000) * 60 * 60;// 平均 km/h
+			if(spendTime!=0){
+				avgSpeed = distance / (spendTime / 1000) * 60 * 60;// 平均 km/h
+			}
 			calorie += (cal_endCalorie - cal_startCalorie);// 卡路里
-			System.out.println("卡路里总的＝" + calorie);
 			cal_recordCadence += (cal_endCadence - cal_startCadence);// 踏频
 			altitude += altitude;// 海拔
-			cadence = cal_recordCadence / (spendTime / 1000) * 60f;// 每分钟踏频量
+			if(spendTime!=0){
+				cadence = cal_recordCadence / (spendTime / 1000) * 60f;// 每分钟踏频量
+			}
 
 			// cal_startAltitude = cal_tempAltitude;
 			cal_startDistance = cal_tempDistance;

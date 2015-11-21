@@ -1,5 +1,14 @@
 package com.freway.ebike.bluetooth;
 
+import java.util.HashMap;
+
+import com.freway.ebike.R;
+import com.freway.ebike.map.TravelConstant;
+import com.freway.ebike.utils.AlertUtil;
+import com.freway.ebike.utils.SPUtils;
+import com.freway.ebike.utils.ToastUtils;
+import com.google.gson.Gson;
+
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -12,12 +21,6 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
-
-import com.freway.ebike.R;
-import com.freway.ebike.map.TravelConstant;
-import com.freway.ebike.utils.AlertUtil;
-import com.freway.ebike.utils.SPUtils;
-import com.freway.ebike.utils.ToastUtils;
 
 public class BlueToothUtil {
 	private static final String TAG = BlueToothUtil.class.getSimpleName();
@@ -153,6 +156,12 @@ public class BlueToothUtil {
 		handleService(BlueToothConstants.HANDLE_SERVER_SCAN, null);
 	}
 
+	/**发送数据*/
+	public void sendData(byte[] packData) {
+		Gson gson=new Gson();
+		String mapString=gson.toJson(packData);
+		handleService(BlueToothConstants.HANDLE_SERVER_SEND_DATA, mapString);
+	}
 	/** 同步数据 */
 	/*
 	 * public void syncData(Handler syncHandler) { this.syncHandler =

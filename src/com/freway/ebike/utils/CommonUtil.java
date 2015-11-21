@@ -134,5 +134,19 @@ public class CommonUtil {
 		temp = bd.floatValue();
 		return temp;
 	}
+	
+	/**将一个16进制字符串转成byte[]数组，字符串中不包含0x*/
+	public static byte[] _16String2ByteArray(String data){
+		byte[] buf=new byte[0];
+		if(data!=null){
+			String[]sAry=data.split(",");
+			buf=new byte[sAry.length];
+			
+			for(int i=0;i<buf.length;i++){
+				buf[i]=(byte) Integer.parseInt(sAry[i], 16);
+			}
+		}
+		return buf;
+	}
 
 }

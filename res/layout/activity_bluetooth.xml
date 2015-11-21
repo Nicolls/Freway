@@ -2,127 +2,154 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-     >
-     
-    <include
-        android:id="@+id/nav_top_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        layout="@layout/view_top_bar_home"
-        />
-    <LinearLayout 
+    android:orientation="vertical" >
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:visibility="visible"
-        >
-        <CheckBox 
+        android:visibility="gone" >
+
+        <CheckBox
             android:id="@+id/cb_sport"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="运动"
-            android:visibility="gone"
             android:onClick="onSport"
-            />
-         <CheckBox 
+            android:text="运动"
+            android:visibility="gone" />
+
+        <CheckBox
             android:id="@+id/cb_elc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="电动"
-            android:visibility="gone"
             android:onClick="onElc"
-            />
-          <CheckBox 
+            android:text="电动"
+            android:visibility="gone" />
+
+        <CheckBox
             android:id="@+id/cb_power1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="助力1"
             android:onClick="onPower1"
-            />
-            <CheckBox 
+            android:text="助力1" />
+
+        <CheckBox
             android:id="@+id/cb_power3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="助力3"
-            android:visibility="gone"
             android:onClick="onPower3"
-            />
-             <CheckBox 
+            android:text="助力3"
+            android:visibility="gone" />
+
+        <CheckBox
             android:id="@+id/cb_light_front"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="前灯"
             android:onClick="onLightFront"
-            />
-              <CheckBox 
+            android:text="前灯" />
+
+        <CheckBox
             android:id="@+id/cb_light_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="后灯"
             android:onClick="onLightBack"
-            />
-              <CheckBox 
+            android:text="后灯" />
+
+        <CheckBox
             android:id="@+id/cb_call"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="电话"
             android:onClick="onCall"
-            />
-              <CheckBox 
+            android:text="电话" />
+
+        <CheckBox
             android:id="@+id/cb_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="短信"
             android:onClick="onMessage"
+            android:text="短信" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/ble_tv_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="蓝牙状态" />
+
+    <LinearLayout
+        android:id="@+id/ble_ll_ready"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="请在下方输入框中输入命令字和参数，每个字节以,隔开。输入完成后点击生成要发送的数据。如：31,00  31表示命令，00表示参数"
             />
+        <EditText
+            android:id="@+id/ble_et_send"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="31,00" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onCreateData"
+            android:text="生成要发送的数据" />
+
+        <TextView
+            android:id="@+id/ble_tv_send"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="要发送出去的数据" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onSend"
+            android:text="发送" />
+		<LinearLayout 
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal"
+		    >
+		    <TextView
+            android:id="@+id/ble_tv_receive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="收到的数据：要多点击发送几下，有时候数据有可能 不回来。" />
+
+		    <Button
+		        android:id="@+id/ble_btn_clear"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:onClick="onClear"
+		        android:text="清空" />
+
+		</LinearLayout>
         
     </LinearLayout>
-     <TextView 
-        android:id="@+id/bluetooth_tv"
+
+    <LinearLayout
+        android:id="@+id/ble_ll_init"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
-      <Button 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="开启服务"
-        android:onClick="onStart"
-        />
-    <Button 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="搜索"
-        android:onClick="onSearch"
-        />
-      <Button 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="发送据"
-        android:onClick="onSend"
-        />
-     <Button 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="暂停服务"
-        android:onClick="onPause"
-        />
-      <Button 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="继续服务"
-        android:onClick="onReStart"
-        />
-      <Button 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="停止服务"
-        android:onClick="onStop"
-        />
-    <ListView 
-        android:id="@+id/bluetooth_listview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-    
+        android:orientation="vertical" >
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onSearch"
+            android:text="搜索" />
+
+        <ListView
+            android:id="@+id/ble_listview"
+            android:background="@color/model_night_view_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
 </LinearLayout>
