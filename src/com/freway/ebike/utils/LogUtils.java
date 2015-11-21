@@ -13,7 +13,7 @@ import android.util.Log;
  *         2015年5月14日
  */
 public class LogUtils {
-	private static boolean isOpenLog = true;
+	private static boolean isOpenLog = false;
 
 	public static void i(String tag, String message) {
 		if (isOpenLog) {

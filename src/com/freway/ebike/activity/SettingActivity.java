@@ -170,6 +170,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 		titleTv.setText(getString(R.string.settings) + "");
 		rightButton.setText(getString(R.string.edit) + "");
 		user = SPUtils.getUserProfile(this);
+		nameValue.setText(SPUtils.getUsername(this));
 		updateUiUser(user);
 		mEBikeRequestService.userInfo(SPUtils.getToken(this));
 	}

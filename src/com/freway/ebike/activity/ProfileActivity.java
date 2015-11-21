@@ -106,6 +106,9 @@ public class ProfileActivity extends BaseActivity implements OnClickListener {
 
 	private void initData() {
 		titleTv.setText(getString(R.string.profile));
+		nameTv.setText(SPUtils.getUsername(this));
+		mileageValueTv.setText(0+"");
+		timeValueTv.setText(0+"");
 		rightButton.setText("");
 		rightButton.setVisibility(View.GONE);
 		iconButton.setImageResource(R.drawable.icon_settings);
