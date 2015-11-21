@@ -117,5 +117,22 @@ public class CommonUtil {
 		temp = bd.floatValue();
 		return temp;
 	}
+	
+	/**
+	 * 格式化浮点数为某一精度，4舍5入
+	 * 
+	 * @param f
+	 *            要格式化浮点值
+	 * @param accuracy
+	 *            精度数,2表示保留两位小数
+	 * @param roundingMode 舍入策略
+	 * */
+	public static float formatFloatAccuracy(float f, int accuracy,int roundingMode) {
+		float temp = f;
+		BigDecimal bd = new BigDecimal((double) f);
+		bd = bd.setScale(accuracy,roundingMode);
+		temp = bd.floatValue();
+		return temp;
+	}
 
 }

@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -42,6 +43,7 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 	private int handle = HANDLE_SCAN;
 	private int bleState=BlueToothConstants.BLE_STATE_NONE;
 	private String address;
+	private ProgressBar pb;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -54,6 +56,7 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 		getWindow().setAttributes(p);
 		setContentView(R.layout.activity_ble_scan_connect);
 		
+		pb=(ProgressBar) findViewById(R.id.scan_progress);
 		address=SPUtils.getEBkieAddress(this);
 		handle = getIntent().getIntExtra(HANDLE_EXTRA, HANDLE_CONNECT);
 		mBlueToothUtil = new BlueToothUtil(this, blueHandler,null);
@@ -72,6 +75,7 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 
 	private void handle(String message) {
 		mTvMessage.setText(message);
+		pb.setVisibility(View.VISIBLE);
 		if (handle == HANDLE_SCAN) {
 			mTvTitle.setText("ebikie not bind ,search your ebike...");
 			listView.setVisibility(View.VISIBLE);
@@ -88,6 +92,7 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 			mBtnConfirm.setVisibility(View.VISIBLE);
 			mBlueToothUtil.connectBLE(address);
 		}else if(handle==HANDLE_NOT_FOUND){
+			pb.setVisibility(View.GONE);
 			mTvTitle.setText("your ble not found");
 			listView.setVisibility(View.GONE);
 			mBtnScan.setVisibility(View.VISIBLE);
@@ -123,6 +128,7 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 			// TODO Auto-generated method stub
 			super.handleMessage(msg);
 			if(msg.what==BlueToothConstants.RESULT_COMPLETED){
+				pb.setVisibility(View.GONE);
 				if(data.size()<=0){
 					handle=HANDLE_NOT_FOUND;
 					handle("");
@@ -148,6 +154,7 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 			super.handleMessage(msg);
 			bleState= msg.what;
 			if(bleState==BlueToothConstants.BLE_STATE_CONNECTED){
+				pb.setVisibility(View.GONE);
 				blueHandler.postDelayed(new Runnable() {//2秒之后如果还是链接状态，那就真正链接上了
 					
 					@Override

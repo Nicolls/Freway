@@ -6,11 +6,7 @@ package com.freway.ebike.net;
 import java.io.File;
 import java.lang.reflect.Type;
 
-import android.content.Context;
-
 import com.android.volley.Response;
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.freway.ebike.model.EBRequest;
 import com.freway.ebike.model.EBResponse;
@@ -23,6 +19,11 @@ import com.freway.ebike.model.RspUserInfo;
 import com.freway.ebike.model.User;
 import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.MD5Tool;
+import com.freway.ebike.utils.UploadImageUtil;
+import com.freway.ebike.utils.UploadImageUtil.OnUploadProcessListener;
+import com.google.gson.Gson;
+
+import android.content.Context;
 
 /**
  * 通过volley框架来实现的与服务器交互接口的请求类
@@ -180,25 +181,31 @@ public class EBikeRequestServiceVolleyImpl implements EBikeRequestService {
 				s = s.substring(s.length() - 10, s.length());
 			}
 			ebReq.setReqeustParam("s", s);
-			UploadFileRequest request = new UploadFileRequest(ebReq.getReqeustURL(), new ErrorListener() {
-
+			UploadImageUtil.getInstance().setOnUploadProcessListener(new OnUploadProcessListener() {
+				
 				@Override
-				public void onErrorResponse(VolleyError error) {
-					LogUtils.e(TAG, error.getMessage());
-					LogUtils.i(TAG, "上传图片失败，"+error.getMessage());
-					dataNotify(ID_REQUEST_ERROR, null);
+				public void onUploadProcess(int uploadSize) {
+					
 				}
-			}, new Listener<String>() {
-
+				
 				@Override
-				public void onResponse(String response) {
-					LogUtils.i(TAG, "上传图片返回:"+response);
-					RspUpdatePhoto updatePhoto=new RspUpdatePhoto();
-					updatePhoto.setText(response);
-					dataNotify(EBikeRequestService.ID_PHOTO, updatePhoto);
+				public void onUploadDone(int responseCode, String message) {
+					if(responseCode==UploadImageUtil.UPLOAD_SUCCESS_CODE){
+						Gson gson=new Gson();
+						RspUpdatePhoto photo=gson.fromJson(message, RspUpdatePhoto.class);
+						dataNotify(EBikeRequestService.ID_PHOTO, photo);
+					}else{
+						dataNotify(ID_REQUEST_ERROR, null);
+					}
 				}
-			},"login_bg", file, ebReq.getReqeustParam());
-			VolleyRequestQueue.getInstance(context).addToRequestQueue(request);
+				
+				@Override
+				public void initUpload(int fileSize) {
+					
+				}
+
+			});
+			UploadImageUtil.getInstance().uploadFile(file, "file", ebReq.getReqeustURL(), ebReq.getReqeustParam());
 		}else{
 			LogUtils.e(TAG, "文件不存在");
 		}

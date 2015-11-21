@@ -1,6 +1,7 @@
 package com.freway.ebike.bluetooth;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Random;
 
@@ -195,7 +196,7 @@ public class EBikeTravelData implements Serializable {
 	private float cal_startCadence;
 	private float cal_tempCadence;
 	private float cal_endCadence;
-	private float cal_recordCadence;
+	private float cal_recordCadence;//记录的总踏频量
 	private boolean isNewTravel = true;
 	private Context context;
 	private static EBikeTravelData mEBikeTravelData;
@@ -206,6 +207,7 @@ public class EBikeTravelData implements Serializable {
 	//存储连续速度为0的点，每一秒存一个，如果连续为0的点超过5个就暂停骑行。
 	private static final int MAX_LIMIT_ZERO_SPEED=5;
 	private int zeroSpeed=0;
+	private NetUtil netUtil;
 	private EBikeTravelData(Context context) {
 		this.context = context;
 	}
@@ -278,7 +280,7 @@ public class EBikeTravelData implements Serializable {
 			travel.setSync(0);
 			travel.setAltitude(altitude);
 			travel.setAvgSpeed(avgSpeed);
-			travel.setCadence(cadence);
+			travel.setCadence(cal_recordCadence);
 			travel.setCalorie(calorie);
 			travel.setDistance(distance);
 			travel.setEndTime(endTime);
@@ -286,7 +288,10 @@ public class EBikeTravelData implements Serializable {
 			travel.setSpendTime(spendTime);
 			travel.setStartTime(startTime);
 			DBHelper.getInstance(context).updateTravel(travel);// 更新
-			NetUtil.getInstance(context).uploadLocalRecord();// 更新数据后，上传
+			if(netUtil==null){
+				netUtil=new NetUtil(context);
+			}
+			netUtil.uploadLocalRecord();// 更新数据后，上传
 		}
 	}
 
@@ -394,6 +399,7 @@ public class EBikeTravelData implements Serializable {
 			distance += (cal_endDistance - cal_startDistance);// 距离
 			avgSpeed = distance / (spendTime / 1000) * 60 * 60;// 平均 km/h
 			calorie += (cal_endCalorie - cal_startCalorie);// 卡路里
+			System.out.println("卡路里总的＝"+calorie);
 			cal_recordCadence += (cal_endCadence - cal_startCadence);// 踏频
 			altitude += altitude;// 海拔
 			cadence = cal_recordCadence / (spendTime / 1000) * 60f;// 每分钟踏频量
@@ -403,7 +409,7 @@ public class EBikeTravelData implements Serializable {
 			cal_startCalorie = cal_tempCalorie;
 			cal_startCadence = cal_endCadence;
 			formatFloat2OneAccuracy();
-			if (spendTime != 0 && spendTime % (RECORD_TIME_FRE * 1000) == 0) {// 每百秒存储一个速度
+			if (spendTime != 0 && (spendTime % (RECORD_TIME_FRE * 1000))== 0) {// 每百秒存储一个速度
 				TravelSpeed travelSpeed = new TravelSpeed();
 				travelSpeed.setTravelId(travelId);
 				travelSpeed.setSpeed(avgSpeed);
@@ -419,7 +425,7 @@ public class EBikeTravelData implements Serializable {
 		avgSpeed = CommonUtil.formatFloatAccuracy(avgSpeed, 1);
 		distance = CommonUtil.formatFloatAccuracy(distance, 3);
 		cadence = CommonUtil.formatFloatAccuracy(cadence, 0);
-		calorie = CommonUtil.formatFloatAccuracy(calorie, 0);
+		calorie = CommonUtil.formatFloatAccuracy(calorie, 3);
 	}
 
 	public String getControlValueText() {
@@ -460,7 +466,7 @@ public class EBikeTravelData implements Serializable {
 		}
 		cal_tempCadence = r.nextInt(3) + 1 + cal_startCadence;// 一次n圈
 		cal_tempDistance = (r.nextInt(5) + 1) / 1000f + cal_startDistance;// km
-		cal_tempCalorie = cal_tempCadence / 10 * WHEEL_VALUE * 655 / 21000000f;// k
+		cal_tempCalorie = cal_tempCadence / 10 * WHEEL_VALUE * 655 / 21000000f;// cal
 
 	}
 

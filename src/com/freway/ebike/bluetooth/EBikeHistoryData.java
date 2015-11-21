@@ -75,6 +75,7 @@ public class EBikeHistoryData implements Serializable {
 	private long cal_endCadence;
 	private boolean isNewTravel = true;
 	private Context context;
+	private NetUtil netUtil;
 	private static EBikeHistoryData mEBikeTravelData;
 
 	private EBikeHistoryData(Context context) {
@@ -171,7 +172,10 @@ public class EBikeHistoryData implements Serializable {
 				travel.setMaxSpeed(maxSpeed);
 				travel.setSpendTime(spendTime);
 				DBHelper.getInstance(context).updateTravel(travel);
-				NetUtil.getInstance(context).uploadLocalRecord();//插入数据后，上传
+				if(netUtil==null){
+					netUtil=new NetUtil(context);
+				}
+				netUtil.uploadLocalRecord();//插入数据后，上传
 				}
 			}
 		} else {

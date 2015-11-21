@@ -48,8 +48,8 @@ public class TestActivity extends BaseActivity {
 			RspLogin login=(RspLogin) obj;
 			if(login!=null){
 				SPUtils.setToken(getApplicationContext(), login.getData().getToken());
-				SPUtils.setUsername(getApplicationContext(),"123");
-				SPUtils.setPassword(getApplicationContext(),"123");
+				SPUtils.setUsername(getApplicationContext(),"nnnnnn");
+				SPUtils.setPassword(getApplicationContext(),"111111");
 			}
 			messageTv.setText(login.getText());
 			ToastUtils.toast(getApplicationContext(), "登录成功");
@@ -84,7 +84,7 @@ public class TestActivity extends BaseActivity {
 	}
 
 	public void onLogin(View view) {
-		mEBikeRequestService.login(username, password);
+		mEBikeRequestService.login("nnnnnn", "111111");
 	}
 	
 	public void onThirdLogin(View view) {
@@ -104,11 +104,13 @@ public class TestActivity extends BaseActivity {
 	}
 	
 	public void onUpLoadPhoto(View view){
-		String photoPath=Environment.getExternalStorageDirectory().getAbsolutePath()+"/login_bg.png";
+		String photoPath=Environment.getExternalStorageDirectory().getAbsolutePath()+"/qq.png";
 		File file=new File(photoPath);
+		//s1ucl1KehmpwhZJYqJydnlhtW5NiZZhdamNma5dTZJhybWVtYZWGtg==
+		System.out.println("token="+SPUtils.getToken(this));
 		if(file.exists()){
 			System.out.println("找到 图片了");
-			mEBikeRequestService.updatePhoto("s1ucl1KehmpthZJYqJydnlhtW5NiZZhdamNmap1TZJNyaWxtYJeGtg==", photoPath);
+			mEBikeRequestService.updatePhoto(SPUtils.getToken(this), photoPath);
 		}else{
 			System.out.println("文件不存在");
 		}

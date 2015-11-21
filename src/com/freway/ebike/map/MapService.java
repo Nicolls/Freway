@@ -59,7 +59,7 @@ public class MapService extends Service implements ConnectionCallbacks,
 			.setFastestInterval(16) // 16ms = 60fps
 			.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 	private GoogleApiClient mGoogleApiClient;
-	private static final float RECORD_MIN_DISTANCE = 0;// 达到记录的最短距离2米
+	private static final float RECORD_MIN_DISTANCE = 2;// 达到记录的最短距离2米
 	private TravelLocation fromLocation;// 开始画位置
 	private TravelLocation toLocation;// 结束画位置
 	private boolean isRecord = false;

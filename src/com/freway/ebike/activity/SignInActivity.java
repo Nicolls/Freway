@@ -75,6 +75,8 @@ public class SignInActivity extends BaseActivity {
 	}
 	/**初始化数据*/
 	private void initData(){
+		mEtEmail.setText(SPUtils.getUsername(this));
+		mEtEmail.setText(SPUtils.getPassword(this));
 		if(!TextUtils.isEmpty(SPUtils.getToken(this))){//token不为空、直接进入应用
 			openActivity(HomeActivity.class, null, true);
 		}

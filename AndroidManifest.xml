@@ -57,18 +57,22 @@
         <activity
             android:name="com.freway.ebike.activity.SignInActivity"
             android:label="@string/app_name" >
-            <intent-filter>
+           <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-                <!-- 第三方Twitter 当浏览器返回时可以打开这个Activity用于登录-->
-                <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.APP_BROWSER"/>
-                <data android:scheme="http" android:host="@string/call_back_url"/>
             </intent-filter>
-            </intent-filter>
+           <!--  第三方Twitter 当浏览器返回时可以打开这个Activity用于登录 -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.APP_BROWSER" />
+
+                <data
+                    android:host="@string/call_back_url"
+                    android:scheme="http" />
+            </intent-filter> 
         </activity>
         <activity android:name="com.freway.ebike.activity.SignUpActivity" >
         </activity>
@@ -83,17 +87,16 @@
         <activity
             android:name="com.freway.ebike.activity.TestActivity"
             android:label="@string/app_name" >
-
-            
-          <!--   <intent-filter>
+           <!--  <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter> -->
-            
-
         </activity>
-        <activity android:name="com.freway.ebike.bluetooth.BLEScanConnectActivity" android:launchMode="singleTask" android:theme="@style/DialogNoTitleNoActionBar">
+        <activity
+            android:name="com.freway.ebike.bluetooth.BLEScanConnectActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/DialogNoTitleNoActionBar" >
 
             <!--
             <intent-filter>
@@ -107,39 +110,47 @@
             android:name="com.freway.ebike.activity.FrewayMapActivity"
             android:label="map"
             android:screenOrientation="portrait" >
-           <!--  <intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter> -->
+            </intent-filter>
+            -->
         </activity>
         <activity android:name="com.freway.ebike.map.FrewayHistoryMapActivity" >
         </activity>
         <!-- 第三方Twitter -->
-         <activity 
+        <activity
             android:name="com.freway.ebike.twitter.TwitterWebActivity"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait" >
         </activity>
-		<!-- 第三方facebook -->
-		 <activity android:name="com.facebook.FacebookActivity"
-                  android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
-                  android:label="@string/app_name" />
-		 <!-- company_key: 1668278680085158 mac_key:748116458653988-->
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/app_id"/>
-        <meta-data android:name="com.facebook.sdk.ApplicationName"
-                   android:value="@string/app_name" />
-        <provider android:authorities="com.facebook.app.FacebookContentProvider"
-                  android:name="com.facebook.FacebookContentProvider"
-                  android:exported="true"/>
-        <receiver android:name="com.freway.ebike.facebook.FrewayFacebookBroadcastReceiver">
+        <!-- 第三方facebook -->
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- company_key: 1668278680085158 mac_key:748116458653988 -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/app_id" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationName"
+            android:value="@string/app_name" />
+
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider"
+            android:exported="true" />
+
+        <receiver android:name="com.freway.ebike.facebook.FrewayFacebookBroadcastReceiver" >
             <intent-filter>
                 <action android:name="com.facebook.platform.AppCallResultBroadcast" />
             </intent-filter>
         </receiver>
-		
-		
+
         <!-- 服务 -->
         <service
             android:name="com.freway.ebike.service.UpdateAPPService"
@@ -149,16 +160,16 @@
             </intent-filter>
         </service>
         <service
-            android:permission="com.freway.ebike.map.MapService.FREWAY_MAP"
             android:name="com.freway.ebike.map.MapService"
+            android:enabled="true"
             android:exported="true"
-            android:enabled="true" />
+            android:permission="com.freway.ebike.map.MapService.FREWAY_MAP" />
         <service
-            android:permission="com.freway.ebike.bluetooth.BlueToothService.FREWAY_BLUETOOTH"
             android:name="com.freway.ebike.bluetooth.BlueToothService"
+            android:enabled="true"
             android:exported="true"
-            android:enabled="true" />
+            android:permission="com.freway.ebike.bluetooth.BlueToothService.FREWAY_BLUETOOTH" />
     </application>
-<!--     keytool -exportcert -alias androiddebugkey -keystore C:\Users\Nicolls\.android\debug.keystore | openssl sha1 -binary | openssl base64
- -->
+    <!-- keytool -exportcert -alias androiddebugkey -keystore C:\Users\Nicolls\.android\debug.keystore | openssl sha1 -binary | openssl base64 -->
+
 </manifest>

@@ -5,7 +5,7 @@
 
     <!-- 第三方sdk -->
     <string name="app_id">748116458653988</string>
-	<string name="call_back_url">www.saner5.com</string>
+    <string name="call_back_url">www.saner5.com</string>
     <!-- toast提示，弹出框 -->
     <string name="not_support_bluetooth">"your phone didn't support eBike"</string>
     <string name="not_supported_ble">"your phone didn't support eBike"</string>
@@ -36,6 +36,7 @@
     <string name="ble_not_bind">eBike not bind go to bind ebike?</string>
     <string name="ble_not_connect">eBike not connect go to connect ebike?</string>
     <!-- 通用 -->
+    <string name="photo_upload_success">Photo upload success</string>
     <string name="cancel">Cancel</string>
     <string name="english">English</string>
     <string name="travel_save">save this travel?</string>

@@ -22,21 +22,16 @@ import android.text.TextUtils;
 
 public class NetUtil implements DataUpdateListener{
 
-	private static NetUtil mNetUtil;
 	private Context context;
 	private List<Travel> travelList;
 	private int index=0;
 	private EBikeRequestService mEBikeRequestService;
 	private static Gson gson=new Gson();
-	private NetUtil(Context context){
+	public NetUtil(Context context){
 		this.context=context;
-		mEBikeRequestService=EBikeRequestServiceFactory.getInstance(context);
-	}
-	public static NetUtil getInstance(Context context){
-		if(mNetUtil==null){
-			mNetUtil=new NetUtil(context);
-		}
-		return mNetUtil;
+		mEBikeRequestService = EBikeRequestServiceFactory.getInstance(context,
+				EBikeRequestServiceFactory.REQUEST_VOLLEY);
+		mEBikeRequestService.setUptateListener(this);
 	}
 	/**上传本地行程记录*/
 	public void uploadLocalRecord(){

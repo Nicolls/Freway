@@ -8,10 +8,22 @@
     android:paddingTop="@dimen/ble_connect_ll_paddingVertical"
     android:paddingBottom="@dimen/ble_connect_ll_paddingVertical" >
 
+     <ProgressBar
+            android:id="@+id/scan_progress"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            />
+    
     <TextView
         android:id="@+id/ble_tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/scan_progress"
         style="@style/BleItemText"
         android:text="ble has been lost ,and now is reconnectting" />
 

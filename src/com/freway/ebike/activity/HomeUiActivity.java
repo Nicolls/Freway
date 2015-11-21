@@ -10,6 +10,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
+
 import com.freway.ebike.R;
 import com.freway.ebike.bluetooth.BlueToothConstants;
 import com.freway.ebike.bluetooth.BlueToothService;
@@ -467,7 +469,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		altitude = CommonUtil.formatFloatAccuracy(altitude, 1);
 		distance = CommonUtil.formatFloatAccuracy(distance, 3);
 		cadence = CommonUtil.formatFloatAccuracy(cadence, 0);
-		calorie = CommonUtil.formatFloatAccuracy(calorie, 0);
+		calorie = CommonUtil.formatFloatAccuracy(calorie, 0,BigDecimal.ROUND_UP);
 		// 转换
 		altitude = altitude * 1000;// 由km->m
 		distance = distance * 1000;// 由km->m

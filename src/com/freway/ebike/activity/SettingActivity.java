@@ -390,7 +390,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			}
 			break;
 		case EBikeRequestService.ID_PHOTO:
-			
+			ToastUtils.toast(getApplicationContext(), getString(R.string.photo_upload_success));
 			break;
 		default:
 			break;
