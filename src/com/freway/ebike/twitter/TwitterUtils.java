@@ -24,7 +24,7 @@ import com.freway.ebike.utils.ToastUtils;
 public class TwitterUtils {
 
 	private static final String TAG = TwitterUtils.class.getSimpleName();
-	public static final String CALLBACK = "http://www.saner5.com"; // callback
+	public static final String CALLBACK = "http://www.ifreway.com/app/index.php"; // callback
 																	// url
 	public static final String OAUTH_VERIFIER = "oauth_verifier";
 	public static final String AUTHENTICATION_URL = "authentication_url";

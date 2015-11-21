@@ -5,7 +5,7 @@
 
     <!-- 第三方sdk -->
     <string name="app_id">748116458653988</string>
-    <string name="call_back_url">www.saner5.com</string>
+    <string name="call_back_url">www.ifreway.com/app/index.php</string>
     <!-- toast提示，弹出框 -->
     <string name="not_support_bluetooth">"your phone didn't support eBike"</string>
     <string name="not_supported_ble">"your phone didn't support eBike"</string>
