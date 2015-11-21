@@ -36,6 +36,7 @@
     <string name="ble_not_bind">eBike not bind go to bind ebike?</string>
     <string name="ble_not_connect">eBike not connect go to connect ebike?</string>
     <!-- 通用 -->
+    <string name="in_development">In development</string>
     <string name="photo_upload_success">Photo upload success</string>
     <string name="cancel">Cancel</string>
     <string name="english">English</string>

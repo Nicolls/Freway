@@ -17,6 +17,7 @@ import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.android.volley.toolbox.Volley;
 import com.freway.ebike.R;
 import com.freway.ebike.common.BaseActivity;
+import com.freway.ebike.common.EBConstant;
 import com.freway.ebike.model.RspUserInfo;
 import com.freway.ebike.net.EBikeRequestService;
 import com.freway.ebike.utils.EBkieViewUtils;
@@ -144,25 +145,25 @@ public class ProfileActivity extends BaseActivity implements OnClickListener {
 
 	public void onRecord() {
 		Intent intent = new Intent(this, WebViewActivity.class);
-		intent.putExtra("url", "http://www.ifreway.com/app/index.php/history/");
+		intent.putExtra("url", EBConstant.HTML5_URL_RECORDS);
 		startActivity(intent);
 	}
 
 	public void onGrade() {
 		Intent intent = new Intent(this, WebViewActivity.class);
-		intent.putExtra("url", "http://www.ifreway.com/app/index.php/grades/");
+		intent.putExtra("url", EBConstant.HTML5_URL_GRADES);
 		startActivity(intent);
 	}
 
 	public void onNews() {
 		Intent intent = new Intent(this, WebViewActivity.class);
-		intent.putExtra("url", "http://www.ifreway.com/app/index.php/news/");
+		intent.putExtra("url", EBConstant.HTML5_URL_NEWS);
 		startActivity(intent);
 	}
 
 	public void onTutorial() {
 		Intent intent = new Intent(this, WebViewActivity.class);
-		intent.putExtra("url", "http://www.ifreway.com/app/index.php/tutorial");
+		intent.putExtra("url", EBConstant.HTML5_URL_TUTORIAL);
 		startActivity(intent);
 	}
 
