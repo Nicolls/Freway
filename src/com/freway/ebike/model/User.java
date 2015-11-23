@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
+	public static final String GENDER_MALE = "male";
+	public static final String GENDER_FEMALE = "female";
 	/**
 	 * @Fields userid 用户ID只有第三方才存在
 	 * */
@@ -18,12 +20,16 @@ public class User implements Serializable{
 	 */
 	private String username;
 	/**
-	 * @Fields gender 性别
+	 * @Fields password 密码
+	 */
+	private String password;
+	/**
+	 * @Fields gender 性别 可为空 性别 female 或male
 	 */
 	private String gender;
 	
 	/**
-	 * @Fields birthday 生日
+	 * @Fields birthday 生日 可为空  如 1988-10-12
 	 */
 	private String birthday;
 	
@@ -48,10 +54,10 @@ public class User implements Serializable{
 	 * 年龄
 	 */
 	private String age;
-	/**总里程*/
-	private String total_miles;
-	/**总时间*/
-	private String total_hour;
+	/**总里程，单位km*/
+	private String total_distance="0";
+	/**总时间，单位秒*/
+	private String total_time="0";
 	public String getUsername() {
 		return username;
 	}
@@ -88,18 +94,6 @@ public class User implements Serializable{
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
-	public String getTotal_miles() {
-		return total_miles;
-	}
-	public void setTotal_miles(String total_miles) {
-		this.total_miles = total_miles;
-	}
-	public String getTotal_hour() {
-		return total_hour;
-	}
-	public void setTotal_hour(String total_hour) {
-		this.total_hour = total_hour;
-	}
 	public String getHeight() {
 		return height;
 	}
@@ -117,5 +111,23 @@ public class User implements Serializable{
 	}
 	public void setAge(String age) {
 		this.age = age;
+	}
+	public String getTotal_distance() {
+		return total_distance;
+	}
+	public void setTotal_distance(String total_distance) {
+		this.total_distance = total_distance;
+	}
+	public String getTotal_time() {
+		return total_time;
+	}
+	public void setTotal_time(String total_time) {
+		this.total_time = total_time;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 }

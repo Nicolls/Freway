@@ -59,11 +59,11 @@ public interface EBikeRequestService {
 	void setUptateListener(DataUpdateListener dataUpdateListener);
 
 	/**
-	 * @param username 用户名
+	 * @param email 用户邮箱
 	 * @param password 密码
 	 * @Description 用户在APP上填写写户名密码登录时使用该接口
 	 */
-	void login(String username,String password);
+	void login(String email,String password);
 	/**
 	 * @param email 邮箱
 	 * @param username 用户名

@@ -1,27 +1,23 @@
 package com.freway.ebike.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.LruCache;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.ImageLoader.ImageCache;
-import com.android.volley.toolbox.ImageLoader.ImageListener;
-import com.android.volley.toolbox.Volley;
 import com.freway.ebike.R;
 import com.freway.ebike.common.BaseActivity;
 import com.freway.ebike.common.EBConstant;
 import com.freway.ebike.model.RspUserInfo;
+import com.freway.ebike.model.User;
 import com.freway.ebike.net.EBikeRequestService;
+import com.freway.ebike.utils.CommonUtil;
 import com.freway.ebike.utils.EBkieViewUtils;
 import com.freway.ebike.utils.FontUtil;
+import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.SPUtils;
 import com.freway.ebike.view.HeadPicView;
 
@@ -45,8 +41,8 @@ public class ProfileActivity extends BaseActivity implements OnClickListener {
 	private TextView gradesTv;
 	private TextView newsTv;
 	private TextView tutorialTv;
-	private HeadPicView headPicView;
-	
+	private HeadPicView mHeadView;
+	private User user;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -77,7 +73,7 @@ public class ProfileActivity extends BaseActivity implements OnClickListener {
 		gradesTv=(TextView) findViewById(R.id.profile_tv_grades);
 		newsTv=(TextView) findViewById(R.id.profile_tv_news);
 		tutorialTv=(TextView) findViewById(R.id.profile_tv_tutorial);
-		headPicView=(HeadPicView) findViewById(R.id.profile_head_view);
+		mHeadView=(HeadPicView) findViewById(R.id.profile_head_view);
 	}
 	
 	/** 设置字体风格 */
@@ -106,13 +102,32 @@ public class ProfileActivity extends BaseActivity implements OnClickListener {
 
 	private void initData() {
 		titleTv.setText(getString(R.string.profile));
-		nameTv.setText(SPUtils.getUsername(this));
-		mileageValueTv.setText(0+"");
-		timeValueTv.setText(0+"");
 		rightButton.setText("");
 		rightButton.setVisibility(View.GONE);
 		iconButton.setImageResource(R.drawable.icon_settings);
+		user=SPUtils.getUser(this);
+		initProfile(user);
 		mEBikeRequestService.userInfo(SPUtils.getToken(this));
+	}
+	//更新profile
+	private void initProfile(User user){
+		nameTv.setText(user.getUsername());
+		if(TextUtils.equals(user.getGender(), User.GENDER_FEMALE)){//女
+			genderImage.setImageResource(R.drawable.profile_icon_woman);
+		}else{//男
+			genderImage.setImageResource(R.drawable.profile_icon_man);
+		}
+		if(TextUtils.isEmpty(user.getPhoto())){
+			EBkieViewUtils.displayPhoto(this, mHeadView, user.getPhoto());
+		}
+		try {
+			float distance=Float.parseFloat(user.getTotal_distance());//km
+			float time=Float.parseFloat(user.getTotal_time());//秒
+			mileageValueTv.setText((int)CommonUtil.formatFloatAccuracy(distance*1000, 0)+"");
+			timeValueTv.setText((int)CommonUtil.formatFloatAccuracy(time/3600,1)+"");
+		} catch (Exception e) {
+			LogUtils.e(tag, "parsefloat error");
+		}
 	}
 
 	@Override
@@ -175,11 +190,10 @@ public class ProfileActivity extends BaseActivity implements OnClickListener {
 	public void dateUpdate(int id, Object obj) {
 		if(id==EBikeRequestService.ID_USERINFO){
 			RspUserInfo info=(RspUserInfo) obj;
-			if(!TextUtils.isEmpty(info.getData().getPhoto())){
-				EBkieViewUtils.displayPhoto(this, headPicView, info.getData().getPhoto());
+			if(info!=null&&info.getData()!=null){
+				user=CommonUtil.updateUserProfile(this,info.getData());
+				initProfile(user);
 			}
-			mileageValueTv.setText(info.getData().getTotal_miles());
-			timeValueTv.setText(info.getData().getTotal_hour());
 		}
 	}
 }

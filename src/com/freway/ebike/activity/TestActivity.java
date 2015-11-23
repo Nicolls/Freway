@@ -13,6 +13,7 @@ import com.freway.ebike.model.RspLogin;
 import com.freway.ebike.model.RspRegister;
 import com.freway.ebike.model.RspUpdateUserInfo;
 import com.freway.ebike.model.RspUserInfo;
+import com.freway.ebike.model.User;
 import com.freway.ebike.net.EBikeRequestService;
 import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.SPUtils;
@@ -38,8 +39,10 @@ public class TestActivity extends BaseActivity {
 		case EBikeRequestService.ID_REGISTER:
 			RspRegister rsp=(RspRegister) obj;
 			if(rsp!=null){
-				SPUtils.setUsername(getApplicationContext(),username);
-				SPUtils.setPassword(getApplicationContext(),password);
+				User user=new User();
+				user.setUsername(username);
+				user.setPassword(password);
+				SPUtils.setUser(getApplicationContext(), user);
 			}
 			messageTv.setText(rsp.getText());
 			ToastUtils.toast(getApplicationContext(), "注册成功");
@@ -48,8 +51,10 @@ public class TestActivity extends BaseActivity {
 			RspLogin login=(RspLogin) obj;
 			if(login!=null){
 				SPUtils.setToken(getApplicationContext(), login.getData().getToken());
-				SPUtils.setUsername(getApplicationContext(),"nnnnnn");
-				SPUtils.setPassword(getApplicationContext(),"111111");
+				User user=new User();
+				user.setUsername(username);
+				user.setPassword(password);
+				SPUtils.setUser(getApplicationContext(), user);
 			}
 			messageTv.setText(login.getText());
 			ToastUtils.toast(getApplicationContext(), "登录成功");

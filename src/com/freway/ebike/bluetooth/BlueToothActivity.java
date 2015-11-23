@@ -44,6 +44,7 @@ public class BlueToothActivity extends BaseActivity {
 	private EditText etSend;
 	private TextView tvSend;
 	private TextView tvReceive;
+	private TextView tvReceiveFormat;
 	private ListView listView;
 	private BleScanAdapter adapter;
 	private List<BluetoothDevice> data = new ArrayList<BluetoothDevice>();
@@ -63,6 +64,7 @@ public class BlueToothActivity extends BaseActivity {
 		etSend=(EditText) findViewById(R.id.ble_et_send);
 		tvSend=(TextView) findViewById(R.id.ble_tv_send);
 		tvReceive=(TextView) findViewById(R.id.ble_tv_receive);
+		tvReceiveFormat=(TextView) findViewById(R.id.ble_tv_receive_format);
 		listView=(ListView) findViewById(R.id.ble_listview);
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -145,13 +147,19 @@ public class BlueToothActivity extends BaseActivity {
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
+			ProtocolByteHandler.parseData(BlueToothActivity.this, ProtocolByteHandler.packData);
 			tvReceive.setText("收到的数据："+ProtocolTool.bytesToHexString(ProtocolByteHandler.packData));
+			tvReceiveFormat.setText("格式化收到的数据："+EBikeTravelData.getInstance(BlueToothActivity.this).getControlValueText());
 		}
 		
 	};
 	
-	public void onClear(View view){
+	public void onClearReceive(View view){
 		tvReceive.setText("收到的数据：");
+	}
+	
+	public void onClearFormat(View view){
+		tvReceiveFormat.setText("格式化收到的数据：");
 	}
 	
 	public void onCreateData(View view){//生成发送的数据

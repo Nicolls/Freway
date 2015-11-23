@@ -467,7 +467,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		float distance = EBikeTravelData.getInstance(this).distance;
 		float calorie = EBikeTravelData.getInstance(this).calorie;
 		float cadence = EBikeTravelData.getInstance(this).cadence;
-		String spendTime = TimeUtils.formatTimeMillisToHMS(EBikeTravelData.getInstance(this).spendTime) + "";
+		String spendTime = TimeUtils.formatTimeSSToHMS(EBikeTravelData.getInstance(this).spendTime) + "";
 		if (distanUnit == EBConstant.DISTANCE_UNIT_MPH) {
 			speed = speed / 1.6f;
 			avgSpeed = avgSpeed / 1.6f;

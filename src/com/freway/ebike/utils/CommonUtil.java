@@ -9,13 +9,14 @@ import java.math.BigDecimal;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.telephony.TelephonyManager;
+
+import com.freway.ebike.model.User;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 /**
  * APP通用工具类
@@ -149,4 +150,20 @@ public class CommonUtil {
 		return buf;
 	}
 
+	/**更新User从服务器返回的值*/
+	public static User updateUserProfile(Context context,User user){
+		User localUser=SPUtils.getUser(context);
+		localUser.setAge(user.getAge());
+		localUser.setUsername(user.getUsername());
+		localUser.setBirthday(user.getBirthday());
+		localUser.setGender(user.getGender());
+		localUser.setHeight(user.getHeight());
+		localUser.setWeight(user.getWeight());
+		localUser.setPhoto(user.getPhoto());
+		localUser.setEmail(user.getEmail());
+		localUser.setTotal_distance(user.getTotal_distance());
+		localUser.setTotal_time(user.getTotal_time());
+		SPUtils.setUser(context, localUser);
+		return localUser;
+	}
 }

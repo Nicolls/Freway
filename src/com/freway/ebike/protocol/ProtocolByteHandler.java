@@ -1,11 +1,10 @@
 package com.freway.ebike.protocol;
 import java.util.HashMap;
 
-import com.freway.ebike.bluetooth.EBikeHistoryData;
+import android.content.Context;
+
 import com.freway.ebike.bluetooth.EBikeTravelData;
 import com.freway.ebike.utils.LogUtils;
-
-import android.content.Context;
 
 /**
  * @author Nicolls
@@ -78,7 +77,7 @@ public class ProtocolByteHandler {
 				EBikeTravelData.getInstance(context).parseBikeData(data);
 				map.put(EXTRA_DATA, null);
 			}else if(CommandCode.HISTORY==cmd){//历史数据
-				EBikeHistoryData.getInstance(context).parseHistoryData(data);
+				EBikeTravelData.getInstance(context).parseHistoryData(data);
 			}
 		}
 		return map;

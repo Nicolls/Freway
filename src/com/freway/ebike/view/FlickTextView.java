@@ -17,10 +17,10 @@
 package com.freway.ebike.view;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.TextView;
 
 /**
@@ -29,8 +29,8 @@ import android.widget.TextView;
  * 
  */
 public class FlickTextView extends TextView {
-	private static final int FLICK_TIME=600;//闪烁文字的间隔时间毫秒
-	private boolean isShow=false;
+	private Animation animation;
+
 	public FlickTextView(Context context) {
 		super(context);
 	}
@@ -42,35 +42,23 @@ public class FlickTextView extends TextView {
 	public FlickTextView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
-	
-	public void showTip(String title){
-		setText(title+"");
-		if(!isShow){
-			isShow=true;
-			setVisibility(View.VISIBLE);
-			handler.sendEmptyMessage(1);
+
+	public void showTip(String title) {
+		setVisibility(View.VISIBLE);
+		if (animation == null) {
+			animation = new AlphaAnimation(1, 0);
+			animation.setDuration(400);
+			animation.setRepeatCount(Animation.INFINITE);
+			animation.setRepeatMode(Animation.REVERSE);
+
 		}
+		setText(title + "");
+		clearAnimation();
+		startAnimation(animation);
 	}
-	public void hideTip(){
-		isShow=false;
+
+	public void hideTip() {
+		clearAnimation();
 		setVisibility(View.GONE);
 	}
-	
-	private Handler handler=new Handler(){
-
-		@Override
-		public void handleMessage(Message msg) {
-			super.handleMessage(msg);
-			if(isShow){
-				if(msg.what==1){//visble
-					setVisibility(View.VISIBLE);
-					sendEmptyMessageDelayed(0, FLICK_TIME);
-				}else{//invisible
-					setVisibility(View.INVISIBLE);
-					sendEmptyMessageDelayed(1, FLICK_TIME);
-				}
-			}
-		}
-		
-	};
 }

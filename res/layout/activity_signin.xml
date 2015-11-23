@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/sign_et_pic_email"
             android:drawableStart="@drawable/sign_et_pic_email"
-            android:hint="@string/username"
+            android:hint="@string/email"
             style="@style/SignInput"
             />
 

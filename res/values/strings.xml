@@ -26,6 +26,7 @@
     <string name="confirm_password_not_match">Confirm password not match</string>
     <string name="email_can_not_be_null">Email can not be null</string>
     <string name="username_can_not_be_null">Username can not be null</string>
+    <string name="username_at_least_4_characters">Username at least 4 characters</string>
     <string name="password_can_not_be_null">Password can not be null</string>
     <string name="confirm_password_can_not_be_null">Confirm password can not be null</string>
     <!-- ble -->

@@ -661,7 +661,7 @@ public class BlueToothService extends BaseService {
 				// state, false, mStateReceiver);
 				return;
 			} else {// 先发一个回头祯和一个数据
-				EBikeHistoryData.getInstance(BlueToothService.this).start();
+				EBikeTravelData.getInstance(BlueToothService.this).start(0,TravelConstant.TRAVEL_TYPE_HISTORY);
 				sendData(CommandCode.HISTORY,
 						new byte[] { EBikeHistoryStatus.setBikeStatus(
 								EBikeHistoryStatus.DATA_INDEX, 0) });// 从头
@@ -685,7 +685,7 @@ public class BlueToothService extends BaseService {
 						+ " 格式化8位是："
 						+ ProtocolTool.byteToBitString(new byte[] { EBikeHistoryStatus
 								.getBikeStatus() }));
-				if (EBikeHistoryData.dataId>0) {//没发完
+				if (EBikeTravelData.dataId>0) {//没发完
 					LogUtils.i(tag, "记录没有读取完");
 					sendData(CommandCode.HISTORY,
 							new byte[] { EBikeHistoryStatus.setBikeStatus(

@@ -34,10 +34,6 @@ public class SPUtils {
 	
 	// 用户相关
 	public static final String SP_USER = "SP_USER";
-	public static final String SP_USER_EMAIL = "SP_USER_EMAIL";
-	public static final String SP_USER_USERID = "SP_USER_USERID";
-	public static final String SP_USER_USERNAME = "SP_USER_USERNAME";
-	public static final String SP_USER_PASSWORD = "SP_USER_PASSWORD";
 	public static final String SP_USER_AUTO_LOGIN = "SP_USER_AUTO_LOGIN";
 	public static final String SP_USER_SAFE_CODE = "SP_USER_SAFE_CODE";
 	public static final String SP_USER_SAFE_CODE_SWITCH = "SP_USER_SAFE_CODE_SWITCH";
@@ -46,69 +42,10 @@ public class SPUtils {
 
 	public static final String SP_USER_SIGNIN_TYPE = "SP_USER_SIGNIN_TYPE";
 	public static final String SP_USER_UI_MODEL = "SP_USER_UI_MODEL";
-	public static final String SP_USER_PROFILE = "SP_USER_PROFILE";
+	public static final String SP_USER_DATA = "SP_USER_DATA";
 	public static final String SP_USER_UNIT_OF_DISTANCE = "SP_USER_UNIT_OF_DISTANCE";
 	public static final String SP_USER_TRAVEL_MAP = "SP_USER_TRAVEL_MAP";//地图行程数据
 
-	/** 获取登录邮箱 */
-	public static String getEmail(Context context) {
-		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
-		String email = sp.getString(SP_USER_EMAIL, "");
-		return email;
-	}
-
-	/** 设置登录邮箱 */
-	public static boolean setEmail(Context context, String email) {
-		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
-		boolean isOk = sp.edit().putString(SP_USER_EMAIL, email).commit();
-		return isOk;
-	}
-	
-	/** 获取登录用户ID */
-	public static String getUserId(Context context) {
-		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
-		String userId = sp.getString(SP_USER_USERID, "");
-		return userId;
-	}
-
-	/** 设置登录用户ID */
-	public static boolean setUserIde(Context context, String userId) {
-		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
-		boolean isOk = sp.edit().putString(SP_USER_USERID, userId).commit();
-		return isOk;
-	}
-	
-	/** 获取登录用户名 */
-	public static String getUsername(Context context) {
-		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
-		String name = sp.getString(SP_USER_USERNAME, "");
-		return name;
-	}
-
-	/** 设置登录用户名 */
-	public static boolean setUsername(Context context, String name) {
-		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
-		boolean isOk = sp.edit().putString(SP_USER_USERNAME, name).commit();
-		return isOk;
-	}
-
-	/** 获取登录密码,解BASE64压缩 */
-	public static String getPassword(Context context) {
-		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
-		String password = sp.getString(SP_USER_PASSWORD, "");
-		if (!TextUtils.isEmpty(password)) {
-			password = EncryptUtils.decryptBase64(password);
-		}
-		return password;
-	}
-
-	/** 设置登录密码，BASE64压缩存储 */
-	public static boolean setPassword(Context context, String password) {
-		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
-		boolean isOk = sp.edit().putString(SP_USER_PASSWORD, EncryptUtils.encryptBase64(password))
-				.commit();
-		return isOk;
-	}
 
 	/** 获取服务器地址 */
 	public static String getServerHost(Context context) {
@@ -309,10 +246,11 @@ public class SPUtils {
 		return isOk;
 	}
 	
-	/** 获取UserProfile */
-	public static User getUserProfile(Context context) {
+	/** 获取User */
+	public static User getUser(Context context) {
 		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
-		String data = sp.getString(SP_USER_PROFILE, "");
+		String data = sp.getString(SP_USER_DATA, "");
+		data=EncryptUtils.decryptBase64(data);
 		User user=new User();
 		if(!TextUtils.isEmpty(data)){
 			Gson gson=new Gson();
@@ -321,12 +259,13 @@ public class SPUtils {
 		return user;
 	}
 
-	/** 保存UserProfile */
-	public static boolean setUserProfile(Context context, User user) {
+	/** 保存User Base64压缩*/
+	public static boolean setUser(Context context, User user) {
 		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
 		Gson gson=new Gson();
 		String data=gson.toJson(user);
-		boolean isOk = sp.edit().putString(SP_USER_PROFILE, data).commit();
+		data=EncryptUtils.encryptBase64(data);
+		boolean isOk = sp.edit().putString(SP_USER_DATA, data).commit();
 		return isOk;
 	}
 	

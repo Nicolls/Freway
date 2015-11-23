@@ -27,6 +27,7 @@ import com.freway.ebike.service.UpdateAPPService;
 import com.freway.ebike.service.UpdateAPPService.UpdateAppListener;
 import com.freway.ebike.utils.AlertUtil;
 import com.freway.ebike.utils.CommonUtil;
+import com.freway.ebike.utils.EBikeActivityManager;
 import com.freway.ebike.utils.EBkieViewUtils;
 import com.freway.ebike.utils.FontUtil;
 import com.freway.ebike.utils.LogUtils;
@@ -35,10 +36,6 @@ import com.freway.ebike.utils.ToastUtils;
 import com.freway.ebike.view.HeadPicView;
 
 public class SettingActivity extends BaseActivity implements OnClickListener, UpdateAppListener, CropHandler {
-
-	private static final String GENDER_MAN = "man";
-	private static final String GENDER_WOMEN = "women";
-
 	private ImageView iconButton;
 	private ImageView leftButton;
 	private TextView rightButton;
@@ -169,9 +166,10 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 		iconButton.setVisibility(View.GONE);
 		titleTv.setText(getString(R.string.settings) + "");
 		rightButton.setText(getString(R.string.edit) + "");
-		user = SPUtils.getUserProfile(this);
-		nameValue.setText(SPUtils.getUsername(this));
+		user = SPUtils.getUser(this);
+		nameValue.setText(user.getUsername());
 		updateUiUser(user);
+		showLoading(true);
 		mEBikeRequestService.userInfo(SPUtils.getToken(this));
 	}
 
@@ -179,7 +177,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 		if (user != null) {
 			nameValue.setText(user.getUsername());
 			emailValue.setText(user.getEmail());
-			if (TextUtils.equals(GENDER_MAN, user.getGender())) {// 男
+			if (TextUtils.equals(User.GENDER_FEMALE, user.getGender())) {//女
 				genderView.setSelected(true);
 			} else {
 				genderView.setSelected(false);
@@ -188,7 +186,9 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			heightValue.setText(user.getHeight());
 			weightValue.setText(user.getWeight());
 			mHeadView = (HeadPicView) findViewById(R.id.profile_head_view);
-			EBkieViewUtils.displayPhoto(this, mHeadView, user.getPhoto());
+			if(!TextUtils.isEmpty(user.getPhoto())){
+				EBkieViewUtils.displayPhoto(this, mHeadView, user.getPhoto());
+			}
 			if (!TextUtils.isEmpty(SPUtils.getEBkieAddress(this))) {
 				snValue.setText(SPUtils.getEBkieName(this));
 			} else {
@@ -229,12 +229,11 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			}
 			break;
 		case R.id.setting_gender_view:
-			if (v.isSelected()) {//
-				user.setGender(GENDER_MAN);
-				v.setSelected(false);
-			} else {
-				user.setGender(GENDER_WOMEN);
-				v.setSelected(true);
+			v.setSelected(!v.isSelected());
+			if (v.isSelected()) {//女
+				user.setGender(User.GENDER_FEMALE);
+			} else {//男
+				user.setGender(User.GENDER_MALE);
 			}
 			break;
 		case R.id.profile_head_view:
@@ -312,7 +311,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 
 			break;
 		case R.id.setting_ll_exit:
-			finish();
+			EBikeActivityManager.getAppManager().reLogin(this, true);
 			break;
 		default:
 			break;
@@ -365,32 +364,35 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 		user.setHeight(height);
 		user.setWeight(weight);
 		if (genderView.isSelected()) {
-			user.setGender(GENDER_WOMEN);
+			user.setGender(User.GENDER_FEMALE);
 		} else {
-			user.setGender(GENDER_MAN);
+			user.setGender(User.GENDER_MALE);
 		}
-		SPUtils.setUserProfile(this, user);
+		SPUtils.setUser(this, user);
 		return isOk;
 	}
 
 	@Override
 	public void dateUpdate(int id, Object obj) {
+		hideLoading();
 		switch (id) {
 		case EBikeRequestService.ID_UPDATEUSERINFO:
-			SPUtils.setUserProfile(this, user);
+			SPUtils.setUser(this, user);
 			if(!TextUtils.isEmpty(photoPath)){
+				showLoading(true);
 				mEBikeRequestService.updatePhoto(SPUtils.getToken(this), photoPath);
 			}
 			break;
 		case EBikeRequestService.ID_USERINFO:
 			RspUserInfo info = (RspUserInfo) obj;
-			User user = info.getData();
-			if (user != null) {
-				updateUiUser(user);
-				SPUtils.setUserProfile(this, user);
+			if(info!=null&&info.getData()!=null){
+				user=CommonUtil.updateUserProfile(getApplicationContext(), info.getData());
 			}
+			updateUiUser(user);
 			break;
 		case EBikeRequestService.ID_PHOTO:
+			user.setPhoto(photoPath);
+			SPUtils.setUser(getApplicationContext(), user);
 			ToastUtils.toast(getApplicationContext(), getString(R.string.photo_upload_success));
 			break;
 		default:
@@ -410,7 +412,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 	@Override
 	protected void onResume() {
 		super.onResume();
-		user = SPUtils.getUserProfile(this);
+		user = SPUtils.getUser(this);
 		updateUiUser(user);
 	}
 
@@ -427,14 +429,14 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 		LogUtils.i(tag, "onPhotoCropped Uri in path: " + uri.getPath());
 		photoPath=uri.getPath();
 		if (!mCropParams.compress)
-			mHeadView.setImageBitmap(mHeadView.toRoundBitmap(BitmapUtil.decodeUriAsBitmap(this, uri)));
+			mHeadView.setImageBitmap(EBkieViewUtils.getRoundBitmap(BitmapUtil.decodeUriAsBitmap(this, uri)));
 	}
 
 	@Override
 	public void onCompressed(Uri uri) {
 		LogUtils.i(tag, "onCompressed in path: " + uri.getPath());
 		photoPath=uri.getPath();
-		mHeadView.setImageBitmap(mHeadView.toRoundBitmap(BitmapUtil.decodeUriAsBitmap(this, uri)));
+		mHeadView.setImageBitmap(EBkieViewUtils.getRoundBitmap(BitmapUtil.decodeUriAsBitmap(this, uri)));
 	}
 
 	@Override

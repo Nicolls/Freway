@@ -88,9 +88,9 @@ public class EBikeRequestServiceVolleyImpl implements EBikeRequestService {
 	}
 
 	@Override
-	public void login(String username, String password) {
+	public void login(String email, String password) {
 		EBRequest ebReq = new EBRequest(EBikeRequestService.METHOD_LOGIN);
-		ebReq.setDataParam("username", username);
+		ebReq.setDataParam("email", email);
 		ebReq.setDataParam("password", password);
 		sendRequest(ebReq, EBikeRequestService.ID_LOGIN, RspLogin.class);
 	}

@@ -64,7 +64,7 @@ public class BaseApplication extends Application{
 			Travel travel=new Travel();
 			DBHelper.getInstance(context).insertTravel(travel);
 			travelId=travel.getId();
-			EBikeTravelData.getInstance(context).start(travel.getId());
+			EBikeTravelData.getInstance(context).start(travel.getId(),TravelConstant.TRAVEL_TYPE_IM);
 			intent.putExtra(TravelConstant.EXTRA_TRAVEL_ID, travelId);
 		}else if(state == TravelConstant.TRAVEL_STATE_PAUSE){
 			EBikeTravelData.getInstance(context).pause();

@@ -32,6 +32,7 @@ public class SignInActivity extends BaseActivity {
 	private EditText mEtPassword;
 	private int signinType;
 	private TwitterUtils mTwitterUtils;
+	private User user;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -75,8 +76,9 @@ public class SignInActivity extends BaseActivity {
 	}
 	/**初始化数据*/
 	private void initData(){
-		mEtEmail.setText(SPUtils.getUsername(this));
-		mEtEmail.setText(SPUtils.getPassword(this));
+		user=SPUtils.getUser(this);
+		mEtEmail.setText(user.getEmail());
+		mEtPassword.setText(user.getPassword());
 		if(!TextUtils.isEmpty(SPUtils.getToken(this))){//token不为空、直接进入应用
 			openActivity(HomeActivity.class, null, true);
 		}
@@ -86,17 +88,17 @@ public class SignInActivity extends BaseActivity {
 		String email=mEtEmail.getText().toString();
 		String password=mEtPassword.getText().toString();
 		if(TextUtils.isEmpty(email)){
-			ToastUtils.toast(this, getString(R.string.username_can_not_be_null));
+			ToastUtils.toast(this, getString(R.string.email_can_not_be_null));
 			return;
 		}
 		if(TextUtils.isEmpty(password)){
 			ToastUtils.toast(this, getString(R.string.password_can_not_be_null));
 			return;
 		}
-//		if(!CommonUtil.isEmail(email)){
-//			ToastUtils.toast(this, getString(R.string.email_incorrect));
-//			return;
-//		}
+		if(!CommonUtil.isEmail(email)){
+			ToastUtils.toast(this, getString(R.string.email_incorrect));
+			return;
+		}
 		showLoading(true);
 		mEBikeRequestService.login(email, password);
 	}
@@ -117,9 +119,10 @@ public class SignInActivity extends BaseActivity {
 				if(msg.what!=EBConstant.STATE_LOGIN_FAIL){//没有错
 					LogUtils.i(tag, "Facebook登录成功");
 					User user=(User) msg.obj;
-					mEtEmail.setText(user.getUsername()+"");
 					LogUtils.i(tag, "Facebook用户名是："+user.getUsername()+"--photo="+user.getPhoto());
 					showLoading(true);
+					mEtEmail.setText(user.getEmail());
+					SPUtils.setUser(getApplicationContext(), user);
 					mEBikeRequestService.loginFaceBook(user.getUserid(), user.getUsername(), user.getGender(), user.getBirthday(), user.getPhoto(), user.getEmail());
 				}else{
 					ToastUtils.toast(getApplicationContext(), getString(R.string.login_failt));
@@ -143,9 +146,10 @@ public class SignInActivity extends BaseActivity {
 					if(msg.what!=EBConstant.STATE_LOGIN_FAIL){//没有错
 						LogUtils.i(tag, "Twtitter登录成功");
 						User user=(User) msg.obj;
-						mEtEmail.setText(user.getUsername()+"");
 						LogUtils.i(tag, "twitter用户名是："+user.getUsername()+"--photo="+user.getPhoto());
 						showLoading(true);
+						mEtEmail.setText(user.getEmail());
+						SPUtils.setUser(getApplicationContext(), user);
 						mEBikeRequestService.loginFaceBook(user.getUserid(), user.getUsername(), user.getGender(), user.getBirthday(), user.getPhoto(), user.getEmail());
 					}else{
 						ToastUtils.toast(getApplicationContext(), getString(R.string.login_failt));
@@ -162,6 +166,12 @@ public class SignInActivity extends BaseActivity {
 		if(obj instanceof RspLogin){
 			RspLogin rspLogin=(RspLogin) obj;
 			SPUtils.setToken(getApplicationContext(), rspLogin.getData().getToken());
+			User user=SPUtils.getUser(this);
+			String email=mEtEmail.getText().toString();
+			String password=mEtPassword.getText().toString();
+			user.setEmail(email);
+			user.setPassword(password);
+			SPUtils.setUser(this, user);
 			openActivity(HomeActivity.class, null, true);
 		}
 	}

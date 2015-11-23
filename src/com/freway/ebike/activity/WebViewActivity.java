@@ -1,22 +1,19 @@
 package com.freway.ebike.activity;
 
-import com.freway.ebike.R;
-import com.freway.ebike.common.EBConstant;
-import com.freway.ebike.utils.FontUtil;
-import com.freway.ebike.utils.ToastUtils;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
-import android.view.TextureView;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.freway.ebike.R;
+import com.freway.ebike.utils.FontUtil;
 
 public class WebViewActivity extends AppCompatActivity implements OnClickListener {
 
@@ -43,11 +40,7 @@ public class WebViewActivity extends AppCompatActivity implements OnClickListene
 		initView(webView);
 		String url=getIntent().getStringExtra("url");
 		webView.loadUrl(url);
-		if(TextUtils.equals(EBConstant.HTML5_URL_RECORDS, url)){//分享
-			iconButton.setVisibility(View.VISIBLE);
-		}else{
-			iconButton.setVisibility(View.GONE);
-		}
+		iconButton.setVisibility(View.GONE);
 	}
 	
 	private void backChange(){
@@ -63,7 +56,13 @@ public class WebViewActivity extends AppCompatActivity implements OnClickListene
 		
 		switch(v.getId()){
 		case R.id.top_bar_right_icon:
-			ToastUtils.toast(getApplicationContext(), getString(R.string.in_development));
+			v.setSelected(!v.isSelected());
+			if(v.isSelected()){
+				webView.loadUrl("javascript:showShare()");
+			}else{
+				webView.loadUrl("javascript:hideShare()");
+			}
+//			ToastUtils.toast(getApplicationContext(), getString(R.string.in_development));
 			break;
 		case R.id.top_bar_left:
 			backChange();
@@ -84,6 +83,7 @@ public class WebViewActivity extends AppCompatActivity implements OnClickListene
 		webView.getSettings().setSupportZoom(false);
 		webView.getSettings().setBuiltInZoomControls(false);
 		webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+//		webView.addJavascriptInterface(new JsInterface(), "freway");
 		webView.setWebViewClient(new WebViewClient(){
 
 			@Override
@@ -102,7 +102,17 @@ public class WebViewActivity extends AppCompatActivity implements OnClickListene
 			
 		});
 	}
+	/**
+	 * js接口回调类
+	 * */
+	class JsInterface {
 
+		@JavascriptInterface
+		public void share() {
+			//当是分享页面时，就会调用到这个方法，UI要显示分享的按钮
+			iconButton.setVisibility(View.VISIBLE);
+		}
+	}
 
 	@Override
 	public void onBackPressed() {
