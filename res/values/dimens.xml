@@ -86,7 +86,7 @@
 	<dimen name="setting_cicle_btn_marginTop">10dp</dimen>
 	<dimen name="setting_cicle_btn_marginHorizontal">5dp</dimen>
 	<dimen name="setting_cicle_btn_padding">16dp</dimen>
-    
+    <dimen name="setting_et_paddingRight">10dp</dimen>
     <!-- 上拉加载，下拉刷新 -->
     <dimen name="pull2refresh_layout_height">60dp</dimen>
     <dimen name="pull2refresh_layout_text_size">16sp</dimen>

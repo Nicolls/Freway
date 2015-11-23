@@ -103,12 +103,11 @@ public class ProfileActivity extends BaseActivity implements OnClickListener {
 	}
 
 	private void initData() {
+		mHeadView.setEnabled(true);
 		titleTv.setText(getString(R.string.profile));
 		rightButton.setText("");
 		rightButton.setVisibility(View.GONE);
 		iconButton.setImageResource(R.drawable.icon_settings);
-		user=SPUtils.getUser(this);
-		initProfile(user);
 		mEBikeRequestService.userInfo(SPUtils.getToken(this));
 	}
 	//更新profile
@@ -119,7 +118,7 @@ public class ProfileActivity extends BaseActivity implements OnClickListener {
 		}else{//男
 			genderImage.setImageResource(R.drawable.profile_icon_man);
 		}
-		if(TextUtils.isEmpty(user.getPhoto())){
+		if(!TextUtils.isEmpty(user.getPhoto())){
 			EBkieViewUtils.displayPhoto(this, mHeadView, user.getPhoto());
 		}
 		try {
@@ -130,6 +129,7 @@ public class ProfileActivity extends BaseActivity implements OnClickListener {
 		} catch (Exception e) {
 			LogUtils.e(tag, "parsefloat error");
 		}
+		
 	}
 
 	@Override
@@ -198,4 +198,15 @@ public class ProfileActivity extends BaseActivity implements OnClickListener {
 			}
 		}
 	}
+
+
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		user=SPUtils.getUser(this);
+		initProfile(user);
+	}
+	
+	
 }

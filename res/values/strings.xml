@@ -39,6 +39,7 @@
     <!-- 通用 -->
     <string name="in_development">In development</string>
     <string name="photo_upload_success">Photo upload success</string>
+    <string name="update_profile_success">Update profile success</string>
     <string name="cancel">Cancel</string>
     <string name="english">English</string>
     <string name="travel_save">save this travel?</string>

@@ -21,12 +21,12 @@ public class BitmapCache implements ImageCache {
     @Override
     public Bitmap getBitmap(String url) {
     	//得到的图片都应该是圆形
-        return EBkieViewUtils.getRoundBitmap(cache.get(url));
+        return cache.get(url);
     }
 
     @Override
     public void putBitmap(String url, Bitmap bitmap) {
     	
-        cache.put(url, EBkieViewUtils.getRoundBitmap(bitmap));
+        cache.put(url, bitmap);
     }
 }

@@ -145,6 +145,9 @@ public class EBikeRequestServiceVolleyImpl implements EBikeRequestService {
 		ebReq.setDataParam("gender", user.getGender());
 		ebReq.setDataParam("birthday", user.getBirthday());
 		ebReq.setDataParam("email", user.getEmail());
+		ebReq.setDataParam("age", user.getAge());
+		ebReq.setDataParam("weight", user.getWeight());
+		ebReq.setDataParam("height", user.getHeight());
 		sendRequest(ebReq, EBikeRequestService.ID_UPDATEUSERINFO, RspUpdateUserInfo.class);
 	}
 

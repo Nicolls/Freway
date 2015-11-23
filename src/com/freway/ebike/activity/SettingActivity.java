@@ -3,6 +3,7 @@ package com.freway.ebike.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.freway.ebike.crop.BitmapUtil;
 import com.freway.ebike.crop.CropHandler;
 import com.freway.ebike.crop.CropHelper;
 import com.freway.ebike.crop.CropParams;
+import com.freway.ebike.model.RspUpdatePhoto;
 import com.freway.ebike.model.RspUserInfo;
 import com.freway.ebike.model.User;
 import com.freway.ebike.net.EBikeRequestService;
@@ -184,7 +186,6 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			ageValue.setText(user.getAge());
 			heightValue.setText(user.getHeight());
 			weightValue.setText(user.getWeight());
-			mHeadView = (HeadPicView) findViewById(R.id.profile_head_view);
 			if(!TextUtils.isEmpty(user.getPhoto())){
 				EBkieViewUtils.displayPhoto(this, mHeadView, user.getPhoto());
 			}
@@ -277,7 +278,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 						public void onClick(View v) {
 							// mph
 							AlertUtil.getInstance(SettingActivity.this).dismiss();
-							SPUtils.setUnitOfDistance(getApplicationContext(), EBConstant.DISTANCE_UNIT_MPH);
+							SPUtils.setUnitOfDistance(SettingActivity.this, EBConstant.DISTANCE_UNIT_MPH);
 							unitDistanceValue.setText(getString(R.string.distance_unit_mph));
 						}
 					}, new OnClickListener() {
@@ -286,7 +287,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 						public void onClick(View v) {
 							// mi
 							AlertUtil.getInstance(SettingActivity.this).dismiss();
-							SPUtils.setUnitOfDistance(getApplicationContext(), EBConstant.DISTANCE_UNIT_MI);
+							SPUtils.setUnitOfDistance(SettingActivity.this, EBConstant.DISTANCE_UNIT_MI);
 							unitDistanceValue.setText(getString(R.string.distance_unit_mi));
 						}
 					});
@@ -387,19 +388,28 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			if(!TextUtils.isEmpty(photoPath)){
 				showLoading(true);
 				mEBikeRequestService.updatePhoto(SPUtils.getToken(this), photoPath);
+			}else{
+				ToastUtils.toast(SettingActivity.this, getString(R.string.update_profile_success));
 			}
 			break;
 		case EBikeRequestService.ID_USERINFO:
 			RspUserInfo info = (RspUserInfo) obj;
 			if(info!=null&&info.getData()!=null){
-				user=CommonUtil.updateUserProfile(getApplicationContext(), info.getData());
+				user=CommonUtil.updateUserProfile(SettingActivity.this, info.getData());
 			}
 			updateUiUser(user);
 			break;
 		case EBikeRequestService.ID_PHOTO:
-			user.setPhoto(photoPath);
-			SPUtils.setUser(getApplicationContext(), user);
-			ToastUtils.toast(getApplicationContext(), getString(R.string.photo_upload_success));
+			final RspUpdatePhoto rsp=(RspUpdatePhoto) obj;
+			runOnUiThread(new Runnable() {
+				
+				@Override
+				public void run() {
+					user.setPhoto(rsp.getData().getUrl());
+					SPUtils.setUser(SettingActivity.this, user);
+					ToastUtils.toast(SettingActivity.this, getString(R.string.update_profile_success));
+				}
+			});
 			break;
 		default:
 			break;
@@ -415,12 +425,6 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 		}
 	}
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		user = SPUtils.getUser(this);
-		updateUiUser(user);
-	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

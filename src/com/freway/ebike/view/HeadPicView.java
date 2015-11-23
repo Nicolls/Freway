@@ -12,12 +12,19 @@ public class HeadPicView extends ImageView{
 	public HeadPicView(Context context) {
 		super(context);
 		Bitmap bit=((BitmapDrawable)getDrawable()).getBitmap();
-		setImageBitmap(EBkieViewUtils.getRoundBitmap(bit));
+		setImageBitmap(bit);
 	}
 
 	public HeadPicView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		Bitmap bit=((BitmapDrawable)getDrawable()).getBitmap();
-		setImageBitmap(EBkieViewUtils.getRoundBitmap(bit));
+		setImageBitmap(bit);
 	}
+
+	@Override
+	public void setImageBitmap(Bitmap bm) {
+		super.setImageBitmap(EBkieViewUtils.getRoundBitmap(bm));
+	}
+	
+	
 }

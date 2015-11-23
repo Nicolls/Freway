@@ -92,7 +92,7 @@ public class UploadImageUtil {
 			uploadFile(file, fileKey, RequestURL, param);
 		} catch (Exception e) {
 			sendMessage(UPLOAD_FILE_NOT_EXISTS_CODE, "文件不存在");
-			e.printStackTrace();
+			LogUtils.e(TAG, e.getMessage());
 			return;
 		}
 	}
@@ -114,9 +114,9 @@ public class UploadImageUtil {
 			return;
 		}
 
-		Log.i(TAG, "请求的URL=" + RequestURL);
-		Log.i(TAG, "请求的fileName=" + file.getName());
-		Log.i(TAG, "请求的fileKey=" + fileKey);
+		LogUtils.i(TAG, "请求的URL=" + RequestURL);
+		LogUtils.i(TAG, "请求的fileName=" + file.getName());
+		LogUtils.i(TAG, "请求的fileKey=" + fileKey);
 		new Thread(new Runnable() { // 开启线程上传文件
 			@Override
 			public void run() {
@@ -171,7 +171,7 @@ public class UploadImageUtil {
 							.append(LINE_END);
 					sb.append(value).append(LINE_END);
 					params = sb.toString();
-					Log.i(TAG, key + "=" + params + "##");
+					LogUtils.i(TAG, key + "=" + params + "##");
 					dos.write(params.getBytes());
 					// dos.flush();
 				}
@@ -222,7 +222,7 @@ public class UploadImageUtil {
 			this.requestTime = (int) ((responseTime - requestTime) / 1000);
 			Log.e(TAG, "response code:" + res);
 			if (res == 200) {
-				Log.e(TAG, "request success");
+				LogUtils.i(TAG, "request success");
 				InputStream input = conn.getInputStream();
 				StringBuffer sb1 = new StringBuffer();
 				int ss;
@@ -230,21 +230,21 @@ public class UploadImageUtil {
 					sb1.append((char) ss);
 				}
 				result = sb1.toString();
-				Log.e(TAG, "result : " + result);
-				sendMessage(UPLOAD_SUCCESS_CODE, "上传结果：" + result);
+				LogUtils.i(TAG, "result : " + result);
+				sendMessage(UPLOAD_SUCCESS_CODE,result);
 				return;
 			} else {
-				Log.e(TAG, "request error");
+				LogUtils.e(TAG, "request error");
 				sendMessage(UPLOAD_SERVER_ERROR_CODE, "上传失败：code=" + res);
 				return;
 			}
 		} catch (MalformedURLException e) {
 			sendMessage(UPLOAD_SERVER_ERROR_CODE, "上传失败：error=" + e.getMessage());
-			e.printStackTrace();
+			LogUtils.e(TAG, e.getMessage());
 			return;
 		} catch (IOException e) {
 			sendMessage(UPLOAD_SERVER_ERROR_CODE, "上传失败：error=" + e.getMessage());
-			e.printStackTrace();
+			LogUtils.e(TAG, e.getMessage());
 			return;
 		}
 	}
