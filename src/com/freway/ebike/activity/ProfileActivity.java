@@ -1,5 +1,7 @@
 package com.freway.ebike.activity;
 
+import java.math.BigDecimal;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -124,7 +126,7 @@ public class ProfileActivity extends BaseActivity implements OnClickListener {
 			float distance=Float.parseFloat(user.getTotal_distance());//km
 			float time=Float.parseFloat(user.getTotal_time());//秒
 			mileageValueTv.setText((int)CommonUtil.formatFloatAccuracy(distance*1000, 0)+"");
-			timeValueTv.setText((int)CommonUtil.formatFloatAccuracy(time/3600,1)+"");
+			timeValueTv.setText((int)CommonUtil.formatFloatAccuracy(time/3600,0,BigDecimal.ROUND_UP)+"h");
 		} catch (Exception e) {
 			LogUtils.e(tag, "parsefloat error");
 		}

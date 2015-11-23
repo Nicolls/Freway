@@ -168,7 +168,6 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 		rightButton.setText(getString(R.string.edit) + "");
 		user = SPUtils.getUser(this);
 		nameValue.setText(user.getUsername());
-		updateUiUser(user);
 		showLoading(true);
 		mEBikeRequestService.userInfo(SPUtils.getToken(this));
 	}
@@ -330,12 +329,19 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 	}
 
 	private void setEditState(boolean isEdit) {
-		nameValue.setEnabled(isEdit);
-		nameValue.requestFocus();
-		emailValue.setEnabled(isEdit);
-		ageValue.setEnabled(isEdit);
-		heightValue.setEnabled(isEdit);
-		weightValue.setEnabled(isEdit);
+		nameValue.setFocusable(isEdit);
+		nameValue.setFocusableInTouchMode(isEdit);
+		if(isEdit){
+			nameValue.requestFocus();
+		}
+		emailValue.setFocusable(isEdit);
+		emailValue.setFocusableInTouchMode(isEdit);
+		ageValue.setFocusable(isEdit);
+		ageValue.setFocusableInTouchMode(isEdit);
+		heightValue.setFocusable(isEdit);
+		heightValue.setFocusableInTouchMode(isEdit);
+		weightValue.setFocusable(isEdit);
+		weightValue.setFocusableInTouchMode(isEdit);
 		mHeadView.setEnabled(isEdit);
 	}
 
