@@ -167,7 +167,7 @@ public class EBikeRequestServiceVolleyImpl implements EBikeRequestService {
 		ebReq.setDataParam("speedList", speedList);
 		ebReq.setDataParam("locationList", locationList);
 		ebReq.setDataParam("topSpeed", topSpeed);
-		ebReq.setDataParam("topSpeed", avgSpeed);
+		ebReq.setDataParam("avgSpeed", avgSpeed);
 		sendRequest(ebReq, EBikeRequestService.ID_UPLOADTRAVEL, RspUpLoadTravel.class);
 	}
 

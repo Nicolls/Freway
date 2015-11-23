@@ -45,7 +45,6 @@ public class HomeActivity extends HomeUiActivity implements OnClickListener {
 		@Override
 		public void handleMessage(Message msg) {
 			//更新UI
-			LogUtils.i(TAG, "update ui yes ");
 			tvMessage.setText(EBikeTravelData.getInstance(getApplicationContext()).getTravelValueText());
 			updateUiValue();
 		}
