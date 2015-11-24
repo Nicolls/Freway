@@ -6,7 +6,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import com.freway.ebike.utils.EBkieViewUtils;
+import com.freway.ebike.utils.EBikeViewUtils;
 
 public class HeadPicView extends ImageView{
 	public HeadPicView(Context context) {
@@ -23,7 +23,7 @@ public class HeadPicView extends ImageView{
 
 	@Override
 	public void setImageBitmap(Bitmap bm) {
-		super.setImageBitmap(EBkieViewUtils.getRoundBitmap(bm));
+		super.setImageBitmap(EBikeViewUtils.getRoundBitmap(bm));
 	}
 	
 	

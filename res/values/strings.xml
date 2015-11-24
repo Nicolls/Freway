@@ -13,13 +13,13 @@
     <string name="bluetooth_not_open">"Bluetooth didn't open"</string>
     <string name="bluetooth_service_init_fail">eBike initialize fail </string>
     <string name="bluetooth_service_re_init">eBike is initializing please hold on...</string>
-    <string name="request_server_error">request server exeption</string>
+    <string name="request_server_error">network abnormal</string>
     <string name="old_password_can_not_null">old password can not be null</string>
     <string name="new_password_can_not_null">new password can not be null</string>
     <string name="confirm_new_password_can_not_null">please confirm new password</string>
     <string name="old_password_enter_wrong">wrong old password</string>
     <string name="old_password_can_not_equal_new_password">confirm passoword not match</string>
-    <string name="http_request_error">request server exception</string>
+    <string name="http_request_error">network abnormal</string>
     <string name="http_request_error_relogin">request server exception re login</string>
     <string name="login_failt">login fail</string>
     <string name="email_incorrect">Email incorrect</string>

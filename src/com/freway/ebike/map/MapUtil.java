@@ -4,33 +4,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.LocationManager;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 
 import com.freway.ebike.common.BaseApplication;
 import com.freway.ebike.db.DBHelper;
 import com.freway.ebike.db.Travel;
 import com.freway.ebike.db.TravelLocation;
+import com.freway.ebike.utils.FileUtils;
 import com.freway.ebike.utils.LogUtils;
+import com.freway.ebike.utils.NetUtil;
 import com.freway.ebike.utils.ScreenUtils;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
+import com.google.android.gms.maps.GoogleMap.SnapshotReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -50,7 +49,7 @@ public class MapUtil implements OnCameraChangeListener {
 	/** 纠正角度偏差 */
 //	private static final double ANGLE_OFFSET = 0.0000007;
 	private static final double ANGLE_OFFSET = 0;
-	private final static int CAMERA_INIT_ZOOM = 17;// 初始缩放
+	private final static int CAMERA_INIT_ZOOM = 15;// 初始缩放
 	private final static int CAMERA_MAX_ZOOM = 18;// 最大缩放
 	private final static int POLY_LINE_WIDTH = 3;// 线宽
 	private GoogleMap mGoogleMap;
@@ -159,7 +158,27 @@ public class MapUtil implements OnCameraChangeListener {
 			mGoogleMap.animateCamera(update);
 		}
 	}
-
+	
+	/**截图*/
+	public void snapshot(final Handler handler){
+		if(mGoogleMap!=null){
+			mGoogleMap.snapshot(new SnapshotReadyCallback() {
+				
+				@Override
+				public void onSnapshotReady(Bitmap arg0) {
+					String name=BaseApplication.travelId+".jpg";
+					String filePath=FileUtils.saveBitmapByUrlOrName(name,arg0);
+					if(!TextUtils.isEmpty(filePath)){
+						LogUtils.i(TAG, "上传地图缩略图的图片路径为："+filePath);
+						//mark 不为空要在这里把图片上传了。
+						Message msg=Message.obtain();
+						msg.obj=filePath;
+						handler.sendMessage(msg);
+					}
+				}
+			});
+		}
+	}
 	/** 自定义定位 */
 	private CustomerLocationSource mLocationSource = new CustomerLocationSource();
 

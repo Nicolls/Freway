@@ -127,6 +127,15 @@ public class Travel implements Parcelable {
 		cadence = in.readFloat();
 		altitude = in.readDouble();
 	}
+	
+	@Override
+	public String toString() {
+		String result="id="+id+",type="+type+",sync="+sync+",startTime="+startTime+
+				",endTime="+endTime+",avgSpeed="+avgSpeed+",maxSpeed="+maxSpeed+
+				",spendTime="+spendTime+",distance="+distance+",calorie="+calorie+",cadence="+cadence+",altitude="+altitude;
+		return result;
+	}
+	
 	public long getId() {
 		return id;
 	}

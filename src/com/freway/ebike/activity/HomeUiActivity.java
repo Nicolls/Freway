@@ -344,10 +344,19 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 							@Override
 							public void onClick(View v) {
 								AlertUtil.getInstance(HomeUiActivity.this).dismiss();
-								BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
-										TravelConstant.TRAVEL_STATE_COMPLETED);
 								if(mMapUtil!=null){
-									mMapUtil.clearMap();
+									mMapUtil.snapshot(new Handler(){
+
+										@Override
+										public void handleMessage(Message msg) {
+											super.handleMessage(msg);
+											mMapUtil.clearMap();
+											LogUtils.i(tag, "收到图片路径："+msg.obj.toString());
+											BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
+													TravelConstant.TRAVEL_STATE_COMPLETED);
+										}
+										
+									});
 								}
 								// test(TravelConstant.TRAVEL_STATE_COMPLETED);
 							}

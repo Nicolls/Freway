@@ -17,7 +17,7 @@ import com.freway.ebike.model.RspUserInfo;
 import com.freway.ebike.model.User;
 import com.freway.ebike.net.EBikeRequestService;
 import com.freway.ebike.utils.CommonUtil;
-import com.freway.ebike.utils.EBkieViewUtils;
+import com.freway.ebike.utils.EBikeViewUtils;
 import com.freway.ebike.utils.FontUtil;
 import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.SPUtils;
@@ -119,7 +119,7 @@ public class ProfileActivity extends BaseActivity implements OnClickListener {
 			genderImage.setImageResource(R.drawable.profile_icon_man);
 		}
 		if(!TextUtils.isEmpty(user.getPhoto())){
-			EBkieViewUtils.displayPhoto(this, mHeadView, user.getPhoto());
+			EBikeViewUtils.displayPhoto(this, mHeadView, user.getPhoto());
 		}
 		try {
 			float distance=Float.parseFloat(user.getTotal_distance());//km

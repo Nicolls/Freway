@@ -22,6 +22,7 @@ import android.text.TextUtils;
 
 public class NetUtil implements DataUpdateListener{
 
+	private static final String TAG=NetUtil.class.getSimpleName();
 	private Context context;
 	private List<Travel> travelList;
 	private int index=0;
@@ -59,6 +60,7 @@ public class NetUtil implements DataUpdateListener{
 				spList[i]=speeds.get(i).getSpeed();
 			}
 			String speedList=gson.toJson(spList);
+			LogUtils.i(TAG, "要上传的行程是："+travel.toString());
 			mEBikeRequestService.upLoadTravel(SPUtils.getToken(context), travel.getType()+"",travel.formatTime(new Date(travel.getStartTime()))+"", travel.formatTime(new Date(travel.getEndTime()))+"", travel.getDistance()+"", travel.getSpendTime()+"", travel.getCadence()+"", travel.getCalorie()+"", speedList, locationList, travel.getMaxSpeed()+"",travel.getAvgSpeed()+"");
 		}
 	}

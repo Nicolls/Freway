@@ -30,7 +30,7 @@ import com.freway.ebike.service.UpdateAPPService.UpdateAppListener;
 import com.freway.ebike.utils.AlertUtil;
 import com.freway.ebike.utils.CommonUtil;
 import com.freway.ebike.utils.EBikeActivityManager;
-import com.freway.ebike.utils.EBkieViewUtils;
+import com.freway.ebike.utils.EBikeViewUtils;
 import com.freway.ebike.utils.FontUtil;
 import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.SPUtils;
@@ -169,7 +169,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 		titleTv.setText(getString(R.string.settings) + "");
 		rightButton.setText(getString(R.string.edit) + "");
 		user = SPUtils.getUser(this);
-		nameValue.setText(user.getUsername());
+		updateUiUser(user);
 		showLoading(true);
 		mEBikeRequestService.userInfo(SPUtils.getToken(this));
 	}
@@ -187,7 +187,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			heightValue.setText(user.getHeight());
 			weightValue.setText(user.getWeight());
 			if(!TextUtils.isEmpty(user.getPhoto())){
-				EBkieViewUtils.displayPhoto(this, mHeadView, user.getPhoto());
+				EBikeViewUtils.displayPhoto(this, mHeadView, user.getPhoto());
 			}
 			if (!TextUtils.isEmpty(SPUtils.getEBkieAddress(this))) {
 				snValue.setText(SPUtils.getEBkieName(this));
@@ -439,14 +439,14 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 		LogUtils.i(tag, "onPhotoCropped Uri in path: " + uri.getPath());
 		photoPath=uri.getPath();
 		if (!mCropParams.compress)
-			mHeadView.setImageBitmap(EBkieViewUtils.getRoundBitmap(BitmapUtil.decodeUriAsBitmap(this, uri)));
+			mHeadView.setImageBitmap(EBikeViewUtils.getRoundBitmap(BitmapUtil.decodeUriAsBitmap(this, uri)));
 	}
 
 	@Override
 	public void onCompressed(Uri uri) {
 		LogUtils.i(tag, "onCompressed in path: " + uri.getPath());
 		photoPath=uri.getPath();
-		mHeadView.setImageBitmap(EBkieViewUtils.getRoundBitmap(BitmapUtil.decodeUriAsBitmap(this, uri)));
+		mHeadView.setImageBitmap(EBikeViewUtils.getRoundBitmap(BitmapUtil.decodeUriAsBitmap(this, uri)));
 	}
 
 	@Override

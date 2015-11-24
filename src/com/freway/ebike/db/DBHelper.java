@@ -1,12 +1,15 @@
 package com.freway.ebike.db;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import com.freway.ebike.common.EBConstant;
 import com.freway.ebike.db.EBikeTable.TravelBluetoothEntry;
 import com.freway.ebike.db.EBikeTable.TravelEntry;
 import com.freway.ebike.db.EBikeTable.TravelLocationEntry;
 import com.freway.ebike.db.EBikeTable.TravelSpeedEntry;
+import com.freway.ebike.map.TravelConstant;
 import com.freway.ebike.utils.LogUtils;
 import com.google.gson.Gson;
 
@@ -103,6 +106,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	}
 
 	public void updateTravel(Travel travel) {
+		LogUtils.i(TAG, "更新行程－－"+travel.toString());
 		SQLiteDatabase sqliteDatabase = getWritableDatabase();
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(TravelEntry.COLUMN_TYPE, travel.getType());
@@ -141,6 +145,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			travel.setStartTime(result.getLong(result.getColumnIndex(TravelEntry.COLUMN_STARTTIME)));
 			list.add(travel);
 		}
+		deleteUnCompletedTravel(list);
 		LogUtils.i(TAG, "listTravel" + list.size());
 		result.close();
 		return list;
@@ -194,9 +199,30 @@ public class DBHelper extends SQLiteOpenHelper {
 			travel.setStartTime(result.getLong(result.getColumnIndex(TravelEntry.COLUMN_STARTTIME)));
 			list.add(travel);
 		}
+		//mark在这里做统计 ，如果是没有spendTime的值，那说明这是一个未完成的travel，要把它删除掉
+		deleteUnCompletedTravel(list);
 		LogUtils.i(TAG, "listTravel" + list.size());
 		result.close();
 		return list;
+	}
+	/**删除掉不完整的行程，因为由于种种原因可能导致行程插入但是没有效果*/
+	private void deleteUnCompletedTravel(List<Travel> list){
+		Iterator<Travel> iterator=list.iterator();
+		Travel travel=null;
+		while(iterator.hasNext()){
+			travel=iterator.next();
+			if(TravelConstant.TRAVEL_TYPE_IM==travel.getType()){//实时行程
+				if(travel.getSpendTime()<=0){//实时行程spendtime是在完成时在有。所以没有的话说明是不完全的
+					deleteTravel(travel.getId());
+					iterator.remove();
+				}
+			}else if(TravelConstant.TRAVEL_TYPE_HISTORY==travel.getType()) {//历史行程
+				if(travel.getDistance()<=0){//历史行程肯定有距离
+					deleteTravel(travel.getId());
+					iterator.remove();
+				}
+			}
+		}
 	}
 
 

@@ -3,15 +3,16 @@
  */
 package com.freway.ebike.utils;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.ImageLoader.ImageListener;
-import com.android.volley.toolbox.Volley;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
@@ -19,6 +20,7 @@ import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +31,13 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.ImageLoader.ImageCache;
+import com.android.volley.toolbox.ImageLoader.ImageListener;
+import com.android.volley.toolbox.Volley;
+import com.freway.ebike.common.EBConstant;
+
 /**
  * View工具
  * 
@@ -36,7 +45,7 @@ import android.widget.ListAdapter;
  *
  *         2015年7月1日
  */
-public class EBkieViewUtils {
+public class EBikeViewUtils {
 
 	/** 重新计算gridView的高度 */
 	@SuppressLint("NewApi")
@@ -120,7 +129,18 @@ public class EBkieViewUtils {
 		if (view != null && !TextUtils.isEmpty(url)) {
 			RequestQueue mQueue = Volley.newRequestQueue(context.getApplicationContext());
 
-			ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache());
+			ImageLoader imageLoader = new ImageLoader(mQueue, new ImageCache() {
+				
+				@Override
+				public void putBitmap(String url, Bitmap bitmap) {
+					FileUtils.saveBitmapByUrlOrName(url, bitmap);
+				}
+				
+				@Override
+				public Bitmap getBitmap(String url) {
+					return FileUtils.getBitmapFromUrlOrName(url);
+				}
+			});
 
 			ImageListener listener = ImageLoader.getImageListener(view, 0,
 					0);
