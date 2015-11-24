@@ -155,7 +155,6 @@ public class CommonUtil {
 		User localUser=SPUtils.getUser(context);
 		localUser.setAge(user.getAge());
 		localUser.setUsername(user.getUsername());
-		localUser.setBirthday(user.getBirthday());
 		localUser.setGender(user.getGender());
 		localUser.setHeight(user.getHeight());
 		localUser.setWeight(user.getWeight());

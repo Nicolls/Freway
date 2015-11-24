@@ -424,11 +424,10 @@ public class EBikeTravelData implements Serializable {
 			cal_startDistance = cal_tempDistance;
 			cal_startCalorie = cal_tempCalorie;
 			cal_startCadence = cal_tempCadence;
-			formatFloat2OneAccuracy();
 			if (spendTime != 0 && (spendTime %RECORD_TIME_FRE ) == 0) {// 每百秒存储一个速度
 				TravelSpeed travelSpeed = new TravelSpeed();
 				travelSpeed.setTravelId(travelId);
-				travelSpeed.setSpeed(avgSpeed);
+				travelSpeed.setSpeed(CommonUtil.formatFloatAccuracy(avgSpeed,1));
 				DBHelper.getInstance(context).insertTravelSpeed(travelSpeed);
 			}
 		}
@@ -494,15 +493,15 @@ public class EBikeTravelData implements Serializable {
 					cal_startCalorie = cal_tempCalorie;
 					cal_startCadence = cal_tempCadence;
 					cal_startTime=cal_tempSpendTime;
-					formatFloat2OneAccuracy();
 				}
 				
 				//记录是每一百米一次，所以每次都插入一个记录速度
 				TravelSpeed travelSpeed=new TravelSpeed();
 				travelSpeed.setTravelId(travelId);
-				travelSpeed.setSpeed(avgSpeed);
+				travelSpeed.setSpeed(CommonUtil.formatFloatAccuracy(avgSpeed,1));
 				DBHelper.getInstance(context).insertTravelSpeed(travelSpeed);
 			}else{
+				formatFloat2OneAccuracy();
 				if(!isNewTravel){//说明有数据 //dataId为0说明读完了，保存起来
 				Travel travel = new Travel();
 				travel.setId(travelId);
@@ -536,14 +535,14 @@ public class EBikeTravelData implements Serializable {
 	}
 
 	public String getControlValueText() {
-		String value = "短信提醒标志接收完成:" + messageNoticeGet + "-电话呼叫标志接收完成:" + phoneCallGet + "-电池包连接标志:" + batConnect
+		String value = "短信标志:" + messageNoticeGet + "-电话呼叫标志:" + phoneCallGet + "-电池包连接标志:" + batConnect
 				+ "-控制器过流保护:" + ctrlerOvercp + "-控制器欠压保护:" + ctrlerLowvp + "-能量回收状态:" + energyCycle + "-控制器故障:" + ctrlerErr
-				+ "-后灯状态:" + backLed + "-前灯状态:" + frontLed + "-运动模式:" + sportMode + "-助力模式:" + assisMode + "-电动模式:" + elecMode
-				+ "-踏频量（圈/分钟）:" + cadence + "-骑行速度(km/h):" + insSpeed + "-累积骑行里程(km):" +distance + "-卡路里："+calorie+"-电池的安时数(100mah):" + batteryAh
-				+ "-骑行状态改变标志:" + gear + "-剩余容量%:" + batteryResidueCapacity + "-剩余里程(km):" + remaindTravelCapacity + "-温度(℃):"
-				+ temperature +
-				// "循环次数(次)"+cycle_times+
-				"卡路里" + calorie;
+				+ "-后灯状态:" + backLed + "-前灯状态:" + frontLed 
+				+"\n-开始时间(毫秒)："+startTime
+				+"\n时长(秒)："+spendTime
+				+ "\n-踏频量（圈/分钟）:" + cadence + "\n-骑行速度(km/h):" + insSpeed +"\n-平均速度(km/h):" + avgSpeed +"\n-最大速度(km/h):" + maxSpeed + "\n-累积骑行里程(km):" +distance + "\n-卡路里："+calorie+"\n-电池的安时数(100mah):" + batteryAh
+				+ "\n-骑行状态改变标志:" + gear + "\n-剩余容量%:" + batteryResidueCapacity + "\n-剩余里程(km):" + remaindTravelCapacity + "\n-温度(℃):"
+				+ temperature +"\n\n";
 		return value;
 	}
 

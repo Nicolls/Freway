@@ -86,7 +86,7 @@ public class FacebookUtil  {
 			public void onSuccess(LoginResult loginResult) {
 				Bundle parameters = new Bundle();
 				AccessToken token = loginResult.getAccessToken();
-				parameters.putString("fields", "id,name,email,gender,birthday,cover,picture");
+				parameters.putString("fields", "id,name,email,gender,cover,picture");
 				new GraphRequest(token, "/" + token.getUserId(), parameters, HttpMethod.GET,
 						new GraphRequest.Callback() {
 							public void onCompleted(GraphResponse response) {
@@ -104,9 +104,6 @@ public class FacebookUtil  {
 									}
 									if (response.getJSONObject().has("name")) {
 										user.setUsername(response.getJSONObject().getString("name"));
-									}
-									if (response.getJSONObject().has("birthday")) {
-										user.setBirthday(response.getJSONObject().getString("birthday"));
 									}
 									if (response.getJSONObject().has("picture")
 											&& response.getJSONObject().getJSONObject("picture").has("data")) {

@@ -519,7 +519,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 
 		mTravelStateAvgSpeedValue.setText(avgSpeed + "");
 		mTravelStateAslValue.setText(altitude + "");
-		mTravelStateCadenceValue.setText(EBikeTravelData.getInstance(this).cadence + "");
+		mTravelStateCadenceValue.setText(cadence + "");
 		if (distanUnit == EBConstant.DISTANCE_UNIT_MPH) {
 			mSpeedStateSpeedView.onValueChange(speed, SpeedView.MAX_SPEED_MPH);
 			mSpeedStateAvgSpeedUnit.setText(getString(R.string.mph));

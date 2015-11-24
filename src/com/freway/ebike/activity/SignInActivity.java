@@ -123,7 +123,7 @@ public class SignInActivity extends BaseActivity {
 					showLoading(true);
 					mEtEmail.setText(user.getEmail());
 					SPUtils.setUser(getApplicationContext(), user);
-					mEBikeRequestService.loginFaceBook(user.getUserid(), user.getUsername(), user.getGender(), user.getBirthday(), user.getPhoto(), user.getEmail());
+					mEBikeRequestService.loginFaceBook(user.getUserid(), user.getUsername(), user.getGender(),  user.getPhoto(), user.getEmail());
 				}else{
 					ToastUtils.toast(getApplicationContext(), getString(R.string.login_failt));
 				}
@@ -150,7 +150,7 @@ public class SignInActivity extends BaseActivity {
 						showLoading(true);
 						mEtEmail.setText(user.getEmail());
 						SPUtils.setUser(getApplicationContext(), user);
-						mEBikeRequestService.loginFaceBook(user.getUserid(), user.getUsername(), user.getGender(), user.getBirthday(), user.getPhoto(), user.getEmail());
+						mEBikeRequestService.loginFaceBook(user.getUserid(), user.getUsername(), user.getGender(),user.getPhoto(), user.getEmail());
 					}else{
 						ToastUtils.toast(getApplicationContext(), getString(R.string.login_failt));
 					}

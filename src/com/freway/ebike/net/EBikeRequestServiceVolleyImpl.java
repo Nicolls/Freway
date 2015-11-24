@@ -105,26 +105,24 @@ public class EBikeRequestServiceVolleyImpl implements EBikeRequestService {
 	}
 
 	@Override
-	public void loginFaceBook(String userid, String username, String gender, String birthday, String photo,
+	public void loginFaceBook(String userid, String username, String gender, String photo,
 			String email) {
 		EBRequest ebReq = new EBRequest(EBikeRequestService.METHOD_LOGINFACEBOOK);
 		ebReq.setDataParam("userid", userid);
 		ebReq.setDataParam("username", username);
 		ebReq.setDataParam("gender", gender);
-		ebReq.setDataParam("birthday", birthday);
 		ebReq.setDataParam("photo", photo);
 		ebReq.setDataParam("email", email);
 		sendRequest(ebReq, EBikeRequestService.ID_LOGINFACEBOOK, RspLogin.class);
 	}
 
 	@Override
-	public void loginTwitter(String userid, String username, String gender, String birthday, String photo,
+	public void loginTwitter(String userid, String username, String gender, String photo,
 			String email) {
 		EBRequest ebReq = new EBRequest(EBikeRequestService.METHOD_LOGINTWITTER);
 		ebReq.setDataParam("userid", userid);
 		ebReq.setDataParam("username", username);
 		ebReq.setDataParam("gender", gender);
-		ebReq.setDataParam("birthday", birthday);
 		ebReq.setDataParam("photo", photo);
 		ebReq.setDataParam("email", email);
 		sendRequest(ebReq, EBikeRequestService.ID_LOGINTWITTER, RspLogin.class);
@@ -143,7 +141,6 @@ public class EBikeRequestServiceVolleyImpl implements EBikeRequestService {
 		ebReq.setDataParam("token", token);
 		ebReq.setDataParam("username", user.getUsername());
 		ebReq.setDataParam("gender", user.getGender());
-		ebReq.setDataParam("birthday", user.getBirthday());
 		ebReq.setDataParam("email", user.getEmail());
 		ebReq.setDataParam("age", user.getAge());
 		ebReq.setDataParam("weight", user.getWeight());

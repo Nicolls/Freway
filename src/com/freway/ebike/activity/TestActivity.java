@@ -93,7 +93,7 @@ public class TestActivity extends BaseActivity {
 	}
 	
 	public void onThirdLogin(View view) {
-		mEBikeRequestService.loginFaceBook(username, "123", "male", "1898-10-19", "http://www.saner5.com/map.jpg", "");
+		mEBikeRequestService.loginFaceBook(username, "123", "male","http://www.saner5.com/map.jpg", "");
 	}
 
 	public void onInfo(View view) {

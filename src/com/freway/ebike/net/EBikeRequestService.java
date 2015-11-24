@@ -75,22 +75,20 @@ public interface EBikeRequestService {
 	 * @param userid (必须) 第三⽅的UserID
 	 * @param username (必须) 用户名
 	 * @param gender 可为空 性别 female 或male
-	 * @param birthday 可为空  如 1988-10-12
 	 * @param photo 可为空 户头像地址
 	 * @param email 可为空 户邮箱地址
 	 * @Description 用户在APP使用第三方Facebook登录，当从第三方成功登录后，使用该接口注册登录。 注：该接口会检查用户名，如果用户名未注册，则会为该用户注册； 如果用户已注册，则直接返回登录成功。
 	 */
-	void loginFaceBook(String userid,String username,String gender,String birthday,String photo,String email);
+	void loginFaceBook(String userid,String username,String gender,String photo,String email);
 	/**
 	 * @param userid (必须) 第三⽅的UserID
 	 * @param username (必须) 用户名
 	 * @param gender 可为空 性别 female 或male
-	 * @param birthday 可为空  如 1988-10-12
 	 * @param photo 可为空 户头像地址
 	 * @param email 可为空 户邮箱地址
 	 * @Description 用户在APP使用第三方Twitter登录，当从第三方成功登录后，使用该接口注册登录。 注：该接口会检查用户名，如果用户名未注册，则会为该用户注册； 如果用户已注册，则直接返回登录成功。
 	 */
-	void loginTwitter(String userid,String username,String gender,String birthday,String photo,String email);
+	void loginTwitter(String userid,String username,String gender,String photo,String email);
 	
 	/**
 	 * @param token 登录态token,从注册/登录接口中获得

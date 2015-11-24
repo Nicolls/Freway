@@ -3,6 +3,7 @@
  */
 package com.freway.ebike.utils;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 /**
@@ -16,51 +17,51 @@ public class LogUtils {
 	private static boolean isOpenLog = true;
 
 	public static void i(String tag, String message) {
-		if (isOpenLog) {
+		if (isOpenLog&&!TextUtils.isEmpty(message)) {
 			Log.i(tag, message);
 		}
 	}
 
 	public static void d(String tag, String message) {
-		if (isOpenLog) {
+		if (isOpenLog&&!TextUtils.isEmpty(message)) {
 			Log.d(tag, message);
 		}
 	}
 
 	public static void e(String tag, String message) {
-		if (isOpenLog) {
+		if (isOpenLog&&!TextUtils.isEmpty(message)) {
 			Log.e(tag, message);
 		}
 	}
 
 	public static void i(String tag, boolean isOpenLog, String message) {
-		if (isOpenLog) {
+		if (isOpenLog&&!TextUtils.isEmpty(message)) {
 			Log.i(tag, message);
 		}
 	}
 
 	public static void d(String tag, boolean isOpenLog, String message) {
-		if (isOpenLog) {
+		if (isOpenLog&&!TextUtils.isEmpty(message)) {
 			Log.d(tag, message);
 		}
 	}
 
 	public static void e(String tag, boolean isOpenLog, String message) {
-		if (isOpenLog) {
+		if (isOpenLog&&!TextUtils.isEmpty(message)) {
 			Log.e(tag, message);
 		}
 	}
 	
 	public static void e(String tag,  String message,Exception e) {
 		e.printStackTrace();
-		if (isOpenLog) {
+		if (isOpenLog&&!TextUtils.isEmpty(message)) {
 			Log.e(tag, message);
 		}
 	}
 
 	/** java系统打印 */
 	public static void systemOut(String message) {
-		if (isOpenLog) {
+		if (isOpenLog&&!TextUtils.isEmpty(message)) {
 			System.out.println(message);
 		}
 	}

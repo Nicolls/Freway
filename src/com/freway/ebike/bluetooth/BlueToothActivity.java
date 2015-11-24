@@ -5,9 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.freway.ebike.R;
+import com.freway.ebike.activity.HomeUiActivity;
 import com.freway.ebike.adapter.BleScanAdapter;
 import com.freway.ebike.common.BaseActivity;
 import com.freway.ebike.common.BaseApplication;
+import com.freway.ebike.map.TravelConstant;
 import com.freway.ebike.protocol.CommandCode;
 import com.freway.ebike.protocol.ProtocolByteHandler;
 import com.freway.ebike.protocol.ProtocolTool;
@@ -161,8 +163,21 @@ public class BlueToothActivity extends BaseActivity {
 	public void onClearFormat(View view){
 		tvReceiveFormat.setText("格式化收到的数据：");
 	}
+	/**开始*/
+	public void onStart(View view){
+		BaseApplication.sendStateChangeBroadCast(BlueToothActivity.this, TravelConstant.TRAVEL_STATE_START);
+	}
+	
+	/**结束*/
+	public void onEnd(View view){
+		BaseApplication.sendStateChangeBroadCast(BlueToothActivity.this, TravelConstant.TRAVEL_STATE_STOP);
+	}
 	
 	public void onCreateData(View view){//生成发送的数据
+		findViewById(R.id.ble_ll_format).setVisibility(View.VISIBLE);
+		findViewById(R.id.ble_ll_travel).setVisibility(View.VISIBLE);
+		findViewById(R.id.ble_ll_receive).setVisibility(View.VISIBLE);
+		findViewById(R.id.ble_single_btn).setVisibility(View.VISIBLE);
 		String str=etSend.getText().toString();
 		if(!TextUtils.isEmpty(str)){
 			byte[]data=CommonUtil._16String2ByteArray(str);

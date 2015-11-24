@@ -29,11 +29,6 @@ public class User implements Serializable{
 	private String gender;
 	
 	/**
-	 * @Fields birthday 生日 可为空  如 1988-10-12
-	 */
-	private String birthday;
-	
-	/**
 	 * @Fields photo 头像URL地址
 	 */
 	private String photo;
@@ -69,12 +64,6 @@ public class User implements Serializable{
 	}
 	public void setGender(String gender) {
 		this.gender = gender;
-	}
-	public String getBirthday() {
-		return birthday;
-	}
-	public void setBirthday(String birthday) {
-		this.birthday = birthday;
 	}
 	public String getPhoto() {
 		return photo;
