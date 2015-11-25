@@ -32,6 +32,8 @@ public interface EBikeRequestService {
 	static final int ID_UPLOADTRAVEL=7;
 	/**上传头像*/
 	static final int ID_PHOTO=8;
+	/**版本更新*/
+	static final int ID_VERSION=9;
 	
 	/** 方法名 **/
 	/** 普通登录 */
@@ -50,7 +52,8 @@ public interface EBikeRequestService {
 	static final String METHOD_UPLOADTRAVEL="/service/journey/create";
 	/**上传头像*/
 	static final String METHOD_PHOTO="/service/info/photo";
-	
+	/**版本更新*/
+	static final String METHOD_VERSION="/service/version";
 	/**
 	 * @param dataUpdateListener 监听器
 	 * @return void
@@ -130,4 +133,12 @@ public interface EBikeRequestService {
 	 * @Description 更新用户头像
 	 */
 	void updatePhoto(String token,String photoPath);
+	
+	/**
+	 * @param type 设备类型 Android
+	 * @param version 当前应用版本号，如1.0.0
+	 * @return void
+	 * @Description 查询更新
+	 */
+	void version(String type,String version);
 }

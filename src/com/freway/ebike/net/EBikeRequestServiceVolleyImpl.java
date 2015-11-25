@@ -16,6 +16,7 @@ import com.freway.ebike.model.RspUpLoadTravel;
 import com.freway.ebike.model.RspUpdatePhoto;
 import com.freway.ebike.model.RspUpdateUserInfo;
 import com.freway.ebike.model.RspUserInfo;
+import com.freway.ebike.model.RspVersion;
 import com.freway.ebike.model.User;
 import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.MD5Tool;
@@ -251,6 +252,14 @@ public class EBikeRequestServiceVolleyImpl implements EBikeRequestService {
 			LogUtils.e(TAG, "文件不存在");
 		}
 		
+	}
+
+	@Override
+	public void version(String type, String version) {
+		EBRequest ebReq = new EBRequest(EBikeRequestService.METHOD_VERSION);
+		ebReq.setDataParam("type", type);
+		ebReq.setDataParam("version",version);
+		sendRequest(ebReq, EBikeRequestService.ID_VERSION, RspVersion.class);
 	}
 
 }

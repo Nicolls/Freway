@@ -23,6 +23,7 @@ import com.freway.ebike.crop.CropHelper;
 import com.freway.ebike.crop.CropParams;
 import com.freway.ebike.model.RspUpdatePhoto;
 import com.freway.ebike.model.RspUserInfo;
+import com.freway.ebike.model.RspVersion;
 import com.freway.ebike.model.User;
 import com.freway.ebike.net.EBikeRequestService;
 import com.freway.ebike.service.UpdateAPPService;
@@ -74,9 +75,8 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 	private CropParams mCropParams;
 	private boolean isEdit = false;
 	private User user;
-	private boolean isNeed2Update = false;
 	private String photoPath="";
-
+	private RspVersion version;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -162,6 +162,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 	}
 
 	private void initData() {
+		genderView.setEnabled(false);
 		mCropParams = new CropParams(this);
 		mHeadView.setEnabled(false);
 		iconButton.setImageResource(R.drawable.settings_confirm_red);
@@ -194,6 +195,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			} else {
 				snValue.setText(getString(R.string.ble_not_bind));
 			}
+			
 			// languageValue = (TextView)
 			// findViewById(R.id.setting_language_value);
 			if (SPUtils.getUnitOfDistance(this) == EBConstant.DISTANCE_UNIT_MPH) {
@@ -293,22 +295,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 					});
 			break;
 		case R.id.setting_ll_about:
-			// if (isNeed2Update) {
-			AlertUtil.getInstance(this).alertConfirm(getString(R.string.app_update_tip), getString(R.string.confirm),
-					new OnClickListener() {
-
-						@Override
-						public void onClick(View v) {
-							AlertUtil.getInstance(SettingActivity.this).dismiss();
-							updateApk();
-						}
-					});
-
-			// } else {
-			// ToastUtils.toast(SettingActivity.this,
-			// getString(R.string.app_now_is_newly));
-			// }
-
+			chargeUpdate();
 			break;
 		case R.id.setting_ll_exit:
 			EBikeActivityManager.getAppManager().reLogin(this, true);
@@ -319,8 +306,8 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 	}
 
 	/** 版本更新 */
-	private void updateApk() {
-		final String downloadUrl = "http://www.saner5.com/index.aspx?appId=1&appDownLoadCount=55&appDownloadUrl=upload/app/2014_07_17_17_44_48ear.apk";
+	private void updateApk(String downloadUrl) {
+//		final String downloadUrl = "http://www.saner5.com/index.aspx?appId=1&appDownLoadCount=55&appDownloadUrl=upload/app/2014_07_17_17_44_48ear.apk";
 		ToastUtils.toast(SettingActivity.this, getString(R.string.start_download));
 		aoubtValue.setText(getString(R.string.app_downloading));
 		Intent intent = new Intent(UpdateAPPService.class.getName());
@@ -335,6 +322,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 		if(isEdit){
 			nameValue.requestFocus();
 		}
+		genderView.setEnabled(isEdit);
 		emailValue.setFocusable(isEdit);
 		emailValue.setFocusableInTouchMode(isEdit);
 		ageValue.setFocusable(isEdit);
@@ -405,8 +393,42 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			SPUtils.setUser(SettingActivity.this, user);
 			ToastUtils.toast(SettingActivity.this, getString(R.string.update_profile_success));
 			break;
+		case EBikeRequestService.ID_VERSION:
+			RspVersion version=(RspVersion) obj;
+			this.version=version;
+			chargeUpdate();
+			
+			break;
 		default:
 			break;
+		}
+	}
+	/**判断更新*/
+	private void chargeUpdate(){
+		if(version!=null){
+			String newest=version.getData().getNewest();
+			final String url=version.getData().getUrl();
+			int m=Integer.parseInt(version.getData().getForce_update());
+			boolean isForceUpdate=(m==0?false:true);
+			boolean isNeed2Update=CommonUtil.isNeed2UpdateApp(this, newest);
+			 if (isNeed2Update) {
+			AlertUtil.getInstance(this).alertConfirm(getString(R.string.app_update_tip), getString(R.string.confirm),
+					new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							AlertUtil.getInstance(SettingActivity.this).dismiss();
+							updateApk(url);
+						}
+					});
+
+			 } else {
+			 ToastUtils.toast(SettingActivity.this,
+			 getString(R.string.app_now_is_newly));
+			 }
+		}else{
+			showLoading(true);
+			mEBikeRequestService.version("Android", CommonUtil.getAppVersion(this));
 		}
 	}
 

@@ -165,4 +165,20 @@ public class CommonUtil {
 		SPUtils.setUser(context, localUser);
 		return localUser;
 	}
+	
+	/**判断是否需要更新*/
+	public static boolean isNeed2UpdateApp(Context context,String serverVersion){
+		boolean isNeed=false;
+		String nowVersion=getAppVersion(context);
+		try {
+			int localVersion=Integer.parseInt(nowVersion.replace(".", ""));
+			int version=Integer.parseInt(serverVersion.replace(".", ""));
+			if(version>localVersion){
+				isNeed=true;
+			}
+		} catch (Exception e) {
+			LogUtils.e("CommonUtils", "isNeed="+isNeed);
+		}
+		return isNeed;
+	}
 }
