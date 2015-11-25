@@ -45,5 +45,6 @@ public final class EBikeTable {
         public static final String COLUMN_CALORIE = "calorie";
         public static final String COLUMN_CADENCE = "cadence";
         public static final String COLUMN_ALTITUDE = "altitude";
+        public static final String COLUMN_PHOTO = "photo";
     }
 }

@@ -105,7 +105,7 @@ public class TestActivity extends BaseActivity {
 	}
 	
 	public void onUpLoadTravel(View view){
-		mEBikeRequestService.upLoadTravel(SPUtils.getToken(this), "1", "", "", "1000", "3000", "100", "1000", "[10,20,30]", "[[\"x1\",\"y1\"],[\"x2\",\"y2\"],[\"x3\",\"y3\"]]", "80","65");
+		mEBikeRequestService.upLoadTravel(SPUtils.getToken(this), "1", "", "", "1000", "3000", "100", "1000", "[10,20,30]", "[[\"x1\",\"y1\"],[\"x2\",\"y2\"],[\"x3\",\"y3\"]]", "80","65","");
 	}
 	
 	public void onUpLoadPhoto(View view){

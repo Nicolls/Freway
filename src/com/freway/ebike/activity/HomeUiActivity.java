@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -20,6 +21,8 @@ import com.freway.ebike.bluetooth.EBikeTravelData;
 import com.freway.ebike.common.BaseActivity;
 import com.freway.ebike.common.BaseApplication;
 import com.freway.ebike.common.EBConstant;
+import com.freway.ebike.db.DBHelper;
+import com.freway.ebike.db.Travel;
 import com.freway.ebike.map.MapUtil;
 import com.freway.ebike.map.TravelConstant;
 import com.freway.ebike.utils.AlertUtil;
@@ -352,6 +355,10 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 											super.handleMessage(msg);
 											mMapUtil.clearMap();
 											LogUtils.i(tag, "收到图片路径："+msg.obj.toString());
+											String photoPath=msg.obj.toString();
+											if(!TextUtils.isEmpty(photoPath)){//图片与行程关联
+												EBikeTravelData.getInstance(HomeUiActivity.this).travelPhoto=photoPath;
+											}
 											BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
 													TravelConstant.TRAVEL_STATE_COMPLETED);
 										}
@@ -478,19 +485,19 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		float cadence = EBikeTravelData.getInstance(this).cadence;
 		String spendTime = TimeUtils.formatTimeSSToHMS(EBikeTravelData.getInstance(this).spendTime) + "";
 		if (distanUnit == EBConstant.DISTANCE_UNIT_MPH) {
-			speed = speed / 1.6f;
-			avgSpeed = avgSpeed / 1.6f;
+			speed = speed / 1.6f;//km/h->mph
+			avgSpeed = avgSpeed / 1.6f;//km/h->mph
+			altitude=altitude*0.6f;//km->mi
+			distance=distance*0.6f;//km->mi
 		}
 
 		// 格式化精度
 		speed = CommonUtil.formatFloatAccuracy(speed, 1);
 		avgSpeed = CommonUtil.formatFloatAccuracy(avgSpeed, 1);
 		altitude = CommonUtil.formatFloatAccuracy(altitude, 1);
-		distance = CommonUtil.formatFloatAccuracy(distance, 3);
+		distance = CommonUtil.formatFloatAccuracy(distance, 1);
 		cadence = CommonUtil.formatFloatAccuracy(cadence, 0);
-		calorie = CommonUtil.formatFloatAccuracy(calorie, 0,BigDecimal.ROUND_UP);
-		// 转换
-		distance = distance * 1000;// 由km->m
+		calorie = CommonUtil.formatFloatAccuracy(calorie, 1);
 
 		// 车况
 		mBikeStateBatteryView.onValueChange(EBikeTravelData.getInstance(this).batteryResidueCapacity, model,
@@ -525,11 +532,19 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			mSpeedStateAvgSpeedUnit.setText(getString(R.string.mph));
 			mTravelStateAvgSpeedUnit.setText(getString(R.string.mph));
 			mTravelStateSpeedUnit.setText(getString(R.string.mph));
+			mTravelStateAslUnit.setText(getString(R.string.mi));
+			mTravelStateDistanceUnit.setText(getString(R.string.mi));
+			mSpeedStateAslUnit.setText(getString(R.string.mi));
+			mSpeedStateDistanceUnit.setText(getString(R.string.mi));
 		} else {
 			mSpeedStateSpeedView.onValueChange(speed, SpeedView.MAX_SPEED_KM_H);
 			mSpeedStateAvgSpeedUnit.setText(getString(R.string.km_h));
 			mTravelStateAvgSpeedUnit.setText(getString(R.string.km_h));
 			mTravelStateSpeedUnit.setText(getString(R.string.km_h));
+			mTravelStateAslUnit.setText(getString(R.string.km));
+			mTravelStateDistanceUnit.setText(getString(R.string.km));
+			mSpeedStateAslUnit.setText(getString(R.string.km));
+			mSpeedStateDistanceUnit.setText(getString(R.string.km));
 		}
 
 		mSpeedStateSpeedText.setText(speed + "");

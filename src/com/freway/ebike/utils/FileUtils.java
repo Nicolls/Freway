@@ -85,9 +85,9 @@ public class FileUtils {
             file.createNewFile();
             FileOutputStream fos = new FileOutputStream(file);
             if(fileName.contains("png")){
-            	bitmap.compress(CompressFormat.PNG, 100, fos);
+            	bitmap.compress(CompressFormat.PNG, 80, fos);
             }else{
-            	bitmap.compress(CompressFormat.JPEG, 100, fos);
+            	bitmap.compress(CompressFormat.JPEG, 80, fos);
             }
             fos.flush();
             fos.close();

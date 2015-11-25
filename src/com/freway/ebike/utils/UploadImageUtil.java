@@ -12,6 +12,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
+import android.os.AsyncTask;
+import android.os.Message;
 import android.util.Log;
 
 /**
@@ -117,16 +119,26 @@ public class UploadImageUtil {
 		LogUtils.i(TAG, "请求的URL=" + RequestURL);
 		LogUtils.i(TAG, "请求的fileName=" + file.getName());
 		LogUtils.i(TAG, "请求的fileKey=" + fileKey);
-		new Thread(new Runnable() { // 开启线程上传文件
+		AsyncTask<String, Integer, Message> task=new AsyncTask<String, Integer, Message>(){
+
 			@Override
-			public void run() {
-				toUploadFile(file, fileKey, RequestURL, param);
+			protected Message doInBackground(String... params) {
+				Message message=toUploadFile(file, fileKey, RequestURL, param);
+				return message;
 			}
-		}).start();
+
+			@Override
+			protected void onPostExecute(Message result) {
+				super.onPostExecute(result);
+				sendMessage(result.what, result.obj.toString());
+			}
+		};
+		task.execute();
 
 	}
 
-	private void toUploadFile(File file, String fileKey, String RequestURL, Map<String, String> param) {
+	private Message toUploadFile(File file, String fileKey, String RequestURL, Map<String, String> param) {
+		Message msg=Message.obtain();
 		String result = null;
 		requestTime = 0;
 
@@ -231,21 +243,25 @@ public class UploadImageUtil {
 				}
 				result = sb1.toString();
 				LogUtils.i(TAG, "result : " + result);
-				sendMessage(UPLOAD_SUCCESS_CODE,result);
-				return;
+				msg.what=UPLOAD_SUCCESS_CODE;
+				msg.obj=result;
+				return msg;
 			} else {
+				msg.what=UPLOAD_SERVER_ERROR_CODE;
+				msg.obj="上传失败：code=" + res;
 				LogUtils.e(TAG, "request error");
-				sendMessage(UPLOAD_SERVER_ERROR_CODE, "上传失败：code=" + res);
-				return;
+				return msg;
 			}
 		} catch (MalformedURLException e) {
-			sendMessage(UPLOAD_SERVER_ERROR_CODE, "上传失败：error=" + e.getMessage());
+			msg.what=UPLOAD_SERVER_ERROR_CODE;
+			msg.obj=e.getMessage();
 			LogUtils.e(TAG, e.getMessage());
-			return;
+			return msg;
 		} catch (IOException e) {
-			sendMessage(UPLOAD_SERVER_ERROR_CODE, "上传失败：error=" + e.getMessage());
+			msg.what=UPLOAD_SERVER_ERROR_CODE;
+			msg.obj=e.getMessage();
 			LogUtils.e(TAG, e.getMessage());
-			return;
+			return msg;
 		}
 	}
 

@@ -24,6 +24,7 @@ import com.freway.ebike.utils.UploadImageUtil.OnUploadProcessListener;
 import com.google.gson.Gson;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 /**
  * 通过volley框架来实现的与服务器交互接口的请求类
@@ -150,7 +151,7 @@ public class EBikeRequestServiceVolleyImpl implements EBikeRequestService {
 
 	@Override
 	public void upLoadTravel(String token, String type, String stime, String etime, String distance, String time,
-			String cadence, String calories, String speedList, String locationList, String topSpeed, String avgSpeed) {
+			String cadence, String calories, String speedList, String locationList, String topSpeed, String avgSpeed,String photo) {
 		EBRequest ebReq = new EBRequest(EBikeRequestService.METHOD_UPLOADTRAVEL);
 		ebReq.setDataParam("token", token);
 		ebReq.setDataParam("type", type);
@@ -165,7 +166,47 @@ public class EBikeRequestServiceVolleyImpl implements EBikeRequestService {
 		ebReq.setDataParam("locationList", locationList);
 		ebReq.setDataParam("topSpeed", topSpeed);
 		ebReq.setDataParam("avgSpeed", avgSpeed);
-		sendRequest(ebReq, EBikeRequestService.ID_UPLOADTRAVEL, RspUpLoadTravel.class);
+		if(!TextUtils.isEmpty(photo)){
+			File file=new File(photo);
+			if(file.exists()){
+				String data = ebReq.getDataParam();
+				ebReq.setReqeustParam("data", data);
+				String s = MD5Tool.md5(MD5Tool.md5(data + EBRequest.requestKey));
+				if (s.length() >= 10) {
+					s = s.substring(s.length() - 10, s.length());
+				}
+				ebReq.setReqeustParam("s", s);
+				UploadImageUtil.getInstance().setOnUploadProcessListener(new OnUploadProcessListener() {
+					
+					@Override
+					public void onUploadProcess(int uploadSize) {
+						
+					}
+					
+					@Override
+					public void onUploadDone(int responseCode, String message) {
+						if(responseCode==UploadImageUtil.UPLOAD_SUCCESS_CODE){
+							Gson gson=new Gson();
+							RspUpLoadTravel rsp=gson.fromJson(message, RspUpLoadTravel.class);
+							dataNotify(EBikeRequestService.ID_UPLOADTRAVEL, rsp);
+						}else{
+							dataNotify(ID_REQUEST_ERROR, null);
+						}
+					}
+					
+					@Override
+					public void initUpload(int fileSize) {
+						
+					}
+
+				});
+				UploadImageUtil.getInstance().uploadFile(file, "file", ebReq.getReqeustURL(), ebReq.getReqeustParam());
+			}else{
+				sendRequest(ebReq, EBikeRequestService.ID_UPLOADTRAVEL, RspUpLoadTravel.class);
+			}
+		}else{
+			sendRequest(ebReq, EBikeRequestService.ID_UPLOADTRAVEL, RspUpLoadTravel.class);
+		}
 	}
 
 	@Override

@@ -401,15 +401,9 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			break;
 		case EBikeRequestService.ID_PHOTO:
 			final RspUpdatePhoto rsp=(RspUpdatePhoto) obj;
-			runOnUiThread(new Runnable() {
-				
-				@Override
-				public void run() {
-					user.setPhoto(rsp.getData().getUrl());
-					SPUtils.setUser(SettingActivity.this, user);
-					ToastUtils.toast(SettingActivity.this, getString(R.string.update_profile_success));
-				}
-			});
+			user.setPhoto(rsp.getData().getUrl());
+			SPUtils.setUser(SettingActivity.this, user);
+			ToastUtils.toast(SettingActivity.this, getString(R.string.update_profile_success));
 			break;
 		default:
 			break;

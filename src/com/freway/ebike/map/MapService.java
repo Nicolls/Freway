@@ -205,7 +205,7 @@ public class MapService extends Service implements ConnectionCallbacks,
 		}
 		if (isRecord) {// 正在记录
 			EBikeTravelData.getInstance(this).altitude = travelLocation.getLocation()
-					.getAltitude();//海拔
+					.getAltitude()/1000;//海拔行程存储的是km,所以要除以1000
 			// 判断是开始的位置
 			if (currentLocation == null) {// 如果是开始，则通知行程开始
 				broadCastLocation(

@@ -61,7 +61,9 @@ public class NetUtil implements DataUpdateListener{
 			}
 			String speedList=gson.toJson(spList);
 			LogUtils.i(TAG, "要上传的行程是："+travel.toString());
-			mEBikeRequestService.upLoadTravel(SPUtils.getToken(context), travel.getType()+"",travel.formatTime(new Date(travel.getStartTime()))+"", travel.formatTime(new Date(travel.getEndTime()))+"", travel.getDistance()+"", travel.getSpendTime()+"", travel.getCadence()+"", travel.getCalorie()+"", speedList, locationList, travel.getMaxSpeed()+"",travel.getAvgSpeed()+"");
+			mEBikeRequestService.upLoadTravel(SPUtils.getToken(context), travel.getType()+"",travel.formatTime(new Date(travel.getStartTime()))+"", travel.formatTime(new Date(travel.getEndTime()))+"", travel.getDistance()+"", travel.getSpendTime()+"", travel.getCadence()+"", travel.getCalorie()+"", speedList, locationList, travel.getMaxSpeed()+"",travel.getAvgSpeed()+"",travel.getPhoto()+"");
+		}else if(index>0){
+			ToastUtils.toast(context, context.getString(R.string.upload_travel_success));
 		}
 	}
 	

@@ -116,10 +116,11 @@ public interface EBikeRequestService {
 	 * @param locationList 移动轨迹，历史行程时为空 [["x1","y1"],["x2","y2"],["x3","y3"]]
 	 * @param topSpeed 最大速度 * 单位:米/秒
 	 * @param avgSpeed 平均速度
+	 * @param photo 行程缩略图
 	 * @return void
 	 * @Description 用户修改信息
 	 */
-	void upLoadTravel(String token,String type,String stime,String etime,String distance,String time,String cadence,String calories,String speedList,String locationList,String topSpeed,String avgSpeed);
+	void upLoadTravel(String token,String type,String stime,String etime,String distance,String time,String cadence,String calories,String speedList,String locationList,String topSpeed,String avgSpeed,String photo);
 	
 	/**
 	 * 

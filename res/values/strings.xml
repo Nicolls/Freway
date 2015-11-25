@@ -38,6 +38,7 @@
     <string name="ble_not_connect">eBike not connect go to connect ebike?</string>
     <!-- 通用 -->
     <string name="in_development">In development</string>
+    <string name="upload_travel_success">Upload travel success</string>
     <string name="photo_upload_success">Photo upload success</string>
     <string name="update_profile_success">Update profile success</string>
     <string name="cancel">Cancel</string>
@@ -76,7 +77,8 @@
     <string name="sign_up">SIGN UP</string>
     <string name="sign_in_tip">Forgot password? or create an account</string>
     <string name="battery_left">LEFT</string>
-    <string name="mi">mi</string>
+    <string name="mi">mi</string><!-- 这个单位是迈 -->
+    <string name="m">m</string><!-- 这个单位是米 -->
     <string name="km">km</string>
     <string name="gear">GEAR</string>
     <string name="cal">cal</string>

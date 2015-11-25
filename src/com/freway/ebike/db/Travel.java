@@ -61,6 +61,10 @@ public class Travel implements Parcelable {
 	 * @Fields altitude 海拔
 	 */
 	private double altitude;
+	/**
+	 * @Fields photo 行程缩略图
+	 */
+	private String photo;
 	public Travel() {}
 	public String formatTime(Date date) {
 		String result = "";
@@ -101,6 +105,7 @@ public class Travel implements Parcelable {
 		dest.writeFloat(calorie);
 		dest.writeFloat(cadence);
 		dest.writeDouble(altitude);
+		dest.writeString(photo);
 	}
 
 	public static final Parcelable.Creator<Travel> CREATOR = new Parcelable.Creator<Travel>() {
@@ -126,13 +131,15 @@ public class Travel implements Parcelable {
 		calorie = in.readFloat();
 		cadence = in.readFloat();
 		altitude = in.readDouble();
+		photo=in.readString();
 	}
 	
 	@Override
 	public String toString() {
 		String result="id="+id+",type="+type+",sync="+sync+",startTime="+startTime+
 				",endTime="+endTime+",avgSpeed="+avgSpeed+",maxSpeed="+maxSpeed+
-				",spendTime="+spendTime+",distance="+distance+",calorie="+calorie+",cadence="+cadence+",altitude="+altitude;
+				",spendTime="+spendTime+",distance="+distance+",calorie="+calorie+",cadence="+cadence
+				+",altitude="+altitude+",photo="+photo;
 		return result;
 	}
 	
@@ -207,6 +214,12 @@ public class Travel implements Parcelable {
 	}
 	public void setSync(int sync) {
 		this.sync = sync;
+	}
+	public String getPhoto() {
+		return photo;
+	}
+	public void setPhoto(String photo) {
+		this.photo = photo;
 	}
 
 }

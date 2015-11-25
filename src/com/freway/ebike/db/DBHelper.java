@@ -69,7 +69,7 @@ public class DBHelper extends SQLiteOpenHelper {
 				+ TravelEntry.COLUMN_ENDTIME + " INTEGER," + TravelEntry.COLUMN_AVGSPEED + " REAL,"
 				+ TravelEntry.COLUMN_MAXSPEED + " REAL," + TravelEntry.COLUMN_SPENDTIME + " INTEGER,"
 				+ TravelEntry.COLUMN_DISTANCE + " REAL," + TravelEntry.COLUMN_CALORIE + " REAL,"
-				+ TravelEntry.COLUMN_CADENCE + " REAL," + TravelEntry.COLUMN_ALTITUDE + " REAL" + ");");
+				+ TravelEntry.COLUMN_CADENCE + " REAL," + TravelEntry.COLUMN_ALTITUDE + " REAL," +TravelEntry.COLUMN_PHOTO + " TEXT"+ ");");
 
 		// + " TEXT DEFAULT 'false'," + DevicesColumns.ONLINE +
 		// " TEXT DEFAULT 'true');");
@@ -99,6 +99,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		contentValues.put(TravelEntry.COLUMN_CALORIE, travel.getCalorie());
 		contentValues.put(TravelEntry.COLUMN_CADENCE, travel.getCadence());
 		contentValues.put(TravelEntry.COLUMN_ALTITUDE, travel.getAltitude());
+		contentValues.put(TravelEntry.COLUMN_PHOTO, travel.getPhoto());
 		long id = sqliteDatabase.insert(TravelEntry.TABLE_NAME, null, contentValues);
 		travel.setId(id);
 		LogUtils.i(TAG, "insertTravel" + id);
@@ -120,6 +121,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		contentValues.put(TravelEntry.COLUMN_CALORIE, travel.getCalorie());
 		contentValues.put(TravelEntry.COLUMN_CADENCE, travel.getCadence());
 		contentValues.put(TravelEntry.COLUMN_ALTITUDE, travel.getAltitude());
+		contentValues.put(TravelEntry.COLUMN_PHOTO, travel.getPhoto());
 		int row = sqliteDatabase.update(TravelEntry.TABLE_NAME, contentValues, TravelEntry._ID + "=?",
 				new String[] { travel.getId() + "" });
 		LogUtils.i(TAG, "updateTravel" + row);
@@ -143,6 +145,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			travel.setMaxSpeed(result.getFloat(result.getColumnIndex(TravelEntry.COLUMN_MAXSPEED)));
 			travel.setSpendTime(result.getLong(result.getColumnIndex(TravelEntry.COLUMN_SPENDTIME)));
 			travel.setStartTime(result.getLong(result.getColumnIndex(TravelEntry.COLUMN_STARTTIME)));
+			travel.setPhoto(result.getString(result.getColumnIndex(TravelEntry.COLUMN_PHOTO)));
 			list.add(travel);
 		}
 		deleteUnCompletedTravel(list);
@@ -170,6 +173,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			travel.setMaxSpeed(result.getFloat(result.getColumnIndex(TravelEntry.COLUMN_MAXSPEED)));
 			travel.setSpendTime(result.getLong(result.getColumnIndex(TravelEntry.COLUMN_SPENDTIME)));
 			travel.setStartTime(result.getLong(result.getColumnIndex(TravelEntry.COLUMN_STARTTIME)));
+			travel.setPhoto(result.getString(result.getColumnIndex(TravelEntry.COLUMN_PHOTO)));
 			break;
 		}
 		LogUtils.i(TAG, "findTravelById" + travelId);
@@ -197,6 +201,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			travel.setMaxSpeed(result.getFloat(result.getColumnIndex(TravelEntry.COLUMN_MAXSPEED)));
 			travel.setSpendTime(result.getLong(result.getColumnIndex(TravelEntry.COLUMN_SPENDTIME)));
 			travel.setStartTime(result.getLong(result.getColumnIndex(TravelEntry.COLUMN_STARTTIME)));
+			travel.setPhoto(result.getString(result.getColumnIndex(TravelEntry.COLUMN_PHOTO)));
 			list.add(travel);
 		}
 		//mark在这里做统计 ，如果是没有spendTime的值，那说明这是一个未完成的travel，要把它删除掉
