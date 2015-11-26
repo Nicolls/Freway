@@ -11,6 +11,7 @@ import com.freway.ebike.common.BaseActivity;
 import com.freway.ebike.common.BaseApplication;
 import com.freway.ebike.map.TravelConstant;
 import com.freway.ebike.protocol.CommandCode;
+import com.freway.ebike.protocol.Protocol;
 import com.freway.ebike.protocol.ProtocolByteHandler;
 import com.freway.ebike.protocol.ProtocolTool;
 import com.freway.ebike.utils.CommonUtil;
@@ -48,16 +49,20 @@ public class BlueToothActivity extends BaseActivity {
 	private TextView tvReceive;
 	private TextView tvReceiveFormat;
 	private ListView listView;
+	private EditText etTool;
 	private BleScanAdapter adapter;
 	private List<BluetoothDevice> data = new ArrayList<BluetoothDevice>();
 	private BlueToothUtil mBlueToothUtil;
 	private String address;
 	private String name;
+	private TextView tvTool;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_bluetooth);
+		tvTool=(TextView) findViewById(R.id.ble_tv_tool);
+		etTool=(EditText) findViewById(R.id.ble_et_tool);
 		readyView=findViewById(R.id.ble_ll_ready);
 		initView=findViewById(R.id.ble_ll_init);
 		readyView.setVisibility(View.GONE);
@@ -150,7 +155,9 @@ public class BlueToothActivity extends BaseActivity {
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			ProtocolByteHandler.parseData(BlueToothActivity.this, ProtocolByteHandler.packData);
-			tvReceive.setText("收到的数据："+ProtocolTool.bytesToHexString(ProtocolByteHandler.packData));
+			String data=ProtocolTool.bytesToHexString(ProtocolByteHandler.packData);
+			LogUtils.i(tag, data);
+			tvReceive.setText("收到的数据："+data+"\n\n");
 			tvReceiveFormat.setText("格式化收到的数据："+EBikeTravelData.getInstance(BlueToothActivity.this).getControlValueText());
 		}
 		
@@ -173,7 +180,23 @@ public class BlueToothActivity extends BaseActivity {
 		BaseApplication.sendStateChangeBroadCast(BlueToothActivity.this, TravelConstant.TRAVEL_STATE_STOP);
 	}
 	
+	public void onTool(View view){
+		String str=etTool.getText().toString();
+		if(!TextUtils.isEmpty(str)){
+			byte[]data=CommonUtil._16String2ByteArray(str);
+			Protocol mParse = new Protocol();
+			if(mParse.parseBytes(data)){//检验成功
+				ToastUtils.toast(this, "检验成功");
+				data=mParse.getParamData();
+				tvTool.setText("检验解析得出的数据位值："+ProtocolTool.bytesToHexString(data)+"\n");
+			}else{
+				ToastUtils.toast(this, "检验失败");
+			}
+		}
+	}
+	
 	public void onCreateData(View view){//生成发送的数据
+		findViewById(R.id.ble_ll_tool).setVisibility(View.VISIBLE);
 		findViewById(R.id.ble_ll_format).setVisibility(View.VISIBLE);
 		findViewById(R.id.ble_ll_travel).setVisibility(View.VISIBLE);
 		findViewById(R.id.ble_ll_receive).setVisibility(View.VISIBLE);
@@ -189,7 +212,7 @@ public class BlueToothActivity extends BaseActivity {
 				}
 				byte[] send = ProtocolByteHandler.command(cmd, sendData);
 				String tv="发送出去的数据："+ProtocolTool.bytesToHexString(send);
-				tvSend.setText(tv);
+				tvSend.setText(tv+"\n");
 			}
 		}
 	}

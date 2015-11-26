@@ -537,6 +537,7 @@ public class BlueToothService extends BaseService {
 				break;
 			case BluetoothConnection.ACTION_DATA_AVAILABLE:
 				byte[] receiveData = (byte[]) msg.obj;
+//				byte[] receiveData={(byte)0xFE,(byte)0xfe,(byte)0x30,(byte)0x0e,(byte)0x00,(byte)0x01,(byte)0x00,(byte)0x00,(byte)0x00,(byte)0x00,(byte)0x00,(byte)0x00,(byte)0x25,(byte)0x00,(byte)0x00,(byte)0x00,(byte)0x00,(byte)0x00,(byte)0x5a,(byte)0xa7,(byte)0xbb};
 				printlnMessage("收到数据："
 						+ ProtocolTool.bytesToHexString(receiveData));
 				HashMap<String, Object> map = ProtocolByteHandler
