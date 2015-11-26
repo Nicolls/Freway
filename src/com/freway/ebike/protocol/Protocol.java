@@ -19,6 +19,8 @@ public class Protocol {
 	public static final int RESULT_DATA_WRONG=4;
 	/**数据最大长度*/
 	private static final int MAX_DATA_LENGTH=250;
+	/**蓝牙发送的数据包最大长度，如果一个数据超过这个长度那么蓝牙就会把他给分包发送，比如这个数据包长度为28，就会先发前面的20个数据再发剩下的8个数据。除去别的数据，如果一个数据长度大于14那么这个包就必须得分包发送*/
+	private static final int MAX_PACK_DATA=14;
 	/**标记*/
 	private static final String TAG="Protocol";
 	
@@ -208,17 +210,36 @@ public class Protocol {
 	 * @return boolean 返回解析状态，成功true，失败false
 	 * @Description 解析接收到的数据，在解析之前一定要初始化好数据，给PacketBytes赋值
 	 */
+	private static byte[]separate;//分包发送
 	public boolean parseBytes(byte[] parseDataBytes) {
 		boolean isOk=true;
 		this.packetBytes=parseDataBytes;
 		if(packetBytes==null){//空
+			separate=null;
 			this.resultCode=RESULT_DATA_EMPTY;
 			return false;
 		}
 		if(packetBytes.length==0){//空
+			separate=null;
 			this.resultCode=RESULT_DATA_EMPTY;
 			return false;
 		}
+		
+		//分包处理
+		if(separate!=null){//说明上一个包是个分包
+			byte[]temp=new byte[separate.length+parseDataBytes.length];
+			for(int i=0;i<temp.length;i++){
+				if(i<separate.length){
+					temp[i]=separate[i];
+				}else{
+					temp[i]=parseDataBytes[i];
+				}
+			}
+			parseDataBytes=temp;
+			this.packetBytes=parseDataBytes;
+			separate=null;
+		}
+		//正常处理
 		
 		try {//只要解析有错误，都是数据有问题
 			int j = 0;
@@ -246,6 +267,12 @@ public class Protocol {
 				return false;
 			}
 			
+			if(ProtocolTool.byteArrayToInt(dataLength)>MAX_PACK_DATA){//分包发送
+				separate=parseDataBytes;
+				return false;
+			}else{
+				separate=null;	
+			}
 			//参数
 			int dataSize=dataLength[0];
 			paramData=new byte[dataSize];

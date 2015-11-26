@@ -542,10 +542,12 @@ public class BlueToothService extends BaseService {
 						+ ProtocolTool.bytesToHexString(receiveData));
 				HashMap<String, Object> map = ProtocolByteHandler
 						.parseData(BlueToothService.this,receiveData);
-				broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA,BlueToothConstants.RESULT_SUCCESS,null);// 提示UI更新   //mark 现改成，发送数据的时候就提示UI更新，因为需要流畅的时间显示
-//				if(!isRequestData){//由于最后一次暂停 了，可能是没有发送出去。所以要把最后一次更新到UI上
-//					broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA,BlueToothConstants.RESULT_SUCCESS,null);
-//				}//mark 再次打开上面的广播UI，是因为如果是手动发送数据，就会出现，这次数据返回前，先更新UI，而数据回到这里后，没有更新UI，之前考虑到会耗性能，不过现在觉得一秒内发2，到3次广播，也是可以的。
+				if(map!=null){//说明本次接收到的数据没有问题
+					broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA,BlueToothConstants.RESULT_SUCCESS,null);// 提示UI更新   //mark 现改成，发送数据的时候就提示UI更新，因为需要流畅的时间显示
+//					if(!isRequestData){//由于最后一次暂停 了，可能是没有发送出去。所以要把最后一次更新到UI上
+//						broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA,BlueToothConstants.RESULT_SUCCESS,null);
+//					}//mark 再次打开上面的广播UI，是因为如果是手动发送数据，就会出现，这次数据返回前，先更新UI，而数据回到这里后，没有更新UI，之前考虑到会耗性能，不过现在觉得一秒内发2，到3次广播，也是可以的。
+				}
 				break;
 			case BluetoothConnection.ACTION_GATT_DISCONNECTED:
 				if (mRequestDataThread != null) {

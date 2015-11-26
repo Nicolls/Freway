@@ -63,21 +63,23 @@ public class ProtocolByteHandler {
 	 * */
 	public static HashMap<String,Object> parseData(Context context,byte[]receiveData) {
 		packData=receiveData;
+		HashMap<String,Object> map=null;
 		Protocol mProtocol = new Protocol();
-		mProtocol.parseBytes(receiveData);
-		HashMap<String,Object> map=new HashMap<String, Object>();
-		int cmd=ProtocolTool.byteArrayToInt(mProtocol.getCommandCode());
-		map.put(EXTRA_CMD, cmd);
-		map.put(EXTRA_CODE, mProtocol.getResultCode());
-		if(mProtocol.getResultCode()!=Protocol.RESULT_OK){//有错误
-			map.put(EXTRA_DATA, mProtocol.getResultMessage());
-		}else{
-			byte[]data=mProtocol.getParamData();
-			if(CommandCode.SURVEY_RESULT==cmd){//当前行程数据
-				EBikeTravelData.getInstance(context).parseBikeData(data);
-				map.put(EXTRA_DATA, null);
-			}else if(CommandCode.HISTORY==cmd){//历史数据
-				EBikeTravelData.getInstance(context).parseHistoryData(data);
+		if(mProtocol.parseBytes(receiveData)){//如果这个数据包是正确的才去操作，不正确就丢掉了
+			map=new HashMap<String, Object>();
+			int cmd=ProtocolTool.byteArrayToInt(mProtocol.getCommandCode());
+			map.put(EXTRA_CMD, cmd);
+			map.put(EXTRA_CODE, mProtocol.getResultCode());
+			if(mProtocol.getResultCode()!=Protocol.RESULT_OK){//有错误
+				map.put(EXTRA_DATA, mProtocol.getResultMessage());
+			}else{
+				byte[]data=mProtocol.getParamData();
+				if(CommandCode.SURVEY_RESULT==cmd){//当前行程数据
+					EBikeTravelData.getInstance(context).parseBikeData(data);
+					map.put(EXTRA_DATA, null);
+				}else if(CommandCode.HISTORY==cmd){//历史数据
+					EBikeTravelData.getInstance(context).parseHistoryData(data);
+				}
 			}
 		}
 		return map;
