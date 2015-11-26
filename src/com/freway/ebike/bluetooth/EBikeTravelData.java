@@ -374,6 +374,7 @@ public class EBikeTravelData implements Serializable {
 					temperature = ProtocolTool.byteArrayToInt(new byte[] { bikeData[9] });
 				}
 				if(bikeData.length>=12){
+					System.out.println("有循环数");
 					cycle_times=ProtocolTool.byteArrayToInt(new byte[]{bikeData[10],bikeData[11]});
 				}
 				// 下面对骑行状态进行转换。骑行状态：0-运动，1-电动 2-助力1,3-助力2,4-助力3

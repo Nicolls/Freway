@@ -157,7 +157,7 @@ public class BlueToothActivity extends BaseActivity {
 			ProtocolByteHandler.parseData(BlueToothActivity.this, ProtocolByteHandler.packData);
 			String data=ProtocolTool.bytesToHexString(ProtocolByteHandler.packData);
 			LogUtils.i(tag, data);
-			tvReceive.setText("收到的数据："+data+"\n\n");
+			tvReceive.setText("收到的原始数据："+data+"\n\n");
 			tvReceiveFormat.setText("格式化收到的数据："+EBikeTravelData.getInstance(BlueToothActivity.this).getControlValueText());
 		}
 		

@@ -19,8 +19,8 @@ public class Protocol {
 	public static final int RESULT_DATA_WRONG=4;
 	/**数据最大长度*/
 	private static final int MAX_DATA_LENGTH=250;
-	/**蓝牙发送的数据包最大长度，如果一个数据超过这个长度那么蓝牙就会把他给分包发送，比如这个数据包长度为28，就会先发前面的20个数据再发剩下的8个数据。除去别的数据，如果一个数据长度大于14那么这个包就必须得分包发送*/
-	private static final int MAX_PACK_DATA=14;
+	/**蓝牙发送的数据包最大长度，如果一个数据超过这个长度那么蓝牙就会把他给分包发送，比如这个数据包长度为28，就会先发前面的20个数据再发剩下的8个数据。除去别的数据，如果一个数据长度大于13那么这个包就必须得分包发送*/
+	private static final int MAX_PACK_DATA=13;
 	/**标记*/
 	private static final String TAG="Protocol";
 	
@@ -53,7 +53,8 @@ public class Protocol {
 	/**帧尾*/
 	private byte[] endSymbol;
 
-	
+	/**分包数据，用于存储需要分包的数据*/
+	private static byte[]separate;//分包发送
 	/**
 	 * create a new instance Protocol
 	 */
@@ -205,12 +206,12 @@ public class Protocol {
 		length=beginSymbol.length+commandCode.length+dataLength.length+paramData.length+crc16Code.length+endSymbol.length;
 		return length;
 	}
+	
 	/**
 	 * @param parseDataBytes 要解析的数据包
 	 * @return boolean 返回解析状态，成功true，失败false
 	 * @Description 解析接收到的数据，在解析之前一定要初始化好数据，给PacketBytes赋值
 	 */
-	private static byte[]separate;//分包发送
 	public boolean parseBytes(byte[] parseDataBytes) {
 		boolean isOk=true;
 		this.packetBytes=parseDataBytes;
@@ -227,16 +228,19 @@ public class Protocol {
 		
 		//分包处理
 		if(separate!=null){//说明上一个包是个分包
+			LogUtils.i(TAG,"上一个是分包数据:"+ProtocolTool.bytesToHexString(separate));
+			LogUtils.i(TAG,"这次收到的是剩下的分包数据："+ProtocolTool.bytesToHexString(parseDataBytes));
 			byte[]temp=new byte[separate.length+parseDataBytes.length];
 			for(int i=0;i<temp.length;i++){
 				if(i<separate.length){
 					temp[i]=separate[i];
 				}else{
-					temp[i]=parseDataBytes[i];
+					temp[i]=parseDataBytes[i-separate.length];
 				}
 			}
 			parseDataBytes=temp;
 			this.packetBytes=parseDataBytes;
+			LogUtils.i(TAG,"重新合回来后是："+ProtocolTool.bytesToHexString(parseDataBytes));
 			separate=null;
 		}
 		//正常处理
@@ -266,8 +270,9 @@ public class Protocol {
 				setResultMessage("数据长度超出范围");
 				return false;
 			}
-			
-			if(ProtocolTool.byteArrayToInt(dataLength)>MAX_PACK_DATA){//分包发送
+			//判断如果数据长度大于13说明得分包发送
+			if(ProtocolTool.byteArrayToInt(dataLength)>MAX_PACK_DATA&&parseDataBytes.length<=20){//如果数据部分长度大于13，并且包总长度是20，就是分包发送，因为有可能这个包是我们后面组合好了的。
+				System.out.println("数据长度大于13，分包发送");
 				separate=parseDataBytes;
 				return false;
 			}else{

@@ -516,7 +516,6 @@ public class BlueToothService extends BaseService {
 			startActivity(discoverableIntent);
 		}
 	}
-	
 	/**
 	 * The Handler that gets information back from the BluetoothChatService
 	 */
@@ -743,8 +742,7 @@ public class BlueToothService extends BaseService {
 				try {
 					Thread.sleep(REQUESTDATA_SPACING);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					LogUtils.e(tag, e.getMessage());
 				}
 			}
 			// Reset the ConnectThread because we're done
