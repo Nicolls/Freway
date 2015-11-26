@@ -58,12 +58,12 @@
             android:name="com.freway.ebike.activity.SignInActivity"
             android:launchMode="singleTop"
             android:label="@string/app_name" >
-            <!-- <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            第三方Twitter 当浏览器返回时可以打开这个Activity用于登录
+      <!--       第三方Twitter 当浏览器返回时可以打开这个Activity用于登录 -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -73,7 +73,7 @@
                 <data
                     android:host="@string/call_back_url"
                     android:scheme="http" />
-            </intent-filter>    -->
+            </intent-filter>    
         </activity>
         <activity android:name="com.freway.ebike.activity.SignUpActivity" >
         </activity>
@@ -98,11 +98,11 @@
             android:name="com.freway.ebike.bluetooth.BlueToothActivity"
             android:launchMode="singleTask"
              >
-       <intent-filter>
+     <!--   <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter> 
+            </intent-filter>  -->
         </activity>
         <activity
             android:name="com.freway.ebike.bluetooth.BLEScanConnectActivity"
