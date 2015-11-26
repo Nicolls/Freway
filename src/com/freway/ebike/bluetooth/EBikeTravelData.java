@@ -558,7 +558,7 @@ public class EBikeTravelData implements Serializable {
 				+ "\n-踏频量（圈/分钟）:" + cadence + "\n-骑行速度(km/h):" + insSpeed + "\n-平均速度(km/h):" + avgSpeed
 				+ "\n-最大速度(km/h):" + maxSpeed + "\n-累积骑行里程(km):" + distance + "\n-卡路里：" + calorie
 				+ "\n-电池的安时数(100mah):" + batteryAh + "\n-骑行状态改变标志:" + gear + "\n-剩余容量%:" + batteryResidueCapacity
-				+ "\n-剩余里程(km):" + remaindTravelCapacity + "\n-温度(℃):" + temperature + "\n\n";
+				+ "\n-剩余里程(km):" + remaindTravelCapacity + "\n-温度(℃):" + temperature +"\n循环次数:" + cycle_times + "\n\n";
 		return value;
 	}
 
