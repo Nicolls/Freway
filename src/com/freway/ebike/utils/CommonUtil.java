@@ -112,28 +112,13 @@ public class CommonUtil {
 	 *            精度数,2表示保留两位小数
 	 * */
 	public static float formatFloatAccuracy(float f, int accuracy) {
-		float temp = f;
-		BigDecimal bd = new BigDecimal((double) f);
-		bd = bd.setScale(accuracy, BigDecimal.ROUND_HALF_UP);
-		temp = bd.floatValue();
-		return temp;
-	}
-	
-	/**
-	 * 格式化浮点数为某一精度，4舍5入
-	 * 
-	 * @param f
-	 *            要格式化浮点值
-	 * @param accuracy
-	 *            精度数,2表示保留两位小数
-	 * @param roundingMode 舍入策略
-	 * */
-	public static float formatFloatAccuracy(float f, int accuracy,int roundingMode) {
-		float temp = f;
-		BigDecimal bd = new BigDecimal((double) f);
-		bd = bd.setScale(accuracy,roundingMode);
-		temp = bd.floatValue();
-		return temp;
+		int multiple=1;
+		for(int i=0;i<accuracy;i++){
+			multiple*=10;
+		}
+		f=Math.round(f*multiple);
+		f=f/multiple;
+		return f;
 	}
 	
 	/**将一个16进制字符串转成byte[]数组，字符串中不包含0x*/

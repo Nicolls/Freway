@@ -126,6 +126,7 @@ public class BlueToothService extends BaseService {
 					}
 					break;
 				case BlueToothConstants.HANDLE_SERVER_SEND_DATA:// 发送数据
+//					simulate();
 					Gson gson=new Gson();
 					String str=intent.getStringExtra(BlueToothConstants.EXTRA_DATA);
 					byte[]data=gson.fromJson(str, byte[].class);
@@ -155,6 +156,23 @@ public class BlueToothService extends BaseService {
 			}
 		}
 	};
+	//模拟数据
+/*	private void simulate(){
+		new Thread(){
+			public void run(){
+				int m=0;
+				while(true&&m<1000){
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					mHandler.sendEmptyMessage(BluetoothConnection.ACTION_DATA_AVAILABLE);
+					m++;
+				}
+			}
+		}.start();
+	}*/
 	
 	private Handler sendDataControl=new Handler(){
 
@@ -537,6 +555,8 @@ public class BlueToothService extends BaseService {
 			case BluetoothConnection.ACTION_DATA_AVAILABLE:
 				byte[] receiveData = (byte[]) msg.obj;
 //				byte[] receiveData={(byte)0xFE,(byte)0xfe,(byte)0x30,(byte)0x0e,(byte)0x00,(byte)0x01,(byte)0x00,(byte)0x00,(byte)0x00,(byte)0x00,(byte)0x00,(byte)0x00,(byte)0x25,(byte)0x00,(byte)0x00,(byte)0x00,(byte)0x00,(byte)0x00,(byte)0x5a,(byte)0xa7,(byte)0xbb};
+//				byte[] receiveData={(byte)0xfe,(byte)0xfe,(byte)0x30,(byte)0x0c,(byte)0x45,(byte)0x4f,(byte)0x00,(byte)0x00,(byte)0x00,(byte)0x00,(byte)0x01,(byte)0x00,(byte)0x00,(byte)0x00,(byte)0x32,(byte)0x19,(byte)0x87,(byte)0xec,(byte)0xbb};
+
 				printlnMessage("收到数据："
 						+ ProtocolTool.bytesToHexString(receiveData));
 				HashMap<String, Object> map = ProtocolByteHandler
