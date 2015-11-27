@@ -314,7 +314,7 @@ public class EBikeTravelData implements Serializable {
 	 * @param data
 	 * @Description 格式化数据
 	 */
-	public void parseBikeData(byte[] data) {
+	public synchronized void parseBikeData(byte[] data) {
 		if(data!=null&&data.length>=2){
 			byte[] controlState = new byte[2];
 			byte[] bikeData = new byte[data.length - 2];
@@ -348,6 +348,7 @@ public class EBikeTravelData implements Serializable {
 			assisMode = controlArray[1]; // 助力模式
 			elecMode = controlArray[0]; // 电动模式
 			// 骑行数据
+			float speedTemp=0;
 			for (int i = 0; i < bikeData.length; i++) {
 				bikeData[i] = data[i + 2];
 			}
@@ -356,7 +357,7 @@ public class EBikeTravelData implements Serializable {
 					cal_tempCadence = ProtocolTool.byteArrayToInt(new byte[] { bikeData[0], bikeData[1] });
 				}
 				if(bikeData.length>=4){
-					insSpeed = formatInsSpeed(ProtocolTool.byteArrayToInt(new byte[] { bikeData[2], bikeData[3] }));//在计算值之前，先用分段法处理一下得到的速度
+					speedTemp=ProtocolTool.byteArrayToInt(new byte[] { bikeData[2], bikeData[3] });
 				}
 				if(bikeData.length>=6){
 					cal_tempDistance = ProtocolTool.byteArrayToInt(new byte[] { bikeData[4], bikeData[5] });
@@ -389,13 +390,14 @@ public class EBikeTravelData implements Serializable {
 				}
 			}
 			cal_tempCalorie = cal_tempCadence / 10 * WHEEL_VALUE * 655 / 21000000;// 圈/每分钟
-			insSpeed = insSpeed * 1200 * WHEEL_VALUE / 1000 / 1000;// 单位：km/h
+			speedTemp = speedTemp * 1200f * WHEEL_VALUE / 1000 / 1000;// 单位：km/h
+			insSpeed = formatInsSpeed(speedTemp);//在计算值之前，先用分段法处理一下得到的速度
 			cal_tempDistance = cal_tempDistance * WHEEL_VALUE / 1000 / 1000; // 单位：km
 			if (batteryAh <= 20) {
 				batteryAh = 78;
 			}
 			remaindTravelCapacity = batteryResidueCapacity * batteryAh * 12 / 780;// 公里（千米）
-//			simulateData();// 模拟数据
+			//simulateData();// 模拟数据
 			if (isNewTravel) {// 新的骑行
 				insSpeed = 0;
 				avgSpeed = 0;
@@ -513,7 +515,6 @@ public class EBikeTravelData implements Serializable {
 					cal_startCadence = cal_tempCadence;
 					cal_startTime = cal_tempSpendTime;
 				}
-
 				// 记录是每一百米一次，所以每次都插入一个记录速度
 				TravelSpeed travelSpeed = new TravelSpeed();
 				travelSpeed.setTravelId(travelId);
