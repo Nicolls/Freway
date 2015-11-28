@@ -15,11 +15,11 @@
     <dimen name="dialog_btn_left_right">10dp</dimen>
     <dimen name="twitter_web_progress_marginRight">20dp</dimen>
     <!-- sign in -->
-    <dimen name="sign_logo_marginTop">108dp</dimen>
-    <dimen name="sign_input_layout_margin">35dp</dimen>
+    <dimen name="sign_logo_marginTop">90dp</dimen>
+    <dimen name="sign_input_layout_margin">25dp</dimen>
     <dimen name="sign_input_layout_paddingHorizontal">30dp</dimen>
     <dimen name="sign_input_layout_paddingVertical">25dp</dimen>
-    <dimen name="sign_et_spacing">24dp</dimen>
+    <dimen name="sign_et_spacing">20dp</dimen>
     <dimen name="sign_et_paddingHorizontal">8dp</dimen>
     <dimen name="sign_et_drawable_padding">8dp</dimen>
     <dimen name="sign_tip_maringVertical">10dp</dimen>
@@ -67,16 +67,16 @@
     <!-- home -->
     <dimen name="home_compass_profile_ll_margin">20dp</dimen>
 	<!-- profile -->
-	<dimen name="profile_pic_width_height">130dp</dimen>
+	<dimen name="profile_pic_width_height">100dp</dimen>
 	<dimen name="profile_pic_padding">5dp</dimen>
-	<dimen name="profile_pic_margin">40dp</dimen>
+	<dimen name="profile_pic_margin">30dp</dimen>
 	<dimen name="profile_name_margin">10dp</dimen>
 	<dimen name="profile_total_time_ver_spacing">5dp</dimen>
 	<dimen name="profile_total_time_hor_spacing">1dp</dimen>
 	<dimen name="profile_pic_text_padding">5dp</dimen>
-	<dimen name="profile_imagebutton_ll_paddingHorizontal">30dp</dimen>
-	<dimen name="profile_imagebutton_ll_paddingVertical">10dp</dimen>
-	<dimen name="profile_imagebutton_tv_marginLeft">60dp</dimen>
+	<dimen name="profile_imagebutton_ll_paddingHorizontal">25dp</dimen>
+	<dimen name="profile_imagebutton_ll_paddingVertical">5dp</dimen>
+	<dimen name="profile_imagebutton_tv_marginLeft">50dp</dimen>
 	<!-- setting -->
 	<dimen name="setting_pic_width_height">80dp</dimen>
 	<dimen name="setting_ll_padding_horizontal">30dp</dimen>
