@@ -117,21 +117,6 @@
             </intent-filter>
             -->
         </activity>
-        <activity
-            android:name="com.freway.ebike.activity.FrewayMapActivity"
-            android:label="map"
-            android:screenOrientation="portrait" >
-
-            <!--
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            -->
-        </activity>
-        <activity android:name="com.freway.ebike.map.FrewayHistoryMapActivity" >
-        </activity>
         <!-- 第三方Twitter -->
         <activity
             android:name="com.freway.ebike.twitter.TwitterWebActivity"
