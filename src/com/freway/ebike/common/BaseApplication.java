@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Handler;
 import android.os.Message;
+import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
 import com.facebook.FacebookSdk;
@@ -24,7 +25,7 @@ import com.freway.ebike.utils.SPUtils;
 /**
  * Application基类
  * */
-public class BaseApplication extends Application{
+public class BaseApplication extends MultiDexApplication{
 
 	public static long travelId=-1;
 	public static int travelState=TravelConstant.TRAVEL_STATE_NONE;

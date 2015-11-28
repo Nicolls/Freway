@@ -141,12 +141,12 @@ public class MapUtil implements OnCameraChangeListener {
 	}
 
 	/** 完成行程 */
-	public void completedTravel(long travelId) {
-		LogUtils.i(TAG, "travelId==" + travelId);
-		Intent intent = new Intent(context, FrewayHistoryMapActivity.class);
-		intent.putExtra("travelId", travelId);
-		context.startActivity(intent);
-	}
+//	public void completedTravel(long travelId) {
+//		LogUtils.i(TAG, "travelId==" + travelId);
+//		Intent intent = new Intent(context, FrewayHistoryMapActivity.class);
+//		intent.putExtra("travelId", travelId);
+//		context.startActivity(intent);
+//	}
 
 	/** 移动相机 */
 	public void moveCamera(TravelLocation location) {
@@ -207,7 +207,7 @@ public class MapUtil implements OnCameraChangeListener {
 				if (current != null) {
 					LogUtils.i(TAG,
 							"终点：" + current.getLocation().getLatitude() + "--" + current.getLocation().getLongitude());
-					completedTravel(travelId);
+//					completedTravel(travelId);
 				} else {
 					LogUtils.i(TAG, "行程过短，不保存");
 				}
