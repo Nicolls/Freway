@@ -54,9 +54,11 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	/** 骑行状态view */
 	private View travelStateView;
 	/** 分隔线用于显示电池view,点击第一次显示，点击第二次隐藏 */
-	private View lineTopView;
+	private View lineBikeStateView;
 	/** 分隔线用于显示速度view */
-	private View lineBottomView;
+	private View lineTravelStateView;
+	/** 分隔线用于显示速度view */
+	private View lineBatteryStateView;
 	private ImageButton mModelBtn;
 	private ImageView mProfileView;
 	private ImageView mLogo;
@@ -158,8 +160,9 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		speedStateContent = findViewById(R.id.speed_state_content);
 		batteryStateView = findViewById(R.id.home_battery_view);
 		travelStateView = findViewById(R.id.home_travel_state);
-		lineTopView = findViewById(R.id.home_view_line_top);
-		lineBottomView = findViewById(R.id.home_view_line_bottom);
+		lineBikeStateView = findViewById(R.id.home_view_line_bike_state);
+		lineTravelStateView = findViewById(R.id.home_view_line_travel_state);
+		lineBatteryStateView = findViewById(R.id.home_view_line_battery_state);
 		mProfileView = (ImageView) findViewById(R.id.home_ib_profile);
 		mModelBtn = (ImageButton) findViewById(R.id.home_top_bar_model);
 		mLogo = (ImageView) findViewById(R.id.home_top_bar_logo);
@@ -304,8 +307,9 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		mBatteryStateLightFront.setOnClickListener(this);
 		mBatteryStateLightBack.setOnClickListener(this);
 
-		lineTopView.setOnClickListener(this);
-		lineBottomView.setOnClickListener(this);
+		lineBikeStateView.setOnClickListener(this);
+		lineTravelStateView.setOnClickListener(this);
+		lineBatteryStateView.setOnClickListener(this);
 
 		mSpeedStateArrowTopView.setOnClickListener(this);
 		mSpeedStateArrowBottomView.setOnClickListener(this);
@@ -440,8 +444,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		travelStateView.setVisibility(View.GONE);
 		speedStateView.setVisibility(View.VISIBLE);
 		batteryStateView.setVisibility(View.GONE);
-		lineTopView.setVisibility(View.GONE);
-		lineBottomView.setVisibility(View.GONE);
+		lineBikeStateView.setVisibility(View.GONE);
 	}
 	protected abstract void uiInitCompleted();
 
@@ -657,47 +660,45 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		case R.id.battery_state_light_back:
 
 			break;
-		case R.id.home_view_line_top:
-			v.setSelected(!v.isSelected());
-			if (v.isSelected()) {
-				bikeStateView.setVisibility(View.GONE);
-				travelStateView.setVisibility(View.VISIBLE);
-				speedStateView.setVisibility(View.GONE);
-				batteryStateView.setVisibility(View.VISIBLE);
-				lineTopView.setVisibility(View.VISIBLE);
-				lineBottomView.setVisibility(View.VISIBLE);
-			} else {
-				bikeStateView.setVisibility(View.VISIBLE);
-				travelStateView.setVisibility(View.VISIBLE);
-				speedStateView.setVisibility(View.GONE);
-				batteryStateView.setVisibility(View.GONE);
-				lineTopView.setVisibility(View.VISIBLE);
-				lineBottomView.setVisibility(View.VISIBLE);
-			}
+		case R.id.home_view_line_bike_state:
+			bikeStateView.setVisibility(View.GONE);
+			travelStateView.setVisibility(View.VISIBLE);
+			speedStateView.setVisibility(View.GONE);
+			batteryStateView.setVisibility(View.VISIBLE);
+			lineBikeStateView.setVisibility(View.VISIBLE);
+//			lineTravelStateView.setVisibility(View.VISIBLE);
 			break;
-		case R.id.home_view_line_bottom:
+		case R.id.home_view_line_battery_state:
+			bikeStateView.setVisibility(View.VISIBLE);
+			travelStateView.setVisibility(View.VISIBLE);
+			speedStateView.setVisibility(View.GONE);
+			batteryStateView.setVisibility(View.GONE);
+			lineBikeStateView.setVisibility(View.VISIBLE);
+//			lineTravelStateView.setVisibility(View.VISIBLE);
+			break;
+		case R.id.home_view_line_travel_state:
 			bikeStateView.setVisibility(View.VISIBLE);
 			travelStateView.setVisibility(View.GONE);
 			speedStateView.setVisibility(View.VISIBLE);
 			batteryStateView.setVisibility(View.GONE);
-			lineTopView.setVisibility(View.GONE);
-			lineBottomView.setVisibility(View.GONE);
+			lineBikeStateView.setVisibility(View.GONE);
+//			lineTravelStateView.setVisibility(View.GONE);
 			break;
 		case R.id.speed_state_arrow_top:
 			bikeStateView.setVisibility(View.GONE);
 			travelStateView.setVisibility(View.VISIBLE);
 			speedStateView.setVisibility(View.GONE);
 			batteryStateView.setVisibility(View.VISIBLE);
-			lineTopView.setVisibility(View.VISIBLE);
-			lineBottomView.setVisibility(View.VISIBLE);
+			lineBikeStateView.setVisibility(View.VISIBLE);
+//			lineTravelStateView.setVisibility(View.VISIBLE);
 			break;
 		case R.id.speed_state_arrow_bottom:
 			bikeStateView.setVisibility(View.VISIBLE);
 			travelStateView.setVisibility(View.VISIBLE);
 			speedStateView.setVisibility(View.GONE);
 			batteryStateView.setVisibility(View.GONE);
-			lineTopView.setVisibility(View.VISIBLE);
-			lineBottomView.setVisibility(View.VISIBLE);
+			lineBikeStateView.setVisibility(View.VISIBLE);
+//			lineTravelStateView.setVisibility(View.VISIBLE);
 			break;
 		default:
 			break;
@@ -721,8 +722,8 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		if (SPUtils.getUiModel(this) == EBConstant.MODEL_NIGHT) {// 由day到night
 			// 电池
 			mLogo.setImageResource(R.drawable.home_freway_logo_night);
-			lineTopView.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
-			lineBottomView.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
+			lineBikeStateView.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
+			lineTravelStateView.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
 			topBarView.setBackgroundColor(getResources().getColor(R.color.model_night_bar_background));
 			bikeStateView.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
 			speedStateContent.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
@@ -751,8 +752,8 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			mBatteryStateGearText.setTextColor(getResources().getColor(R.color.white));
 		} else {// 由night到day
 			mLogo.setImageResource(R.drawable.home_freway_logo_day);
-			lineTopView.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));
-			lineBottomView.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));
+			lineBikeStateView.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));
+			lineTravelStateView.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));
 			topBarView.setBackgroundColor(getResources().getColor(R.color.model_day_bar_background));
 			bikeStateView.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));
 			speedStateContent.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));

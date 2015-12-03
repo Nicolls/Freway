@@ -17,40 +17,61 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/home_top_bar" >
 
-        <include
+        <LinearLayout 
             android:id="@+id/home_bike_state"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+             <include
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             layout="@layout/layout_home_bike_state" />
+              <include
+            android:id="@+id/home_view_line_bike_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/view_line_space" />
+        </LinearLayout>
 
-        <include
+        <LinearLayout 
             android:id="@+id/home_battery_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/home_bike_state"
+            android:visibility="gone"
+            android:orientation="vertical"
+            >
+            <include
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             layout="@layout/layout_home_battery_state"
-            android:visibility="gone" />
-
-        <include
-            android:id="@+id/home_view_line_top"
+             />
+              <include
+            android:id="@+id/home_view_line_battery_state"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/home_battery_view"
             layout="@layout/view_line_space" />
+        </LinearLayout>
+        
 
-        <include
+        <LinearLayout 
             android:id="@+id/home_travel_state"
+             android:layout_below="@id/home_battery_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/home_view_line_top"
+            android:orientation="vertical"
+            >
+             <include
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             layout="@layout/layout_home_travel_state" />
-
-        <include
-            android:id="@+id/home_view_line_bottom"
+              <include
+            android:id="@+id/home_view_line_travel_state"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/home_travel_state"
             layout="@layout/view_line_space" />
+        </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout
