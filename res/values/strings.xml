@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">eBike</string>
+    <string name="app_name">Freway</string>
 
     <!-- 第三方sdk -->
     <string name="app_id">1668278680085158</string>
