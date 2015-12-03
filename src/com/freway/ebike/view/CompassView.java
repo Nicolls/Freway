@@ -25,12 +25,16 @@ public class CompassView extends ImageView {
 	private Drawable compass;// 图片资源
 	public CompassView(Context context) {
 		super(context);
-		init();
+		if(!isInEditMode()){
+			init();
+		}
 	}
 
 	public CompassView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		init();
+		if(!isInEditMode()){
+			init();
+		}
 	}
 
 	final SensorEventListener myListener = new SensorEventListener() {
