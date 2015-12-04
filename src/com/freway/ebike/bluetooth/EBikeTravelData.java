@@ -436,6 +436,7 @@ public class EBikeTravelData implements Serializable {
 				altitude += altitude;// 海拔
 				if(insSpeed==0){//只要速度为0那么踏频量就要为0
 					cal_recordCadence=0;
+					cadence=0;
 				}
 				if (spendTime != 0) {
 					cadence = cal_recordCadence / spendTime * 60f;// 每分钟踏频量
