@@ -71,7 +71,7 @@ public class BlueToothService extends BaseService {
 	private boolean isReconnectRunning = false;// 开启断线重新链接
 	// 获取数据心跳线程
 	private RequestDataThread mRequestDataThread;// 每隔一段时间去获取数据
-	private static final int REQUESTDATA_SPACING = 1 * 1000;// 间隔时间，毫秒
+	private static final int REQUESTDATA_SPACING = 1 * 200;// 间隔时间，毫秒
 	private boolean isRequestDataRunning = true;// 开启获取数据
 	private boolean isRequestData = true;// 判断是否要获取数据
 

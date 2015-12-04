@@ -486,12 +486,14 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		float distance = EBikeTravelData.getInstance(this).distance;
 		float calorie = EBikeTravelData.getInstance(this).calorie;
 		float cadence = EBikeTravelData.getInstance(this).cadence;
+		float remaindTravelCapacity= EBikeTravelData.getInstance(this).remaindTravelCapacity;
 		String spendTime = TimeUtils.formatTimeSSToHMS(EBikeTravelData.getInstance(this).spendTime) + "";
 		if (distanUnit == EBConstant.DISTANCE_UNIT_MPH) {
 			speed = speed / 1.6f;//km/h->mph
 			avgSpeed = avgSpeed / 1.6f;//km/h->mph
 			altitude=altitude*0.6f;//km->mi
 			distance=distance*0.6f;//km->mi
+			remaindTravelCapacity=remaindTravelCapacity*0.6f;//km->mi
 		}
 
 		// 格式化精度
@@ -501,13 +503,17 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		distance = CommonUtil.formatFloatAccuracy(distance, 1);
 		cadence = CommonUtil.formatFloatAccuracy(cadence, 0);
 		calorie = CommonUtil.formatFloatAccuracy(calorie, 1);
+		remaindTravelCapacity = CommonUtil.formatFloatAccuracy(remaindTravelCapacity, 1);
 
 		// 车况
 		mBikeStateBatteryView.onValueChange(EBikeTravelData.getInstance(this).batteryResidueCapacity, model,
 				EBikeTravelData.getInstance(this).gear, false);
 		mBikeStateBatteryPercent.setText(EBikeTravelData.getInstance(this).batteryResidueCapacity + "%");
-		mBikeStateBatteryRemaindValue
-				.setText(EBikeTravelData.getInstance(this).remaindTravelCapacity + "" + getString(R.string.km));
+		if (distanUnit == EBConstant.DISTANCE_UNIT_MPH) {
+			mBikeStateBatteryRemaindValue.setText(remaindTravelCapacity + "" + getString(R.string.mi));
+		}else{
+			mBikeStateBatteryRemaindValue.setText(remaindTravelCapacity + "" + getString(R.string.km));
+		}
 		mBikeStateGearValue.setText(EBikeTravelData.getInstance(this).gear + "");
 		if (EBikeTravelData.getInstance(this).frontLed == EBConstant.ON) {
 			mBikeStateLightFront.setSelected(true);
@@ -566,7 +572,12 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		mBatteryStateBatteryView.onValueChange(EBikeTravelData.getInstance(this).batteryResidueCapacity, model,
 				EBikeTravelData.getInstance(this).gear, true);
 		mBatteryStateBatteryPercent.setText(EBikeTravelData.getInstance(this).batteryResidueCapacity + "%");
-		mBatteryStateRemaindValue.setText(EBikeTravelData.getInstance(this).remaindTravelCapacity + "");
+		mBatteryStateRemaindValue.setText(remaindTravelCapacity + "");
+		if (distanUnit == EBConstant.DISTANCE_UNIT_MPH) {
+			mBatteryStateRemaindUnit.setText(getString(R.string.mi));
+		}else{
+			mBatteryStateRemaindUnit.setText(getString(R.string.km));
+		}
 		if (EBikeTravelData.getInstance(this).frontLed == EBConstant.ON) {
 			mBatteryStateLightFront.setSelected(true);
 		} else {

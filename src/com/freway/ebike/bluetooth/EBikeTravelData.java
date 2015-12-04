@@ -434,6 +434,9 @@ public class EBikeTravelData implements Serializable {
 				calorie += (cal_endCalorie - cal_startCalorie);// 卡路里
 				cal_recordCadence += (cal_endCadence - cal_startCadence);// 踏频
 				altitude += altitude;// 海拔
+				if(insSpeed==0){//只要速度为0那么踏频量就要为0
+					cal_recordCadence=0;
+				}
 				if (spendTime != 0) {
 					cadence = cal_recordCadence / spendTime * 60f;// 每分钟踏频量
 				}
@@ -551,6 +554,7 @@ public class EBikeTravelData implements Serializable {
 		distance = CommonUtil.formatFloatAccuracy(distance, 3);
 		cadence = CommonUtil.formatFloatAccuracy(cadence, 0);
 		calorie = CommonUtil.formatFloatAccuracy(calorie, 3);
+		remaindTravelCapacity= CommonUtil.formatFloatAccuracy(distance, 3);
 	}
 
 	public String getControlValueText() {

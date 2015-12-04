@@ -15,6 +15,7 @@ import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -67,6 +68,7 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 		mTvMessage=(TextView) findViewById(R.id.ble_tv_message);
 		listView = (ListView) findViewById(R.id.bluetooth_listview);
 		listView.setOnItemClickListener(this);
+		data.clear();
 		adapter = new BleScanAdapter(this);
 		adapter.setData(data);
 		listView.setAdapter(adapter);
@@ -74,6 +76,7 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 	}
 
 	private void handle(String message) {
+		data.clear();
 		mTvMessage.setText(message);
 		pb.setVisibility(View.VISIBLE);
 		if (handle == HANDLE_SCAN) {
@@ -82,7 +85,6 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 			mBtnScan.setVisibility(View.GONE);
 			mBtnManual.setVisibility(View.GONE);
 			mBtnConfirm.setVisibility(View.VISIBLE);
-			data.clear();
 			mBlueToothUtil.scanDevice(searchHandler);
 		}else if(handle==HANDLE_CONNECT){
 			mTvTitle.setText("Not been bind ble ,start connectting");
@@ -139,13 +141,24 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 				BluetoothDevice device = (BluetoothDevice) msg.obj;
 				LogUtils.i("Blescanconnect", "看我扫到了什么－－"+device.getName());
 				if (device!=null) {
-					data.add(device);
-					adapter.notifyDataSetChanged();
+					boolean isExit=false;
+					for(BluetoothDevice d:data){
+						if(TextUtils.equals(d.getAddress(), device.getAddress())){
+							isExit=true;
+							break;
+						}
+					}
+					if(!isExit){
+						data.add(device);
+						adapter.notifyDataSetChanged();
+					}
 				}
 			}
 		}
 
 	};
+	
+	
 
 	private Handler blueHandler = new Handler() {
 
