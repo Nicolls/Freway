@@ -132,7 +132,7 @@ public class MapUtil implements OnCameraChangeListener {
 			LatLng to = new LatLng(paintToLocation.getLocation().getLatitude(),
 					paintToLocation.getLocation().getLongitude());
 			if(paintFromLocation.isPause()){
-				poly.add(from, to).width(POLY_LINE_WIDTH).color(Color.parseColor("#242b35"));
+				poly.add(from, to).width(POLY_LINE_WIDTH).color(Color.parseColor("#9B0000"));
 			}else{
 				poly.add(from, to).width(POLY_LINE_WIDTH).color(Color.parseColor("#e10019"));
 			}

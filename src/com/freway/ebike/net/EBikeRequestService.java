@@ -11,7 +11,7 @@ public interface EBikeRequestService {
 
 	/**
 	 * 接口测试
-	 * http://www.ifreway.com/app/index.php/service/test
+	 * http://app.ifreway.com/service/test  
 	 * */
 	/**请求出错*/
 	static final int ID_REQUEST_ERROR = -1;

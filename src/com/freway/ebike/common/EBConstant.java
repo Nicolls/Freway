@@ -40,7 +40,7 @@ public class EBConstant {
 	
 	/** 概览页面资源利用 率html */
 	public static final String APP_DOWNLOAD_APK_NAME = "eBike.apk";
-	public static final String DEFAULT_HOST="www.ifreway.com/app/index.php";
+	public static final String DEFAULT_HOST="app.ifreway.com/index.php";
 	public static final int DEFAULT_PORT = 0;
 	public static final String DEFAULT_KEY="tESTfORaPP2015";//私钥
 	/** 统一时间格式化 */

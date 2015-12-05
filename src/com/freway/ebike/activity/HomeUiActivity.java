@@ -999,7 +999,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		}
 	}
 
-	private static final int ANIM_SPACING = 200;
+	private static final int ANIM_SPACING = 100;
 
 	private void handleTouch(int id, float distance) {
 		switch (id) {
