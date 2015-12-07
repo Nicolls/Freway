@@ -98,7 +98,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	private TextView mTravelStateCadenceValue;
 	private TextView mTravelStateCadenceUnit;
 	// 速度
-	private ImageView mSpeedStateArrowTopView;
+	private View mSpeedStateArrowTopView;
 	private ImageView mSpeedStateArrowBottomView;
 	private ImageView mSpeedStateCicleHolder;
 	private SpeedView mSpeedStateSpeedView;
@@ -223,7 +223,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		mTravelStateCadenceValue = (TextView) findViewById(R.id.travel_state_cadence_value);
 		mTravelStateCadenceUnit = (TextView) findViewById(R.id.travel_state_cadence_unit);
 		// 速度
-		mSpeedStateArrowTopView = (ImageView) findViewById(R.id.speed_state_arrow_top);
+		mSpeedStateArrowTopView = findViewById(R.id.speed_state_arrow_top);
 		mSpeedStateArrowBottomView = (ImageView) findViewById(R.id.speed_state_arrow_bottom);
 		mSpeedStateCicleHolder = (ImageView) findViewById(R.id.speed_state_cicle_view);
 		mSpeedStateSpeedView = (SpeedView) findViewById(R.id.speed_state_speed_view);
@@ -877,7 +877,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			speedStateContent.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
 			batteryStateView.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
 			travelStateView.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
-			mSpeedStateArrowTopView.setBackgroundResource(R.drawable.speed_state_view_arrow_top_night);
+			mSpeedStateArrowTopView.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
 			mSpeedStateArrowBottomView.setBackgroundResource(R.drawable.speed_state_view_arrow_bottom_night);
 			mBatteryStateBatteryPercent.setCompoundDrawablesWithIntrinsicBounds(R.drawable.battery_pic_night, 0, 0, 0);
 			// text
@@ -907,7 +907,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			speedStateContent.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));
 			batteryStateView.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));
 			travelStateView.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));
-			mSpeedStateArrowTopView.setBackgroundResource(R.drawable.speed_state_view_arrow_top_day);
+			mSpeedStateArrowTopView.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));
 			mSpeedStateArrowBottomView.setBackgroundResource(R.drawable.speed_state_view_arrow_bottom_day);
 			mBatteryStateBatteryPercent.setCompoundDrawablesWithIntrinsicBounds(R.drawable.battery_pic_day, 0, 0, 0);
 

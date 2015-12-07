@@ -4,12 +4,18 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <ImageView
+    <LinearLayout 
         android:id="@+id/speed_state_arrow_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/speed_state_view_arrow_top_day" />
-
+        android:orientation="vertical"
+        android:background="@color/model_day_view_background"
+        >
+        <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/speed_state_view_arrow_alpha" />
+    </LinearLayout>
     <RelativeLayout
         android:id="@+id/speed_state_content"
         android:layout_width="match_parent"
