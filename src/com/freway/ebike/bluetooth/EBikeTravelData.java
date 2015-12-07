@@ -34,7 +34,7 @@ public class EBikeTravelData implements Serializable {
 	 */
 	private static final int RECORD_TIME_FRE = 100;// 每100秒记录一次
 	/**
-	 * @Fields MUST_MIN_TRAVEL 归短行程，要记录的行程至少要大于最短行程，否则丢弃
+	 * @Fields MUST_MIN_TRAVEL 最短行程，要记录的行程至少要大于最短行程，否则丢弃
 	 */
 	public static final float MUST_MIN_TRAVEL = 10;// 最短行程10米
 	// 行程data
