@@ -205,10 +205,11 @@ public class UploadImageUtil {
 			params = sb.toString();
 			sb = null;
 
-			Log.i(TAG, file.getName() + "=" + params + "##");
+			LogUtils.i(TAG, file.getName() + "=" + params + "##");
 			dos.write(params.getBytes());
 			/** 上传文件 */
 			InputStream is = new FileInputStream(file);
+			if(onUploadProcessListener!=null)
 			onUploadProcessListener.initUpload((int) file.length());
 			byte[] bytes = new byte[1024];
 			int len = 0;
@@ -216,6 +217,7 @@ public class UploadImageUtil {
 			while ((len = is.read(bytes)) != -1) {
 				curLen += len;
 				dos.write(bytes, 0, len);
+				if(onUploadProcessListener!=null)
 				onUploadProcessListener.onUploadProcess(curLen);
 			}
 			is.close();
@@ -232,9 +234,9 @@ public class UploadImageUtil {
 			int res = conn.getResponseCode();
 			responseTime = System.currentTimeMillis();
 			this.requestTime = (int) ((responseTime - requestTime) / 1000);
-			Log.e(TAG, "response code:" + res);
+			LogUtils.i(TAG, "http码:" + res);
 			if (res == 200) {
-				LogUtils.i(TAG, "request success");
+				LogUtils.i(TAG, "上传成功");
 				InputStream input = conn.getInputStream();
 				StringBuffer sb1 = new StringBuffer();
 				int ss;
@@ -272,6 +274,7 @@ public class UploadImageUtil {
 	 * @param responseMessage
 	 */
 	private void sendMessage(int responseCode, String responseMessage) {
+		if(onUploadProcessListener!=null)
 		onUploadProcessListener.onUploadDone(responseCode, responseMessage);
 	}
 

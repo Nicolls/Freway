@@ -420,7 +420,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			updateUiUser(user);
 			break;
 		case EBikeRequestService.ID_PHOTO:
-			final RspUpdatePhoto rsp=(RspUpdatePhoto) obj;
+		    RspUpdatePhoto rsp=(RspUpdatePhoto) obj;
 			user.setPhoto(rsp.getData().getUrl());
 			SPUtils.setUser(SettingActivity.this, user);
 			ToastUtils.toast(SettingActivity.this, getString(R.string.update_profile_success));
