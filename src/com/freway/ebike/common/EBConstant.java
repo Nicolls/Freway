@@ -2,6 +2,7 @@ package com.freway.ebike.common;
 
 /** 常量类 */
 public class EBConstant {
+
 	/**存储文件夹*/
 	public static final String DIR_FREWAY="/freway";
 	/**第三方登录分享*/

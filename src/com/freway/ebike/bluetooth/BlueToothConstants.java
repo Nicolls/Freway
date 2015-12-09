@@ -59,7 +59,10 @@ public interface BlueToothConstants {
      * @Fields HANDLE_SERVER_SEND_DATA 发送数据
      */
     public static final int HANDLE_SERVER_SEND_DATA=4;
-    
+    /**
+     * @Fields HANDLE_SERVER_SEND_DATA 断开蓝牙链接
+     */
+    public static final int HANDLE_SERVER_DISCONNECT=5;
     /**
      * @Fields BLUETOOTH_ACTION_HANDLE_SERVER 控制服务扫描结果返回
      */

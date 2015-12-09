@@ -36,7 +36,7 @@ public class EBikeTravelData implements Serializable {
 	/**
 	 * @Fields MUST_MIN_TRAVEL 最短行程，要记录的行程至少要大于最短行程，否则丢弃
 	 */
-	public static final float MUST_MIN_TRAVEL = 10;// 最短行程10米
+	public static final float MUST_MIN_TRAVEL = 0.1f;//单位km 最短行程0.1km-->100米
 	// 行程data
 	/**
 	 * @Fields travelId 行程ID
@@ -207,7 +207,7 @@ public class EBikeTravelData implements Serializable {
 	private SpendTimeThread spendTimeThread = null;
 	// 存储连续速度为0的点，每一秒存一个，如果连续为0的点超过5个就暂停骑行。
 	private static final int MAX_LIMIT_ZERO_SPEED = 5;
-	private int zeroSpeed = 0;
+	private int zeroSpeedCount = 0;//速度为0的次数
 	private NetUtil netUtil;
 	// 历史记录
 	/**
@@ -231,22 +231,28 @@ public class EBikeTravelData implements Serializable {
 
 	public void start(long id, int type) {
 		this.type = type;
-		zeroSpeed = 0;
+		zeroSpeedCount = 0;
+		spendTime=0;
+		insSpeed=0;
+		cadence=0;
+		calorie=0;
+		distance=0;
 		travelId = id;
 		isNewTravel = true;
 		startTime = Calendar.getInstance().getTimeInMillis();
 		endTime = startTime;
+		isCalUiTime = true;
+		isPauseTime = false;
 		if (spendTimeThread == null) {
 			if (type == TravelConstant.TRAVEL_TYPE_IM) {
 				spendTimeThread = new SpendTimeThread();
 				spendTimeThread.start();
 			}
 		}
-		isPauseTime = false;
 	}
 
 	public void pause() {
-		zeroSpeed = 0;
+		zeroSpeedCount = 0;
 		insSpeed = 0;
 		// cal_startTime=cal_endTime;
 		// cal_startAltitude = cal_endAltitude;
@@ -258,13 +264,13 @@ public class EBikeTravelData implements Serializable {
 	}
 
 	public void resume() {
-		zeroSpeed = 0;
+		zeroSpeedCount = 0;
 		isNewTravel = false;
 		isPauseTime = false;
 	}
 
 	public void stop() {
-		zeroSpeed = 0;
+		zeroSpeedCount = 0;
 		if (spendTimeThread != null) {
 			spendTimeThread.cancel();
 		}
@@ -274,7 +280,7 @@ public class EBikeTravelData implements Serializable {
 	}
 
 	public void completed() {
-		zeroSpeed = 0;
+		zeroSpeedCount = 0;
 		isNewTravel = false;
 		isPauseTime = true;
 		endTime = Calendar.getInstance().getTimeInMillis();
@@ -397,7 +403,7 @@ public class EBikeTravelData implements Serializable {
 				batteryAh = 78;
 			}
 			remaindTravelCapacity = batteryResidueCapacity * batteryAh * 12 / 780;// 公里（千米）
-			//simulateData();// 模拟数据
+			simulateData();// 模拟数据
 			if (isNewTravel) {// 新的骑行
 				insSpeed = 0;
 				avgSpeed = 0;
@@ -636,13 +642,13 @@ public class EBikeTravelData implements Serializable {
 				if (!isPauseTime) {
 					spendTime += 1;
 					if (insSpeed == 0) {
-						zeroSpeed++;
-						if (zeroSpeed > MAX_LIMIT_ZERO_SPEED) {// 超过数值
-							zeroSpeed = 0;
+						zeroSpeedCount++;
+						if (zeroSpeedCount > MAX_LIMIT_ZERO_SPEED) {// 超过数值
+							zeroSpeedCount = 0;
 							BaseApplication.sendStateChangeBroadCast(context, TravelConstant.TRAVEL_STATE_PAUSE);
 						}
 					} else {
-						zeroSpeed = 0;
+						zeroSpeedCount = 0;
 					}
 				}
 				try {

@@ -166,25 +166,25 @@ public class ProfileActivity extends BaseActivity implements OnClickListener {
 
 	public void onRecord() {
 		Intent intent = new Intent(this, WebViewActivity.class);
-		intent.putExtra("url", EBConstant.HTML5_URL_RECORDS);
+		intent.putExtra("url", formatUrl(EBConstant.HTML5_URL_RECORDS));
 		startActivity(intent);
 	}
 
 	public void onGrade() {
 		Intent intent = new Intent(this, WebViewActivity.class);
-		intent.putExtra("url", EBConstant.HTML5_URL_GRADES);
+		intent.putExtra("url", formatUrl(EBConstant.HTML5_URL_GRADES));
 		startActivity(intent);
 	}
 
 	public void onNews() {
 		Intent intent = new Intent(this, WebViewActivity.class);
-		intent.putExtra("url", EBConstant.HTML5_URL_NEWS);
+		intent.putExtra("url",formatUrl( EBConstant.HTML5_URL_NEWS));
 		startActivity(intent);
 	}
 
 	public void onTutorial() {
 		Intent intent = new Intent(this, WebViewActivity.class);
-		intent.putExtra("url", EBConstant.HTML5_URL_TUTORIAL);
+		intent.putExtra("url", formatUrl(EBConstant.HTML5_URL_TUTORIAL));
 		startActivity(intent);
 	}
 
@@ -209,5 +209,7 @@ public class ProfileActivity extends BaseActivity implements OnClickListener {
 		initProfile(user);
 	}
 	
-	
+	private String formatUrl(String link){
+		return link+"?token="+SPUtils.getToken(this);
+	}
 }

@@ -38,7 +38,7 @@
             android:layout_marginTop="@dimen/speed_state_speed_view_marginTop"
             android:src="@drawable/speed_state_view_holder" />
 
-        <com.freway.ebike.view.ClickImageButton
+        <ImageButton
             android:id="@+id/speed_state_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            android:text="@string/tip_click_twice_to_end_the_trial"
+            android:text="@string/tip_travel_stop"
             style="@style/SpeedStateTipText" />
          
         

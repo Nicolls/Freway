@@ -17,6 +17,8 @@
 package com.freway.ebike.view;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -30,7 +32,7 @@ import android.widget.TextView;
  */
 public class FlickTextView extends TextView {
 	private Animation animation;
-
+	public boolean isAnimating=false;
 	public FlickTextView(Context context) {
 		super(context);
 	}
@@ -43,22 +45,42 @@ public class FlickTextView extends TextView {
 		super(context, attrs, defStyle);
 	}
 
-	public void showTip(String title) {
-		setVisibility(View.VISIBLE);
-		if (animation == null) {
-			animation = new AlphaAnimation(1, 0);
-			animation.setDuration(400);
-			animation.setRepeatCount(Animation.INFINITE);
-			animation.setRepeatMode(Animation.REVERSE);
+	private Handler handler=new Handler(){
 
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			super.handleMessage(msg);
 		}
+		
+	};
+	
+	public void showTip(String title) {
 		setText(title + "");
-		clearAnimation();
-		startAnimation(animation);
+		if(getVisibility()!=View.VISIBLE){
+			setVisibility(View.VISIBLE);
+		}
+		if(!isAnimating){
+			if (animation == null) {
+				animation = new AlphaAnimation(1, 0);
+				animation.setDuration(400);
+				animation.setRepeatCount(Animation.INFINITE);
+				animation.setRepeatMode(Animation.REVERSE);
+
+			}
+			clearAnimation();
+			startAnimation(animation);
+			isAnimating=true;
+		}
 	}
 
 	public void hideTip() {
-		clearAnimation();
-		setVisibility(View.GONE);
+		if(getVisibility()==View.VISIBLE){
+			setVisibility(View.GONE);
+		}
+		if(isAnimating){
+			clearAnimation();
+			isAnimating=false;
+		}
 	}
 }

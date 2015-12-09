@@ -57,6 +57,7 @@
         <activity
             android:name="com.freway.ebike.activity.SignInActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -75,18 +76,19 @@
                     android:scheme="http" />
             </intent-filter> 
         </activity>
-        <activity android:name="com.freway.ebike.activity.SignUpActivity" >
+        <activity android:name="com.freway.ebike.activity.SignUpActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.freway.ebike.activity.HomeActivity" >
+        <activity android:name="com.freway.ebike.activity.HomeActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.freway.ebike.activity.ProfileActivity" >
+        <activity android:name="com.freway.ebike.activity.ProfileActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.freway.ebike.activity.SettingActivity" >
+        <activity android:name="com.freway.ebike.activity.SettingActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.freway.ebike.activity.WebViewActivity" >
+        <activity android:name="com.freway.ebike.activity.WebViewActivity" android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.freway.ebike.activity.TestActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
            <!--  <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -97,6 +99,7 @@
          <activity
             android:name="com.freway.ebike.bluetooth.BlueToothActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
              >
     <!--   <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -107,6 +110,7 @@
         <activity
             android:name="com.freway.ebike.bluetooth.BLEScanConnectActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/DialogNoTitleNoActionBar" >
 
             <!--

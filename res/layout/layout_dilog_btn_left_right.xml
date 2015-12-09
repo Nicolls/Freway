@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/dialog_title"
-        style="@style/DialogLeftRightText"
+        style="@style/DialogText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -21,14 +21,14 @@
 
         <TextView
             android:id="@+id/dialog_left"
-            style="@style/DialogLeftRightText"
+            style="@style/DialogText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/test_text" />
 
         <TextView
             android:id="@+id/dialog_right"
-            style="@style/DialogLeftRightText"
+            style="@style/DialogText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/test_text" />

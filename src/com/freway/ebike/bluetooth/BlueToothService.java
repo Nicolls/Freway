@@ -117,6 +117,11 @@ public class BlueToothService extends BaseService {
 							.getStringExtra(BlueToothConstants.EXTRA_DATA);
 					connectDevice(mBluetoothDeviceAddress);
 					break;
+				case BlueToothConstants.HANDLE_SERVER_DISCONNECT:// 断开链接
+					SPUtils.setEBikeAddress(BlueToothService.this, "");// UI发送的重新扫描，则清除保存的设备
+					SPUtils.setEBikeName(BlueToothService.this, "");
+					disconnect();
+					break;
 				case BlueToothConstants.HANDLE_SERVER_SYNC:// 同步
 					// 默认只有链接上蓝牙才去同步
 					if(mBlueToothConnction.getState()==BluetoothConnection.STATE_CONNECTED){
@@ -520,7 +525,14 @@ public class BlueToothService extends BaseService {
 			startScanBluetoothDevice();
 		}
 	}
-
+	/**断开链接*/
+	private void disconnect(){
+		stopScanBluetoothDevice();// 链接停止当前扫描
+		if (mBlueToothConnction != null) {
+			mBlueToothConnction.disconnect();
+		}
+	}
+	
 	/**
 	 * Makes this device discoverable.
 	 */

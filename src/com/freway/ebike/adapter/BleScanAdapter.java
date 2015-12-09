@@ -2,6 +2,7 @@ package com.freway.ebike.adapter;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,7 @@ import com.freway.ebike.R;
  */
 public  class BleScanAdapter extends EBBaseAdapter<BluetoothDevice> {
 	private LayoutInflater inflater;
-
+	private Context context;
 	/**
 	 * 构造函数
 	 * 
@@ -30,6 +31,7 @@ public  class BleScanAdapter extends EBBaseAdapter<BluetoothDevice> {
 	 * */
 	public BleScanAdapter(Context context) {
 		super(context);
+		this.context=context;
 		this.inflater = LayoutInflater.from(context);
 	}
 
@@ -43,7 +45,11 @@ public  class BleScanAdapter extends EBBaseAdapter<BluetoothDevice> {
 		TextView title = (TextView) convertView.findViewById(R.id.device_title);
 		TextView address = (TextView) convertView.findViewById(R.id.device_address);
 		BluetoothDevice device=dataList.get(position);
-		title.setText(device.getName());
+		if(TextUtils.isEmpty(device.getName())){
+			title.setText(context.getText(R.string.unknown));
+		}else{
+			title.setText(device.getName());
+		}
 		address.setText(device.getAddress());
 		address.setVisibility(View.GONE);//mark 当用于蓝牙模块测试时，把它设置为visble，这样方便调试，发布时应该设置为gone
 		convertView.setTag(dataList.get(position));

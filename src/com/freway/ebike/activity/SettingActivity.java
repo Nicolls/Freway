@@ -14,8 +14,10 @@ import android.widget.TextView;
 
 import com.freway.ebike.R;
 import com.freway.ebike.bluetooth.BLEScanConnectActivity;
+import com.freway.ebike.bluetooth.BlueToothConstants;
 import com.freway.ebike.bluetooth.BlueToothUtil;
 import com.freway.ebike.common.BaseActivity;
+import com.freway.ebike.common.BaseApplication;
 import com.freway.ebike.common.EBConstant;
 import com.freway.ebike.crop.BitmapUtil;
 import com.freway.ebike.crop.CropHandler;
@@ -62,14 +64,14 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 	private TextView languageValue;
 	private TextView unitDistanceTitle;
 	private TextView unitDistanceValue;
-	private TextView aboutTitle;
-	private TextView aoubtValue;
+	private TextView versionTitle;
+	private TextView versionValue;
 	private TextView exitTitle;
 
 	private View snLL;
 	private View languageLL;
 	private View unitDistanceLL;
-	private View aboutLL;
+	private View versionLL;
 	private View exitLL;
 
 	private CropParams mCropParams;
@@ -111,14 +113,14 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 		languageValue = (TextView) findViewById(R.id.setting_language_value);
 		unitDistanceTitle = (TextView) findViewById(R.id.setting_unit_distance_title);
 		unitDistanceValue = (TextView) findViewById(R.id.setting_unit_distance_value);
-		aboutTitle = (TextView) findViewById(R.id.setting_about_title);
-		aoubtValue = (TextView) findViewById(R.id.setting_about_value);
+		versionTitle = (TextView) findViewById(R.id.setting_version_title);
+		versionValue = (TextView) findViewById(R.id.setting_version_value);
 		exitTitle = (TextView) findViewById(R.id.setting_tv_exit);
 
 		snLL = findViewById(R.id.setting_ll_sn);
 		languageLL = findViewById(R.id.setting_ll_language);
 		unitDistanceLL = findViewById(R.id.setting_ll_unit_distance);
-		aboutLL = findViewById(R.id.setting_ll_about);
+		versionLL = findViewById(R.id.setting_ll_version);
 		exitLL = findViewById(R.id.setting_ll_exit);
 	}
 
@@ -143,8 +145,8 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 		languageValue.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
 		unitDistanceTitle.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
 		unitDistanceValue.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
-		aboutTitle.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
-		aoubtValue.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
+		versionTitle.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
+		versionValue.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
 		exitTitle.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
 	}
 
@@ -157,7 +159,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 		snLL.setOnClickListener(this);
 		languageLL.setOnClickListener(this);
 		unitDistanceLL.setOnClickListener(this);
-		aboutLL.setOnClickListener(this);
+		versionLL.setOnClickListener(this);
 		exitLL.setOnClickListener(this);
 	}
 
@@ -203,7 +205,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			} else {
 				unitDistanceValue.setText(getString(R.string.distance_unit_mi));
 			}
-			aoubtValue.setText(CommonUtil.getAppVersion(this));
+			versionValue.setText(CommonUtil.getAppVersion(this));
 		}
 	}
 
@@ -267,7 +269,33 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 					});
 			break;
 		case R.id.setting_ll_sn:
-			BlueToothUtil.toBindBleActivity(this, BLEScanConnectActivity.HANDLE_SCAN);
+			if(TextUtils.isEmpty(SPUtils.getEBkieAddress(SettingActivity.this))){
+				BlueToothUtil.toBindBleActivity(this, BLEScanConnectActivity.HANDLE_SCAN);
+			}else{
+				AlertUtil.getInstance(SettingActivity.this).alertChoice(getString(R.string.tip_ebike_setting), getString(R.string.unbind_ebike), getString(R.string.scan_ebike),
+						new OnClickListener() {
+							
+							@Override
+							public void onClick(View v) {
+								AlertUtil.getInstance(SettingActivity.this).dismiss();
+								SPUtils.setEBikeAddress(SettingActivity.this, "");
+								snValue.setText(getString(R.string.ble_not_bind));
+								Intent intent = new Intent(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER);
+								intent.putExtra(BlueToothConstants.EXTRA_HANDLE_TYPE, BlueToothConstants.HANDLE_SERVER_DISCONNECT);
+								intent.putExtra(BlueToothConstants.EXTRA_DATA, "");
+								SettingActivity.this.sendBroadcast(intent);
+								ToastUtils.toast(SettingActivity.this, getString(R.string.tip_unbind_ebike_success));
+							}
+						},
+						new OnClickListener() {
+							
+							@Override
+							public void onClick(View v) {
+								AlertUtil.getInstance(SettingActivity.this).dismiss();
+								BlueToothUtil.toBindBleActivity(SettingActivity.this, BLEScanConnectActivity.HANDLE_SCAN);
+							}
+						});
+			}
 			break;
 		case R.id.setting_ll_language:
 
@@ -294,7 +322,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 						}
 					});
 			break;
-		case R.id.setting_ll_about:
+		case R.id.setting_ll_version:
 			chargeUpdate();
 			break;
 		case R.id.setting_ll_exit:
@@ -309,7 +337,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 	private void updateApk(String downloadUrl) {
 //		final String downloadUrl = "http://www.saner5.com/index.aspx?appId=1&appDownLoadCount=55&appDownloadUrl=upload/app/2014_07_17_17_44_48ear.apk";
 		ToastUtils.toast(SettingActivity.this, getString(R.string.start_download));
-		aoubtValue.setText(getString(R.string.app_downloading));
+		versionValue.setText(getString(R.string.app_downloading));
 		Intent intent = new Intent(UpdateAPPService.class.getName());
 		intent.putExtra(UpdateAPPService.INTENT_DOWNLOAD_URL, downloadUrl);
 		UpdateAPPService.setUpdateAppListener(SettingActivity.this);
@@ -345,14 +373,18 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			ToastUtils.toast(this, getString(R.string.nick_name) + "" + getString(R.string.can_not_be_null));
 			return false;
 		}
-		if (TextUtils.isEmpty(email)) {
-			ToastUtils.toast(this, getString(R.string.email) + "" + getString(R.string.can_not_be_null));
-			return false;
+		if(!TextUtils.isEmpty(user.getEmail())){
+			if (TextUtils.isEmpty(email)) {
+				ToastUtils.toast(this, getString(R.string.email) + "" + getString(R.string.can_not_be_null));
+			}
 		}
-		if (!CommonUtil.isEmail(email)) {
-			ToastUtils.toast(this, getString(R.string.email) + "" + getString(R.string.email_incorrect));
-			return false;
+		if (!TextUtils.isEmpty(email)) {
+			if (!CommonUtil.isEmail(email)) {
+				ToastUtils.toast(this, getString(R.string.email) + "" + getString(R.string.email_incorrect));
+				return false;
+			}
 		}
+		
 		user.setUsername(nickName);
 		user.setEmail(email);
 		user.setAge(age);
@@ -434,9 +466,9 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 
 	@Override
 	public void updateAppCompleted(String message) {
-		if (SettingActivity.this != null && aoubtValue != null) {
-			aoubtValue.setSelected(false);
-			aoubtValue.setText(CommonUtil.getAppVersion(this));
+		if (SettingActivity.this != null && versionValue != null) {
+			versionValue.setSelected(false);
+			versionValue.setText(CommonUtil.getAppVersion(this));
 			ToastUtils.toast(this, message);
 		}
 	}

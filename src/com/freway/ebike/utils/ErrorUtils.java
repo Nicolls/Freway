@@ -59,7 +59,9 @@ public class ErrorUtils {
 					ToastUtils.toast(context, errorRes.getMsg());
 //					alertDialog(context);
 				} else {
-					lis.successCompleted(id, obj);
+					if(errorLis!=null){
+						errorLis.errorCompleted();
+					}
 				}
 
 			} else if(!TextUtils.equals(((EBResponse) obj).getCode(),EBResponse.SUCCESS_CODE)) {// 说明有错误

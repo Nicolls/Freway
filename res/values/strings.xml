@@ -27,6 +27,7 @@
     <string name="email_can_not_be_null">Email can not be null</string>
     <string name="username_can_not_be_null">Username can not be null</string>
     <string name="username_at_least_4_characters">Username at least 4 characters</string>
+    <string name="password_at_least_6_characters">Password at least 6 characters</string>
     <string name="password_can_not_be_null">Password can not be null</string>
     <string name="confirm_password_can_not_be_null">Confirm password can not be null</string>
     <!-- ble -->
@@ -38,13 +39,13 @@
     <string name="ble_not_connect">eBike not connect go to connect ebike?</string>
     <!-- 通用 -->
     <string name="in_development">In development</string>
-    <string name="upload_travel_success">Upload travel success</string>
+    <string name="upload_travel_success">Upload trial success</string>
     <string name="photo_upload_success">Photo upload success</string>
     <string name="update_profile_success">Update profile success</string>
     <string name="cancel">Cancel</string>
     <string name="english">English</string>
-    <string name="travel_save">save this travel?</string>
-    <string name="travel_too_short_not_save">travel is too short will not save</string>
+    <string name="travel_save">save this trial?</string>
+    <string name="travel_too_short_not_save">trial is too short will not save</string>
     <string name="battery_connect_exception">Battery Connect Exception,Please Check!</string>
     <string name="can_not_be_null"> Can not be null</string>
     <string name="login_cancel">Cancel Sign</string>
@@ -55,6 +56,7 @@
     <string name="ok">OK</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="unknown">UNKNOWN</string>
     <!-- test -->
     <string name="test_text">Test</string>
     <string name="test_email">jack@gmail.com</string>
@@ -66,8 +68,13 @@
     <string name="test_value_4">1200</string>
     <string name="test_value_time">00:00:00</string>
     <!-- ui -->
-    <string name="tip_click_twice_to_end_the_trial">Click twice to end the trial</string>
+    <string name="tip_ebike_setting">eBike setting</string>
+    <string name="tip_go_on_the_trial">Go on the trial</string>
+    <string name="tip_travel_stop">trial stop</string>
     <string name="tip_ebike_disconnect">eBike disconnect</string>
+    <string name="unbind_ebike">unbind eBike</string>
+    <string name="tip_unbind_ebike_success">unbind eBike success</string>
+    <string name="scan_ebike">scan eBike</string>
     <string name="loading">Loading...</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -112,7 +119,6 @@
     <string name="my_ebike">My eBike</string>
     <string name="language">Language</string>
     <string name="unit_of_distance">Unit of Distance</string>
-    <string name="about">ABOUT</string>
     <string name="version">Version</string>
     <string name="exit">EXIT</string>
     <string name="unit_distance_settings">Unit Distance Settings</string>

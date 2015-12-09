@@ -82,6 +82,10 @@ public class SignUpActivity extends BaseActivity {
 			ToastUtils.toast(this, getString(R.string.password_can_not_be_null));
 			return;
 		}
+		if(password.length()<6){
+			ToastUtils.toast(this, getString(R.string.password_at_least_6_characters));
+			return;
+		}
 		if(TextUtils.isEmpty(confirmPassword)){
 			ToastUtils.toast(this, getString(R.string.confirm_password_can_not_be_null));
 			return;

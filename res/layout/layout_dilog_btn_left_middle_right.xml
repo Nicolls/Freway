@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
-    android:background="@drawable/dialog_confirm" >
+    android:background="@drawable/dialog_left_middle_right" >
 
     <TextView
         android:id="@+id/dialog_title"
@@ -20,13 +20,25 @@
         android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/dialog_text"
+            android:id="@+id/dialog_left"
             style="@style/DialogText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
             android:text="@string/test_text" />
 
+        <TextView
+            android:id="@+id/dialog_middle"
+            style="@style/DialogText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/test_text" />
+
+        <TextView
+            android:id="@+id/dialog_right"
+            style="@style/DialogText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/test_text" />
     </LinearLayout>
 
 </RelativeLayout>

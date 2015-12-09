@@ -296,7 +296,7 @@
             <!-- about -->
 
             <LinearLayout
-                android:id="@+id/setting_ll_about"
+                android:id="@+id/setting_ll_version"
                 style="@style/SettingLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -308,17 +308,18 @@
                     android:layout_height="wrap_content" >
 
                     <TextView
-                        android:id="@+id/setting_about_title"
+                        android:id="@+id/setting_version_title"
                         style="@style/SettingBtnTextLeft"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/about" />
+                        android:text="@string/version" />
 
                     <TextView
-                        android:id="@+id/setting_about_value"
+                        android:id="@+id/setting_version_value"
                         style="@style/SettingBtnTextRight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:drawableRight="@drawable/settings_button_arrow"
                         android:text="@string/test_text" />
                 </LinearLayout>
 

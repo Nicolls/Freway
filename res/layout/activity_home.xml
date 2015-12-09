@@ -61,6 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:visibility="gone"
             >
              <include
             android:layout_width="match_parent"
@@ -109,6 +110,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/home_content_bike"
         layout="@layout/layout_home_speed_state"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
 </RelativeLayout>
