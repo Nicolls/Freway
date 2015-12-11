@@ -375,7 +375,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			// TODO Auto-generated method stub
 			super.handleMessage(msg);
 			int state = msg.what;// 所有的行程操作都必须是链接上BLE了才能有作用，因为没有链接的话，显示一定是灰色的
-			if (state == TravelConstant.TRAVEL_STATE_PAUSE) {// 暂停
+			if (state == TravelConstant.TRAVEL_STATE_PAUSE||state == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 暂停
 				mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
 				mSpeedStateSpeedText.setVisibility(View.GONE);
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_pause_enable);
@@ -660,6 +660,9 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 				return;
 			}
 			if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_PAUSE) {
+				alertTravelChoice();
+			}else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {//如果是伪暂停要先把它设置为暂停
+				BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this, TravelConstant.TRAVEL_STATE_PAUSE);
 				alertTravelChoice();
 			} else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_START
 					|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_RESUME) {

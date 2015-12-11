@@ -36,13 +36,13 @@ public class EBikeTravelData implements Serializable {
 	/**
 	 * @Fields MUST_MIN_TRAVEL 最短行程，要记录的行程至少要大于最短行程，否则丢弃
 	 */
-	public static final float MUST_MIN_TRAVEL = 0.1f;//单位km 最短行程0.1km-->100米
+	public static final float MUST_MIN_TRAVEL = 0.1f;// 单位km 最短行程0.1km-->100米
 	// 行程data
 	/**
 	 * @Fields travelId 行程ID
 	 */
 	public long travelId = -1;
-	
+
 	/**
 	 * @Fields travelPhoto 行程地图缩略图
 	 */
@@ -177,8 +177,7 @@ public class EBikeTravelData implements Serializable {
 	/**
 	 * @fields cycle_times 循环次数(次) 1.0暂且没有，所以不用加
 	 */
-	 public int cycle_times;
-
+	public int cycle_times;
 
 	// 用于计算当前行程
 	// private long cal_startTime;
@@ -207,7 +206,7 @@ public class EBikeTravelData implements Serializable {
 	private SpendTimeThread spendTimeThread = null;
 	// 存储连续速度为0的点，每一秒存一个，如果连续为0的点超过5个就暂停骑行。
 	private static final int MAX_LIMIT_ZERO_SPEED = 5;
-	private int zeroSpeedCount = 0;//速度为0的次数
+	private int zeroSpeedCount = 0;// 速度为0的次数
 	private NetUtil netUtil;
 	// 历史记录
 	/**
@@ -232,11 +231,11 @@ public class EBikeTravelData implements Serializable {
 	public void start(long id, int type) {
 		this.type = type;
 		zeroSpeedCount = 0;
-		spendTime=0;
-		insSpeed=0;
-		cadence=0;
-		calorie=0;
-		distance=0;
+		spendTime = 0;
+		insSpeed = 0;
+		cadence = 0;
+		calorie = 0;
+		distance = 0;
 		travelId = id;
 		isNewTravel = true;
 		startTime = Calendar.getInstance().getTimeInMillis();
@@ -321,7 +320,7 @@ public class EBikeTravelData implements Serializable {
 	 * @Description 格式化数据
 	 */
 	public synchronized void parseBikeData(byte[] data) {
-		if(data!=null&&data.length>=2){
+		if (data != null && data.length >= 2) {
 			byte[] controlState = new byte[2];
 			byte[] bikeData = new byte[data.length - 2];
 			// 控制器状态
@@ -331,7 +330,8 @@ public class EBikeTravelData implements Serializable {
 			int[] controlArray = ProtocolTool.byteToBitIntArray(controlState);
 			messageNoticeGet = controlArray[11]; // 短信提醒标志接收完成
 			// if (messageNoticeGet == 1
-			// && EBikeStatus.getInstance(context).getReceiveMessageStatus() == 1)
+			// && EBikeStatus.getInstance(context).getReceiveMessageStatus() ==
+			// 1)
 			// {// 说明短信接收完成，将发送数据的状态短信设置为0表示已处理短信，暂时没有短信
 			// EBikeStatus.getInstance(context).setBikeStatus(EBikeStatus.RECEIVE_MESSAGE,
 			// 0);
@@ -354,35 +354,35 @@ public class EBikeTravelData implements Serializable {
 			assisMode = controlArray[1]; // 助力模式
 			elecMode = controlArray[0]; // 电动模式
 			// 骑行数据
-			float speedTemp=0;
+			float speedTemp = 0;
 			for (int i = 0; i < bikeData.length; i++) {
 				bikeData[i] = data[i + 2];
 			}
 			if (bikeData.length > 0) {
-				if(bikeData.length>=2){
+				if (bikeData.length >= 2) {
 					cal_tempCadence = ProtocolTool.byteArrayToInt(new byte[] { bikeData[0], bikeData[1] });
 				}
-				if(bikeData.length>=4){
-					speedTemp=ProtocolTool.byteArrayToInt(new byte[] { bikeData[2], bikeData[3] });
+				if (bikeData.length >= 4) {
+					speedTemp = ProtocolTool.byteArrayToInt(new byte[] { bikeData[2], bikeData[3] });
 				}
-				if(bikeData.length>=6){
+				if (bikeData.length >= 6) {
 					cal_tempDistance = ProtocolTool.byteArrayToInt(new byte[] { bikeData[4], bikeData[5] });
 				}
-				if(bikeData.length>=7){
+				if (bikeData.length >= 7) {
 					batteryAh = ProtocolTool.byteArrayToInt(new byte[] { bikeData[6] });
 				}
-				if(bikeData.length>=8){
+				if (bikeData.length >= 8) {
 					gear = ProtocolTool.byteArrayToInt(new byte[] { bikeData[7] });
 				}
-				if(bikeData.length>=9){
+				if (bikeData.length >= 9) {
 					batteryResidueCapacity = ProtocolTool.byteArrayToInt(new byte[] { bikeData[8] });
 				}
-				if(bikeData.length>=10){
+				if (bikeData.length >= 10) {
 					temperature = ProtocolTool.byteArrayToInt(new byte[] { bikeData[9] });
 				}
-				if(bikeData.length>=12){
+				if (bikeData.length >= 12) {
 					System.out.println("有循环数");
-					cycle_times=ProtocolTool.byteArrayToInt(new byte[]{bikeData[10],bikeData[11]});
+					cycle_times = ProtocolTool.byteArrayToInt(new byte[] { bikeData[10], bikeData[11] });
 				}
 				// 下面对骑行状态进行转换。骑行状态：0-运动，1-电动 2-助力1,3-助力2,4-助力3
 				if (gear == 0) {
@@ -397,13 +397,16 @@ public class EBikeTravelData implements Serializable {
 			}
 			cal_tempCalorie = cal_tempCadence / 10 * WHEEL_VALUE * 655 / 21000000;// 圈/每分钟
 			speedTemp = speedTemp * 1200f * WHEEL_VALUE / 1000 / 1000;// 单位：km/h
-			insSpeed = formatInsSpeed(speedTemp);//在计算值之前，先用分段法处理一下得到的速度
+			insSpeed = formatInsSpeed(speedTemp);// 在计算值之前，先用分段法处理一下得到的速度
 			cal_tempDistance = cal_tempDistance * WHEEL_VALUE / 1000 / 1000; // 单位：km
 			if (batteryAh <= 20) {
 				batteryAh = 78;
 			}
 			remaindTravelCapacity = batteryResidueCapacity * batteryAh * 12 / 780;// 公里（千米）
-//			simulateData();// 模拟数据
+			simulateData();// 模拟数据
+			if (insSpeed != 0 && BaseApplication.travelState == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 当前是伪暂停，就resume
+				BaseApplication.sendStateChangeBroadCast(context, TravelConstant.TRAVEL_STATE_RESUME);
+			}
 			if (isNewTravel) {// 新的骑行
 				insSpeed = 0;
 				avgSpeed = 0;
@@ -412,7 +415,7 @@ public class EBikeTravelData implements Serializable {
 				calorie = 0;
 				cadence = 0;
 				altitude = 0;
-	
+
 				// cal_startTime=startTime;
 				// cal_endTime=startTime;
 				// cal_startAltitude = cal_tempAltitude;
@@ -440,14 +443,14 @@ public class EBikeTravelData implements Serializable {
 				calorie += (cal_endCalorie - cal_startCalorie);// 卡路里
 				cal_recordCadence += (cal_endCadence - cal_startCadence);// 踏频
 				altitude += altitude;// 海拔
-				if(insSpeed==0){//只要速度为0那么踏频量就要为0
-					cal_recordCadence=0;
-					cadence=0;
+				if (insSpeed == 0) {// 只要速度为0那么踏频量就要为0
+					cal_recordCadence = 0;
+					cadence = 0;
 				}
 				if (spendTime != 0) {
 					cadence = cal_recordCadence / spendTime * 60f;// 每分钟踏频量
 				}
-	
+
 				// cal_startAltitude = cal_tempAltitude;
 				cal_startDistance = cal_tempDistance;
 				cal_startCalorie = cal_tempCalorie;
@@ -460,7 +463,7 @@ public class EBikeTravelData implements Serializable {
 				}
 			}
 		}
-		
+
 	}
 
 	/**
@@ -469,7 +472,7 @@ public class EBikeTravelData implements Serializable {
 	 * @Description 格式化数据
 	 */
 	public void parseHistoryData(byte[] data) {
-		//mark 历史的，怕数组越界还没有处理
+		// mark 历史的，怕数组越界还没有处理
 		if (data != null && data.length >= 8) {
 			byte[] id = { data[0], data[1] };
 			byte[] time = { data[2], data[3] };
@@ -561,17 +564,17 @@ public class EBikeTravelData implements Serializable {
 		distance = CommonUtil.formatFloatAccuracy(distance, 3);
 		cadence = CommonUtil.formatFloatAccuracy(cadence, 0);
 		calorie = CommonUtil.formatFloatAccuracy(calorie, 3);
-		remaindTravelCapacity= CommonUtil.formatFloatAccuracy(distance, 3);
+		remaindTravelCapacity = CommonUtil.formatFloatAccuracy(distance, 3);
 	}
 
 	public String getControlValueText() {
 		String value = "短信标志:" + messageNoticeGet + "-电话呼叫标志:" + phoneCallGet + "-电池包连接标志:" + batConnect + "-控制器过流保护:"
-				+ ctrlerOvercp + "-控制器欠压保护:" + ctrlerLowvp + "-能量回收状态:" + energyCycle + "-控制器故障:" + ctrlerErr
-				+ "-后灯状态:" + backLed + "-前灯状态:" + frontLed + "\n-开始时间(毫秒)：" + startTime + "\n时长(秒)：" + spendTime
-				+ "\n-踏频量（圈/分钟）:" + cadence + "\n-骑行速度(km/h):" + insSpeed + "\n-平均速度(km/h):" + avgSpeed
-				+ "\n-最大速度(km/h):" + maxSpeed + "\n-累积骑行里程(km):" + distance + "\n-卡路里：" + calorie
-				+ "\n-电池的安时数(100mah):" + batteryAh + "\n-骑行状态改变标志:" + gear + "\n-剩余容量%:" + batteryResidueCapacity
-				+ "\n-剩余里程(km):" + remaindTravelCapacity + "\n-温度(℃):" + temperature +"\n循环次数:" + cycle_times + "\n\n";
+				+ ctrlerOvercp + "-控制器欠压保护:" + ctrlerLowvp + "-能量回收状态:" + energyCycle + "-控制器故障:" + ctrlerErr + "-后灯状态:"
+				+ backLed + "-前灯状态:" + frontLed + "\n-开始时间(毫秒)：" + startTime + "\n时长(秒)：" + spendTime + "\n-踏频量（圈/分钟）:"
+				+ cadence + "\n-骑行速度(km/h):" + insSpeed + "\n-平均速度(km/h):" + avgSpeed + "\n-最大速度(km/h):" + maxSpeed
+				+ "\n-累积骑行里程(km):" + distance + "\n-卡路里：" + calorie + "\n-电池的安时数(100mah):" + batteryAh + "\n-骑行状态改变标志:"
+				+ gear + "\n-剩余容量%:" + batteryResidueCapacity + "\n-剩余里程(km):" + remaindTravelCapacity + "\n-温度(℃):"
+				+ temperature + "\n循环次数:" + cycle_times + "\n\n";
 		return value;
 	}
 
@@ -605,29 +608,23 @@ public class EBikeTravelData implements Serializable {
 
 	}
 
-	/** 分段显示速度法 ，在取得控制器的值后，要先调用一次用来格式化值*/
-	private float  formatInsSpeed(float speed_val)
-	{
-	    float avg =0;
-	    if(speed_val == 0)
-	    {
-	    	insSpeed =0;
-	    	return 0;
-	    }
-	    if(insSpeed != speed_val)
-	    {
-	        if(speed_val > insSpeed)
-	        {
-	            avg = (speed_val - insSpeed)/3;
-	            insSpeed += avg;
-	        }
-	        else
-	        {
-	            avg = (insSpeed - speed_val)/3;
-	            insSpeed -= avg;
-	        }
-	    }
-	    return insSpeed;
+	/** 分段显示速度法 ，在取得控制器的值后，要先调用一次用来格式化值 */
+	private float formatInsSpeed(float speed_val) {
+		float avg = 0;
+		if (speed_val == 0) {
+			insSpeed = 0;
+			return 0;
+		}
+		if (insSpeed != speed_val) {
+			if (speed_val > insSpeed) {
+				avg = (speed_val - insSpeed) / 3;
+				insSpeed += avg;
+			} else {
+				avg = (insSpeed - speed_val) / 3;
+				insSpeed -= avg;
+			}
+		}
+		return insSpeed;
 
 	}
 
@@ -645,7 +642,8 @@ public class EBikeTravelData implements Serializable {
 						zeroSpeedCount++;
 						if (zeroSpeedCount > MAX_LIMIT_ZERO_SPEED) {// 超过数值
 							zeroSpeedCount = 0;
-							BaseApplication.sendStateChangeBroadCast(context, TravelConstant.TRAVEL_STATE_PAUSE);
+							isPauseTime = true;
+							BaseApplication.sendStateChangeBroadCast(context, TravelConstant.TRAVEL_STATE_FAKE_PAUSE);
 						}
 					} else {
 						zeroSpeedCount = 0;
