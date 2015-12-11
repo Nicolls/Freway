@@ -6,7 +6,7 @@
 	<color name="model_night_view_background">#1c2027</color>
 	<color name="model_day_view_background">#FFFFFF</color>
 	
-	<color name="model_night_battery_background">#242b35</color>
+	<color name="model_night_battery_background">#282d38</color>
 	<color name="model_day_battery_background">#1c2127</color>
 	<!-- <color name="model_night_bar_background1">#1c2127</color>
 	<color name="model_day_bar_background2">#bababa</color> -->

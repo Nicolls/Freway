@@ -12,6 +12,7 @@
         android:background="@color/model_day_view_background"
         >
         <ImageView
+        android:layout_marginTop="@dimen/speed_state_arrow_top_marginTop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/speed_state_view_arrow_alpha" />

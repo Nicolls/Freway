@@ -13,26 +13,26 @@
     <dimen name="text_size_TravelStateCalValue">14sp</dimen>
     <dimen name="text_size_TravelStateCalUnit">12sp</dimen>
     <dimen name="text_size_TravelStateSpendTimeValue">14sp</dimen>
-    <dimen name="text_size_TravelStateSpeedValue">60sp</dimen>
-    <dimen name="text_size_TravelStateSpeedUnit">18sp</dimen>
+    <dimen name="text_size_TravelStateSpeedValue">50sp</dimen>
+    <dimen name="text_size_TravelStateSpeedUnit">16sp</dimen>
     <dimen name="text_size_TravelStateTitleText">7sp</dimen>
     <dimen name="text_size_TravelStateValueText">18sp</dimen>
     <dimen name="text_size_TravelStateUnitText">9sp</dimen>
-    <dimen name="text_size_BatteryStateTipText">18sp</dimen>
-    <dimen name="text_size_BatteryStateValueText">40sp</dimen>
+    <dimen name="text_size_BatteryStateTipText">15sp</dimen>
+    <dimen name="text_size_BatteryStateValueText">35sp</dimen>
     <dimen name="text_size_BatteryStateUnitText">14sp</dimen>
-    <dimen name="text_size_BatteryStatePercentText">60sp</dimen>
-    <dimen name="text_size_BatteryStateGearText">22sp</dimen>
+    <dimen name="text_size_BatteryStatePercentText">42sp</dimen>
+    <dimen name="text_size_BatteryStateGearText">20sp</dimen>
     <dimen name="text_size_SpeedStateTipText">13sp</dimen>
-    <dimen name="text_size_SpeedStateSpeedText">75sp</dimen>
+    <dimen name="text_size_SpeedStateSpeedText">62sp</dimen>
     <dimen name="text_size_SpeedStateCalValue">14sp</dimen>
     <dimen name="text_size_SpeedStateCalUnit">12sp</dimen>
     <dimen name="text_size_SpeedStateSpendTimeText">14sp</dimen>
     <dimen name="text_size_SpeedStateTitleText">8sp</dimen>
-    <dimen name="text_size_SpeedStateValueText">22sp</dimen>
+    <dimen name="text_size_SpeedStateValueText">18sp</dimen>
     <dimen name="text_size_SpeedStateUnitText">12sp</dimen>
     <dimen name="text_size_ProfileName">18sp</dimen>
-    <dimen name="text_size_ProfileTotalValue">45sp</dimen>
+    <dimen name="text_size_ProfileTotalValue">37sp</dimen>
     <dimen name="text_size_ProfileTotalUnit">14sp</dimen>
     <dimen name="text_size_ProfileNavText">18sp</dimen>
     <dimen name="text_size_SettingProfileText">14sp</dimen>
@@ -77,7 +77,7 @@
     <dimen name="view_top_bar_padding">13dp</dimen>
     <dimen name="icon_title_spacing">7dp</dimen>
     <dimen name="bike_light_spacing">10dp</dimen>
-    <dimen name="title_value_vertical_spacing">10dp</dimen>
+    <dimen name="title_value_vertical_spacing">3dp</dimen>
     <!-- home -->
     <!-- bike state -->
     <dimen name="bike_state_paddingHorizontal">20dp</dimen>
@@ -86,7 +86,7 @@
 
     <!-- travel state -->
 
-    <dimen name="travel_state_paddingHorizontal">20dp</dimen>
+    <dimen name="travel_state_paddingHorizontal">13dp</dimen>
     <dimen name="travel_state_paddingTop">15dp</dimen>
     <dimen name="travel_state_paddingBottom">3dp</dimen>
     <dimen name="travel_state_speedMarginLeft">65dp</dimen>
@@ -99,10 +99,11 @@
     <dimen name="battery_state_paddingBottom">3dp</dimen>
 
     <!-- speed state -->
-    <dimen name="speed_state_speed_view_marginTop">40dp</dimen>
-    <dimen name="speed_state_speed_marginTop">95dp</dimen>
-    <dimen name="speed_state_speed_tip_marginTop">125dp</dimen>
-    <dimen name="speed_state_speed_tip_padding">3dp</dimen>
+    <dimen name="speed_state_arrow_top_marginTop">5dp</dimen>
+    <dimen name="speed_state_speed_view_marginTop">30dp</dimen>
+    <dimen name="speed_state_speed_marginTop">65dp</dimen>
+    <dimen name="speed_state_speed_tip_marginTop">92dp</dimen>
+    <dimen name="speed_state_speed_tip_padding">1dp</dimen>
     <dimen name="speed_state_cal_time_marginTop">28dp</dimen>
     <dimen name="speed_state_ll_param_marginTop">20dp</dimen>
     <dimen name="speed_state_param_grid_padding">13dp</dimen>
@@ -127,7 +128,7 @@
     <dimen name="setting_pic_margin">10dp</dimen>
     <dimen name="setting_cicle_btn_marginTop">10dp</dimen>
     <dimen name="setting_cicle_btn_marginHorizontal">5dp</dimen>
-    <dimen name="setting_cicle_btn_padding">16dp</dimen>
+    <dimen name="setting_cicle_btn_padding">12dp</dimen>
     <dimen name="setting_et_paddingRight">10dp</dimen>
     <!-- 上拉加载，下拉刷新 -->
     <dimen name="pull2refresh_layout_height">60dp</dimen>

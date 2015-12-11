@@ -403,7 +403,7 @@ public class EBikeTravelData implements Serializable {
 				batteryAh = 78;
 			}
 			remaindTravelCapacity = batteryResidueCapacity * batteryAh * 12 / 780;// 公里（千米）
-			simulateData();// 模拟数据
+//			simulateData();// 模拟数据
 			if (isNewTravel) {// 新的骑行
 				insSpeed = 0;
 				avgSpeed = 0;
