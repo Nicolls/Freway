@@ -116,12 +116,17 @@ public abstract class BaseFragment extends Fragment implements DataUpdateListene
 		},new ErrorListener() {
 			
 			@Override
-			public void errorCompleted() {
+			public void errorCompleted(int id) {
 				((BaseActivity)getActivity()).hideLoading();
+				requestError(id);
 			}
 		});
 	}
 
+	/**请求数据出错时会触发此方法*/
+	protected void requestError(int id){
+		
+	}
 	/** 抽象方法，用来通知fragment数据已请求回来 */
 	public abstract void dateUpdate(int id, Object obj);
 }

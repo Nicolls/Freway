@@ -4,8 +4,8 @@
     <string name="app_name">Freway</string>
 
     <!-- 第三方sdk -->
-    <string name="app_id">1668278680085158</string>
-    <string name="call_back_url">www.ifreway.com/app/index.php</string>
+    <string name="app_id">748116458653988</string>
+    <string name="call_back_url">app.ifreway.com/index.php</string>
     <!-- toast提示，弹出框 -->
     <string name="not_support_bluetooth">"your phone didn't support eBike"</string>
     <string name="not_supported_ble">"your phone didn't support eBike"</string>
@@ -131,8 +131,10 @@
     <!-- APP升级 -->
     <string name="app_update">App Update</string>
     <string name="app_update_tip">new app version provide,want to update?</string>
-    <string name="start_download">start download</string>
+    <string name="app_update_force_tip">new app version provide.before use,you need to updated</string>
+    <string name="start_download">It will be updated automatically after the download is complete</string>
     <string name="app_downloading">downloading</string>
+    <string name="app_is_update">app is updating hold on please</string>
     <string name="app_downloaded">downloaded</string>
     <string name="app_updating">app is updating...</string>
     <string name="app_now_is_newly">app is newest</string>

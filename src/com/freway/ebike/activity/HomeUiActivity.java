@@ -590,7 +590,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 							public void onClick(View v) {
 								AlertUtil.getInstance(HomeUiActivity.this).dismiss();
 							}
-						});
+						},true);
 			} else {
 				if (mMapUtil != null) {
 					mMapUtil.snapshot(new Handler() {

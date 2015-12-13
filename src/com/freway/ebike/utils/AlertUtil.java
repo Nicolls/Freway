@@ -43,8 +43,9 @@ public class AlertUtil {
 //		builder.setMessage(message).setNegativeButton(context.getString(R.string.no), noClick).setPositiveButton(context.getString(R.string.yes), yesClick).create().show();
 	}
 	/**弹出一个两个选择按钮的对话框*/
-	public void alertChoice(String message,String leftText,String rightText,OnClickListener leftClick,OnClickListener rightClick){
+	public void alertChoice(String message,String leftText,String rightText,OnClickListener leftClick,OnClickListener rightClick,boolean cancelable){
 		AlertDialog.Builder builder=new Builder(context);
+		builder.setCancelable(cancelable);
 		View view=LayoutInflater.from(context).inflate(R.layout.layout_dilog_btn_left_right, null);
 		TextView title=(TextView) view.findViewById(R.id.dialog_title);
 		TextView left=(TextView) view.findViewById(R.id.dialog_left);

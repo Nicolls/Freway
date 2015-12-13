@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.freway.ebike"
     android:versionCode="1"
-    android:versionName="1.0.0" >
+    android:versionName="0.9.1" >
 
     <uses-sdk
         android:minSdkVersion="18"
@@ -49,7 +49,7 @@
         <!-- 地图  api_key mac:AIzaSyCdOmLibSAIvOIw5PNAaewKJa3xndMjXAI  windows:AIzaSyD5min8wElQ-_VUQcmmcUIWVVsFyOdG0I0 -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD5min8wElQ-_VUQcmmcUIWVVsFyOdG0I0" />
+            android:value="AIzaSyCdOmLibSAIvOIw5PNAaewKJa3xndMjXAI" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

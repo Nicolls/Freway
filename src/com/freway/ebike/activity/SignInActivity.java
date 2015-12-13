@@ -15,9 +15,12 @@ import com.freway.ebike.common.BaseActivity;
 import com.freway.ebike.common.EBConstant;
 import com.freway.ebike.facebook.FacebookUtil;
 import com.freway.ebike.model.RspLogin;
+import com.freway.ebike.model.RspVersion;
 import com.freway.ebike.model.User;
 import com.freway.ebike.net.EBikeRequestService;
+import com.freway.ebike.service.UpdateAPPService;
 import com.freway.ebike.twitter.TwitterUtils;
+import com.freway.ebike.utils.AlertUtil;
 import com.freway.ebike.utils.CommonUtil;
 import com.freway.ebike.utils.FontUtil;
 import com.freway.ebike.utils.LogUtils;
@@ -39,7 +42,8 @@ public class SignInActivity extends BaseActivity {
 		setContentView(R.layout.activity_signin);
 		initView();
 		initFontStyle();
-		initData();
+		showLoading(false);
+		mEBikeRequestService.version("Android", CommonUtil.getAppVersion(this));//新版本检查
 	}
 	
 	private void initView(){
@@ -76,11 +80,12 @@ public class SignInActivity extends BaseActivity {
 	}
 	/**初始化数据*/
 	private void initData(){
-		user=SPUtils.getUser(this);
-		mEtEmail.setText(user.getEmail());
-		mEtPassword.setText(user.getPassword());
 		if(!TextUtils.isEmpty(SPUtils.getToken(this))){//token不为空、直接进入应用
 			openActivity(HomeActivity.class, null, true);
+		}else{
+			user=SPUtils.getUser(this);
+			mEtEmail.setText(user.getEmail());
+			mEtPassword.setText(user.getPassword());
 		}
 	}
 
@@ -173,9 +178,68 @@ public class SignInActivity extends BaseActivity {
 			user.setPassword(password);
 			SPUtils.setUser(this, user);
 			openActivity(HomeActivity.class, null, true);
+		}else if(id==EBikeRequestService.ID_VERSION){
+			RspVersion version = (RspVersion) obj;
+			chargeUpdate(version);
 		}
 	}
 
+	/** 判断更新 */
+	private void chargeUpdate(RspVersion version) {
+		if (version != null) {
+			String newest = version.getData().getNewest();
+			final String url = version.getData().getUrl();
+			// final String url =
+			// "http://www.saner5.com/index.aspx?appId=1&appDownLoadCount=55&appDownloadUrl=upload/app/2014_07_17_17_44_48ear.apk";
+			int m = Integer.parseInt(version.getData().getForce_update());
+			boolean isForceUpdate = (m == 0 ? false : true);
+			if(isForceUpdate){//强制
+				AlertUtil.getInstance(this).alertChoice(getString(R.string.app_update_force_tip), getString(R.string.yes), getString(R.string.no),
+						new OnClickListener() {
+							
+							@Override
+							public void onClick(View v) {
+								AlertUtil.getInstance(SignInActivity.this).dismiss();
+								updateApk(url,true);
+							}
+						},
+						new OnClickListener() {
+							
+							@Override
+							public void onClick(View v) {
+								AlertUtil.getInstance(SignInActivity.this).dismiss();
+								finish();
+							}
+						},false);
+			}else if (!TextUtils.isEmpty(newest)) {
+					AlertUtil.getInstance(this).alertConfirm(getString(R.string.app_update_tip),
+							getString(R.string.confirm), new OnClickListener() {
+
+								@Override
+								public void onClick(View v) {
+									AlertUtil.getInstance(SignInActivity.this).dismiss();
+									updateApk(url,false);
+									initData();
+								}
+							});
+			} 
+		} else{
+			initData();
+		}
+	}
+	/** 版本更新 */
+	private void updateApk(String downloadUrl,boolean isfinish) {
+		// final String downloadUrl =
+		// "http://www.saner5.com/index.aspx?appId=1&appDownLoadCount=55&appDownloadUrl=upload/app/2014_07_17_17_44_48ear.apk";
+		ToastUtils.toast(SignInActivity.this, getString(R.string.start_download));
+		Intent intent = new Intent(UpdateAPPService.class.getName());
+		intent.putExtra(UpdateAPPService.INTENT_DOWNLOAD_URL, downloadUrl);
+		SignInActivity.this.startService(intent);
+		if(isfinish){
+			finish();
+		}
+	}
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -192,7 +256,10 @@ public class SignInActivity extends BaseActivity {
 		super.onResume();
 		hideLoading();
 	}
-
-
+	/**请求出错*/
+	protected void requestError(int id){
+		hideLoading();
+		initData();
+	}
 	
 }

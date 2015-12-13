@@ -49,13 +49,18 @@ public class FlickTextView extends TextView {
 
 		@Override
 		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
 			super.handleMessage(msg);
+			if(isAnimating){
+				clearAnimation();
+				isAnimating=false;
+			}
 		}
 		
 	};
 	
 	public void showTip(String title) {
+		handler.removeMessages(0);
+		handler.sendEmptyMessageDelayed(0, 5000);
 		setText(title + "");
 		if(getVisibility()!=View.VISIBLE){
 			setVisibility(View.VISIBLE);

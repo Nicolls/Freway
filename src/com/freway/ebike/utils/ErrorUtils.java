@@ -34,7 +34,7 @@ public class ErrorUtils {
 	 * 有错误也可以返回的监听
 	 * */
 	public interface ErrorListener{
-		void errorCompleted();
+		void errorCompleted(int id);
 	}
 
 	public static void handle(Activity context, int id, Object obj, SuccessListener lis,ErrorListener errorLis) {
@@ -42,14 +42,14 @@ public class ErrorUtils {
 			if (id == EBikeRequestService.ID_REQUEST_ERROR) {
 				ToastUtils.toast(context, context.getString(R.string.http_request_error));
 				if(errorLis!=null){
-					errorLis.errorCompleted();
+					errorLis.errorCompleted(id);
 				}
 			} else if (obj instanceof EBErrorResponse) {// 登录或者请求出问题
 				EBErrorResponse errorRes = (EBErrorResponse) obj;
 				if (!TextUtils.equals(errorRes.getCode(), EBResponse.SUCCESS_CODE) ) {
 					LogUtils.systemOut("登录或者请求出问题：" + errorRes.getText());
 					if(errorLis!=null){
-						errorLis.errorCompleted();
+						errorLis.errorCompleted(id);
 					}
 					if(TextUtils.equals(errorRes.getCode(),EBResponse.TOKEN_INVALID)) {// 说明token失效
 						EBikeActivityManager.getAppManager().reLogin(context, true);
@@ -60,13 +60,13 @@ public class ErrorUtils {
 //					alertDialog(context);
 				} else {
 					if(errorLis!=null){
-						errorLis.errorCompleted();
+						errorLis.errorCompleted(id);
 					}
 				}
 
 			} else if(!TextUtils.equals(((EBResponse) obj).getCode(),EBResponse.SUCCESS_CODE)) {// 说明有错误
 				if(errorLis!=null){
-					errorLis.errorCompleted();
+					errorLis.errorCompleted(id);
 				}
 				ToastUtils.toast(context, ((EBResponse) obj).getMsg());
 			}else if(TextUtils.equals(((EBResponse) obj).getCode(),EBResponse.TOKEN_INVALID)) {// 说明token失效

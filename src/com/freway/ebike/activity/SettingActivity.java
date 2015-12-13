@@ -77,8 +77,10 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 	private CropParams mCropParams;
 	private boolean isEdit = false;
 	private User user;
-	private String photoPath="";
+	private String photoPath = "";
 	private RspVersion version;
+	private boolean isDownloading = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -181,7 +183,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 		if (user != null) {
 			nameValue.setText(user.getUsername());
 			emailValue.setText(user.getEmail());
-			if (TextUtils.equals(User.GENDER_FEMALE, user.getGender())) {//女
+			if (TextUtils.equals(User.GENDER_FEMALE, user.getGender())) {// 女
 				genderView.setSelected(true);
 			} else {
 				genderView.setSelected(false);
@@ -189,7 +191,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			ageValue.setText(user.getAge());
 			heightValue.setText(user.getHeight());
 			weightValue.setText(user.getWeight());
-			if(!TextUtils.isEmpty(user.getPhoto())){
+			if (!TextUtils.isEmpty(user.getPhoto())) {
 				EBikeViewUtils.displayPhoto(this, mHeadView, user.getPhoto());
 			}
 			if (!TextUtils.isEmpty(SPUtils.getEBkieAddress(this))) {
@@ -197,7 +199,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			} else {
 				snValue.setText(getString(R.string.ble_not_bind));
 			}
-			
+
 			// languageValue = (TextView)
 			// findViewById(R.id.setting_language_value);
 			if (SPUtils.getUnitOfDistance(this) == EBConstant.DISTANCE_UNIT_MPH) {
@@ -234,9 +236,9 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			break;
 		case R.id.setting_gender_view:
 			v.setSelected(!v.isSelected());
-			if (v.isSelected()) {//女
+			if (v.isSelected()) {// 女
 				user.setGender(User.GENDER_FEMALE);
-			} else {//男
+			} else {// 男
 				user.setGender(User.GENDER_MALE);
 			}
 			break;
@@ -266,35 +268,36 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 							startActivityForResult(intent, CropHelper.REQUEST_CAMERA);
 
 						}
-					});
+					},true);
 			break;
 		case R.id.setting_ll_sn:
-			if(TextUtils.isEmpty(SPUtils.getEBkieAddress(SettingActivity.this))){
+			if (TextUtils.isEmpty(SPUtils.getEBkieAddress(SettingActivity.this))) {
 				BlueToothUtil.toBindBleActivity(this, BLEScanConnectActivity.HANDLE_SCAN);
-			}else{
-				AlertUtil.getInstance(SettingActivity.this).alertChoice(getString(R.string.tip_ebike_setting), getString(R.string.unbind_ebike), getString(R.string.scan_ebike),
-						new OnClickListener() {
-							
+			} else {
+				AlertUtil.getInstance(SettingActivity.this).alertChoice(getString(R.string.tip_ebike_setting),
+						getString(R.string.unbind_ebike), getString(R.string.scan_ebike), new OnClickListener() {
+
 							@Override
 							public void onClick(View v) {
 								AlertUtil.getInstance(SettingActivity.this).dismiss();
 								SPUtils.setEBikeAddress(SettingActivity.this, "");
 								snValue.setText(getString(R.string.ble_not_bind));
 								Intent intent = new Intent(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER);
-								intent.putExtra(BlueToothConstants.EXTRA_HANDLE_TYPE, BlueToothConstants.HANDLE_SERVER_DISCONNECT);
+								intent.putExtra(BlueToothConstants.EXTRA_HANDLE_TYPE,
+										BlueToothConstants.HANDLE_SERVER_DISCONNECT);
 								intent.putExtra(BlueToothConstants.EXTRA_DATA, "");
 								SettingActivity.this.sendBroadcast(intent);
 								ToastUtils.toast(SettingActivity.this, getString(R.string.tip_unbind_ebike_success));
 							}
-						},
-						new OnClickListener() {
-							
+						}, new OnClickListener() {
+
 							@Override
 							public void onClick(View v) {
 								AlertUtil.getInstance(SettingActivity.this).dismiss();
-								BlueToothUtil.toBindBleActivity(SettingActivity.this, BLEScanConnectActivity.HANDLE_SCAN);
+								BlueToothUtil.toBindBleActivity(SettingActivity.this,
+										BLEScanConnectActivity.HANDLE_SCAN);
 							}
-						});
+						},true);
 			}
 			break;
 		case R.id.setting_ll_language:
@@ -320,10 +323,10 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 							SPUtils.setUnitOfDistance(SettingActivity.this, EBConstant.DISTANCE_UNIT_MI);
 							unitDistanceValue.setText(getString(R.string.distance_unit_mi));
 						}
-					});
+					},true);
 			break;
 		case R.id.setting_ll_version:
-			chargeUpdate();
+			chargeUpdate(version);
 			break;
 		case R.id.setting_ll_exit:
 			EBikeActivityManager.getAppManager().reLogin(this, true);
@@ -335,7 +338,9 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 
 	/** 版本更新 */
 	private void updateApk(String downloadUrl) {
-//		final String downloadUrl = "http://www.saner5.com/index.aspx?appId=1&appDownLoadCount=55&appDownloadUrl=upload/app/2014_07_17_17_44_48ear.apk";
+		isDownloading = true;
+		// final String downloadUrl =
+		// "http://www.saner5.com/index.aspx?appId=1&appDownLoadCount=55&appDownloadUrl=upload/app/2014_07_17_17_44_48ear.apk";
 		ToastUtils.toast(SettingActivity.this, getString(R.string.start_download));
 		versionValue.setText(getString(R.string.app_downloading));
 		Intent intent = new Intent(UpdateAPPService.class.getName());
@@ -347,7 +352,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 	private void setEditState(boolean isEdit) {
 		nameValue.setFocusable(isEdit);
 		nameValue.setFocusableInTouchMode(isEdit);
-		if(isEdit){
+		if (isEdit) {
 			nameValue.requestFocus();
 		}
 		genderView.setEnabled(isEdit);
@@ -373,7 +378,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			ToastUtils.toast(this, getString(R.string.nick_name) + "" + getString(R.string.can_not_be_null));
 			return false;
 		}
-		if(!TextUtils.isEmpty(user.getEmail())){
+		if (!TextUtils.isEmpty(user.getEmail())) {
 			if (TextUtils.isEmpty(email)) {
 				ToastUtils.toast(this, getString(R.string.email) + "" + getString(R.string.can_not_be_null));
 			}
@@ -384,7 +389,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 				return false;
 			}
 		}
-		
+
 		user.setUsername(nickName);
 		user.setEmail(email);
 		user.setAge(age);
@@ -405,63 +410,74 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 		switch (id) {
 		case EBikeRequestService.ID_UPDATEUSERINFO:
 			SPUtils.setUser(this, user);
-			if(!TextUtils.isEmpty(photoPath)){
+			if (!TextUtils.isEmpty(photoPath)) {
 				showLoading(true);
 				mEBikeRequestService.updatePhoto(SPUtils.getToken(this), photoPath);
-			}else{
+			} else {
 				ToastUtils.toast(SettingActivity.this, getString(R.string.update_profile_success));
 			}
 			break;
 		case EBikeRequestService.ID_USERINFO:
 			RspUserInfo info = (RspUserInfo) obj;
-			if(info!=null&&info.getData()!=null){
-				user=CommonUtil.updateUserProfile(SettingActivity.this, info.getData());
+			if (info != null && info.getData() != null) {
+				user = CommonUtil.updateUserProfile(SettingActivity.this, info.getData());
 			}
 			updateUiUser(user);
 			break;
 		case EBikeRequestService.ID_PHOTO:
-		    RspUpdatePhoto rsp=(RspUpdatePhoto) obj;
+			RspUpdatePhoto rsp = (RspUpdatePhoto) obj;
 			user.setPhoto(rsp.getData().getUrl());
 			SPUtils.setUser(SettingActivity.this, user);
 			ToastUtils.toast(SettingActivity.this, getString(R.string.update_profile_success));
 			break;
 		case EBikeRequestService.ID_VERSION:
-			RspVersion version=(RspVersion) obj;
-			this.version=version;
-			chargeUpdate();
-			
+			RspVersion version = (RspVersion) obj;
+			this.version = version;
+			chargeUpdate(version);
+
 			break;
 		default:
 			break;
 		}
 	}
-	/**判断更新*/
-	private void chargeUpdate(){
-		if(version!=null){
-			String newest=version.getData().getNewest();
-			final String url=version.getData().getUrl();
-			int m=Integer.parseInt(version.getData().getForce_update());
-			boolean isForceUpdate=(m==0?false:true);
-			boolean isNeed2Update=CommonUtil.isNeed2UpdateApp(this, newest);
-			 if (isNeed2Update) {
-			AlertUtil.getInstance(this).alertConfirm(getString(R.string.app_update_tip), getString(R.string.confirm),
-					new OnClickListener() {
 
-						@Override
-						public void onClick(View v) {
-							AlertUtil.getInstance(SettingActivity.this).dismiss();
-							updateApk(url);
-						}
-					});
+	/** 判断更新 */
+	private void chargeUpdate(RspVersion version) {
+		if (version != null) {
+			String newest = version.getData().getNewest();
+			final String url = version.getData().getUrl();
+			// final String url =
+			// "http://www.saner5.com/index.aspx?appId=1&appDownLoadCount=55&appDownloadUrl=upload/app/2014_07_17_17_44_48ear.apk";
+			int m = Integer.parseInt(version.getData().getForce_update());
+			boolean isForceUpdate = (m == 0 ? false : true);
+			if (!TextUtils.isEmpty(newest)) {
+				if (!isDownloading) {
+					AlertUtil.getInstance(this).alertConfirm(getString(R.string.app_update_tip),
+							getString(R.string.confirm), new OnClickListener() {
 
-			 } else {
-			 ToastUtils.toast(SettingActivity.this,
-			 getString(R.string.app_now_is_newly));
-			 }
-		}else{
+								@Override
+								public void onClick(View v) {
+									AlertUtil.getInstance(SettingActivity.this).dismiss();
+									updateApk(url);
+								}
+							});
+
+				} else {
+					ToastUtils.toast(SettingActivity.this,
+							 getString(R.string.app_is_update));
+				}
+			} else {
+				ToastUtils.toast(SettingActivity.this, getString(R.string.app_now_is_newly));
+			}
+		} else {
 			showLoading(true);
 			mEBikeRequestService.version("Android", CommonUtil.getAppVersion(this));
 		}
+	}
+
+	/** 请求出错都要提示这是最新的版本 */
+	protected void requestError(int id) {
+		ToastUtils.toast(SettingActivity.this, getString(R.string.app_now_is_newly));
 	}
 
 	@Override
@@ -472,7 +488,6 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			ToastUtils.toast(this, message);
 		}
 	}
-
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -485,7 +500,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 	@Override
 	public void onPhotoCropped(Uri uri) {
 		LogUtils.i(tag, "onPhotoCropped Uri in path: " + uri.getPath());
-		photoPath=uri.getPath();
+		photoPath = uri.getPath();
 		if (!mCropParams.compress)
 			mHeadView.setImageBitmap(EBikeViewUtils.getRoundBitmap(BitmapUtil.decodeUriAsBitmap(this, uri)));
 	}
@@ -493,7 +508,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 	@Override
 	public void onCompressed(Uri uri) {
 		LogUtils.i(tag, "onCompressed in path: " + uri.getPath());
-		photoPath=uri.getPath();
+		photoPath = uri.getPath();
 		mHeadView.setImageBitmap(EBikeViewUtils.getRoundBitmap(BitmapUtil.decodeUriAsBitmap(this, uri)));
 	}
 

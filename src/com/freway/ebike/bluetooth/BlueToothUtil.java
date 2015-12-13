@@ -91,7 +91,7 @@ public class BlueToothUtil {
 				public void onClick(View v) {
 					AlertUtil.getInstance(context).dismiss();
 				}
-			});
+			},true);
 
 		}
 	}

@@ -112,10 +112,16 @@ public abstract class BaseActivity extends AppCompatActivity implements DataUpda
 		},new ErrorListener() {
 			
 			@Override
-			public void errorCompleted() {
+			public void errorCompleted(int id) {
 				hideLoading();
+				requestError(id);
 			}
 		});
+	}
+	
+	/**请求错误会调用这个方法*/
+	protected void requestError(int id){
+		
 	}
 
 	/** 显示加载框 */
