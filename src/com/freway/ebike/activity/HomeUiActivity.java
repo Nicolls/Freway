@@ -653,6 +653,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			onProfile();
 			break;
 		case R.id.speed_state_btn:
+			bleStateChange(BlueToothService.ble_state);
 			LogUtils.i(tag, "单击" + BaseApplication.travelState);
 			if (BlueToothService.ble_state != BlueToothConstants.BLE_STATE_CONNECTED) {// 未连接
 				mBlueToothUtil.bleConnect(getString(R.string.ble_not_connect), getString(R.string.yes),
@@ -678,6 +679,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			}
 			break;
 		case R.id.speed_state_speed_text:// 速度状态下速度值显示text
+			bleStateChange(BlueToothService.ble_state);
 			// ToastUtils.toast(this, "speed text click");
 			BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this, TravelConstant.TRAVEL_STATE_PAUSE);
 			// test(TravelConstant.TRAVEL_STATE_PAUSE);

@@ -385,7 +385,7 @@ public class BlueToothService extends BaseService {
 
 	/** 扫描蓝牙 */
 	private Handler scanHandler = new Handler();
-	private static final int SCAN_TIME = 10 * 1000;// 扫描时间为10秒
+	private static final int SCAN_TIME = 7 * 1000;// 扫描时间为7秒
 
 	/*
 	 * 扫描蓝牙设备

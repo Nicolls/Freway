@@ -403,7 +403,7 @@ public class EBikeTravelData implements Serializable {
 				batteryAh = 78;
 			}
 			remaindTravelCapacity = batteryResidueCapacity * batteryAh * 12 / 780;// 公里（千米）
-			simulateData();// 模拟数据
+//			simulateData();// 模拟数据
 			if (insSpeed != 0 && BaseApplication.travelState == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 当前是伪暂停，就resume
 				BaseApplication.sendStateChangeBroadCast(context, TravelConstant.TRAVEL_STATE_RESUME);
 			}

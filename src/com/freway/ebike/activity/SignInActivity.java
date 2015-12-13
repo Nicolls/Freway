@@ -43,7 +43,8 @@ public class SignInActivity extends BaseActivity {
 		initView();
 		initFontStyle();
 		showLoading(false);
-		mEBikeRequestService.version("Android", CommonUtil.getAppVersion(this));//新版本检查
+		initData();
+//		mEBikeRequestService.version("Android", CommonUtil.getAppVersion(this));//新版本检查
 	}
 	
 	private void initView(){
