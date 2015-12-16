@@ -58,7 +58,7 @@
     <dimen name="dialog_btn_left_right">10dp</dimen>
     <dimen name="twitter_web_progress_marginRight">20dp</dimen>
     <!-- welcome -->
-    <dimen name="welcome_logo_marginBottom">110dp</dimen>
+    <dimen name="welcome_logo_marginBottom">120dp</dimen>
     <dimen name="welcome_tv_marginBottom">20dp</dimen>
     <!-- sign in -->
     <dimen name="sign_logo_marginTop">90dp</dimen>
