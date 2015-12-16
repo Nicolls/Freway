@@ -4,7 +4,7 @@
     <string name="app_name">Freway</string>
 
     <!-- 第三方sdk -->
-    <string name="app_id">748116458653988</string>
+    <string name="app_id">1668278680085158</string>
     <string name="call_back_url">app.ifreway.com/index.php</string>
     <!-- toast提示，弹出框 -->
     <string name="not_support_bluetooth">"your phone didn't support eBike"</string>
@@ -68,6 +68,7 @@
     <string name="test_value_4">1200</string>
     <string name="test_value_time">00:00:00</string>
     <!-- ui -->
+    <string name="welcome_title">Your intelligent riding assistant</string>
     <string name="tip_ebike_setting">eBike setting</string>
     <string name="tip_go_on_the_trial">Go on the trial</string>
     <string name="tip_travel_stop">trial stop</string>

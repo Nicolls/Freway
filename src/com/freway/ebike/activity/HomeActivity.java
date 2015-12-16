@@ -23,13 +23,13 @@ public class HomeActivity extends HomeUiActivity implements OnClickListener {
 	private TextView tvMessage;
 	private TextView tvBle;
 	@Override
-	protected void uiInitCompleted() {
-		initMapBle();
+	protected void uiInitCompleted(View mapContent) {
+		initMapBle(mapContent);
 	}
 	
-	private void initMapBle() {
-		tvBle=(TextView) findViewById(R.id.home_tv_ble);
-		tvMessage=(TextView) findViewById(R.id.home_tv_message);
+	private void initMapBle(View mapContent) {
+		tvBle=(TextView) mapContent.findViewById(R.id.home_tv_ble);
+		tvMessage=(TextView) mapContent.findViewById(R.id.home_tv_message);
 		if(CommonUtil.checkGoogleServiceAvailable(this, 100)){
 			SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
 					.findFragmentById(R.id.map);

@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
-    android:layout_margin="@dimen/home_compass_profile_ll_margin"
     android:gravity="center_vertical"
     android:orientation="horizontal" >
 
