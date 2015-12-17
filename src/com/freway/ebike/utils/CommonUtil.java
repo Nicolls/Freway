@@ -104,7 +104,10 @@ public class CommonUtil {
 	}
 
 	/**
-	 * 格式化浮点数为某一精度，4舍5入
+	 * 格式化浮点数为某一精度，默认为4舍5入,
+	 * formatType=0 4舍5入
+	 * formatType=1 小数都不进位
+	 * formatType=2 小数都进位
 	 * 
 	 * @param f
 	 *            要格式化浮点值
@@ -117,6 +120,33 @@ public class CommonUtil {
 			multiple*=10;
 		}
 		f=Math.round(f*multiple);
+		f=f/multiple;
+		return formatFloatAccuracy(f,accuracy,0);
+	}
+	
+	/**
+	 * 格式化浮点数为某一精度，默认为4舍5入,
+	 * formatType=0 4舍5入
+	 * formatType=1 小数都不进位
+	 * formatType=2 小数都进位
+	 * 
+	 * @param f
+	 *            要格式化浮点值
+	 * @param accuracy
+	 *            精度数,2表示保留两位小数
+	 * */
+	public static float formatFloatAccuracy(float f, int accuracy,int formatType) {
+		int multiple=1;
+		for(int i=0;i<accuracy;i++){
+			multiple*=10;
+		}
+		if(formatType==0){
+			f=Math.round(f*multiple);
+		}else if(formatType==1){
+			f=(int) Math.floor(f*multiple);
+		}else if(formatType==2){
+			f=(int) Math.ceil(f*multiple);
+		}
 		f=f/multiple;
 		return f;
 	}

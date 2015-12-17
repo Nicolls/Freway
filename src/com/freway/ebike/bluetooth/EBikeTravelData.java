@@ -395,7 +395,7 @@ public class EBikeTravelData implements Serializable {
 					gear = 3;
 				}
 			}
-			cal_tempCalorie = cal_tempCadence / 10 * WHEEL_VALUE * 655 / 21000000;// 圈/每分钟
+			cal_tempCalorie = cal_tempCadence / 10 * WHEEL_VALUE * 655 / 21000000;// 卡路里
 			speedTemp = speedTemp * 1200f * WHEEL_VALUE / 1000 / 1000;// 单位：km/h
 			insSpeed = formatInsSpeed(speedTemp);// 在计算值之前，先用分段法处理一下得到的速度
 			cal_tempDistance = cal_tempDistance * WHEEL_VALUE / 1000 / 1000; // 单位：km
@@ -429,6 +429,18 @@ public class EBikeTravelData implements Serializable {
 				cal_endDistance = cal_tempDistance;
 				cal_endCalorie = cal_tempCalorie;
 				cal_endCadence = cal_tempCadence;
+				
+				//在这里添加溢出，或者是重启机器重计算的判断并处理
+				if(cal_endDistance - cal_startDistance<0){
+					cal_startDistance=cal_endDistance;//我们只要把上一次置为这次就可以了
+				}
+				if(cal_endCalorie - cal_startCalorie<0){
+					cal_endCalorie=cal_startCalorie;//我们只要把上一次置为这次就可以了
+				}
+				if(cal_endCadence - cal_startCadence<0){
+					cal_endCadence=cal_startCadence;//我们只要把上一次置为这次就可以了
+				}
+				//溢出处理完成
 				if (insSpeed > maxSpeed) {// 最大
 					maxSpeed = insSpeed;
 				}
@@ -561,7 +573,7 @@ public class EBikeTravelData implements Serializable {
 		insSpeed = CommonUtil.formatFloatAccuracy(insSpeed, 1);
 		maxSpeed = CommonUtil.formatFloatAccuracy(maxSpeed, 1);
 		avgSpeed = CommonUtil.formatFloatAccuracy(avgSpeed, 1);
-		distance = CommonUtil.formatFloatAccuracy(distance, 3);
+		distance = CommonUtil.formatFloatAccuracy(distance, 3,1);//小数都去掉，不用4舍5入
 		cadence = CommonUtil.formatFloatAccuracy(cadence, 0);
 		calorie = CommonUtil.formatFloatAccuracy(calorie, 3);
 		remaindTravelCapacity = CommonUtil.formatFloatAccuracy(distance, 3);

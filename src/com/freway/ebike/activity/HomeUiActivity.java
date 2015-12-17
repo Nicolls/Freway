@@ -202,9 +202,9 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 
 		batteryModel.addView(batteryStateView);
 
-		dataList.add(bikeModel);
-		dataList.add(speedModel);
 		dataList.add(batteryModel);
+		dataList.add(speedModel);
+		dataList.add(bikeModel);
 		adapter = new ViewPagerAdapter<View>();
 		adapter.setData(dataList);
 		ebikeHomePager.setAdapter(adapter);
@@ -216,7 +216,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			public void onPageSelected(int arg0) {
 				selectItem=arg0;
 				System.out.println("seletec--" + arg0);
-				if (arg0 == 0) {
+				if (arg0 == 2) {
 					ViewGroup group = (ViewGroup) bikeStateView.getParent();
 					if (group != null)
 						group.removeView(bikeStateView);
@@ -233,7 +233,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 					bikeStateView.findViewById(R.id.home_view_line_bike_state).setVisibility(View.GONE);
 					speedModel.addView(bikeStateView, 0);
 
-				} else if (arg0 == 2) {
+				} else if (arg0 == 0) {
 					ViewGroup group = (ViewGroup) travelStateView.getParent();
 					if (group != null)
 						group.removeView(travelStateView);
@@ -487,7 +487,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		speed = CommonUtil.formatFloatAccuracy(speed, 1);
 		avgSpeed = CommonUtil.formatFloatAccuracy(avgSpeed, 1);
 		altitude = CommonUtil.formatFloatAccuracy(altitude, 1);
-		distance = CommonUtil.formatFloatAccuracy(distance, 1);
+		distance = CommonUtil.formatFloatAccuracy(distance, 1,1);
 		cadence = CommonUtil.formatFloatAccuracy(cadence, 0);
 		calorie = CommonUtil.formatFloatAccuracy(calorie, 1);
 		remaindTravelCapacity = CommonUtil.formatFloatAccuracy(remaindTravelCapacity, 1);
