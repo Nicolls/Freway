@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.freway.ebike.activity;
+package com.freway.ebike.adapter;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * View左右滑动切换适配器
+ *Viewpager
  * 
  * @param <T>
  *            继承于CommonView的实体做为数据源模型
@@ -19,7 +19,7 @@ import android.view.ViewGroup;
  *
  *         2015年5月18日
  */
-public class GVViewPagerAdapter<T extends View> extends PagerAdapter {
+public class ViewPagerAdapter<T extends View> extends PagerAdapter {
 	private List<T> dataList;
 
 	/**

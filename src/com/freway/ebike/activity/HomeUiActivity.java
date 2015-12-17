@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.freway.ebike.R;
+import com.freway.ebike.adapter.ViewPagerAdapter;
 import com.freway.ebike.bluetooth.BlueToothConstants;
 import com.freway.ebike.bluetooth.BlueToothService;
 import com.freway.ebike.bluetooth.BlueToothUtil;
@@ -159,7 +160,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	private LinearLayout bikeModel;
 	private LinearLayout speedModel;
 	private LinearLayout batteryModel;
-	private GVViewPagerAdapter<View> adapter;
+	private ViewPagerAdapter<View> adapter;
 	private int selectItem=1;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -204,7 +205,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		dataList.add(bikeModel);
 		dataList.add(speedModel);
 		dataList.add(batteryModel);
-		adapter = new GVViewPagerAdapter<View>();
+		adapter = new ViewPagerAdapter<View>();
 		adapter.setData(dataList);
 		ebikeHomePager.setAdapter(adapter);
 		ebikeHomePager.setOrientation(DirectionalViewPager.VERTICAL);
