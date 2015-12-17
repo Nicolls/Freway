@@ -39,13 +39,15 @@
     <string name="ble_not_connect">eBike not connect go to connect ebike?</string>
     <!-- 通用 -->
     <string name="in_development">In development</string>
-    <string name="upload_travel_success">Upload trial success</string>
+    <string name="upload_travel_success">Upload travel success</string>
     <string name="photo_upload_success">Photo upload success</string>
     <string name="update_profile_success">Update profile success</string>
     <string name="cancel">Cancel</string>
     <string name="english">English</string>
-    <string name="travel_save">save this trial?</string>
-    <string name="travel_too_short_not_save">trial is too short will not save</string>
+    <string name="travel_save">End the travel?</string>
+    <string name="end_and_save">End&amp;Save</string>
+    <string name="end_and_discard">End&amp;Discard</string>
+    <string name="travel_too_short_not_save">travel is too short will not save</string>
     <string name="battery_connect_exception">Battery Connect Exception,Please Check!</string>
     <string name="can_not_be_null"> Can not be null</string>
     <string name="login_cancel">Cancel Sign</string>
@@ -70,8 +72,7 @@
     <!-- ui -->
     <string name="welcome_title">Your intelligent riding assistant</string>
     <string name="tip_ebike_setting">eBike setting</string>
-    <string name="tip_go_on_the_trial">Go on the trial</string>
-    <string name="tip_travel_stop">trial stop</string>
+    <string name="tip_travel_stop">travel stop</string>
     <string name="tip_ebike_disconnect">eBike disconnect</string>
     <string name="unbind_ebike">unbind eBike</string>
     <string name="tip_unbind_ebike_success">unbind eBike success</string>

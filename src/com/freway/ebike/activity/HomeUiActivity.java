@@ -663,8 +663,8 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 
 	/** 弹出行程 选择 */
 	private void alertTravelChoice() {
-		AlertUtil.getInstance(this).alertThree(getString(R.string.travel_save), getString(R.string.yes),
-				getString(R.string.no), getString(R.string.tip_go_on_the_trial), new OnClickListener() {
+		AlertUtil.getInstance(this).alertThree(getString(R.string.travel_save), getString(R.string.end_and_save),
+				getString(R.string.end_and_discard), getString(R.string.cancel), new OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
