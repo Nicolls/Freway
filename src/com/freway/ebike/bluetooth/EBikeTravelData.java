@@ -1,7 +1,6 @@
 package com.freway.ebike.bluetooth;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Random;
 
@@ -179,6 +178,7 @@ public class EBikeTravelData implements Serializable {
 	 */
 	public int cycle_times;
 
+	private static KcalCaculate kcalCacul;//卡路里计算
 	// 用于计算当前行程
 	// private long cal_startTime;
 	// private long cal_tempTime;
@@ -230,6 +230,7 @@ public class EBikeTravelData implements Serializable {
 
 	public void start(long id, int type) {
 		this.type = type;
+		kcalCacul=new KcalCaculate();
 		zeroSpeedCount = 0;
 		spendTime = 0;
 		insSpeed = 0;
@@ -269,6 +270,7 @@ public class EBikeTravelData implements Serializable {
 	}
 
 	public void stop() {
+		kcalCacul=null;
 		zeroSpeedCount = 0;
 		if (spendTimeThread != null) {
 			spendTimeThread.cancel();
@@ -279,6 +281,7 @@ public class EBikeTravelData implements Serializable {
 	}
 
 	public void completed() {
+		kcalCacul=null;
 		zeroSpeedCount = 0;
 		isNewTravel = false;
 		isPauseTime = true;
@@ -355,6 +358,7 @@ public class EBikeTravelData implements Serializable {
 			elecMode = controlArray[0]; // 电动模式
 			// 骑行数据
 			float speedTemp = 0;
+			int gearTemp=0;//档位
 			for (int i = 0; i < bikeData.length; i++) {
 				bikeData[i] = data[i + 2];
 			}
@@ -372,7 +376,7 @@ public class EBikeTravelData implements Serializable {
 					batteryAh = ProtocolTool.byteArrayToInt(new byte[] { bikeData[6] });
 				}
 				if (bikeData.length >= 8) {
-					gear = ProtocolTool.byteArrayToInt(new byte[] { bikeData[7] });
+					gearTemp = ProtocolTool.byteArrayToInt(new byte[] { bikeData[7] });
 				}
 				if (bikeData.length >= 9) {
 					batteryResidueCapacity = ProtocolTool.byteArrayToInt(new byte[] { bikeData[8] });
@@ -385,17 +389,20 @@ public class EBikeTravelData implements Serializable {
 					cycle_times = ProtocolTool.byteArrayToInt(new byte[] { bikeData[10], bikeData[11] });
 				}
 				// 下面对骑行状态进行转换。骑行状态：0-运动，1-电动 2-助力1,3-助力2,4-助力3
-				if (gear == 0) {
+				if (gearTemp == 0) {
 					gear = 0;
-				} else if (gear == 2) {
+				} else if (gearTemp == 2) {
 					gear = 1;
-				} else if (gear == 3) {
+				} else if (gearTemp == 3) {
 					gear = 2;
-				} else if (gear == 4) {
+				} else if (gearTemp == 4) {
 					gear = 3;
 				}
 			}
-			cal_tempCalorie = cal_tempCadence / 10 * WHEEL_VALUE * 655 / 21000000;// 卡路里
+			if(kcalCacul==null){
+				kcalCacul=new KcalCaculate();
+			}
+			cal_tempCalorie=kcalCacul.Kcale_Proc((long)cal_tempCadence,(long)speedTemp*1000,(byte)gearTemp);// 卡路里
 			speedTemp = speedTemp * 1200f * WHEEL_VALUE / 1000 / 1000;// 单位：km/h
 			insSpeed = formatInsSpeed(speedTemp);// 在计算值之前，先用分段法处理一下得到的速度
 			cal_tempDistance = cal_tempDistance * WHEEL_VALUE / 1000 / 1000; // 单位：km

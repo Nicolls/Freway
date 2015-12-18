@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/scan_progress"
         style="@style/BleItemText"
-        android:text="ble has been lost ,and now is reconnectting" />
+        android:text="@string/ble_lose" />
 
     <TextView
         android:id="@+id/ble_tv_message"
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/ble_tv_title"
         style="@style/BleItemText"
-        android:text="ble searching" />
+        android:text="@string/ble_scan" />
 
     <LinearLayout
         android:id="@+id/ble_layout_btn"

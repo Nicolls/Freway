@@ -224,7 +224,11 @@
         <item name="android:background">@color/speed_state_tip_text_bg</item>
         <item name="android:padding">@dimen/speed_state_speed_tip_padding</item>
         <item name="android:layout_centerHorizontal">true</item>
-        <item name="android:layout_marginTop">@dimen/speed_state_speed_tip_marginTop</item>
+        <item name="android:layout_marginTop">@dimen/speed_state_speed_tip_text_marginTop</item>
+    </style>
+    <style name="SpeedStateTipImage">
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginTop">@dimen/speed_state_speed_tip_img_marginTop</item>
     </style>
     <style name="SpeedStateSpeedText">
         <item name="android:textColor">@color/black</item>

@@ -57,7 +57,13 @@
             android:text="@string/tip_travel_stop"
             style="@style/SpeedStateTipText" />
          
-        
+        <com.freway.ebike.view.FlickImageView
+            android:id="@+id/speed_state_tip_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/mabiao_flag_end"
+            android:visibility="gone"
+            style="@style/SpeedStateTipImage" />
         <TextView
             android:id="@+id/speed_state_speed_text"
             android:layout_width="wrap_content"

@@ -37,6 +37,8 @@
     <string name="ble_scan_compledted">eBike scan completed</string>
     <string name="ble_not_bind">eBike not bind go to bind ebike?</string>
     <string name="ble_not_connect">eBike not connect go to connect ebike?</string>
+    <string name="ble_lose">ble has been lost ,and now is reconnectting</string>
+    <string name="ble_scan">ble scan</string>
     <!-- 通用 -->
     <string name="in_development">In development</string>
     <string name="upload_travel_success">Upload travel success</string>
@@ -90,7 +92,7 @@
     <string name="m">m</string><!-- 这个单位是米 -->
     <string name="km">km</string>
     <string name="gear">GEAR</string>
-    <string name="cal">cal</string>
+    <string name="cal">Kcal</string>
     <string name="mph">mph</string>
     <string name="km_h">km/h</string>
     <string name="rpm">rpm</string>
@@ -102,7 +104,7 @@
     <string name="cadence">CADENCE</string>
     <string name="day">DAY</string>
     <string name="night">NIGHT</string>
-    <string name="battery_remaind_tip">STATUS 100% DISTANCE REMAIND</string>
+    <string name="battery_remaind_tip">Residual mileage %1$s </string>
     <string name="profile">Profile</string>
     <string name="name">Name</string>
     <string name="total_miles">TOTAL MILES</string>

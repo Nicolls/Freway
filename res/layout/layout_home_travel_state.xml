@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@id/travel_state_cal_value"
                 android:layout_toRightOf="@id/travel_state_cal_value"
-                android:text="cal" />
+                android:text="@string/cal" />
 
             <TextView
                 android:id="@+id/travel_state_spend_time"

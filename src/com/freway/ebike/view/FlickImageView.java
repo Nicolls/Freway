@@ -23,6 +23,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -30,18 +31,18 @@ import android.widget.TextView;
  * 
  * 
  */
-public class FlickTextView extends TextView {
+public class FlickImageView extends ImageView {
 	private Animation animation;
 	public boolean isAnimating=false;
-	public FlickTextView(Context context) {
+	public FlickImageView(Context context) {
 		super(context);
 	}
 
-	public FlickTextView(Context context, AttributeSet attrs) {
+	public FlickImageView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 
-	public FlickTextView(Context context, AttributeSet attrs, int defStyle) {
+	public FlickImageView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
 
@@ -58,10 +59,9 @@ public class FlickTextView extends TextView {
 		
 	};
 	
-	public void showTip(String title) {
-		handler.removeMessages(0);
-		handler.sendEmptyMessageDelayed(0, 5000);
-		setText(title + "");
+	public void showTip() {
+//		handler.removeMessages(0);
+//		handler.sendEmptyMessageDelayed(0, 5000);
 		if(getVisibility()!=View.VISIBLE){
 			setVisibility(View.VISIBLE);
 		}
