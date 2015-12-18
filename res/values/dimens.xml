@@ -26,9 +26,9 @@
     <dimen name="text_size_BatteryStateGearText">22sp</dimen>
     <dimen name="text_size_SpeedStateTipText">13sp</dimen>
     <dimen name="text_size_SpeedStateSpeedText">72sp</dimen>
-    <dimen name="text_size_SpeedStateCalValue">14sp</dimen>
+    <dimen name="text_size_SpeedStateCalValue">17sp</dimen>
     <dimen name="text_size_SpeedStateCalUnit">12sp</dimen>
-    <dimen name="text_size_SpeedStateSpendTimeText">14sp</dimen>
+    <dimen name="text_size_SpeedStateSpendTimeText">19sp</dimen>
     <dimen name="text_size_SpeedStateTitleText">10sp</dimen>
     <dimen name="text_size_SpeedStateValueText">22sp</dimen>
     <dimen name="text_size_SpeedStateUnitText">14sp</dimen>
