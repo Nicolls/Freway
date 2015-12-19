@@ -104,7 +104,7 @@
     <string name="cadence">CADENCE</string>
     <string name="day">DAY</string>
     <string name="night">NIGHT</string>
-    <string name="battery_remaind_tip">Residual mileage %1$s </string>
+    <string name="battery_remaind_tip">Remainder Range %1$s </string>
     <string name="profile">Profile</string>
     <string name="name">Name</string>
     <string name="total_miles">TOTAL MILES</string>
