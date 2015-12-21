@@ -40,7 +40,7 @@ public class ErrorUtils {
 	public static void handle(Activity context, int id, Object obj, SuccessListener lis,ErrorListener errorLis) {
 		if(context!=null){
 			if (id == EBikeRequestService.ID_REQUEST_ERROR) {
-				ToastUtils.toast(context, context.getString(R.string.http_request_error));
+				ToastUtils.toast(context, context.getString(R.string.request_server_error));
 				if(errorLis!=null){
 					errorLis.errorCompleted(id);
 				}

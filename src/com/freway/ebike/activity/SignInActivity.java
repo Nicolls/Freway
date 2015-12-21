@@ -130,7 +130,7 @@ public class SignInActivity extends BaseActivity {
 					SPUtils.setUser(getApplicationContext(), user);
 					mEBikeRequestService.loginFaceBook(user.getUserid(), user.getUsername(), user.getGender(),  user.getPhoto(), user.getEmail());
 				}else{
-					ToastUtils.toast(getApplicationContext(), getString(R.string.login_failt));
+					ToastUtils.toast(getApplicationContext(), getString(R.string.login_fail));
 				}
 				
 			}
@@ -157,7 +157,7 @@ public class SignInActivity extends BaseActivity {
 						SPUtils.setUser(getApplicationContext(), user);
 						mEBikeRequestService.loginFaceBook(user.getUserid(), user.getUsername(), user.getGender(),user.getPhoto(), user.getEmail());
 					}else{
-						ToastUtils.toast(getApplicationContext(), getString(R.string.login_failt));
+						ToastUtils.toast(getApplicationContext(), getString(R.string.login_fail));
 					}
 					
 				}
