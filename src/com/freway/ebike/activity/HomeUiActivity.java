@@ -743,26 +743,26 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			// test(TravelConstant.TRAVEL_STATE_PAUSE);
 			break;
 		case R.id.home_view_line_bike_state:
-			ebikeHomePager.setCurrentItem(1);
+			ebikeHomePager.setCurrentItem(0);
 			break;
 		case R.id.home_view_line_battery_state:
-			ebikeHomePager.setCurrentItem(0);
-			break;
-		case R.id.home_view_line_travel_state:
-			System.out.println("--->"+selectItem);
-			if(selectItem==0){
-				System.out.println("set item 2");
-				ebikeHomePager.setCurrentItem(2);
-			}else {
-				System.out.println("set item 1");
-				ebikeHomePager.setCurrentItem(1);
-			}
-			break;
-		case R.id.speed_state_arrow_top:
 			ebikeHomePager.setCurrentItem(2);
 			break;
-		case R.id.speed_state_arrow_bottom:
+		case R.id.home_view_line_travel_state:
+			ebikeHomePager.setCurrentItem(1);
+//			if(selectItem==0){
+//				System.out.println("set item 2");
+//				ebikeHomePager.setCurrentItem(1);
+//			}else {
+//				System.out.println("set item 1");
+//				ebikeHomePager.setCurrentItem(1);
+//			}
+			break;
+		case R.id.speed_state_arrow_top:
 			ebikeHomePager.setCurrentItem(0);
+			break;
+		case R.id.speed_state_arrow_bottom:
+			ebikeHomePager.setCurrentItem(2);
 			break;
 		default:
 			break;
