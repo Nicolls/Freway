@@ -2,7 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent" 
+    android:keepScreenOn="true"
+    >
 
     <include
         android:id="@+id/home_top_bar"
