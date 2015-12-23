@@ -205,8 +205,8 @@ public class EBikeTravelData implements Serializable {
 	private boolean isCalUiTime = true;// 是否显示
 	private boolean isPauseTime = true;// 是否计算
 	private SpendTimeThread spendTimeThread = null;
-	// 存储连续速度为0的点，每一秒存一个，如果连续为0的点超过5个就暂停骑行。
-	private static final int MAX_LIMIT_ZERO_SPEED = 5;
+	// 存储连续速度为0的点，每一秒存一个，如果连续为0的点超过3个就暂停骑行。
+	private static final int MAX_LIMIT_ZERO_SPEED = 3;
 	private int zeroSpeedCount = 0;// 速度为0的次数
 	private NetUtil netUtil;
 	// 历史记录
