@@ -197,7 +197,8 @@ public class EBikeTravelData implements Serializable {
 	private float cal_tempCadence;
 	private float cal_endCadence;
 	private float cal_recordCadence;// 记录的总踏频量
-	private boolean isNewTravel = true;
+	private float[] cal_CadenceArray=null;//计算踏频量的数组
+	private boolean isReInitCaculate = true;//是否重初始化计算变量 
 	private Context context;
 	private static EBikeTravelData mEBikeTravelData;
 	// UI时间
@@ -230,15 +231,21 @@ public class EBikeTravelData implements Serializable {
 
 	public void start(long id, int type) {
 		this.type = type;
+		cal_CadenceArray=null;
 		kcalCacul=new KcalCaculate();
 		zeroSpeedCount = 0;
 		spendTime = 0;
 		insSpeed = 0;
-		cadence = 0;
-		calorie = 0;
+		avgSpeed = 0;
+		maxSpeed = 0;
 		distance = 0;
+		calorie = 0;
+		cadence = 0;
+		altitude = 0;
+		cal_recordCadence=0;
+		
 		travelId = id;
-		isNewTravel = true;
+		isReInitCaculate = true;
 		startTime = Calendar.getInstance().getTimeInMillis();
 		endTime = startTime;
 		isCalUiTime = true;
@@ -259,23 +266,21 @@ public class EBikeTravelData implements Serializable {
 		cal_startDistance = cal_endDistance;
 		cal_startCalorie = cal_endCalorie;
 		cal_startCadence = cal_endCadence;
-		isNewTravel = false;
 		isPauseTime = true;
 	}
 
 	public void resume() {
 		zeroSpeedCount = 0;
-		isNewTravel = false;
 		isPauseTime = false;
 	}
 
 	public void stop() {
 		kcalCacul=null;
+		isReInitCaculate=true;
 		zeroSpeedCount = 0;
 		if (spendTimeThread != null) {
 			spendTimeThread.cancel();
 		}
-		isNewTravel = false;
 		isPauseTime = true;
 		DBHelper.getInstance(context).deleteTravel(travelId);
 	}
@@ -283,8 +288,8 @@ public class EBikeTravelData implements Serializable {
 	public void completed() {
 		kcalCacul=null;
 		zeroSpeedCount = 0;
-		isNewTravel = false;
 		isPauseTime = true;
+		isReInitCaculate=true;
 		endTime = Calendar.getInstance().getTimeInMillis();
 		if (spendTimeThread != null) {
 			spendTimeThread.cancel();
@@ -414,22 +419,14 @@ public class EBikeTravelData implements Serializable {
 			if (insSpeed != 0 && BaseApplication.travelState == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 当前是伪暂停，就resume
 				BaseApplication.sendStateChangeBroadCast(context, TravelConstant.TRAVEL_STATE_RESUME);
 			}
-			if (isNewTravel) {// 新的骑行
-				insSpeed = 0;
-				avgSpeed = 0;
-				maxSpeed = 0;
-				distance = 0;
-				calorie = 0;
-				cadence = 0;
-				altitude = 0;
-
+			if (isReInitCaculate) {// 重新计算值
 				// cal_startTime=startTime;
 				// cal_endTime=startTime;
 				// cal_startAltitude = cal_tempAltitude;
 				cal_startDistance = cal_tempDistance;
 				cal_startCalorie = cal_tempCalorie;
 				cal_startCadence = cal_tempCadence;
-				isNewTravel = false;
+				isReInitCaculate = false;
 			} else {
 				// cal_endTime=Calendar.getInstance().getTimeInMillis();
 				// cal_endAltitude = cal_tempAltitude;
@@ -442,10 +439,10 @@ public class EBikeTravelData implements Serializable {
 					cal_startDistance=cal_endDistance;//我们只要把上一次置为这次就可以了
 				}
 				if(cal_endCalorie - cal_startCalorie<0){
-					cal_endCalorie=cal_startCalorie;//我们只要把上一次置为这次就可以了
+					cal_startCalorie=cal_endCalorie;//我们只要把上一次置为这次就可以了
 				}
 				if(cal_endCadence - cal_startCadence<0){
-					cal_endCadence=cal_startCadence;//我们只要把上一次置为这次就可以了
+					cal_startCadence=cal_endCadence;//我们只要把上一次置为这次就可以了
 				}
 				//溢出处理完成
 				if (insSpeed > maxSpeed) {// 最大
@@ -460,26 +457,18 @@ public class EBikeTravelData implements Serializable {
 					avgSpeed = distance / spendTime * 60 * 60;// 平均 km/h
 				}
 				calorie += (cal_endCalorie - cal_startCalorie);// 卡路里
-				cal_recordCadence += (cal_endCadence - cal_startCadence);// 踏频
+//				cal_recordCadence += (cal_endCadence - cal_startCadence);// 踏频
 				altitude += altitude;// 海拔
 				if (insSpeed == 0) {// 只要速度为0那么踏频量就要为0
-					cal_recordCadence = 0;
-					cadence = 0;
-				}
-				if (spendTime != 0) {
-					cadence = cal_recordCadence / spendTime * 60f;// 每分钟踏频量
+					cal_startCadence=cal_endCadence;
+					cal_CadenceArray=null;
+					cadenceArray(0);
 				}
 
 				// cal_startAltitude = cal_tempAltitude;
 				cal_startDistance = cal_tempDistance;
 				cal_startCalorie = cal_tempCalorie;
-				cal_startCadence = cal_tempCadence;
-				if (spendTime != 0 && (spendTime % RECORD_TIME_FRE) == 0) {// 每百秒存储一个速度
-					TravelSpeed travelSpeed = new TravelSpeed();
-					travelSpeed.setTravelId(travelId);
-					travelSpeed.setSpeed(CommonUtil.formatFloatAccuracy(avgSpeed, 1));
-					DBHelper.getInstance(context).insertTravelSpeed(travelSpeed);
-				}
+//				cal_startCadence = cal_tempCadence;
 			}
 		}
 
@@ -505,9 +494,13 @@ public class EBikeTravelData implements Serializable {
 				cal_tempDistance = ProtocolTool.byteArrayToInt(mileage);
 				cal_tempCadence = ProtocolTool.byteArrayToInt(step);
 				spendTime = ProtocolTool.byteArrayToInt(time);
-				cal_tempCalorie = cal_tempCadence / 10 * WHEEL_VALUE * 655 / 21000000;// 圈/每分钟
+				
+				if(kcalCacul==null){
+					kcalCacul=new KcalCaculate();
+				}
+				
 				cal_tempDistance = cal_tempDistance * WHEEL_VALUE / 1000 / 1000; // 单位：km
-				if (isNewTravel) {// 新的骑行
+				if (isReInitCaculate) {// 新的骑行
 					Travel travel = new Travel();
 					travel.setType(TravelConstant.TRAVEL_TYPE_HISTORY);
 					travel.setSync(0);
@@ -523,14 +516,20 @@ public class EBikeTravelData implements Serializable {
 					cal_startDistance = cal_tempDistance;
 					cal_startCalorie = cal_tempCalorie;
 					cal_startCadence = cal_tempCadence;
-					isNewTravel = false;
+					isReInitCaculate = false;
 				} else {
 
 					cal_endTime = cal_tempSpendTime;
 					cal_endDistance = cal_tempDistance;
-					cal_endCalorie = cal_tempCalorie;
 					cal_endCadence = cal_tempCadence;
-
+					//在这里添加溢出，或者是重启机器重计算的判断并处理
+					if(cal_endDistance - cal_startDistance<0){
+						cal_startDistance=cal_endDistance;//我们只要把上一次置为这次就可以了
+					}
+					if(cal_endCadence - cal_startCadence<0){
+						cal_startCadence=cal_endCadence;//我们只要把上一次置为这次就可以了
+					}
+					//溢出处理完成
 					spendTime += (cal_endTime - cal_startTime);// 时长
 					distance += (cal_endDistance - cal_startDistance);// 距离
 					if (spendTime != 0) {
@@ -538,6 +537,12 @@ public class EBikeTravelData implements Serializable {
 					}
 					if (avgSpeed > maxSpeed) {// 最大
 						maxSpeed = avgSpeed;
+					}
+					
+					cal_tempCalorie=kcalCacul.Kcale_Proc((long)cal_tempCadence,(long)avgSpeed*1000,(byte)0);// 卡路里
+					cal_endCalorie = cal_tempCalorie;
+					if(cal_endCalorie - cal_startCalorie<0){
+						cal_startCalorie=cal_endCalorie;//我们只要把上一次置为这次就可以了
 					}
 					calorie += (cal_endCalorie - cal_startCalorie);// 卡路里
 					cal_recordCadence += (cal_endCadence - cal_startCadence);// 踏频
@@ -554,11 +559,11 @@ public class EBikeTravelData implements Serializable {
 				DBHelper.getInstance(context).insertTravelSpeed(travelSpeed);
 			} else {
 				formatFloat2OneAccuracy();
-				if (!isNewTravel) {// 说明有数据 //dataId为0说明读完了，保存起来
+				if (!isReInitCaculate) {// 说明有数据 //dataId为0说明读完了，保存起来
 					Travel travel = new Travel();
 					travel.setId(travelId);
 					travel.setAvgSpeed(avgSpeed);
-					travel.setCadence(cadence);
+					travel.setCadence(cal_recordCadence);
 					travel.setCalorie(calorie);
 					travel.setDistance(distance);
 					travel.setMaxSpeed(maxSpeed);
@@ -583,6 +588,7 @@ public class EBikeTravelData implements Serializable {
 		distance = CommonUtil.formatFloatAccuracy(distance, 3,1);//小数都去掉，不用4舍5入
 		cadence = CommonUtil.formatFloatAccuracy(cadence, 0);
 		calorie = CommonUtil.formatFloatAccuracy(calorie, 3);
+		cal_recordCadence = CommonUtil.formatFloatAccuracy(cal_recordCadence, 0);
 		remaindTravelCapacity = CommonUtil.formatFloatAccuracy(distance, 3);
 	}
 
@@ -647,6 +653,34 @@ public class EBikeTravelData implements Serializable {
 
 	}
 
+	/**设置踏频量数组的值*/
+	private synchronized void cadenceArray(float value){
+		float f=0;
+		if(cal_CadenceArray==null){
+			if(value>0){//没有给值，那么得当value>0才能给值
+				cal_CadenceArray=new float[30];
+				for(int i=0;i<cal_CadenceArray.length;i++){
+					cal_CadenceArray[i]=value;
+				}
+			}
+		}else {//说明已经给值过了
+			float[]temp=new float[cal_CadenceArray.length];
+			for(int i=0;i<temp.length-1;i++){
+				temp[i]=cal_CadenceArray[i+1];
+			}
+			temp[temp.length-1]=value;
+			cal_CadenceArray=temp;
+		}
+//		StringBuffer sb=new StringBuffer();
+		if(cal_CadenceArray!=null){
+			for(int i=0;i<cal_CadenceArray.length;i++){
+				f+=cal_CadenceArray[i];
+//				sb.append(""+cal_CadenceArray[i]+",");
+			}
+		}
+//		System.out.println(sb.toString());
+		cadence=f;
+	}
 	/**
 	 * This thread runs while connect is interrupt attempting to reconnect
 	 */
@@ -657,6 +691,25 @@ public class EBikeTravelData implements Serializable {
 			while (isCalUiTime) {
 				if (!isPauseTime) {
 					spendTime += 1;
+					if(spendTime%2==0){//计算踏频量
+						cal_endCadence=cal_tempCadence;
+//						System.out.println("start-end:"+cal_startCadence+"-"+cal_endCadence);
+						if(cal_endCadence - cal_startCadence<0){//为负数，说明是重新开机或者什么的了
+							cal_startCadence=cal_endCadence;
+						}
+						if (insSpeed == 0) {//当速度为0时，踏频就是0
+							cal_startCadence=cal_endCadence;
+							cal_CadenceArray=null;
+							cadenceArray(0);
+						}else{
+							cal_recordCadence += (cal_endCadence - cal_startCadence);//总踏频
+							cadenceArray(cal_endCadence-cal_startCadence);
+							cal_startCadence = cal_endCadence;
+						}
+//						System.out.println("总的是："+cal_recordCadence);
+//						System.out.println("踏频量："+cadence);
+					}
+					
 					if (insSpeed == 0) {
 						zeroSpeedCount++;
 						if (zeroSpeedCount > MAX_LIMIT_ZERO_SPEED) {// 超过数值
@@ -666,6 +719,13 @@ public class EBikeTravelData implements Serializable {
 						}
 					} else {
 						zeroSpeedCount = 0;
+					}
+					
+					if (spendTime != 0 && (spendTime % RECORD_TIME_FRE) == 0) {// 每百秒存储一个速度
+						TravelSpeed travelSpeed = new TravelSpeed();
+						travelSpeed.setTravelId(travelId);
+						travelSpeed.setSpeed(CommonUtil.formatFloatAccuracy(avgSpeed, 1));
+						DBHelper.getInstance(context).insertTravelSpeed(travelSpeed);
 					}
 				}
 				try {
