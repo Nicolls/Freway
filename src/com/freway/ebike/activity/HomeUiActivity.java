@@ -489,9 +489,9 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			remaindTravelCapacity = remaindTravelCapacity * 0.6f;// km->mi
 		}
 		
-		if(batteryResidueCapacity>=97){//保留3%的电量
-			batteryResidueCapacity=97;
-		}
+//		if(batteryResidueCapacity>=97){//保留3%的电量
+//			batteryResidueCapacity=97;
+//		}
 
 		// 格式化精度
 		speed = CommonUtil.formatFloatAccuracy(speed, 1);
@@ -804,9 +804,9 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 
 	private void modelChange() {
 		int batteryResidueCapacity=EBikeTravelData.getInstance(this).batteryResidueCapacity;
-		if(batteryResidueCapacity>=97){//保留3%的电量
-			batteryResidueCapacity=97;
-		}
+//		if(batteryResidueCapacity>=97){//保留3%的电量
+//			batteryResidueCapacity=97;
+//		}
 		mBatteryStateBatteryView.onValueChange(batteryResidueCapacity,
 				SPUtils.getUiModel(this), EBikeTravelData.getInstance(this).gear, true);
 		if (SPUtils.getUiModel(this) == EBConstant.MODEL_NIGHT) {// 由day到night
