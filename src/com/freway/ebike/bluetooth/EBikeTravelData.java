@@ -31,7 +31,7 @@ public class EBikeTravelData implements Serializable {
 	/**
 	 * @Fields RECORD_TIME_FRE 每一百秒记录一次平均速度点用于描绘速度曲线
 	 */
-	private static final int RECORD_TIME_FRE = 100;// 每100秒记录一次
+	private static final int RECORD_TIME_FRE = 10;// 每0秒记录一次
 	/**
 	 * @Fields MUST_MIN_TRAVEL 最短行程，要记录的行程至少要大于最短行程，否则丢弃
 	 */
@@ -732,7 +732,7 @@ public class EBikeTravelData implements Serializable {
 						zeroSpeedCount = 0;
 					}
 					
-					if (spendTime != 0 && (spendTime % RECORD_TIME_FRE) == 0) {// 每百秒存储一个速度
+					if (spendTime != 0 && (spendTime % RECORD_TIME_FRE) == 0) {// 每10秒存储一个速度
 						TravelSpeed travelSpeed = new TravelSpeed();
 						travelSpeed.setTravelId(travelId);
 						travelSpeed.setSpeed(CommonUtil.formatFloatAccuracy(avgSpeed, 1));
