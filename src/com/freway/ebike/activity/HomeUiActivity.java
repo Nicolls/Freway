@@ -479,6 +479,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		float calorie = EBikeTravelData.getInstance(this).calorie;
 		float cadence = EBikeTravelData.getInstance(this).cadence;
 		float remaindTravelCapacity = EBikeTravelData.getInstance(this).remaindTravelCapacity;
+		int batteryResidueCapacity=EBikeTravelData.getInstance(this).batteryResidueCapacity;
 		String spendTime = TimeUtils.formatTimeSSToHMS(EBikeTravelData.getInstance(this).spendTime) + "";
 		if (distanUnit == EBConstant.DISTANCE_UNIT_MPH) {
 			speed = speed / 1.6f;// km/h->mph
@@ -486,6 +487,10 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			altitude = altitude * 0.6f;// km->mi
 			distance = distance * 0.6f;// km->mi
 			remaindTravelCapacity = remaindTravelCapacity * 0.6f;// km->mi
+		}
+		
+		if(batteryResidueCapacity>=97){//保留3%的电量
+			batteryResidueCapacity=97;
 		}
 
 		// 格式化精度
@@ -498,9 +503,26 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		remaindTravelCapacity = CommonUtil.formatFloatAccuracy(remaindTravelCapacity, 1);
 
 		// 车况
-		mBikeStateBatteryView.onValueChange(EBikeTravelData.getInstance(this).batteryResidueCapacity, model,
+		switch(EBikeTravelData.getInstance(this).gear){
+		case 0:
+			mBikeStateGearIcon.setImageResource(R.drawable.bike_state_gear0);
+			break;
+		case 1:
+			mBikeStateGearIcon.setImageResource(R.drawable.bike_state_gear1);
+			break;
+		case 2:
+			mBikeStateGearIcon.setImageResource(R.drawable.bike_state_gear2);
+			break;
+		case 3:
+			mBikeStateGearIcon.setImageResource(R.drawable.bike_state_gear3);
+			break;
+			default:
+				mBikeStateGearIcon.setImageResource(R.drawable.bike_state_gear0);
+				break;
+		}
+		mBikeStateBatteryView.onValueChange(batteryResidueCapacity, model,
 				EBikeTravelData.getInstance(this).gear, false);
-		mBikeStateBatteryPercent.setText(EBikeTravelData.getInstance(this).batteryResidueCapacity + "%");
+		mBikeStateBatteryPercent.setText(batteryResidueCapacity + "%");
 		if (distanUnit == EBConstant.DISTANCE_UNIT_MPH) {
 			mBikeStateBatteryRemaindValue.setText(remaindTravelCapacity + "" + getString(R.string.mi));
 		} else {
@@ -530,22 +552,22 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		mTravelStateCadenceValue.setText(cadence + "");
 		if (distanUnit == EBConstant.DISTANCE_UNIT_MPH) {
 			mSpeedStateSpeedView.onValueChange(speed, SpeedView.MAX_SPEED_MPH);
-			mSpeedStateAvgSpeedUnit.setText(getString(R.string.mph));
-			mTravelStateAvgSpeedUnit.setText(getString(R.string.mph));
-			mTravelStateSpeedUnit.setText(getString(R.string.mph));
-			mTravelStateAslUnit.setText(getString(R.string.mi));
-			mTravelStateDistanceUnit.setText(getString(R.string.mi));
-			mSpeedStateAslUnit.setText(getString(R.string.mi));
-			mSpeedStateDistanceUnit.setText(getString(R.string.mi));
+			mSpeedStateAvgSpeedUnit.setText(getString(R.string.MPH));
+			mTravelStateAvgSpeedUnit.setText(getString(R.string.MPH));
+			mTravelStateSpeedUnit.setText(getString(R.string.MPH));
+			mTravelStateAslUnit.setText(getString(R.string.MI));
+			mTravelStateDistanceUnit.setText(getString(R.string.MI));
+			mSpeedStateAslUnit.setText(getString(R.string.MI));
+			mSpeedStateDistanceUnit.setText(getString(R.string.MI));
 		} else {
 			mSpeedStateSpeedView.onValueChange(speed, SpeedView.MAX_SPEED_KM_H);
-			mSpeedStateAvgSpeedUnit.setText(getString(R.string.km_h));
-			mTravelStateAvgSpeedUnit.setText(getString(R.string.km_h));
-			mTravelStateSpeedUnit.setText(getString(R.string.km_h));
-			mTravelStateAslUnit.setText(getString(R.string.km));
-			mTravelStateDistanceUnit.setText(getString(R.string.km));
-			mSpeedStateAslUnit.setText(getString(R.string.km));
-			mSpeedStateDistanceUnit.setText(getString(R.string.km));
+			mSpeedStateAvgSpeedUnit.setText(getString(R.string.KM_H));
+			mTravelStateAvgSpeedUnit.setText(getString(R.string.KM_H));
+			mTravelStateSpeedUnit.setText(getString(R.string.KM_H));
+			mTravelStateAslUnit.setText(getString(R.string.KM));
+			mTravelStateDistanceUnit.setText(getString(R.string.KM));
+			mSpeedStateAslUnit.setText(getString(R.string.KM));
+			mSpeedStateDistanceUnit.setText(getString(R.string.KM));
 		}
 
 		mSpeedStateSpeedText.setText(speed + "");
@@ -566,9 +588,9 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		} else {
 			mBatteryStateRemaindTip.setText(String.format(getString(R.string.battery_remaind_tip), new String[]{""+remaindTravelCapacity})+getString(R.string.km));
 		}
-		mBatteryStateBatteryView.onValueChange(EBikeTravelData.getInstance(this).batteryResidueCapacity, model,
+		mBatteryStateBatteryView.onValueChange(batteryResidueCapacity, model,
 				EBikeTravelData.getInstance(this).gear, true);
-		mBatteryStateBatteryPercent.setText(EBikeTravelData.getInstance(this).batteryResidueCapacity + "%");
+		mBatteryStateBatteryPercent.setText(batteryResidueCapacity + "%");
 		mBatteryStateRemaindValue.setText(remaindTravelCapacity + "");
 		if (distanUnit == EBConstant.DISTANCE_UNIT_MPH) {
 			mBatteryStateRemaindUnit.setText(getString(R.string.mi));
@@ -781,7 +803,11 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	}
 
 	private void modelChange() {
-		mBatteryStateBatteryView.onValueChange(EBikeTravelData.getInstance(this).batteryResidueCapacity,
+		int batteryResidueCapacity=EBikeTravelData.getInstance(this).batteryResidueCapacity;
+		if(batteryResidueCapacity>=97){//保留3%的电量
+			batteryResidueCapacity=97;
+		}
+		mBatteryStateBatteryView.onValueChange(batteryResidueCapacity,
 				SPUtils.getUiModel(this), EBikeTravelData.getInstance(this).gear, true);
 		if (SPUtils.getUiModel(this) == EBConstant.MODEL_NIGHT) {// 由day到night
 			// 电池
