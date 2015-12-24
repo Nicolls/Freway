@@ -268,6 +268,17 @@ public class EBikeTravelData implements Serializable {
 		cal_startCadence = cal_endCadence;
 		isPauseTime = true;
 	}
+	
+	public void fakePause() {
+		zeroSpeedCount = 0;
+		insSpeed = 0;
+		// cal_startTime=cal_endTime;
+		// cal_startAltitude = cal_endAltitude;
+		cal_startDistance = cal_endDistance;
+		cal_startCalorie = cal_endCalorie;
+		cal_startCadence = cal_endCadence;
+		isPauseTime = true;
+	}
 
 	public void resume() {
 		zeroSpeedCount = 0;

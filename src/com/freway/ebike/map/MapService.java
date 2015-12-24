@@ -129,7 +129,9 @@ public class MapService extends Service implements ConnectionCallbacks,
 					start();
 				} else if (state == TravelConstant.TRAVEL_STATE_PAUSE) {// 暂停
 					pause();
-				} else if (state == TravelConstant.TRAVEL_STATE_RESUME) {// 恢复
+				} else if (state == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 伪暂停
+					pause();
+				}else if (state == TravelConstant.TRAVEL_STATE_RESUME) {// 恢复
 					resume();
 				} else if (state == TravelConstant.TRAVEL_STATE_COMPLETED) {// 完成
 					completed();

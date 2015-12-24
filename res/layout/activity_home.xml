@@ -28,4 +28,12 @@
         android:layout_marginBottom="@dimen/home_compass_profile_ll_marginVertical"
         layout="@layout/layout_home_compass" />
 
+    <com.freway.ebike.view.FlickImageView
+            android:id="@+id/speed_state_tip_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/mabiao_flag_end"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            style="@style/SpeedStateTipImage" />
 </RelativeLayout>

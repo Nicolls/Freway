@@ -169,6 +169,8 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	}
 
 	private void initView() {
+		mSpeedStateTipImg = (FlickImageView) findViewById(R.id.speed_state_tip_img);
+
 		ebikeHomePager = (DirectionalViewPager) findViewById(R.id.home_ebike_pager);
 		dataList = new ArrayList<View>();
 		bikeStateView = LayoutInflater.from(this).inflate(R.layout.layout_home_bike_state, null);
@@ -296,7 +298,6 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		mSpeedStateSpeedView = (SpeedView) speedStateView.findViewById(R.id.speed_state_speed_view);
 		mSpeedStateSpeedText = (TextView) speedStateView.findViewById(R.id.speed_state_speed_text);
 		mSpeedStateTipText = (FlickTextView) speedStateView.findViewById(R.id.speed_state_tip_text);
-		mSpeedStateTipImg = (FlickImageView) speedStateView.findViewById(R.id.speed_state_tip_img);
 
 		mSpeedStateSpeedButton = (ImageButton) speedStateView.findViewById(R.id.speed_state_btn);
 		mSpeedStateCalValue = (TextView) speedStateView.findViewById(R.id.speed_state_cal_value);
@@ -439,25 +440,29 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
 			super.handleMessage(msg);
+			bleStateChange(BlueToothService.ble_state);//先去判断蓝牙链接状态
 			int state = msg.what;// 所有的行程操作都必须是链接上BLE了才能有作用，因为没有链接的话，显示一定是灰色的
-			if (state == TravelConstant.TRAVEL_STATE_PAUSE || state == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 暂停
-				mSpeedStateSpeedButton.setVisibility(View.GONE);
+			if (state == TravelConstant.TRAVEL_STATE_PAUSE ) {// 暂停
+				mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
 				mSpeedStateSpeedText.setVisibility(View.GONE);
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_pause_enable);
+				mSpeedStateTipImg.hideTip();
+			} else if (state == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {//伪暂停
+				mSpeedStateSpeedButton.setVisibility(View.GONE);
+				mSpeedStateSpeedText.setVisibility(View.VISIBLE);
+				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_pause_enable);
 				mSpeedStateTipImg.showTip();
-			} else if (BlueToothService.ble_state == BlueToothConstants.BLE_STATE_CONNECTED
+			}else if (BlueToothService.ble_state == BlueToothConstants.BLE_STATE_CONNECTED
 					&& (state == TravelConstant.TRAVEL_STATE_START || state == TravelConstant.TRAVEL_STATE_RESUME)) {
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_start_enable);
 				mSpeedStateSpeedButton.setVisibility(View.GONE);
 				mSpeedStateSpeedText.setVisibility(View.VISIBLE);
 				mSpeedStateTipImg.hideTip();
-				mSpeedStateTipText.hideTip();
 			} else if (BlueToothService.ble_state == BlueToothConstants.BLE_STATE_CONNECTED) {// 无，停止，完成，退出
 				mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
 				mSpeedStateSpeedText.setVisibility(View.GONE);
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_start_enable);
 				mSpeedStateTipImg.hideTip();
-				mSpeedStateTipText.hideTip();
 			}
 
 		}
@@ -608,7 +613,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
 			mSpeedStateSpeedText.setVisibility(View.GONE);
 			// mSpeedStateSpeedButton.setClickable(false);
-			if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_PAUSE) {
+			if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_PAUSE||BaseApplication.travelState == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_pause_disable);
 			} else {
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_start_disable);
@@ -717,19 +722,14 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 						getString(R.string.no));
 				return;
 			}
-			if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_PAUSE) {
+			if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_PAUSE) {//暂停
 				alertTravelChoice();
-			} else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 如果是伪暂停要先把它设置为暂停
-				BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this, TravelConstant.TRAVEL_STATE_PAUSE);
+			} else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 如果是伪暂停,要先设置为暂停状态
+//				BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this, TravelConstant.TRAVEL_STATE_PAUSE);
 				alertTravelChoice();
 			} else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_START
 					|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_RESUME) {
 				BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this, TravelConstant.TRAVEL_STATE_PAUSE);
-				// // test(TravelConstant.TRAVEL_STATE_PAUSE);
-				// if (EBikeTravelData.getInstance(this).zeroSpeedCount >
-				// EBikeTravelData.MAX_LIMIT_ZERO_SPEED) {// 超过数值//说明界面已经是暂停的了
-				// alertTravelChoice();
-				// }
 
 			} else {
 				// test(TravelConstant.TRAVEL_STATE_START);
@@ -737,10 +737,10 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			}
 			break;
 		case R.id.speed_state_speed_text:// 速度状态下速度值显示text
-			bleStateChange(BlueToothService.ble_state);
-			// ToastUtils.toast(this, "speed text click");
-			BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this, TravelConstant.TRAVEL_STATE_PAUSE);
-			// test(TravelConstant.TRAVEL_STATE_PAUSE);
+//			bleStateChange(BlueToothService.ble_state);
+//			// ToastUtils.toast(this, "speed text click");
+//			BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this, TravelConstant.TRAVEL_STATE_PAUSE);
+//			// test(TravelConstant.TRAVEL_STATE_PAUSE);
 			break;
 		case R.id.home_view_line_bike_state:
 			ebikeHomePager.setCurrentItem(0);

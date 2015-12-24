@@ -204,7 +204,9 @@ public class BlueToothService extends BaseService {
 					startTravel();
 				} else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_PAUSE) {// 暂停
 					isRequestData = false;
-				} else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_RESUME) {// 恢复
+				} else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 伪暂停
+					//不做处理
+				}else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_RESUME) {// 恢复
 					isRequestData = true;
 				} else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_COMPLETED) {// 完成
 					stopTravel();
@@ -622,7 +624,7 @@ public class BlueToothService extends BaseService {
 						&& mSendCharacteristic != null) {// 初始化完毕，可以启动心跳包，发送数据了
 					LogUtils.i(tag, "服务特征值已找到，"+BaseApplication.travelState);
 					if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_START
-							|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_RESUME) {// 说明在运行中
+							|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_RESUME|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 说明在运行中
 						startTravel();
 					}else if(BaseApplication.travelState != TravelConstant.TRAVEL_STATE_PAUSE){
 //						syncHistory();//mark 同步历史数据
