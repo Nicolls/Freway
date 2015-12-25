@@ -8,6 +8,7 @@ import android.content.Context;
 
 import com.freway.ebike.R;
 import com.freway.ebike.common.BaseApplication;
+import com.freway.ebike.common.EBConstant;
 import com.freway.ebike.db.DBHelper;
 import com.freway.ebike.db.Travel;
 import com.freway.ebike.db.TravelSpeed;
@@ -31,7 +32,7 @@ public class EBikeTravelData implements Serializable {
 	/**
 	 * @Fields RECORD_TIME_FRE 每一百秒记录一次平均速度点用于描绘速度曲线
 	 */
-	private static final int RECORD_TIME_FRE = 2;// 每0秒记录一次
+	private static final int RECORD_TIME_FRE = 20;// 每0秒记录一次
 	/**
 	 * @Fields MUST_MIN_TRAVEL 最短行程，要记录的行程至少要大于最短行程，否则丢弃
 	 */
@@ -311,17 +312,18 @@ public class EBikeTravelData implements Serializable {
 			BaseApplication.travelId = -1;
 		} else {
 			formatFloat2OneAccuracy();
+			//因为服务器显示的是迈,所以在存储数据时要做一些处理.
 			Travel travel = new Travel();
 			travel.setId(travelId);
 			travel.setType(type);
 			travel.setSync(0);
 			travel.setAltitude(altitude);
-			travel.setAvgSpeed(avgSpeed);
+			travel.setAvgSpeed(avgSpeed / 1.6f);
 			travel.setCadence(cal_recordCadence);
 			travel.setCalorie(calorie);
-			travel.setDistance(distance);
+			travel.setDistance(distance * 0.6f);
 			travel.setEndTime(endTime);
-			travel.setMaxSpeed(maxSpeed);
+			travel.setMaxSpeed(maxSpeed/1.6f);
 			travel.setSpendTime(spendTime);
 			travel.setStartTime(startTime);
 			travel.setPhoto(travelPhoto);
@@ -571,13 +573,14 @@ public class EBikeTravelData implements Serializable {
 			} else {
 				formatFloat2OneAccuracy();
 				if (!isReInitCaculate) {// 说明有数据 //dataId为0说明读完了，保存起来
+					//服务器存储的是迈,所以要处理一下数据
 					Travel travel = new Travel();
 					travel.setId(travelId);
-					travel.setAvgSpeed(avgSpeed);
+					travel.setAvgSpeed(avgSpeed/1.6f);
 					travel.setCadence(cal_recordCadence);
 					travel.setCalorie(calorie);
-					travel.setDistance(distance);
-					travel.setMaxSpeed(maxSpeed);
+					travel.setDistance(distance * 0.6f);
+					travel.setMaxSpeed(maxSpeed/1.6f);
 					travel.setSpendTime(spendTime);
 					DBHelper.getInstance(context).updateTravel(travel);
 					if (netUtil == null) {
@@ -735,7 +738,8 @@ public class EBikeTravelData implements Serializable {
 					if (spendTime != 0 && (spendTime % RECORD_TIME_FRE) == 0) {// 每10秒存储一个速度
 						TravelSpeed travelSpeed = new TravelSpeed();
 						travelSpeed.setTravelId(travelId);
-						travelSpeed.setSpeed(CommonUtil.formatFloatAccuracy(avgSpeed, 1));
+						//服务器存储的是迈,所以要处理一下
+						travelSpeed.setSpeed(CommonUtil.formatFloatAccuracy(avgSpeed/ 1.6f, 1));
 						DBHelper.getInstance(context).insertTravelSpeed(travelSpeed);
 					}
 				}

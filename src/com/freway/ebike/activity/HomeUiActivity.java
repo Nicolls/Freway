@@ -655,7 +655,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 
 	/** 保存骑行 */
 	private void saveTravel() {
-		LogUtils.i(tag, "保存骑行" + BaseApplication.travelState);
+		LogUtils.i(tag, "保存travel" + BaseApplication.travelState);
 		if (EBikeTravelData.getInstance(HomeUiActivity.this).distance < EBikeTravelData.MUST_MIN_TRAVEL) {
 			// 数据少，不存储
 			AlertUtil.getInstance(HomeUiActivity.this).alertChoice(getString(R.string.travel_too_short_not_save),
