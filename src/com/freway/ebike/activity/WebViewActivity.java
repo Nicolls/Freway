@@ -13,9 +13,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.freway.ebike.R;
+import com.freway.ebike.common.BaseActivity;
 import com.freway.ebike.utils.FontUtil;
+import com.freway.ebike.utils.LogUtils;
 
-public class WebViewActivity extends AppCompatActivity implements OnClickListener {
+public class WebViewActivity extends BaseActivity implements OnClickListener {
 
 	private WebView webView;
 	private ImageView iconButton;
@@ -39,6 +41,7 @@ public class WebViewActivity extends AppCompatActivity implements OnClickListene
 		webView=(WebView) findViewById(R.id.webview);
 		initView(webView);
 		String url=getIntent().getStringExtra("url");
+		LogUtils.i("WebViewActivity", "加载的地址是:"+url);
 		webView.loadUrl(url);
 		iconButton.setVisibility(View.GONE);
 	}
@@ -117,6 +120,12 @@ public class WebViewActivity extends AppCompatActivity implements OnClickListene
 	@Override
 	public void onBackPressed() {
 		backChange();
+	}
+
+	@Override
+	public void dateUpdate(int id, Object obj) {
+		
+		
 	}
 
 }

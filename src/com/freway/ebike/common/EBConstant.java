@@ -85,9 +85,9 @@ public class EBConstant {
 	}
 	
 	//个人页面的html5的URL连接
-	public static final String HTML5_URL_RECORDS="http://www.ifreway.com/app/index.php/history/";
-	public static final String HTML5_URL_GRADES="http://www.ifreway.com/app/index.php/grades/";
-	public static final String HTML5_URL_NEWS="http://www.ifreway.com/app/index.php/news/";
+	public static final String HTML5_URL_RECORDS="http://www.ifreway.com/app/index.php/history";
+	public static final String HTML5_URL_GRADES="http://www.ifreway.com/app/index.php/grades";
+	public static final String HTML5_URL_NEWS="http://www.ifreway.com/app/index.php/news";
 	public static final String HTML5_URL_TUTORIAL="http://www.ifreway.com/app/index.php/tutorial";
 	
 }
