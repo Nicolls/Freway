@@ -86,7 +86,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
 		webView.getSettings().setSupportZoom(false);
 		webView.getSettings().setBuiltInZoomControls(false);
 		webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-//		webView.addJavascriptInterface(new JsInterface(), "freway");
+		webView.addJavascriptInterface(new JsInterface(), "freway");
 		webView.setWebViewClient(new WebViewClient(){
 
 			@Override
