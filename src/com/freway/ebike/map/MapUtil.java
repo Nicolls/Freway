@@ -22,7 +22,6 @@ import com.freway.ebike.db.Travel;
 import com.freway.ebike.db.TravelLocation;
 import com.freway.ebike.utils.FileUtils;
 import com.freway.ebike.utils.LogUtils;
-import com.freway.ebike.utils.NetUtil;
 import com.freway.ebike.utils.ScreenUtils;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -38,6 +37,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 public class MapUtil implements OnCameraChangeListener {
@@ -82,6 +82,10 @@ public class MapUtil implements OnCameraChangeListener {
 		mGoogleMap.moveCamera(CameraUpdateFactory.zoomTo(CAMERA_INIT_ZOOM));
 	}
 
+	/**获取当前地图*/
+	public GoogleMap getGoogleMap(){
+		return mGoogleMap;
+	}
 	/** 清空地图 */
 	public void clearMap() {
 		mGoogleMap.clear();
@@ -122,7 +126,7 @@ public class MapUtil implements OnCameraChangeListener {
 	}
 
 	/** 在地图上画两个点 */
-	public void drawPolyLine(GoogleMap map, TravelLocation paintFromLocation, TravelLocation paintToLocation,
+	public void drawPolyLine(TravelLocation paintFromLocation, TravelLocation paintToLocation,
 			boolean showSpeedColor) {
 		// ToastUtils.toast(this, "paint");
 //		if (!paintFromLocation.isPause()) {
@@ -136,7 +140,22 @@ public class MapUtil implements OnCameraChangeListener {
 			}else{
 				poly.add(from, to).width(POLY_LINE_WIDTH).color(Color.parseColor("#e10019"));
 			}
-			map.addPolyline(poly);
+			mGoogleMap.addPolyline(poly);
+//		}
+	}
+	
+	/** 在地图上画两个点 */
+	public Polyline drawPolyLine(LatLng from, LatLng to) {
+		// ToastUtils.toast(this, "paint");
+//		if (!paintFromLocation.isPause()) {
+			PolylineOptions poly = new PolylineOptions();
+			from = new LatLng(from.latitude- ANGLE_OFFSET,
+					from.longitude - ANGLE_OFFSET);
+			to = new LatLng(to.latitude- ANGLE_OFFSET,
+					to.longitude - ANGLE_OFFSET);
+			poly.add(from, to).width(POLY_LINE_WIDTH).color(Color.parseColor("#e10019"));
+			Polyline polyline=mGoogleMap.addPolyline(poly);
+			return polyline;
 //		}
 	}
 
@@ -231,9 +250,9 @@ public class MapUtil implements OnCameraChangeListener {
 					from = formatLocationWithChina(from);
 					to = formatLocationWithChina(to);
 					if(mLastLocation.isPause()){//如果是暂停,把暂停的这条画出来
-						drawPolyLine(mGoogleMap, mLastLocation, from, false);
+						drawPolyLine(mLastLocation, from, false);
 					}
-					drawPolyLine(mGoogleMap, from, to, false);
+					drawPolyLine(from, to, false);
 				}
 			}
 		}
@@ -279,7 +298,7 @@ public class MapUtil implements OnCameraChangeListener {
 			TravelLocation travelStart = routes.get(i);
 			if ((i + 1) < routes.size()) {// 有两个点可以画
 				TravelLocation travelEnd = routes.get(i + 1);
-				drawPolyLine(mGoogleMap, travelStart, travelEnd, true);
+				drawPolyLine(travelStart, travelEnd, true);
 			}
 		}
 		// 画起终点标识

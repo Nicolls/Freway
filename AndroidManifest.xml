@@ -64,6 +64,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+         <activity
+            android:name="com.freway.ebike.activity.MapTestActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+           <!-- <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter> -->
+        </activity>
         <activity
             android:name="com.freway.ebike.activity.SignInActivity"
             android:launchMode="singleTop"
