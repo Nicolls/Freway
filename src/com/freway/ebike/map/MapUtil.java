@@ -160,24 +160,33 @@ public class MapUtil implements OnCameraChangeListener {
 	}
 	
 	/**截图*/
-	public void snapshot(final Handler handler){
-		if(mGoogleMap!=null){
-			mGoogleMap.snapshot(new SnapshotReadyCallback() {
-				
-				@Override
-				public void onSnapshotReady(Bitmap arg0) {
-					String name=BaseApplication.travelId+".jpg";
-					String filePath=FileUtils.saveBitmapByUrlOrName(name,arg0);
-					if(!TextUtils.isEmpty(filePath)){
-						LogUtils.i(TAG, "上传地图缩略图的图片路径为："+filePath);
-						//mark 不为空要在这里把图片上传了。
-						Message msg=Message.obtain();
-						msg.obj=filePath;
-						handler.sendMessage(msg);
-					}
+	public void snapshot(long travelId,final Handler handler){
+		List<TravelLocation> travelList=DBHelper.getInstance(context).listTravelLocation(travelId);
+		cameraContainPoint(travelList,new Handler(){
+
+			@Override
+			public void handleMessage(Message msg) {
+				super.handleMessage(msg);
+				if(mGoogleMap!=null){
+					mGoogleMap.snapshot(new SnapshotReadyCallback() {
+						
+						@Override
+						public void onSnapshotReady(Bitmap arg0) {
+							String name=BaseApplication.travelId+".jpg";
+							String filePath=FileUtils.saveBitmapByUrlOrName(name,arg0);
+							if(!TextUtils.isEmpty(filePath)){
+								LogUtils.i(TAG, "上传地图缩略图的图片路径为："+filePath);
+								//mark 不为空要在这里把图片上传了。
+								Message msg=Message.obtain();
+								msg.obj=filePath;
+								handler.sendMessage(msg);
+							}
+						}
+					});
 				}
-			});
-		}
+			}
+		});
+		
 	}
 	/** 自定义定位 */
 	private CustomerLocationSource mLocationSource = new CustomerLocationSource();
@@ -234,7 +243,7 @@ public class MapUtil implements OnCameraChangeListener {
 
 		@Override
 		public void onCameraChange(CameraPosition arg0) {
-			LogUtils.i(TAG, "相机发言了");
+			LogUtils.i(TAG, "相机改变了");
 			if (arg0.zoom > CAMERA_MAX_ZOOM) {
 				mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(CAMERA_MAX_ZOOM));
 			}
@@ -260,7 +269,7 @@ public class MapUtil implements OnCameraChangeListener {
 
 			@Override
 			public void onMapLoaded() {
-				LogUtils.i(TAG, "地图发言了");
+				LogUtils.i(TAG, "地图加载完成了");
 				drawScreenPolygon();
 				mGoogleMap.setOnCameraChangeListener(historyCameraChange);
 			}
@@ -278,7 +287,7 @@ public class MapUtil implements OnCameraChangeListener {
 			markStartEndPoint(routes.get(0), routes.get(routes.size() - 1));
 		}
 		// 移动到包含所有点的位置
-		cameraContainPoint(routes);
+		cameraContainPoint(routes,null);
 	}
 
 	/** 画起始点跟终点 */
@@ -296,7 +305,7 @@ public class MapUtil implements OnCameraChangeListener {
 	}
 
 	/** 将地图移动到包含所有点的地方 */
-	private void cameraContainPoint(List<TravelLocation> travelList) {
+	private void cameraContainPoint(List<TravelLocation> travelList,final Handler handler) {
 		List<LatLng> list = new ArrayList<LatLng>();
 		for (TravelLocation l : travelList) {
 			list.add(new LatLng(l.getLocation().getLatitude(), l.getLocation().getLongitude()));
@@ -309,6 +318,18 @@ public class MapUtil implements OnCameraChangeListener {
 			// Move camera to show all markers and locations
 			mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(),ScreenUtils.getScreenWidth(context),
 					ScreenUtils.getScreenHeight(context),50));
+			mGoogleMap.setOnCameraChangeListener(new OnCameraChangeListener() {
+				
+				@Override
+				public void onCameraChange(CameraPosition arg0) {
+					if(handler!=null){
+						Message msg=Message.obtain();
+						msg.obj=arg0;
+						handler.sendMessage(msg);
+						mGoogleMap.setOnCameraChangeListener(MapUtil.this);
+					}
+				}
+			});
 		}
 	}
 

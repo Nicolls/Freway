@@ -681,7 +681,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 					}, true);
 		} else {
 			if (mMapUtil != null) {
-				mMapUtil.snapshot(new Handler() {
+				mMapUtil.snapshot(BaseApplication.travelId,new Handler() {
 
 					@Override
 					public void handleMessage(Message msg) {
