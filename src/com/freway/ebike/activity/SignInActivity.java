@@ -198,6 +198,11 @@ public class SignInActivity extends BaseActivity {
 	}
 	/**请求出错*/
 	protected void requestError(int id){
+		if (id == EBikeRequestService.ID_REQUEST_ERROR) {
+			ToastUtils.toast(this, getString(R.string.request_server_error));
+		}else{
+			ToastUtils.toast(this, getString(R.string.login_fail));
+		}
 		hideLoading();
 		initData();
 	}

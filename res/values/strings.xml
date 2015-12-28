@@ -14,6 +14,7 @@
     <string name="bluetooth_service_init_fail">Bluetooth initialization failed</string><!--蓝牙服务初始化失败  -->
     <string name="bluetooth_service_re_init">Bluetooth initialization,please standby</string><!-- 蓝牙重新初始，请稍候-->
     <string name="request_server_error">Server error</string><!--请求服务器异常  -->
+    <string name="net_unavailable">Network is not available</string><!--网络不可用  -->
     <string name="old_password_can_not_null">old password can not be null</string><!-- 旧密码不能为空 -->
     <string name="new_password_can_not_null">new password can not be null</string><!--  新密码不能为空-->
     <string name="confirm_new_password_can_not_null">Please input new password</string><!--请输入新密码  -->

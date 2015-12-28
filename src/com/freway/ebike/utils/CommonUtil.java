@@ -12,6 +12,8 @@ import java.util.regex.Pattern;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 
 import com.freway.ebike.model.User;
@@ -91,7 +93,52 @@ public class CommonUtil {
 		Matcher m = p.matcher(email);
 		return m.matches();
 	}
+	/**
+	 * 判断是否APN列表中某个渠道处于连接状态
+	 * 
+	 * @return
+	 */
+	public static boolean isMobile(Context context) {
+		ConnectivityManager manager = (ConnectivityManager) context
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = manager
+				.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+		if (networkInfo != null) {
+			return networkInfo.isConnected();
+		}
+		return false;
+	}
 
+	/**
+	 * 通过判断wifi和mobile两种方式是否能够连接网络
+	 */
+	public static boolean checkNetWork(Context context) {
+		boolean isWIFI = isWIFI(context);
+		boolean isMobile = isMobile(context);
+
+		// 如果两个渠道都无法使用，提示用户设置网络信息
+		if (!isWIFI && !isMobile) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * 判断是否WIFI处于连接状态
+	 * 
+	 * @return
+	 */
+	public static boolean isWIFI(Context context) {
+		ConnectivityManager manager = (ConnectivityManager) context
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = manager
+				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		if (networkInfo != null) {
+			return networkInfo.isConnected();
+		}
+		return false;
+	}
+	
 	/** 判断谷歌服务是否可用 */
 	public static boolean checkGoogleServiceAvailable(Activity context, int RQS_GooglePlayServices) {
 		int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);

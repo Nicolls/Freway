@@ -4,9 +4,6 @@
 package com.freway.ebike.utils;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.text.TextUtils;
 
 import com.freway.ebike.R;
@@ -38,9 +35,19 @@ public class ErrorUtils {
 	}
 
 	public static void handle(Activity context, int id, Object obj, SuccessListener lis,ErrorListener errorLis) {
+		if(context!=null){//先判断如果是无网络
+			if(!CommonUtil.checkNetWork(context)){//网络未链接
+				ToastUtils.toast(context, context.getString(R.string.net_unavailable));
+				if(errorLis!=null){
+					errorLis.errorCompleted(id);
+				}
+				return;
+			}
+		}
+		
 		if(context!=null){
 			if (id == EBikeRequestService.ID_REQUEST_ERROR) {
-				ToastUtils.toast(context, context.getString(R.string.request_server_error));
+//				ToastUtils.toast(context, context.getString(R.string.request_server_error));
 				if(errorLis!=null){
 					errorLis.errorCompleted(id);
 				}
