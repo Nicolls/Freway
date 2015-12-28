@@ -112,6 +112,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
 
 		@JavascriptInterface
 		public void share() {
+			LogUtils.i(tag, "js触发的方法");
 			//当是分享页面时，就会调用到这个方法，UI要显示分享的按钮
 			iconButton.setVisibility(View.VISIBLE);
 		}
