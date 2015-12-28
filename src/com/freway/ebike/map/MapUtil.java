@@ -349,6 +349,12 @@ public class MapUtil implements OnCameraChangeListener {
 					}
 				}
 			});
+		}else{
+			if(handler!=null){
+				Message msg=Message.obtain();
+				handler.sendMessage(msg);
+				mGoogleMap.setOnCameraChangeListener(MapUtil.this);
+			}
 		}
 	}
 
