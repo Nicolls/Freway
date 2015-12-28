@@ -211,6 +211,7 @@ public class ProfileActivity extends BaseActivity implements OnClickListener {
 	}
 	
 	private String formatUrl(String link){
+		//token="31aayFqdhmtoiFxS1pudmYdzWmJgam5llpWTamxSaZeeZmaeaZWGtg==";
 		return link+"?token="+SPUtils.getToken(this);
 	}
 	
