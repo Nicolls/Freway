@@ -21,6 +21,7 @@ import com.freway.ebike.utils.EBikeViewUtils;
 import com.freway.ebike.utils.FontUtil;
 import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.SPUtils;
+import com.freway.ebike.utils.ToastUtils;
 import com.freway.ebike.view.HeadPicView;
 
 public class ProfileActivity extends BaseActivity implements OnClickListener {
@@ -211,5 +212,11 @@ public class ProfileActivity extends BaseActivity implements OnClickListener {
 	
 	private String formatUrl(String link){
 		return link+"?token="+SPUtils.getToken(this);
+	}
+	
+	/**请求出错*/
+	protected void requestError(int id){
+		ToastUtils.toast(this,getString(R.string.request_server_error));
+		hideLoading();
 	}
 }

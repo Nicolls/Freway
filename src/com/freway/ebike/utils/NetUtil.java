@@ -70,7 +70,7 @@ public class NetUtil implements DataUpdateListener{
 	@Override
 	public void update(int id, Object obj) {
 		if (id == EBikeRequestService.ID_REQUEST_ERROR) {
-			ToastUtils.toast(context, context.getString(R.string.http_request_error));
+			ToastUtils.toast(context, context.getString(R.string.request_server_error));
 			return;
 		} else if (obj instanceof EBErrorResponse) {// 登录或者请求出问题
 			EBErrorResponse errorRes = (EBErrorResponse) obj;

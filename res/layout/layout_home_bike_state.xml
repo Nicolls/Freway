@@ -1,106 +1,122 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_bike_state"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/BikeStatePadding"
-    >
- <RelativeLayout 
-     android:id="@+id/bike_state_battery_ll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        >
-        <com.freway.ebike.view.BatteryView 
-        android:id="@+id/bike_state_battery_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@drawable/bike_state_battery_icon"
-        />
-        <TextView 
-            android:id="@+id/bike_state_battery_value"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        style="@style/BikeStatePadding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <RelativeLayout
+            android:id="@+id/bike_state_battery_ll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/test_value_percent"
-            style="@style/BikeStateBatteryValueText"
-            />
-    </RelativeLayout>
+            android:layout_alignParentLeft="true" >
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/bike_state_battery_ll"
-        android:layout_alignTop="@id/bike_state_battery_ll"
-        android:layout_marginLeft="@dimen/icon_title_spacing"
-        android:layout_toRightOf="@id/bike_state_battery_ll"
-        android:gravity="center_vertical"
-        android:orientation="vertical" >
+            <com.freway.ebike.view.BatteryView
+                android:id="@+id/bike_state_battery_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/bike_state_battery_icon" />
 
-        <TextView
-            android:id="@+id/bike_state_battery_remaind_value"
+            <TextView
+                android:id="@+id/bike_state_battery_value"
+                style="@style/BikeStateBatteryValueText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/test_value_percent" />
+        </RelativeLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/test_value_2_mi"
-            style="@style/BikeStateBoldText" />
+            android:layout_alignBottom="@id/bike_state_battery_ll"
+            android:layout_alignTop="@id/bike_state_battery_ll"
+            android:layout_marginLeft="@dimen/icon_title_spacing"
+            android:layout_toRightOf="@id/bike_state_battery_ll"
+            android:gravity="center_vertical"
+            android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/bike_state_battery_remaind_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/bike_state_battery_remaind_value"
-            android:text="@string/battery_left"
-            style="@style/BikeStateThinText" />
-    </LinearLayout>
- <ImageView
-        android:id="@+id/bike_state_gear_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/bike_state_gear_icon" />
- <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/bike_state_gear_icon"
-        android:layout_alignTop="@id/bike_state_gear_icon"
-        android:layout_marginLeft="@dimen/icon_title_spacing"
-        android:layout_toRightOf="@id/bike_state_gear_icon"
-        android:gravity="center_vertical"
-        android:orientation="horizontal" >
+            <TextView
+                android:id="@+id/bike_state_battery_remaind_value"
+                style="@style/BikeStateBoldText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/test_value_2_mi" />
 
-        <TextView
-            android:id="@+id/bike_state_gear_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/gear"
-            style="@style/BikeStateNormalText"  />
-
-       <TextView
-            android:id="@+id/bike_state_gear_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2"
-            style="@style/BikeStateBoldText"  />
-    </LinearLayout>
-    
- <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:gravity="center_vertical"
-        android:orientation="vertical" >
+            <TextView
+                android:id="@+id/bike_state_battery_remaind_title"
+                style="@style/BikeStateThinText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/bike_state_battery_remaind_value"
+                android:text="@string/battery_left" />
+        </LinearLayout>
 
         <ImageView
-            android:id="@+id/bike_state_light_front_icon"
+            android:id="@+id/bike_state_gear_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/light_front_selector"
-             />
-      <ImageView
-            android:id="@+id/bike_state_light_back_icon"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/bike_state_gear0" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/bike_light_spacing"
-            android:src="@drawable/light_back_selector"
-             />
-    </LinearLayout>
-</RelativeLayout>
+            android:layout_alignBottom="@id/bike_state_gear_icon"
+            android:layout_alignTop="@id/bike_state_gear_icon"
+            android:layout_marginLeft="@dimen/icon_title_spacing"
+            android:layout_toRightOf="@id/bike_state_gear_icon"
+            android:visibility="gone"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/bike_state_gear_title"
+                style="@style/BikeStateNormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gear" />
+
+            <TextView
+                android:id="@+id/bike_state_gear_value"
+                style="@style/BikeStateBoldText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/bike_state_light_front_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/light_front_selector" />
+
+            <ImageView
+                android:id="@+id/bike_state_light_back_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/bike_light_spacing"
+                android:src="@drawable/light_back_selector" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/home_view_line_bike_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/view_line_space" />
+
+</LinearLayout>

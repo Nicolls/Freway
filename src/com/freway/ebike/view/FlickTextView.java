@@ -68,7 +68,7 @@ public class FlickTextView extends TextView {
 		if(!isAnimating){
 			if (animation == null) {
 				animation = new AlphaAnimation(1, 0);
-				animation.setDuration(400);
+				animation.setDuration(500);
 				animation.setRepeatCount(Animation.INFINITE);
 				animation.setRepeatMode(Animation.REVERSE);
 

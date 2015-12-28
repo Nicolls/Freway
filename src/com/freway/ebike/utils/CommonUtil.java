@@ -12,6 +12,8 @@ import java.util.regex.Pattern;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 
 import com.freway.ebike.model.User;
@@ -91,7 +93,52 @@ public class CommonUtil {
 		Matcher m = p.matcher(email);
 		return m.matches();
 	}
+	/**
+	 * 判断是否APN列表中某个渠道处于连接状态
+	 * 
+	 * @return
+	 */
+	public static boolean isMobile(Context context) {
+		ConnectivityManager manager = (ConnectivityManager) context
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = manager
+				.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+		if (networkInfo != null) {
+			return networkInfo.isConnected();
+		}
+		return false;
+	}
 
+	/**
+	 * 通过判断wifi和mobile两种方式是否能够连接网络
+	 */
+	public static boolean checkNetWork(Context context) {
+		boolean isWIFI = isWIFI(context);
+		boolean isMobile = isMobile(context);
+
+		// 如果两个渠道都无法使用，提示用户设置网络信息
+		if (!isWIFI && !isMobile) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * 判断是否WIFI处于连接状态
+	 * 
+	 * @return
+	 */
+	public static boolean isWIFI(Context context) {
+		ConnectivityManager manager = (ConnectivityManager) context
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = manager
+				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		if (networkInfo != null) {
+			return networkInfo.isConnected();
+		}
+		return false;
+	}
+	
 	/** 判断谷歌服务是否可用 */
 	public static boolean checkGoogleServiceAvailable(Activity context, int RQS_GooglePlayServices) {
 		int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
@@ -104,7 +151,10 @@ public class CommonUtil {
 	}
 
 	/**
-	 * 格式化浮点数为某一精度，4舍5入
+	 * 格式化浮点数为某一精度，默认为4舍5入,
+	 * formatType=0 4舍5入
+	 * formatType=1 小数都不进位
+	 * formatType=2 小数都进位
 	 * 
 	 * @param f
 	 *            要格式化浮点值
@@ -117,6 +167,33 @@ public class CommonUtil {
 			multiple*=10;
 		}
 		f=Math.round(f*multiple);
+		f=f/multiple;
+		return formatFloatAccuracy(f,accuracy,0);
+	}
+	
+	/**
+	 * 格式化浮点数为某一精度，默认为4舍5入,
+	 * formatType=0 4舍5入
+	 * formatType=1 小数都不进位
+	 * formatType=2 小数都进位
+	 * 
+	 * @param f
+	 *            要格式化浮点值
+	 * @param accuracy
+	 *            精度数,2表示保留两位小数
+	 * */
+	public static float formatFloatAccuracy(float f, int accuracy,int formatType) {
+		int multiple=1;
+		for(int i=0;i<accuracy;i++){
+			multiple*=10;
+		}
+		if(formatType==0){
+			f=Math.round(f*multiple);
+		}else if(formatType==1){
+			f=(int) Math.floor(f*multiple);
+		}else if(formatType==2){
+			f=(int) Math.ceil(f*multiple);
+		}
 		f=f/multiple;
 		return f;
 	}

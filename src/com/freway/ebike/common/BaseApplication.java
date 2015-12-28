@@ -76,7 +76,7 @@ public class BaseApplication extends MultiDexApplication{
 		}else if(state==TravelConstant.TRAVEL_STATE_STOP){
 			EBikeTravelData.getInstance(context).stop();
 		}else if(state==TravelConstant.TRAVEL_STATE_FAKE_PAUSE){//伪暂停
-			travelState=state;
+			EBikeTravelData.getInstance(context).fakePause();
 		}else{
 			travelState=TravelConstant.TRAVEL_STATE_NONE;
 		}

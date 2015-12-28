@@ -1,24 +1,26 @@
 package com.freway.ebike.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
-import android.view.MotionEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.freway.ebike.R;
+import com.freway.ebike.adapter.ViewPagerAdapter;
 import com.freway.ebike.bluetooth.BlueToothConstants;
 import com.freway.ebike.bluetooth.BlueToothService;
 import com.freway.ebike.bluetooth.BlueToothUtil;
@@ -35,15 +37,21 @@ import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.SPUtils;
 import com.freway.ebike.utils.TimeUtils;
 import com.freway.ebike.view.BatteryView;
-import com.freway.ebike.view.ClickImageButton;
-import com.freway.ebike.view.ClickImageButton.ClickListener;
+import com.freway.ebike.view.FlickImageView;
 import com.freway.ebike.view.FlickTextView;
 import com.freway.ebike.view.SpeedView;
+import com.freway.ebike.view.directionalviewpager.DirectionalViewPager;
 
 public abstract class HomeUiActivity extends BaseActivity implements OnClickListener {
 
 	protected MapUtil mMapUtil;
 	protected BlueToothUtil mBlueToothUtil;
+	/** 整个view viewpager */
+	private DirectionalViewPager ebikeHomePager;
+	/** 存储viewpager的list */
+	private List<View> dataList = null;
+	/** 地图view */
+	private View mapContentView;
 	/** 导航条 */
 	private View topBarView;
 	/** 车况view */
@@ -104,6 +112,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	private SpeedView mSpeedStateSpeedView;
 	private TextView mSpeedStateSpeedText;
 	private FlickTextView mSpeedStateTipText;
+	private FlickImageView mSpeedStateTipImg;
 	private ImageButton mSpeedStateSpeedButton;
 	private TextView mSpeedStateCalValue;
 	private TextView mSpeedStateCalUnit;
@@ -142,123 +151,185 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	private int model = EBConstant.MODEL_DAY;// 模式
 	private int distanUnit = EBConstant.DISTANCE_UNIT_MPH;
 
-	// UI的样式
-	private static final int UI_STYLE_MAP = 0;
-	private static final int UI_STYLE_SPEED = 1;
-	private static final int UI_STYLE_BATTERY = 2;
-	private int uiStyle = UI_STYLE_SPEED;
+	// view
+	private LinearLayout bikeModel;
+	private LinearLayout speedModel;
+	private LinearLayout batteryModel;
+	private ViewPagerAdapter<View> adapter;
+	private int selectItem = 1;
 
-	//动画
-	private AlphaAnimation alphaHideAnim;
-	private AlphaAnimation alphaShowAnim;
-	private ScaleAnimation scaleHideAnim;
-	private ScaleAnimation scaleShowAnim;
-	private AnimationSet hideAnimSet;
-	private AnimationSet showAnimSet;
-	private ScaleAnimation speedScaleAnim;
-	private static final int ANIM_DURATION = 300;
-	
-	//触摸事件 
-	private ViewTouch viewTouch;
-	private float downY;
-	private float upY;
-	private float moveDistance;//down-up产生的距离
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		initView();
-		initAnim();
 		initFontStyle();
 		intClick();
-		initViewTouch();
-		changeUIStyle();// 默认UI显示状态
 		// initData();//这个已经由onResume来做了
-		uiInitCompleted();
+		uiInitCompleted(mapContentView);
 	}
 
 	private void initView() {
+		mSpeedStateTipImg = (FlickImageView) findViewById(R.id.speed_state_tip_img);
+
+		ebikeHomePager = (DirectionalViewPager) findViewById(R.id.home_ebike_pager);
+		dataList = new ArrayList<View>();
+		bikeStateView = LayoutInflater.from(this).inflate(R.layout.layout_home_bike_state, null);
+		batteryStateView = LayoutInflater.from(this).inflate(R.layout.layout_home_battery_state, null);
+		travelStateView = LayoutInflater.from(this).inflate(R.layout.layout_home_travel_state, null);
+		speedStateView = LayoutInflater.from(this).inflate(R.layout.layout_home_speed_state, null);
+		mapContentView = LayoutInflater.from(this).inflate(R.layout.layout_home_map, null);
+		bikeModel = new LinearLayout(this);
+		bikeModel.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		bikeModel.setOrientation(LinearLayout.VERTICAL);
+
+		speedModel = new LinearLayout(this);
+		speedModel.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		speedModel.setOrientation(LinearLayout.VERTICAL);
+
+		batteryModel = new LinearLayout(this);
+		batteryModel.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		batteryModel.setOrientation(LinearLayout.VERTICAL);
+
+		bikeModel.addView(travelStateView);
+		bikeModel.addView(mapContentView);
+
+		bikeStateView.findViewById(R.id.home_view_line_bike_state).setVisibility(View.GONE);
+		speedModel.addView(bikeStateView);
+		speedModel.addView(speedStateView);
+
+		batteryModel.addView(batteryStateView);
+
+		dataList.add(batteryModel);
+		dataList.add(speedModel);
+		dataList.add(bikeModel);
+		adapter = new ViewPagerAdapter<View>();
+		adapter.setData(dataList);
+		ebikeHomePager.setAdapter(adapter);
+		ebikeHomePager.setOrientation(DirectionalViewPager.VERTICAL);
+		ebikeHomePager.setCurrentItem(1);
+		ebikeHomePager.setOnPageChangeListener(new OnPageChangeListener() {
+
+			@Override
+			public void onPageSelected(int arg0) {
+				selectItem = arg0;
+				System.out.println("seletec--" + arg0);
+				if (arg0 == 2) {
+					ViewGroup group = (ViewGroup) bikeStateView.getParent();
+					if (group != null)
+						group.removeView(bikeStateView);
+					bikeStateView.findViewById(R.id.home_view_line_bike_state).setVisibility(View.VISIBLE);
+					bikeModel.addView(bikeStateView, 0);
+					ViewGroup group2 = (ViewGroup) travelStateView.getParent();
+					if (group2 != null)
+						group2.removeView(travelStateView);
+					bikeModel.addView(travelStateView, 1);
+				} else if (arg0 == 1) {
+					ViewGroup group = (ViewGroup) bikeStateView.getParent();
+					if (group != null)
+						group.removeView(bikeStateView);
+					bikeStateView.findViewById(R.id.home_view_line_bike_state).setVisibility(View.GONE);
+					speedModel.addView(bikeStateView, 0);
+
+				} else if (arg0 == 0) {
+					ViewGroup group = (ViewGroup) travelStateView.getParent();
+					if (group != null)
+						group.removeView(travelStateView);
+					batteryModel.addView(travelStateView);
+				}
+			}
+
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+
+			}
+		});
+
+		// 分隔线
+		lineBikeStateView = bikeStateView.findViewById(R.id.home_view_line_bike_state);
+		lineTravelStateView = travelStateView.findViewById(R.id.home_view_line_travel_state);
+		lineBatteryStateView = batteryStateView.findViewById(R.id.home_view_line_battery_state);
+
 		// 导航条
 		topBarView = findViewById(R.id.home_top_bar);
-		bikeStateView = findViewById(R.id.home_bike_state);
-		speedStateView = findViewById(R.id.home_speed_view);
-		speedStateContent = findViewById(R.id.speed_state_content);
-		batteryStateView = findViewById(R.id.home_battery_view);
-		travelStateView = findViewById(R.id.home_travel_state);
-		lineBikeStateView = findViewById(R.id.home_view_line_bike_state);
-		lineTravelStateView = findViewById(R.id.home_view_line_travel_state);
-		lineBatteryStateView = findViewById(R.id.home_view_line_battery_state);
 		mProfileView = (ImageView) findViewById(R.id.home_ib_profile);
 		mModelBtn = (ImageButton) findViewById(R.id.home_top_bar_model);
 		mLogo = (ImageView) findViewById(R.id.home_top_bar_logo);
 		// 车况
-		mBikeStateBatteryView = (BatteryView) findViewById(R.id.bike_state_battery_view);
-		mBikeStateBatteryPercent = (TextView) findViewById(R.id.bike_state_battery_value);
-		mBikeStateBatteryRemaindValue = (TextView) findViewById(R.id.bike_state_battery_remaind_value);
-		mBikeStateBatteryRemaindTitle = (TextView) findViewById(R.id.bike_state_battery_remaind_title);
-		mBikeStateGearIcon = (ImageView) findViewById(R.id.bike_state_gear_icon);
-		mBikeStateGearTitle = (TextView) findViewById(R.id.bike_state_gear_title);
-		mBikeStateGearValue = (TextView) findViewById(R.id.bike_state_gear_value);
-		mBikeStateLightFront = (ImageView) findViewById(R.id.bike_state_light_front_icon);
-		mBikeStateLightBack = (ImageView) findViewById(R.id.bike_state_light_back_icon);
+		mBikeStateBatteryView = (BatteryView) bikeStateView.findViewById(R.id.bike_state_battery_view);
+		mBikeStateBatteryPercent = (TextView) bikeStateView.findViewById(R.id.bike_state_battery_value);
+		mBikeStateBatteryRemaindValue = (TextView) bikeStateView.findViewById(R.id.bike_state_battery_remaind_value);
+		mBikeStateBatteryRemaindTitle = (TextView) bikeStateView.findViewById(R.id.bike_state_battery_remaind_title);
+		mBikeStateGearIcon = (ImageView) bikeStateView.findViewById(R.id.bike_state_gear_icon);
+		mBikeStateGearTitle = (TextView) bikeStateView.findViewById(R.id.bike_state_gear_title);
+		mBikeStateGearValue = (TextView) bikeStateView.findViewById(R.id.bike_state_gear_value);
+		mBikeStateLightFront = (ImageView) bikeStateView.findViewById(R.id.bike_state_light_front_icon);
+		mBikeStateLightBack = (ImageView) bikeStateView.findViewById(R.id.bike_state_light_back_icon);
 
 		// 骑行状态
-		mTravelStateSpendTime = (TextView) findViewById(R.id.travel_state_spend_time);
-		mTravelStateCalValue = (TextView) findViewById(R.id.travel_state_cal_value);
-		mTravelStateCalUnit = (TextView) findViewById(R.id.travel_state_cal_unit);
-		mTravelStateSpeedValue = (TextView) findViewById(R.id.travel_state_speed);
-		mTravelStateSpeedUnit = (TextView) findViewById(R.id.travel_state_speed_unit);
+		mTravelStateSpendTime = (TextView) travelStateView.findViewById(R.id.travel_state_spend_time);
+		mTravelStateCalValue = (TextView) travelStateView.findViewById(R.id.travel_state_cal_value);
+		mTravelStateCalUnit = (TextView) travelStateView.findViewById(R.id.travel_state_cal_unit);
+		mTravelStateSpeedValue = (TextView) travelStateView.findViewById(R.id.travel_state_speed);
+		mTravelStateSpeedUnit = (TextView) travelStateView.findViewById(R.id.travel_state_speed_unit);
 
-		mTravelStateDistanceTitle = (TextView) findViewById(R.id.travel_state_distance_title);
-		mTravelStateDistanceValue = (TextView) findViewById(R.id.travel_state_distance_value);
-		mTravelStateDistanceUnit = (TextView) findViewById(R.id.travel_state_distance_unit);
+		mTravelStateDistanceTitle = (TextView) travelStateView.findViewById(R.id.travel_state_distance_title);
+		mTravelStateDistanceValue = (TextView) travelStateView.findViewById(R.id.travel_state_distance_value);
+		mTravelStateDistanceUnit = (TextView) travelStateView.findViewById(R.id.travel_state_distance_unit);
 
-		mTravelStateAvgSpeedTitle = (TextView) findViewById(R.id.travel_state_avg_title);
-		mTravelStateAvgSpeedValue = (TextView) findViewById(R.id.travel_state_avg_value);
-		mTravelStateAvgSpeedUnit = (TextView) findViewById(R.id.travel_state_avg_unit);
-		mTravelStateAslTitle = (TextView) findViewById(R.id.travel_state_asl_title);
-		mTravelStateAslValue = (TextView) findViewById(R.id.travel_state_asl_value);
-		mTravelStateAslUnit = (TextView) findViewById(R.id.travel_state_asl_unit);
-		mTravelStateCadenceTitle = (TextView) findViewById(R.id.travel_state_cadence_title);
-		mTravelStateCadenceValue = (TextView) findViewById(R.id.travel_state_cadence_value);
-		mTravelStateCadenceUnit = (TextView) findViewById(R.id.travel_state_cadence_unit);
+		mTravelStateAvgSpeedTitle = (TextView) travelStateView.findViewById(R.id.travel_state_avg_title);
+		mTravelStateAvgSpeedValue = (TextView) travelStateView.findViewById(R.id.travel_state_avg_value);
+		mTravelStateAvgSpeedUnit = (TextView) travelStateView.findViewById(R.id.travel_state_avg_unit);
+		mTravelStateAslTitle = (TextView) travelStateView.findViewById(R.id.travel_state_asl_title);
+		mTravelStateAslValue = (TextView) travelStateView.findViewById(R.id.travel_state_asl_value);
+		mTravelStateAslUnit = (TextView) travelStateView.findViewById(R.id.travel_state_asl_unit);
+		mTravelStateCadenceTitle = (TextView) travelStateView.findViewById(R.id.travel_state_cadence_title);
+		mTravelStateCadenceValue = (TextView) travelStateView.findViewById(R.id.travel_state_cadence_value);
+		mTravelStateCadenceUnit = (TextView) travelStateView.findViewById(R.id.travel_state_cadence_unit);
 		// 速度
-		mSpeedStateArrowTopView = findViewById(R.id.speed_state_arrow_top);
-		mSpeedStateArrowBottomView = (ImageView) findViewById(R.id.speed_state_arrow_bottom);
-		mSpeedStateCicleHolder = (ImageView) findViewById(R.id.speed_state_cicle_view);
-		mSpeedStateSpeedView = (SpeedView) findViewById(R.id.speed_state_speed_view);
-		mSpeedStateSpeedText = (TextView) findViewById(R.id.speed_state_speed_text);
-		mSpeedStateTipText = (FlickTextView) findViewById(R.id.speed_state_tip_text);
-		mSpeedStateSpeedButton = (ImageButton) findViewById(R.id.speed_state_btn);
-		mSpeedStateCalValue = (TextView) findViewById(R.id.speed_state_cal_value);
-		mSpeedStateCalUnit = (TextView) findViewById(R.id.speed_state_cal_unit);
-		mSpeedStateSpendTimeValue = (TextView) findViewById(R.id.speed_state_spend_time);
+		speedStateContent = speedStateView.findViewById(R.id.speed_state_content);
+		mSpeedStateArrowTopView = speedStateView.findViewById(R.id.speed_state_arrow_top);
+		mSpeedStateArrowBottomView = (ImageView) speedStateView.findViewById(R.id.speed_state_arrow_bottom);
+		mSpeedStateCicleHolder = (ImageView) speedStateView.findViewById(R.id.speed_state_cicle_view);
+		mSpeedStateSpeedView = (SpeedView) speedStateView.findViewById(R.id.speed_state_speed_view);
+		mSpeedStateSpeedText = (TextView) speedStateView.findViewById(R.id.speed_state_speed_text);
+		mSpeedStateTipText = (FlickTextView) speedStateView.findViewById(R.id.speed_state_tip_text);
 
-		mSpeedStateDistanceTitle = (TextView) findViewById(R.id.speed_state_distance_title);
-		mSpeedStateDistanceValue = (TextView) findViewById(R.id.speed_state_distance_value);
-		mSpeedStateDistanceUnit = (TextView) findViewById(R.id.speed_state_distance_unit);
+		mSpeedStateSpeedButton = (ImageButton) speedStateView.findViewById(R.id.speed_state_btn);
+		mSpeedStateCalValue = (TextView) speedStateView.findViewById(R.id.speed_state_cal_value);
+		mSpeedStateCalUnit = (TextView) speedStateView.findViewById(R.id.speed_state_cal_unit);
+		mSpeedStateSpendTimeValue = (TextView) speedStateView.findViewById(R.id.speed_state_spend_time);
 
-		mSpeedStateAvgSpeedTitle = (TextView) findViewById(R.id.speed_state_avg_title);
-		mSpeedStateAvgSpeedValue = (TextView) findViewById(R.id.speed_state_avg_value);
-		mSpeedStateAvgSpeedUnit = (TextView) findViewById(R.id.speed_state_avg_unit);
+		mSpeedStateDistanceTitle = (TextView) speedStateView.findViewById(R.id.speed_state_distance_title);
+		mSpeedStateDistanceValue = (TextView) speedStateView.findViewById(R.id.speed_state_distance_value);
+		mSpeedStateDistanceUnit = (TextView) speedStateView.findViewById(R.id.speed_state_distance_unit);
 
-		mSpeedStateAslTitle = (TextView) findViewById(R.id.speed_state_asl_title);
-		mSpeedStateAslValue = (TextView) findViewById(R.id.speed_state_asl_value);
-		mSpeedStateAslUnit = (TextView) findViewById(R.id.speed_state_asl_unit);
+		mSpeedStateAvgSpeedTitle = (TextView) speedStateView.findViewById(R.id.speed_state_avg_title);
+		mSpeedStateAvgSpeedValue = (TextView) speedStateView.findViewById(R.id.speed_state_avg_value);
+		mSpeedStateAvgSpeedUnit = (TextView) speedStateView.findViewById(R.id.speed_state_avg_unit);
 
-		mSpeedStateCadenceTitle = (TextView) findViewById(R.id.speed_state_cadence_title);
-		mSpeedStateCadenceValue = (TextView) findViewById(R.id.speed_state_cadence_value);
-		mSpeedStateCadenceUnit = (TextView) findViewById(R.id.speed_state_cadence_unit);
+		mSpeedStateAslTitle = (TextView) speedStateView.findViewById(R.id.speed_state_asl_title);
+		mSpeedStateAslValue = (TextView) speedStateView.findViewById(R.id.speed_state_asl_value);
+		mSpeedStateAslUnit = (TextView) speedStateView.findViewById(R.id.speed_state_asl_unit);
+
+		mSpeedStateCadenceTitle = (TextView) speedStateView.findViewById(R.id.speed_state_cadence_title);
+		mSpeedStateCadenceValue = (TextView) speedStateView.findViewById(R.id.speed_state_cadence_value);
+		mSpeedStateCadenceUnit = (TextView) speedStateView.findViewById(R.id.speed_state_cadence_unit);
 
 		// 电池
-		mBatteryStateBatteryView = (BatteryView) findViewById(R.id.battery_state_battery_view);
-		mBatteryStateBatteryPercent = (TextView) findViewById(R.id.battery_state_battery_percent);
-		mBatteryStateRemaindTip = (TextView) findViewById(R.id.battery_state_remaind_tip);
-		mBatteryStateRemaindValue = (TextView) findViewById(R.id.battery_state_remaind_value);
-		mBatteryStateRemaindUnit = (TextView) findViewById(R.id.battery_state_remaind_unit);
-		mBatteryStateLightFront = (ImageView) findViewById(R.id.battery_state_light_front);
-		mBatteryStateLightBack = (ImageView) findViewById(R.id.battery_state_light_back);
-		mBatteryStateGearText = (TextView) findViewById(R.id.battery_state_gear);
+		mBatteryStateBatteryView = (BatteryView) batteryStateView.findViewById(R.id.battery_state_battery_view);
+		mBatteryStateBatteryPercent = (TextView) batteryStateView.findViewById(R.id.battery_state_battery_percent);
+		mBatteryStateRemaindTip = (TextView) batteryStateView.findViewById(R.id.battery_state_remaind_tip);
+		mBatteryStateRemaindValue = (TextView) batteryStateView.findViewById(R.id.battery_state_remaind_value);
+		mBatteryStateRemaindUnit = (TextView) batteryStateView.findViewById(R.id.battery_state_remaind_unit);
+		mBatteryStateLightFront = (ImageView) batteryStateView.findViewById(R.id.battery_state_light_front);
+		mBatteryStateLightBack = (ImageView) batteryStateView.findViewById(R.id.battery_state_light_back);
+		mBatteryStateGearText = (TextView) batteryStateView.findViewById(R.id.battery_state_gear);
 
 	}
 
@@ -327,19 +398,15 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	private void intClick() {
 		mModelBtn.setOnClickListener(this);
 		mProfileView.setOnClickListener(this);
-		mBikeStateLightFront.setOnClickListener(this);
-		mBikeStateLightBack.setOnClickListener(this);
-		mBatteryStateLightFront.setOnClickListener(this);
-		mBatteryStateLightBack.setOnClickListener(this);
-//
 		lineBikeStateView.setOnClickListener(this);
 		lineTravelStateView.setOnClickListener(this);
 		lineBatteryStateView.setOnClickListener(this);
-
 		mSpeedStateArrowTopView.setOnClickListener(this);
 		mSpeedStateArrowBottomView.setOnClickListener(this);
 		mSpeedStateSpeedButton.setOnClickListener(this);
 		mSpeedStateSpeedText.setOnClickListener(this);
+		mSpeedStateTipImg.setOnClickListener(this);
+
 	}
 
 	/** 初始化 */
@@ -366,7 +433,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		updateUiValue();
 	}
 
-	protected abstract void uiInitCompleted();
+	protected abstract void uiInitCompleted(View mapContent);
 
 	/** 改变状态 */
 	protected Handler travelStateHandler = new Handler() {
@@ -374,23 +441,29 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
 			super.handleMessage(msg);
+			bleStateChange(BlueToothService.ble_state);// 先去判断蓝牙链接状态
 			int state = msg.what;// 所有的行程操作都必须是链接上BLE了才能有作用，因为没有链接的话，显示一定是灰色的
-			if (state == TravelConstant.TRAVEL_STATE_PAUSE||state == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 暂停
+			if (state == TravelConstant.TRAVEL_STATE_PAUSE) {// 暂停
 				mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
 				mSpeedStateSpeedText.setVisibility(View.GONE);
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_pause_enable);
-				mSpeedStateTipText.showTip(getString(R.string.tip_travel_stop));
+				mSpeedStateTipImg.hideTip();
+			} else if (state == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 伪暂停
+				mSpeedStateSpeedButton.setVisibility(View.GONE);
+				mSpeedStateSpeedText.setVisibility(View.VISIBLE);
+				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_pause_enable);
+				mSpeedStateTipImg.showTip();
 			} else if (BlueToothService.ble_state == BlueToothConstants.BLE_STATE_CONNECTED
 					&& (state == TravelConstant.TRAVEL_STATE_START || state == TravelConstant.TRAVEL_STATE_RESUME)) {
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_start_enable);
 				mSpeedStateSpeedButton.setVisibility(View.GONE);
 				mSpeedStateSpeedText.setVisibility(View.VISIBLE);
-				mSpeedStateTipText.hideTip();
+				mSpeedStateTipImg.hideTip();
 			} else if (BlueToothService.ble_state == BlueToothConstants.BLE_STATE_CONNECTED) {// 无，停止，完成，退出
 				mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
 				mSpeedStateSpeedText.setVisibility(View.GONE);
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_start_enable);
-				mSpeedStateTipText.hideTip();
+				mSpeedStateTipImg.hideTip();
 			}
 
 		}
@@ -407,6 +480,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		float calorie = EBikeTravelData.getInstance(this).calorie;
 		float cadence = EBikeTravelData.getInstance(this).cadence;
 		float remaindTravelCapacity = EBikeTravelData.getInstance(this).remaindTravelCapacity;
+		int batteryResidueCapacity = EBikeTravelData.getInstance(this).batteryResidueCapacity;
 		String spendTime = TimeUtils.formatTimeSSToHMS(EBikeTravelData.getInstance(this).spendTime) + "";
 		if (distanUnit == EBConstant.DISTANCE_UNIT_MPH) {
 			speed = speed / 1.6f;// km/h->mph
@@ -416,19 +490,42 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			remaindTravelCapacity = remaindTravelCapacity * 0.6f;// km->mi
 		}
 
+		if (batteryResidueCapacity > 2) {//对电量进行数据调整
+			batteryResidueCapacity = (batteryResidueCapacity - 3) * 100 / 97;
+		} else {
+			batteryResidueCapacity = 0;
+		}
+
 		// 格式化精度
 		speed = CommonUtil.formatFloatAccuracy(speed, 1);
 		avgSpeed = CommonUtil.formatFloatAccuracy(avgSpeed, 1);
 		altitude = CommonUtil.formatFloatAccuracy(altitude, 1);
-		distance = CommonUtil.formatFloatAccuracy(distance, 1);
+		distance = CommonUtil.formatFloatAccuracy(distance, 1, 1);
 		cadence = CommonUtil.formatFloatAccuracy(cadence, 0);
 		calorie = CommonUtil.formatFloatAccuracy(calorie, 1);
 		remaindTravelCapacity = CommonUtil.formatFloatAccuracy(remaindTravelCapacity, 1);
 
 		// 车况
-		mBikeStateBatteryView.onValueChange(EBikeTravelData.getInstance(this).batteryResidueCapacity, model,
-				EBikeTravelData.getInstance(this).gear, false);
-		mBikeStateBatteryPercent.setText(EBikeTravelData.getInstance(this).batteryResidueCapacity + "%");
+		switch (EBikeTravelData.getInstance(this).gear) {
+		case 0:
+			mBikeStateGearIcon.setImageResource(R.drawable.bike_state_gear0);
+			break;
+		case 1:
+			mBikeStateGearIcon.setImageResource(R.drawable.bike_state_gear1);
+			break;
+		case 2:
+			mBikeStateGearIcon.setImageResource(R.drawable.bike_state_gear2);
+			break;
+		case 3:
+			mBikeStateGearIcon.setImageResource(R.drawable.bike_state_gear3);
+			break;
+		default:
+			mBikeStateGearIcon.setImageResource(R.drawable.bike_state_gear0);
+			break;
+		}
+		mBikeStateBatteryView.onValueChange(batteryResidueCapacity, model, EBikeTravelData.getInstance(this).gear,
+				false);
+		mBikeStateBatteryPercent.setText(batteryResidueCapacity + "%");
 		if (distanUnit == EBConstant.DISTANCE_UNIT_MPH) {
 			mBikeStateBatteryRemaindValue.setText(remaindTravelCapacity + "" + getString(R.string.mi));
 		} else {
@@ -458,22 +555,22 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		mTravelStateCadenceValue.setText(cadence + "");
 		if (distanUnit == EBConstant.DISTANCE_UNIT_MPH) {
 			mSpeedStateSpeedView.onValueChange(speed, SpeedView.MAX_SPEED_MPH);
-			mSpeedStateAvgSpeedUnit.setText(getString(R.string.mph));
+			mSpeedStateAvgSpeedUnit.setText(getString(R.string.MPH));
 			mTravelStateAvgSpeedUnit.setText(getString(R.string.mph));
 			mTravelStateSpeedUnit.setText(getString(R.string.mph));
 			mTravelStateAslUnit.setText(getString(R.string.mi));
 			mTravelStateDistanceUnit.setText(getString(R.string.mi));
-			mSpeedStateAslUnit.setText(getString(R.string.mi));
-			mSpeedStateDistanceUnit.setText(getString(R.string.mi));
+			mSpeedStateAslUnit.setText(getString(R.string.MI));
+			mSpeedStateDistanceUnit.setText(getString(R.string.MI));
 		} else {
 			mSpeedStateSpeedView.onValueChange(speed, SpeedView.MAX_SPEED_KM_H);
-			mSpeedStateAvgSpeedUnit.setText(getString(R.string.km_h));
+			mSpeedStateAvgSpeedUnit.setText(getString(R.string.KM_H));
 			mTravelStateAvgSpeedUnit.setText(getString(R.string.km_h));
 			mTravelStateSpeedUnit.setText(getString(R.string.km_h));
 			mTravelStateAslUnit.setText(getString(R.string.km));
 			mTravelStateDistanceUnit.setText(getString(R.string.km));
-			mSpeedStateAslUnit.setText(getString(R.string.km));
-			mSpeedStateDistanceUnit.setText(getString(R.string.km));
+			mSpeedStateAslUnit.setText(getString(R.string.KM));
+			mSpeedStateDistanceUnit.setText(getString(R.string.KM));
 		}
 
 		mSpeedStateSpeedText.setText(speed + "");
@@ -489,9 +586,18 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		mSpeedStateCadenceValue.setText(cadence + "");
 
 		// 电池
-		mBatteryStateBatteryView.onValueChange(EBikeTravelData.getInstance(this).batteryResidueCapacity, model,
-				EBikeTravelData.getInstance(this).gear, true);
-		mBatteryStateBatteryPercent.setText(EBikeTravelData.getInstance(this).batteryResidueCapacity + "%");
+		if (distanUnit == EBConstant.DISTANCE_UNIT_MPH) {
+			mBatteryStateRemaindTip.setText(String.format(getString(R.string.battery_remaind_tip), new String[] { ""
+					+ remaindTravelCapacity })
+					+ getString(R.string.mi));
+		} else {
+			mBatteryStateRemaindTip.setText(String.format(getString(R.string.battery_remaind_tip), new String[] { ""
+					+ remaindTravelCapacity })
+					+ getString(R.string.km));
+		}
+		mBatteryStateBatteryView.onValueChange(batteryResidueCapacity, model, EBikeTravelData.getInstance(this).gear,
+				true);
+		mBatteryStateBatteryPercent.setText(batteryResidueCapacity + "%");
 		mBatteryStateRemaindValue.setText(remaindTravelCapacity + "");
 		if (distanUnit == EBConstant.DISTANCE_UNIT_MPH) {
 			mBatteryStateRemaindUnit.setText(getString(R.string.mi));
@@ -529,13 +635,15 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	public void bleStateChange(int state) {
 		if (state == BlueToothConstants.BLE_STATE_CONNECTED) {
 			// mSpeedStateSpeedButton.setClickable(true);
+			mSpeedStateTipText.hideTip();
 			travelStateHandler.sendEmptyMessage(BaseApplication.travelState);
 		} else {
 			LogUtils.i(tag, "ble stateChange==" + state);
 			mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
 			mSpeedStateSpeedText.setVisibility(View.GONE);
 			// mSpeedStateSpeedButton.setClickable(false);
-			if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_PAUSE) {
+			if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_PAUSE
+					|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_pause_disable);
 			} else {
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_start_disable);
@@ -545,104 +653,85 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		}
 	}
 
-	/** 只是用来测试按钮的 */
-	/*
-	 * private void test(int state) { // 按钮 if (state ==
-	 * TravelConstant.TRAVEL_STATE_PAUSE) {// 暂停
-	 * mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
-	 * mSpeedStateSpeedText.setVisibility(View.INVISIBLE);
-	 * mSpeedStateSpeedButton.setImageResource(R.drawable.
-	 * speed_state_view_btn_pause); } else if (state ==
-	 * TravelConstant.TRAVEL_STATE_START || state ==
-	 * TravelConstant.TRAVEL_STATE_RESUME) {
-	 * mSpeedStateSpeedButton.setVisibility(View.INVISIBLE);
-	 * mSpeedStateSpeedText.setVisibility(View.VISIBLE);
-	 * mSpeedStateSpeedButton.setImageResource(R.drawable.
-	 * speed_state_view_btn_start); } else {// 无，停止，完成，退出
-	 * mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
-	 * mSpeedStateSpeedButton.setImageResource(R.drawable.
-	 * speed_state_view_btn_start);
-	 * mSpeedStateSpeedText.setVisibility(View.INVISIBLE); } }
-	 */
-	/**保存骑行*/
-	private void saveTravel(){
-		LogUtils.i(tag, "保存骑行" + BaseApplication.travelState);
-			if (EBikeTravelData.getInstance(HomeUiActivity.this).distance < EBikeTravelData.MUST_MIN_TRAVEL) {
-				// 数据少，不存储
-				AlertUtil.getInstance(HomeUiActivity.this).alertChoice(
-						getString(R.string.travel_too_short_not_save), getString(R.string.yes),
-						getString(R.string.no), new OnClickListener() {
-
-							@Override
-							public void onClick(View v) {
-								BaseApplication.travelId = -1;
-								AlertUtil.getInstance(HomeUiActivity.this).dismiss();
-								BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
-										TravelConstant.TRAVEL_STATE_STOP);
-								if (mMapUtil != null) {
-									mMapUtil.clearMap();
-								}
-								// test(TravelConstant.TRAVEL_STATE_COMPLETED);
-							}
-						}, new OnClickListener() {
-
-							@Override
-							public void onClick(View v) {
-								AlertUtil.getInstance(HomeUiActivity.this).dismiss();
-							}
-						},true);
-			} else {
-				if (mMapUtil != null) {
-					mMapUtil.snapshot(new Handler() {
+	/** 保存骑行 */
+	private void saveTravel() {
+		LogUtils.i(tag, "保存travel" + BaseApplication.travelState);
+		if (EBikeTravelData.getInstance(HomeUiActivity.this).distance < EBikeTravelData.MUST_MIN_TRAVEL) {
+			// 数据少，不存储
+			AlertUtil.getInstance(HomeUiActivity.this).alertChoice(getString(R.string.travel_too_short_not_save),
+					getString(R.string.yes), getString(R.string.no), new OnClickListener() {
 
 						@Override
-						public void handleMessage(Message msg) {
-							super.handleMessage(msg);
-							mMapUtil.clearMap();
-							LogUtils.i(tag, "收到图片路径：" + msg.obj.toString());
-							String photoPath = msg.obj.toString();
-							if (!TextUtils.isEmpty(photoPath)) {// 图片与行程关联
-								EBikeTravelData.getInstance(HomeUiActivity.this).travelPhoto = photoPath;
-							}
+						public void onClick(View v) {
+							BaseApplication.travelId = -1;
+							AlertUtil.getInstance(HomeUiActivity.this).dismiss();
 							BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
-									TravelConstant.TRAVEL_STATE_COMPLETED);
+									TravelConstant.TRAVEL_STATE_STOP);
+							if (mMapUtil != null) {
+								mMapUtil.clearMap();
+							}
+							// test(TravelConstant.TRAVEL_STATE_COMPLETED);
 						}
+					}, new OnClickListener() {
 
-					});
-				}
+						@Override
+						public void onClick(View v) {
+							AlertUtil.getInstance(HomeUiActivity.this).dismiss();
+						}
+					}, true);
+		} else {
+			if (mMapUtil != null) {
+				mMapUtil.snapshot(BaseApplication.travelId,new Handler() {
+
+					@Override
+					public void handleMessage(Message msg) {
+						super.handleMessage(msg);
+						mMapUtil.clearMap();
+						LogUtils.i(tag, "收到图片路径：" + msg.obj.toString());
+						String photoPath = msg.obj.toString();
+						if (!TextUtils.isEmpty(photoPath)) {// 图片与行程关联
+							EBikeTravelData.getInstance(HomeUiActivity.this).travelPhoto = photoPath;
+						}
+						BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
+								TravelConstant.TRAVEL_STATE_COMPLETED);
+					}
+
+				});
 			}
+		}
 
 	}
-	/**弹出行程 选择*/
-	private void alertTravelChoice(){
-		AlertUtil.getInstance(this).alertThree(getString(R.string.travel_save), getString(R.string.yes), getString(R.string.no), getString(R.string.tip_go_on_the_trial), 
-				new OnClickListener() {
-					
+
+	/** 弹出行程 选择 */
+	private void alertTravelChoice() {
+		AlertUtil.getInstance(this).alertThree(getString(R.string.travel_save), getString(R.string.end_and_save),
+				getString(R.string.end_and_discard), getString(R.string.cancel), new OnClickListener() {
+
 					@Override
 					public void onClick(View v) {
 						AlertUtil.getInstance(HomeUiActivity.this).dismiss();
 						saveTravel();
 					}
-				}, 
-				new OnClickListener() {
-					
+				}, new OnClickListener() {
+
 					@Override
 					public void onClick(View v) {
 						AlertUtil.getInstance(HomeUiActivity.this).dismiss();
 						// test(TravelConstant.TRAVEL_STATE_RESUME);
 						BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this, TravelConstant.TRAVEL_STATE_STOP);
 					}
-				}, 
-				new OnClickListener() {
-					
+				}, new OnClickListener() {
+
 					@Override
-					public void onClick(View v) {//继续骑行
+					public void onClick(View v) {// 继续骑行
 						AlertUtil.getInstance(HomeUiActivity.this).dismiss();
 						// test(TravelConstant.TRAVEL_STATE_RESUME);
-						BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this, TravelConstant.TRAVEL_STATE_RESUME);
+						BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
+								TravelConstant.TRAVEL_STATE_RESUME);
 					}
 				});
 	}
+
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -652,6 +741,9 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		case R.id.home_ib_profile:
 			onProfile();
 			break;
+		case R.id.speed_state_tip_img:
+			onClick(mSpeedStateSpeedButton);
+			break;
 		case R.id.speed_state_btn:
 			bleStateChange(BlueToothService.ble_state);
 			LogUtils.i(tag, "单击" + BaseApplication.travelState);
@@ -660,201 +752,49 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 						getString(R.string.no));
 				return;
 			}
-			if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_PAUSE) {
+			if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_PAUSE) {// 暂停
 				alertTravelChoice();
-			}else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {//如果是伪暂停要先把它设置为暂停
-				BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this, TravelConstant.TRAVEL_STATE_PAUSE);
+			} else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 如果是伪暂停,要先设置为暂停状态
+			// BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
+			// TravelConstant.TRAVEL_STATE_PAUSE);
 				alertTravelChoice();
 			} else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_START
 					|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_RESUME) {
 				BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this, TravelConstant.TRAVEL_STATE_PAUSE);
-//				// test(TravelConstant.TRAVEL_STATE_PAUSE);
-//				if (EBikeTravelData.getInstance(this).zeroSpeedCount > EBikeTravelData.MAX_LIMIT_ZERO_SPEED) {// 超过数值//说明界面已经是暂停的了
-//					alertTravelChoice();
-//				}
-				
+
 			} else {
 				// test(TravelConstant.TRAVEL_STATE_START);
 				BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this, TravelConstant.TRAVEL_STATE_START);
 			}
 			break;
 		case R.id.speed_state_speed_text:// 速度状态下速度值显示text
-			bleStateChange(BlueToothService.ble_state);
-			// ToastUtils.toast(this, "speed text click");
-			BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this, TravelConstant.TRAVEL_STATE_PAUSE);
-			// test(TravelConstant.TRAVEL_STATE_PAUSE);
-			break;
-		case R.id.bike_state_light_front_icon:
-
-			break;
-		case R.id.bike_state_light_back_icon:
-
-			break;
-		case R.id.battery_state_light_front:
-
-			break;
-		case R.id.battery_state_light_back:
-
+			// bleStateChange(BlueToothService.ble_state);
+			// // ToastUtils.toast(this, "speed text click");
+			// BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
+			// TravelConstant.TRAVEL_STATE_PAUSE);
+			// // test(TravelConstant.TRAVEL_STATE_PAUSE);
 			break;
 		case R.id.home_view_line_bike_state:
-			uiStyle = UI_STYLE_BATTERY;
-			changeUIStyle();
+			ebikeHomePager.setCurrentItem(0);
 			break;
 		case R.id.home_view_line_battery_state:
-			uiStyle = UI_STYLE_MAP;
-			changeUIStyle();
+			ebikeHomePager.setCurrentItem(2);
 			break;
 		case R.id.home_view_line_travel_state:
-			uiStyle = UI_STYLE_SPEED;
-			changeUIStyle();
+			ebikeHomePager.setCurrentItem(1);
+			// if(selectItem==0){
+			// System.out.println("set item 2");
+			// ebikeHomePager.setCurrentItem(1);
+			// }else {
+			// System.out.println("set item 1");
+			// ebikeHomePager.setCurrentItem(1);
+			// }
 			break;
 		case R.id.speed_state_arrow_top:
-			uiStyle = UI_STYLE_BATTERY;
-			changeUIStyle();
+			ebikeHomePager.setCurrentItem(0);
 			break;
 		case R.id.speed_state_arrow_bottom:
-			uiStyle = UI_STYLE_MAP;
-			changeUIStyle();
-			break;
-		default:
-			break;
-		}
-	}
-
-	
-	/**初始化动画*/
-	private void initAnim() {
-		if(speedScaleAnim==null){
-			speedScaleAnim = new ScaleAnimation(1, 1, 0, 1, 0.5f, 0.5f);
-			speedScaleAnim.setDuration(ANIM_DURATION);
-			speedScaleAnim.setFillAfter(true);
-		}
-		if (alphaHideAnim == null) {
-			alphaHideAnim = new AlphaAnimation(1, 0);
-			alphaHideAnim.setDuration(ANIM_DURATION);
-			alphaHideAnim.setFillAfter(true);
-		}
-		if (alphaShowAnim == null) {
-			alphaShowAnim = new AlphaAnimation(0, 1);
-			alphaShowAnim.setDuration(ANIM_DURATION);
-			alphaShowAnim.setFillAfter(true);
-		}
-		if (scaleHideAnim == null) {
-			scaleHideAnim = new ScaleAnimation(1, 1, 1, 0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-//			scaleHideAnim = new ScaleAnimation(1, 0, 1, 0, 0.5f, 0.5f);
-			scaleHideAnim.setDuration(ANIM_DURATION);
-			scaleHideAnim.setFillAfter(true);
-		}
-		if (scaleShowAnim == null) {
-			scaleShowAnim = new ScaleAnimation(1, 1, 0, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-//			scaleShowAnim = new ScaleAnimation(0, 1, 0, 1, 0.5f, 0.5f);
-			scaleShowAnim.setDuration(ANIM_DURATION);
-			scaleShowAnim.setFillAfter(true);
-		}
-		if (hideAnimSet == null) {
-			hideAnimSet = new AnimationSet(true);
-			hideAnimSet.setDuration(ANIM_DURATION);
-			hideAnimSet.setFillAfter(true);
-			hideAnimSet.addAnimation(alphaHideAnim);
-			hideAnimSet.addAnimation(scaleHideAnim);
-			hideAnimSet.setAnimationListener(new AnimationListener() {
-
-				@Override
-				public void onAnimationStart(Animation animation) {
-				}
-
-				@Override
-				public void onAnimationRepeat(Animation animation) {
-				}
-
-				@Override
-				public void onAnimationEnd(Animation animation) {
-					bikeStateView.clearAnimation();
-					travelStateView.clearAnimation();
-					speedStateView.clearAnimation();
-					batteryStateView.clearAnimation();
-				}
-			});
-		}
-		if (showAnimSet == null) {
-			showAnimSet = new AnimationSet(true);
-			showAnimSet.setDuration(ANIM_DURATION);
-			showAnimSet.setFillAfter(true);
-			showAnimSet.addAnimation(alphaShowAnim);
-			showAnimSet.addAnimation(scaleShowAnim);
-			showAnimSet.setAnimationListener(new AnimationListener() {
-
-				@Override
-				public void onAnimationStart(Animation animation) {
-				}
-
-				@Override
-				public void onAnimationRepeat(Animation animation) {
-				}
-
-				@Override
-				public void onAnimationEnd(Animation animation) {
-					bikeStateView.clearAnimation();
-					travelStateView.clearAnimation();
-					speedStateView.clearAnimation();
-					batteryStateView.clearAnimation();
-				}
-			});
-		}
-	}
-	/**根据点击改变UI的显示样式*/
-	private void changeUIStyle() {
-		int bikeStateVisble = bikeStateView.getVisibility();
-		switch (uiStyle) {
-		case UI_STYLE_MAP:
-			bikeStateView.setVisibility(View.VISIBLE);
-			travelStateView.setVisibility(View.VISIBLE);
-			speedStateView.setVisibility(View.GONE);
-			batteryStateView.setVisibility(View.GONE);
-			lineBikeStateView.setVisibility(View.VISIBLE);
-			// lineTravelStateView.setVisibility(View.VISIBLE);
-
-			// 动画
-			if (bikeStateVisble == View.VISIBLE) {// 说明一定是从speed->map
-				speedStateView.startAnimation(hideAnimSet);
-				travelStateView.startAnimation(showAnimSet);
-			} else {// battery->map
-				bikeStateView.startAnimation(showAnimSet);
-				batteryStateView.startAnimation(hideAnimSet);
-			}
-			break;
-		case UI_STYLE_SPEED:
-			bikeStateView.setVisibility(View.VISIBLE);
-			travelStateView.setVisibility(View.GONE);
-			speedStateView.setVisibility(View.VISIBLE);
-			batteryStateView.setVisibility(View.GONE);
-			lineBikeStateView.setVisibility(View.GONE);
-			// lineTravelStateView.setVisibility(View.GONE);
-			// 动画
-			if (bikeStateVisble == View.VISIBLE) {// 说明一定是从map->speed
-				speedStateView.startAnimation(speedScaleAnim);
-				travelStateView.startAnimation(hideAnimSet);
-			} else {// battery->speed
-				speedStateView.startAnimation(showAnimSet);
-				batteryStateView.startAnimation(hideAnimSet);
-			}
-			break;
-		case UI_STYLE_BATTERY:
-			bikeStateView.setVisibility(View.GONE);
-			travelStateView.setVisibility(View.VISIBLE);
-			speedStateView.setVisibility(View.GONE);
-			batteryStateView.setVisibility(View.VISIBLE);
-			lineBikeStateView.setVisibility(View.VISIBLE);
-			// lineTravelStateView.setVisibility(View.VISIBLE);
-			// 动画
-			int speedStateVisble=speedStateView.getVisibility();
-			if (speedStateVisble == View.VISIBLE) {// 说明一定是从speed->battery
-				speedStateView.startAnimation(hideAnimSet);
-				batteryStateView.startAnimation(showAnimSet);
-			} else {// battery->speed
-				batteryStateView.startAnimation(showAnimSet);
-				bikeStateView.startAnimation(hideAnimSet);
-			}
+			ebikeHomePager.setCurrentItem(2);
 			break;
 		default:
 			break;
@@ -873,13 +813,20 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	}
 
 	private void modelChange() {
-		mBatteryStateBatteryView.onValueChange(EBikeTravelData.getInstance(this).batteryResidueCapacity,
-				SPUtils.getUiModel(this), EBikeTravelData.getInstance(this).gear, true);
+		int batteryResidueCapacity = EBikeTravelData.getInstance(this).batteryResidueCapacity;
+		if (batteryResidueCapacity > 2) {//对电量进行数据调整
+			batteryResidueCapacity = (batteryResidueCapacity - 3) * 100 / 97;
+		} else {
+			batteryResidueCapacity = 0;
+		}
+		mBatteryStateBatteryView.onValueChange(batteryResidueCapacity, SPUtils.getUiModel(this),
+				EBikeTravelData.getInstance(this).gear, true);
 		if (SPUtils.getUiModel(this) == EBConstant.MODEL_NIGHT) {// 由day到night
 			// 电池
 			mLogo.setImageResource(R.drawable.home_freway_logo_night);
 			lineBikeStateView.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
 			lineTravelStateView.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
+			lineBatteryStateView.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
 			topBarView.setBackgroundColor(getResources().getColor(R.color.model_night_bar_background));
 			bikeStateView.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
 			speedStateContent.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
@@ -906,10 +853,15 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			mBatteryStateBatteryPercent.setTextColor(getResources().getColor(R.color.text_gray));
 			mBatteryStateRemaindValue.setTextColor(getResources().getColor(R.color.white));
 			mBatteryStateGearText.setTextColor(getResources().getColor(R.color.white));
+			// 整个view
+			speedModel.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
+			batteryModel.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
+
 		} else {// 由night到day
 			mLogo.setImageResource(R.drawable.home_freway_logo_day);
 			lineBikeStateView.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));
 			lineTravelStateView.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));
+			lineBatteryStateView.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));
 			topBarView.setBackgroundColor(getResources().getColor(R.color.model_day_bar_background));
 			bikeStateView.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));
 			speedStateContent.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));
@@ -937,6 +889,9 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			mBatteryStateRemaindValue.setTextColor(getResources().getColor(R.color.black));
 			mBatteryStateGearText.setTextColor(getResources().getColor(R.color.black));
 			mBatteryStateBatteryPercent.setTextColor(getResources().getColor(R.color.white));
+			// 整个view
+			speedModel.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));
+			batteryModel.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));
 		}
 	}
 
@@ -952,98 +907,8 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
 		initData();
 	}
-	/**初始化触摸事件*/
-	private void initViewTouch() {
-		viewTouch = new ViewTouch();
-		/** 车况view */
-		bikeStateView.setOnTouchListener(viewTouch);
-//		/** 车速view */
-//		speedStateView.setOnTouchListener(viewTouch);
-		/** 电池view */
-		batteryStateView.setOnTouchListener(viewTouch);
-		/** 骑行状态view */
-		travelStateView.setOnTouchListener(viewTouch);
-		/** 分隔线用于显示电池view,点击第一次显示，点击第二次隐藏 */
-		lineBikeStateView.setOnTouchListener(viewTouch);
-		/** 分隔线用于显示速度view */
-		lineTravelStateView.setOnTouchListener(viewTouch);
-		/** 分隔线用于显示速度view */
-		lineBatteryStateView.setOnTouchListener(viewTouch);
-		// 速度view上边的箭头按钮
-		mSpeedStateArrowTopView.setOnTouchListener(viewTouch);
-		// 速度view下边的箭头按钮
-		mSpeedStateArrowBottomView.setOnTouchListener(viewTouch);
-	}
 
-	// 触摸
-	private class ViewTouch implements OnTouchListener {
-
-		@Override
-		public boolean onTouch(View v, MotionEvent event) {
-			LogUtils.i(tag, "view" + v.getId() + "--onTouchEvent");
-			switch (event.getAction()) {
-			case MotionEvent.ACTION_DOWN:
-				downY = event.getY();
-//				LogUtils.i(tag, "downY=" + downY);
-				break;
-			case MotionEvent.ACTION_UP:
-//				LogUtils.i(tag, "upY=" + upY);
-				upY = event.getY();
-				moveDistance = upY - downY;
-				if (Math.abs(moveDistance) > ANIM_SPACING) {
-					handleTouch(v.getId(),moveDistance );
-				}else{
-					onClick(v);
-				}
-				break;
-			default:
-				break;
-			}
-			return true;
-		}
-	}
-
-	private static final int ANIM_SPACING = 100;
-
-	private void handleTouch(int id, float distance) {
-		switch (id) {
-		case R.id.home_bike_state:
-				if (distance > 0) {// 向下滑
-					uiStyle = UI_STYLE_BATTERY;
-					changeUIStyle();
-				}
-			break;
-		case R.id.home_battery_view:
-				if (distance < 0) {// 向上滑
-					uiStyle = UI_STYLE_MAP;
-					changeUIStyle();
-				}
-			break;
-		case R.id.home_travel_state:
-				if (distance > 0) {// 向下滑
-					uiStyle = UI_STYLE_SPEED;
-					changeUIStyle();
-				}
-			break;
-		case R.id.speed_state_arrow_top:
-				if (distance > 0) {// 向下滑
-					uiStyle = UI_STYLE_BATTERY;
-					changeUIStyle();
-				}
-			break;
-		case R.id.speed_state_arrow_bottom:
-				if (distance < 0) {// 向上滑
-					uiStyle = UI_STYLE_MAP;
-					changeUIStyle();
-				}
-			break;
-		default:
-			break;
-
-		}
-	}
 }

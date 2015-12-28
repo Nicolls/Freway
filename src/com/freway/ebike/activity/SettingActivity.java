@@ -477,7 +477,11 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 
 	/** 请求出错都要提示这是最新的版本 */
 	protected void requestError(int id) {
-		ToastUtils.toast(SettingActivity.this, getString(R.string.app_now_is_newly));
+		if (id == EBikeRequestService.ID_REQUEST_ERROR) {
+			ToastUtils.toast(this, getString(R.string.request_server_error));
+		}else{
+			ToastUtils.toast(SettingActivity.this, getString(R.string.app_now_is_newly));
+		}
 	}
 
 	@Override
@@ -532,5 +536,4 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 	public CropParams getCropParams() {
 		return mCropParams;
 	}
-
 }

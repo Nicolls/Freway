@@ -2,13 +2,15 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+
     -->
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
+
         -->
     </style>
 
@@ -20,6 +22,13 @@
     <style name="GVLoadingDialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground"> @android:color/transparent </item>
         <item name="android:backgroundDimEnabled">false</item>
+    </style>
+    <!-- welcome -->
+     <style name="WelcomeTitleTv">
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_size_WelcomeTitleTv</item>
     </style>
     <!-- sign -->
     <style name="SignInputLayout">
@@ -217,7 +226,10 @@
         <item name="android:background">@color/speed_state_tip_text_bg</item>
         <item name="android:padding">@dimen/speed_state_speed_tip_padding</item>
         <item name="android:layout_centerHorizontal">true</item>
-        <item name="android:layout_marginTop">@dimen/speed_state_speed_tip_marginTop</item>
+        <item name="android:layout_marginTop">@dimen/speed_state_speed_tip_text_marginTop</item>
+    </style>
+    <style name="SpeedStateTipImage">
+        <item name="android:layout_centerHorizontal">true</item>
     </style>
     <style name="SpeedStateSpeedText">
         <item name="android:textColor">@color/black</item>
@@ -245,16 +257,21 @@
         <item name="android:padding">@dimen/speed_state_param_grid_padding</item>
     </style>
 
-    <style name="SpeedStateTitleText">
+    <style name="SpeedStateIcon">
         <item name="android:layout_alignParentLeft">true</item>
         <item name="android:layout_alignParentTop">true</item>
+    </style>
+    
+    <style name="SpeedStateTitleText">
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_marginLeft">@dimen/speed_state_tv_value_marginLeft</item>
         <item name="android:textColor">@color/text_gray</item>
         <item name="android:textSize">@dimen/text_size_SpeedStateTitleText</item>
     </style>
 
     <style name="SpeedStateValueText">
-        <item name="android:minEms">2</item>
-        <item name="android:layout_centerInParent">true</item>
+        <item name="android:layout_centerVertical">true</item>
+       <item name="android:layout_alignParentRight">true</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/text_size_SpeedStateValueText</item>
     </style>

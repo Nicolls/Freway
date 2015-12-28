@@ -31,6 +31,7 @@ public class SPUtils {
 	public static final String SP_APP_ENTER = "SP_APP_ENTER";
 	public static final String SP_APP_EBIKE_ADDRESS = "SP_APP_EBIKE_ADDRESS";
 	public static final String SP_APP_EBIKE_NAME = "SP_APP_EBIKE_NAME";
+	public static final String SP_APP_EBIKE_MILE = "SP_APP_EBIKE_MILE";//保存剩余里程计算的缓存
 	
 	// 用户相关
 	public static final String SP_USER = "SP_USER";
@@ -46,6 +47,7 @@ public class SPUtils {
 	public static final String SP_USER_UNIT_OF_DISTANCE = "SP_USER_UNIT_OF_DISTANCE";
 	public static final String SP_USER_TRAVEL_MAP = "SP_USER_TRAVEL_MAP";//地图行程数据
 
+	
 
 	/** 获取服务器地址 */
 	public static String getServerHost(Context context) {
@@ -266,6 +268,21 @@ public class SPUtils {
 		String data=gson.toJson(user);
 		data=EncryptUtils.encryptBase64(data);
 		boolean isOk = sp.edit().putString(SP_USER_DATA, data).commit();
+		return isOk;
+	}
+	
+	
+	/** 获取mile*/
+	public static int getMile(Context context) {
+		SharedPreferences sp = context.getSharedPreferences(SP_APP, Context.MODE_PRIVATE);
+		int mile = sp.getInt(SP_APP_EBIKE_MILE,8000);
+		return mile;
+	}
+
+	/** 保存mile*/
+	public static boolean setMile(Context context, int mile) {
+		SharedPreferences sp = context.getSharedPreferences(SP_APP, Context.MODE_PRIVATE);
+		boolean isOk = sp.edit().putInt(SP_APP_EBIKE_MILE, mile).commit();
 		return isOk;
 	}
 	

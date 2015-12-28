@@ -1,5 +1,7 @@
 package com.freway.ebike.protocol;
 
+import com.freway.ebike.utils.LogUtils;
+
 import android.content.Context;
 import android.provider.Settings.Secure;
 
@@ -77,31 +79,28 @@ public class ProtocolTool {
 	 *            the hex string
 	 * @return byte[]
 	 */
-	public static byte[] hexStringToBytes(String hexString) {
+    public static byte[] hexStringToBytes(String hexString) {
+		byte[] result = null;
 		if (hexString == null || hexString.equals("")) {
+			LogUtils.e("ProtocalTolls", "字符串为空");
 			return null;
 		}
+		hexString = hexString.replace(" ", "");
+		hexString = hexString.replace("0x", "");
 		hexString = hexString.toUpperCase();
-		int length = hexString.length() / 2;
-		char[] hexChars = hexString.toCharArray();
-		byte[] d = new byte[length];
-		for (int i = 0; i < length; i++) {
-			int pos = i * 2;
-			d[i] = (byte) (charToByte(hexChars[pos]) << 4 | charToByte(hexChars[pos + 1]));
+		if (hexString.length() % 2 != 0) {
+			LogUtils.e("ProtocalTolls", "字符串长度错误");
+			return null;
 		}
-		return d;
+		result = new byte[hexString.length() / 2];
+		String temp = "";
+		for (int i = 0, j = 0; i < hexString.length() - 1; i += 2, j++) {
+			temp = hexString.substring(i, i + 2);
+			result[j] = (byte) Integer.parseInt(temp, 16);
+		}
+		return result;
 	}
 
-	/**
-	 * Convert char to byte
-	 * 
-	 * @param c
-	 *            char
-	 * @return byte
-	 */
-	private static byte charToByte(char c) {
-		return (byte) "0123456789ABCDEF".indexOf(c);
-	}
 	/**
 	 * int 转为byte
 	 * @param iSource 需要转换的int

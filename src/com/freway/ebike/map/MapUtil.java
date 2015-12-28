@@ -22,7 +22,6 @@ import com.freway.ebike.db.Travel;
 import com.freway.ebike.db.TravelLocation;
 import com.freway.ebike.utils.FileUtils;
 import com.freway.ebike.utils.LogUtils;
-import com.freway.ebike.utils.NetUtil;
 import com.freway.ebike.utils.ScreenUtils;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -38,6 +37,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 public class MapUtil implements OnCameraChangeListener {
@@ -82,6 +82,10 @@ public class MapUtil implements OnCameraChangeListener {
 		mGoogleMap.moveCamera(CameraUpdateFactory.zoomTo(CAMERA_INIT_ZOOM));
 	}
 
+	/**获取当前地图*/
+	public GoogleMap getGoogleMap(){
+		return mGoogleMap;
+	}
 	/** 清空地图 */
 	public void clearMap() {
 		mGoogleMap.clear();
@@ -122,7 +126,7 @@ public class MapUtil implements OnCameraChangeListener {
 	}
 
 	/** 在地图上画两个点 */
-	public void drawPolyLine(GoogleMap map, TravelLocation paintFromLocation, TravelLocation paintToLocation,
+	public void drawPolyLine(TravelLocation paintFromLocation, TravelLocation paintToLocation,
 			boolean showSpeedColor) {
 		// ToastUtils.toast(this, "paint");
 //		if (!paintFromLocation.isPause()) {
@@ -136,7 +140,22 @@ public class MapUtil implements OnCameraChangeListener {
 			}else{
 				poly.add(from, to).width(POLY_LINE_WIDTH).color(Color.parseColor("#e10019"));
 			}
-			map.addPolyline(poly);
+			mGoogleMap.addPolyline(poly);
+//		}
+	}
+	
+	/** 在地图上画两个点 */
+	public Polyline drawPolyLine(LatLng from, LatLng to) {
+		// ToastUtils.toast(this, "paint");
+//		if (!paintFromLocation.isPause()) {
+			PolylineOptions poly = new PolylineOptions();
+			from = new LatLng(from.latitude- ANGLE_OFFSET,
+					from.longitude - ANGLE_OFFSET);
+			to = new LatLng(to.latitude- ANGLE_OFFSET,
+					to.longitude - ANGLE_OFFSET);
+			poly.add(from, to).width(POLY_LINE_WIDTH).color(Color.parseColor("#e10019"));
+			Polyline polyline=mGoogleMap.addPolyline(poly);
+			return polyline;
 //		}
 	}
 
@@ -160,24 +179,33 @@ public class MapUtil implements OnCameraChangeListener {
 	}
 	
 	/**截图*/
-	public void snapshot(final Handler handler){
-		if(mGoogleMap!=null){
-			mGoogleMap.snapshot(new SnapshotReadyCallback() {
-				
-				@Override
-				public void onSnapshotReady(Bitmap arg0) {
-					String name=BaseApplication.travelId+".jpg";
-					String filePath=FileUtils.saveBitmapByUrlOrName(name,arg0);
-					if(!TextUtils.isEmpty(filePath)){
-						LogUtils.i(TAG, "上传地图缩略图的图片路径为："+filePath);
-						//mark 不为空要在这里把图片上传了。
-						Message msg=Message.obtain();
-						msg.obj=filePath;
-						handler.sendMessage(msg);
-					}
+	public void snapshot(long travelId,final Handler handler){
+		List<TravelLocation> travelList=DBHelper.getInstance(context).listTravelLocation(travelId);
+		cameraContainPoint(travelList,new Handler(){
+
+			@Override
+			public void handleMessage(Message msg) {
+				super.handleMessage(msg);
+				if(mGoogleMap!=null){
+					mGoogleMap.snapshot(new SnapshotReadyCallback() {
+						
+						@Override
+						public void onSnapshotReady(Bitmap arg0) {
+							String name=BaseApplication.travelId+".jpg";
+							String filePath=FileUtils.saveBitmapByUrlOrName(name,arg0);
+							if(!TextUtils.isEmpty(filePath)){
+								LogUtils.i(TAG, "上传地图缩略图的图片路径为："+filePath);
+								//mark 不为空要在这里把图片上传了。
+								Message msg=Message.obtain();
+								msg.obj=filePath;
+								handler.sendMessage(msg);
+							}
+						}
+					});
 				}
-			});
-		}
+			}
+		});
+		
 	}
 	/** 自定义定位 */
 	private CustomerLocationSource mLocationSource = new CustomerLocationSource();
@@ -222,9 +250,9 @@ public class MapUtil implements OnCameraChangeListener {
 					from = formatLocationWithChina(from);
 					to = formatLocationWithChina(to);
 					if(mLastLocation.isPause()){//如果是暂停,把暂停的这条画出来
-						drawPolyLine(mGoogleMap, mLastLocation, from, false);
+						drawPolyLine(mLastLocation, from, false);
 					}
-					drawPolyLine(mGoogleMap, from, to, false);
+					drawPolyLine(from, to, false);
 				}
 			}
 		}
@@ -234,7 +262,7 @@ public class MapUtil implements OnCameraChangeListener {
 
 		@Override
 		public void onCameraChange(CameraPosition arg0) {
-			LogUtils.i(TAG, "相机发言了");
+			LogUtils.i(TAG, "相机改变了");
 			if (arg0.zoom > CAMERA_MAX_ZOOM) {
 				mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(CAMERA_MAX_ZOOM));
 			}
@@ -260,7 +288,7 @@ public class MapUtil implements OnCameraChangeListener {
 
 			@Override
 			public void onMapLoaded() {
-				LogUtils.i(TAG, "地图发言了");
+				LogUtils.i(TAG, "地图加载完成了");
 				drawScreenPolygon();
 				mGoogleMap.setOnCameraChangeListener(historyCameraChange);
 			}
@@ -270,7 +298,7 @@ public class MapUtil implements OnCameraChangeListener {
 			TravelLocation travelStart = routes.get(i);
 			if ((i + 1) < routes.size()) {// 有两个点可以画
 				TravelLocation travelEnd = routes.get(i + 1);
-				drawPolyLine(mGoogleMap, travelStart, travelEnd, true);
+				drawPolyLine(travelStart, travelEnd, true);
 			}
 		}
 		// 画起终点标识
@@ -278,7 +306,7 @@ public class MapUtil implements OnCameraChangeListener {
 			markStartEndPoint(routes.get(0), routes.get(routes.size() - 1));
 		}
 		// 移动到包含所有点的位置
-		cameraContainPoint(routes);
+		cameraContainPoint(routes,null);
 	}
 
 	/** 画起始点跟终点 */
@@ -296,7 +324,7 @@ public class MapUtil implements OnCameraChangeListener {
 	}
 
 	/** 将地图移动到包含所有点的地方 */
-	private void cameraContainPoint(List<TravelLocation> travelList) {
+	private void cameraContainPoint(List<TravelLocation> travelList,final Handler handler) {
 		List<LatLng> list = new ArrayList<LatLng>();
 		for (TravelLocation l : travelList) {
 			list.add(new LatLng(l.getLocation().getLatitude(), l.getLocation().getLongitude()));
@@ -309,6 +337,24 @@ public class MapUtil implements OnCameraChangeListener {
 			// Move camera to show all markers and locations
 			mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(),ScreenUtils.getScreenWidth(context),
 					ScreenUtils.getScreenHeight(context),50));
+			mGoogleMap.setOnCameraChangeListener(new OnCameraChangeListener() {
+				
+				@Override
+				public void onCameraChange(CameraPosition arg0) {
+					if(handler!=null){
+						Message msg=Message.obtain();
+						msg.obj=arg0;
+						handler.sendMessage(msg);
+						mGoogleMap.setOnCameraChangeListener(MapUtil.this);
+					}
+				}
+			});
+		}else{
+			if(handler!=null){
+				Message msg=Message.obtain();
+				handler.sendMessage(msg);
+				mGoogleMap.setOnCameraChangeListener(MapUtil.this);
+			}
 		}
 	}
 

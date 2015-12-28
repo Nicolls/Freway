@@ -44,7 +44,6 @@ public class SignInActivity extends BaseActivity {
 		initFontStyle();
 		showLoading(false);
 		initData();
-//		mEBikeRequestService.version("Android", CommonUtil.getAppVersion(this));//新版本检查
 	}
 	
 	private void initView(){
@@ -131,7 +130,7 @@ public class SignInActivity extends BaseActivity {
 					SPUtils.setUser(getApplicationContext(), user);
 					mEBikeRequestService.loginFaceBook(user.getUserid(), user.getUsername(), user.getGender(),  user.getPhoto(), user.getEmail());
 				}else{
-					ToastUtils.toast(getApplicationContext(), getString(R.string.login_failt));
+					ToastUtils.toast(getApplicationContext(), getString(R.string.login_fail));
 				}
 				
 			}
@@ -158,7 +157,7 @@ public class SignInActivity extends BaseActivity {
 						SPUtils.setUser(getApplicationContext(), user);
 						mEBikeRequestService.loginFaceBook(user.getUserid(), user.getUsername(), user.getGender(),user.getPhoto(), user.getEmail());
 					}else{
-						ToastUtils.toast(getApplicationContext(), getString(R.string.login_failt));
+						ToastUtils.toast(getApplicationContext(), getString(R.string.login_fail));
 					}
 					
 				}
@@ -179,68 +178,8 @@ public class SignInActivity extends BaseActivity {
 			user.setPassword(password);
 			SPUtils.setUser(this, user);
 			openActivity(HomeActivity.class, null, true);
-		}else if(id==EBikeRequestService.ID_VERSION){
-			RspVersion version = (RspVersion) obj;
-			chargeUpdate(version);
 		}
 	}
-
-	/** 判断更新 */
-	private void chargeUpdate(RspVersion version) {
-		if (version != null) {
-			String newest = version.getData().getNewest();
-			final String url = version.getData().getUrl();
-			// final String url =
-			// "http://www.saner5.com/index.aspx?appId=1&appDownLoadCount=55&appDownloadUrl=upload/app/2014_07_17_17_44_48ear.apk";
-			int m = Integer.parseInt(version.getData().getForce_update());
-			boolean isForceUpdate = (m == 0 ? false : true);
-			if(isForceUpdate){//强制
-				AlertUtil.getInstance(this).alertChoice(getString(R.string.app_update_force_tip), getString(R.string.yes), getString(R.string.no),
-						new OnClickListener() {
-							
-							@Override
-							public void onClick(View v) {
-								AlertUtil.getInstance(SignInActivity.this).dismiss();
-								updateApk(url,true);
-							}
-						},
-						new OnClickListener() {
-							
-							@Override
-							public void onClick(View v) {
-								AlertUtil.getInstance(SignInActivity.this).dismiss();
-								finish();
-							}
-						},false);
-			}else if (!TextUtils.isEmpty(newest)) {
-					AlertUtil.getInstance(this).alertConfirm(getString(R.string.app_update_tip),
-							getString(R.string.confirm), new OnClickListener() {
-
-								@Override
-								public void onClick(View v) {
-									AlertUtil.getInstance(SignInActivity.this).dismiss();
-									updateApk(url,false);
-									initData();
-								}
-							});
-			} 
-		} else{
-			initData();
-		}
-	}
-	/** 版本更新 */
-	private void updateApk(String downloadUrl,boolean isfinish) {
-		// final String downloadUrl =
-		// "http://www.saner5.com/index.aspx?appId=1&appDownLoadCount=55&appDownloadUrl=upload/app/2014_07_17_17_44_48ear.apk";
-		ToastUtils.toast(SignInActivity.this, getString(R.string.start_download));
-		Intent intent = new Intent(UpdateAPPService.class.getName());
-		intent.putExtra(UpdateAPPService.INTENT_DOWNLOAD_URL, downloadUrl);
-		SignInActivity.this.startService(intent);
-		if(isfinish){
-			finish();
-		}
-	}
-	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -259,6 +198,11 @@ public class SignInActivity extends BaseActivity {
 	}
 	/**请求出错*/
 	protected void requestError(int id){
+		if (id == EBikeRequestService.ID_REQUEST_ERROR) {
+			ToastUtils.toast(this, getString(R.string.request_server_error));
+		}else{
+			ToastUtils.toast(this, getString(R.string.login_fail));
+		}
 		hideLoading();
 		initData();
 	}
