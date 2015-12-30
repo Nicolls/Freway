@@ -53,6 +53,10 @@ import android.text.TextUtils;
 public class MapService extends Service implements ConnectionCallbacks,
 		OnConnectionFailedListener, LocationListener {
 	private final static String TAG = MapService.class.getSimpleName();
+	/** 国内定位纬度偏差 */
+	private static final double LAT_OFFSET = 0.0012893886;
+	/** 国内定位精度偏差 */
+	private static final double LNG_OFFSET = 0.0061154366;
 	private static final LocationRequest REQUEST = LocationRequest.create()
 			.setInterval(5 * 1000) // 5
 									// seconds
@@ -189,6 +193,7 @@ public class MapService extends Service implements ConnectionCallbacks,
 //		LogUtils.i(TAG, "onLocationChanged" + location.getLatitude() + "--"
 //				+ location.getLongitude());
 		TravelLocation travelLocation = new TravelLocation(location);
+		travelLocation=formatLocationWithChina(travelLocation);
 		travelLocation.setTravelId(BaseApplication.travelId);
 		travelLocation.setSpeed(EBikeTravelData.getInstance(this).insSpeed);
 		travelLocation.setAltitude(location.getAltitude());
@@ -232,6 +237,15 @@ public class MapService extends Service implements ConnectionCallbacks,
 				DBHelper.getInstance(this).insertTravelLocation(currentLocation);
 			}
 		}
+	}
+	
+	/** 重新格式化位置为国内坐标 */
+	private TravelLocation formatLocationWithChina(TravelLocation location) {
+		if (location != null ) {
+			location.getLocation().setLatitude(location.getLocation().getLatitude() + LAT_OFFSET);
+			location.getLocation().setLongitude(location.getLocation().getLongitude() + LNG_OFFSET);
+		}
+		return location;
 	}
 
 	/** 广播地址变化 */

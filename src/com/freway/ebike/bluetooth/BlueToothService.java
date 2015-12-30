@@ -393,6 +393,7 @@ public class BlueToothService extends BaseService {
 	 * 扫描蓝牙设备
 	 */
 	public void startScanBluetoothDevice() {
+		ble_state=BlueToothConstants.BLE_STATE_NONE;
 		if (stateEnableStep()) {
 			if (isScanning) {// 正在扫描则停止当前扫描后再开启扫描
 				stopScanBluetoothDevice();
@@ -519,6 +520,7 @@ public class BlueToothService extends BaseService {
 	 *            {@link DeviceListActivity#EXTRA_DEVICE_ADDRESS} extra.
 	 */
 	private void connectDevice(String address) {
+		ble_state=BlueToothConstants.BLE_STATE_CONNECTTING;
 		stopScanBluetoothDevice();// 链接停止当前扫描
 		if (mBlueToothConnction != null && !TextUtils.isEmpty(address)) {
 			mBlueToothConnction.connect(address);
@@ -529,6 +531,7 @@ public class BlueToothService extends BaseService {
 	}
 	/**断开链接*/
 	private void disconnect(){
+		ble_state=BlueToothConstants.BLE_STATE_DISCONNECTED;
 		stopScanBluetoothDevice();// 链接停止当前扫描
 		if (mBlueToothConnction != null) {
 			mBlueToothConnction.disconnect();

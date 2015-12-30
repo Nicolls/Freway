@@ -1,5 +1,6 @@
 package com.freway.ebike.bluetooth;
 
+import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.SPUtils;
 
 import android.content.Context;
@@ -334,16 +335,18 @@ public class RemainMiCaculate {
 	      eight_setp = 0;      
 	  }
 	  int result=(int)remaincap*mil_zhuli/8000;
-//	  System.out.println("mileage:"+mileage+" zhuli_lever:"+zhuli_lever+" remainmileage_value:"+remainmileage_value+" remaincap:"+remaincap+"--->result:"+result+"\n");
+//	  String text="mileage:"+mileage+" zhuli_lever:"+zhuli_lever+" remainmileage_value:"+remainmileage_value+" remaincap:"+remaincap+"--->剩余里程:"+result+"\n";
 //	  StringBuffer sb=new StringBuffer();
+//	  sb.append(text);
+//	  sb.append("计算完成后Buffer数组是:");
 //	  sb.append("[");
 //	  for(int i=0;i<remain_mil_buffer_zl.length;i++){
 //		  sb.append(remain_mil_buffer_zl[i]+",");
 //	  }
 //	  sb.deleteCharAt(sb.length()-1);
 //	  sb.append("]");
-//	  System.out.println("计算完成后现在的数组是:"+sb.toString()+"\n\n");
-	  
+//	  sb.append("\n");
+//	  LogUtils.writeLogtoFile("剩余里程计算日志", sb.toString());
 	  return result;
 	  
 	}

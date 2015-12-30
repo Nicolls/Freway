@@ -42,10 +42,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 public class MapUtil implements OnCameraChangeListener {
 	private static final String TAG = MapUtil.class.getSimpleName();
-	/** 国内定位纬度偏差 */
-	private static final double LAT_OFFSET = 0.0012893886;
-	/** 国内定位精度偏差 */
-	private static final double LNG_OFFSET = 0.0061154366;
 	/** 纠正角度偏差 */
 //	private static final double ANGLE_OFFSET = 0.0000007;
 	private static final double ANGLE_OFFSET = 0;
@@ -116,14 +112,6 @@ public class MapUtil implements OnCameraChangeListener {
 		context.stopService(service);
 	}
 
-	/** 重新格式化位置为国内坐标 */
-	private TravelLocation formatLocationWithChina(TravelLocation location) {
-		if (location != null && isChinaGps) {
-			location.getLocation().setLatitude(location.getLocation().getLatitude() + LAT_OFFSET);
-			location.getLocation().setLongitude(location.getLocation().getLongitude() + LNG_OFFSET);
-		}
-		return location;
-	}
 
 	/** 在地图上画两个点 */
 	public void drawPolyLine(TravelLocation paintFromLocation, TravelLocation paintToLocation,
@@ -242,13 +230,10 @@ public class MapUtil implements OnCameraChangeListener {
 
 			} else if (TravelConstant.ACTION_MAP_SERVICE_LOCATION_CHANGE.equals(action)) {
 				if (current != null) {// 移动相机
-					current = formatLocationWithChina(current);
 					moveCamera(current);
 				}
 				if (from != null && to != null) {// 画图
 					// LogUtils.i(TAG, to.getDescription()+"--");
-					from = formatLocationWithChina(from);
-					to = formatLocationWithChina(to);
 					if(mLastLocation.isPause()){//如果是暂停,把暂停的这条画出来
 						drawPolyLine(mLastLocation, from, false);
 					}
@@ -276,9 +261,6 @@ public class MapUtil implements OnCameraChangeListener {
 		// mGoogleMap.getUiSettings().setScrollGesturesEnabled(false);
 		Travel travel = DBHelper.getInstance(context).findTravelById(travelId);
 		List<TravelLocation> routes = DBHelper.getInstance(context).listTravelLocation(travelId);
-		for (TravelLocation location : routes) {
-			location = formatLocationWithChina(location);
-		}
 		LogUtils.i("Freway", "开始时间：" + travel.getStartTime() + "--结束时间：" + travel.getEndTime() + "-花费时间"
 				+ travel.getSpendTime() + "距离：" + travel.getDistance());
 				// List<LatLng> list = new ArrayList<LatLng>();
@@ -417,8 +399,5 @@ public class MapUtil implements OnCameraChangeListener {
 		}.start();
 	}
 
-	public void setChinaGps(boolean isChinaGps) {
-		this.isChinaGps = isChinaGps;
-	}
 
 }
