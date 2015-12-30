@@ -17,7 +17,7 @@ public class EBConstant {
 	public static final int MODEL_NIGHT = 1;
 
 	public static final int DISTANCE_UNIT_MPH = 0;
-	public static final int DISTANCE_UNIT_MI = 1;
+	public static final int DISTANCE_UNIT_KM = 1;
 	
 	public static final int GEAR0 = 0;
 	public static final int GEAR1 = 1;

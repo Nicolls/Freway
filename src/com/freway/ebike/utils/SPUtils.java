@@ -224,7 +224,7 @@ public class SPUtils {
 	/** 获取行程单位 */
 	public static int getUnitOfDistance(Context context) {
 		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
-		int unitOfDistance = sp.getInt(SP_USER_UNIT_OF_DISTANCE, 0);
+		int unitOfDistance = sp.getInt(SP_USER_UNIT_OF_DISTANCE,EBConstant.DISTANCE_UNIT_MPH);
 		return unitOfDistance;
 	}
 
