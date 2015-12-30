@@ -70,7 +70,7 @@
     <!-- ui -->
     <string name="welcome_title">Your intelligent riding assistant</string> <!-- freway标题 -->
     <string name="tip_ebike_setting">eBike Controller setting</string><!-- 蓝牙设置 -->
-    <string name="tip_travel_stop">Trip ending</string><!-- 行程停止 -->
+    <string name="tip_travel_stop">Click the flag or go to the trip</string><!-- 行程停止 提示-->
     <string name="tip_ebike_disconnect">eBike Controller disconnecting</string><!-- 蓝牙断开链接 -->
     <string name="unbind_ebike">eBike Controller unbonding</string><!-- 解绑蓝牙 -->
     <string name="tip_unbind_ebike_success">eBike Controller unbonded successfully</string><!-- 解绑蓝牙成功 -->
@@ -106,7 +106,7 @@
     <string name="cadence">CADENCE</string>
     <string name="day">DAY</string>
     <string name="night">NIGHT</string>
-    <string name="battery_remaind_tip">Remainder Range %1$s </string>
+    <string name="battery_remaind_tip">Remainder Range</string>
     <string name="profile">Profile</string>
     <string name="name">Name</string>
     <string name="total_miles">TOTAL MILES</string>

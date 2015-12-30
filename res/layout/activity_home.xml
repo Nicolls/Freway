@@ -2,9 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:keepScreenOn="true"
-    >
+    android:layout_height="match_parent"
+    android:keepScreenOn="true" >
 
     <include
         android:id="@+id/home_top_bar"
@@ -22,18 +21,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/home_compass_profile_ll_marginVertical"
         android:layout_marginLeft="@dimen/home_compass_profile_ll_marginHorizontal"
         android:layout_marginRight="@dimen/home_compass_profile_ll_marginHorizontal"
         android:layout_marginTop="@dimen/home_compass_profile_ll_marginVertical"
-        android:layout_marginBottom="@dimen/home_compass_profile_ll_marginVertical"
         layout="@layout/layout_home_compass" />
 
-    <com.freway.ebike.view.FlickImageView
-            android:id="@+id/speed_state_tip_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/mabiao_flag_end"
-            android:layout_centerInParent="true"
-            android:visibility="gone"
-            style="@style/SpeedStateTipImage" />
+    <com.freway.ebike.view.FlickView
+        android:id="@+id/home_travel_tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/travel_stop_tip_marginTop"
+        android:gravity="center_horizontal"
+        android:visibility="gone" >
+        <include layout="@layout/view_travel_stop_tip" />
+    </com.freway.ebike.view.FlickView>
+
 </RelativeLayout>

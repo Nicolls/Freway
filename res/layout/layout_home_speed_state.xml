@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_speed_state"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -23,7 +23,6 @@
         android:id="@+id/speed_state_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:background="@color/model_day_view_background" >
 
         <ImageView
@@ -55,7 +54,7 @@
             style="@style/SpeedStateTipText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tip_travel_stop"
+            android:text="@string/tip_ebike_disconnect"
             android:visibility="gone" />
 
         <TextView

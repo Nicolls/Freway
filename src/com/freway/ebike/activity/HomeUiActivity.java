@@ -37,7 +37,7 @@ import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.SPUtils;
 import com.freway.ebike.utils.TimeUtils;
 import com.freway.ebike.view.BatteryView;
-import com.freway.ebike.view.FlickImageView;
+import com.freway.ebike.view.FlickView;
 import com.freway.ebike.view.FlickTextView;
 import com.freway.ebike.view.SpeedView;
 import com.freway.ebike.view.directionalviewpager.DirectionalViewPager;
@@ -112,7 +112,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	private SpeedView mSpeedStateSpeedView;
 	private TextView mSpeedStateSpeedText;
 	private FlickTextView mSpeedStateTipText;
-	private FlickImageView mSpeedStateTipImg;
+	private FlickView mTravelTip;
 	private ImageButton mSpeedStateSpeedButton;
 	private TextView mSpeedStateCalValue;
 	private TextView mSpeedStateCalUnit;
@@ -170,7 +170,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	}
 
 	private void initView() {
-		mSpeedStateTipImg = (FlickImageView) findViewById(R.id.speed_state_tip_img);
+		mTravelTip = (FlickView) findViewById(R.id.home_travel_tip);
 
 		ebikeHomePager = (DirectionalViewPager) findViewById(R.id.home_ebike_pager);
 		dataList = new ArrayList<View>();
@@ -186,7 +186,8 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		speedModel = new LinearLayout(this);
 		speedModel.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		speedModel.setOrientation(LinearLayout.VERTICAL);
-
+		speedModel.setBackgroundResource(R.drawable.speed_state_map_bg_day);
+		
 		batteryModel = new LinearLayout(this);
 		batteryModel.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		batteryModel.setOrientation(LinearLayout.VERTICAL);
@@ -405,7 +406,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		mSpeedStateArrowBottomView.setOnClickListener(this);
 		mSpeedStateSpeedButton.setOnClickListener(this);
 		mSpeedStateSpeedText.setOnClickListener(this);
-		mSpeedStateTipImg.setOnClickListener(this);
+		mTravelTip.setOnClickListener(this);
 
 	}
 
@@ -447,23 +448,23 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 				mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
 				mSpeedStateSpeedText.setVisibility(View.GONE);
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_pause_enable);
-				mSpeedStateTipImg.hideTip();
+				mTravelTip.hideTip();
 			} else if (state == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 伪暂停
 				mSpeedStateSpeedButton.setVisibility(View.GONE);
 				mSpeedStateSpeedText.setVisibility(View.VISIBLE);
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_pause_enable);
-				mSpeedStateTipImg.showTip();
+				mTravelTip.showTip();
 			} else if (BlueToothService.ble_state == BlueToothConstants.BLE_STATE_CONNECTED
 					&& (state == TravelConstant.TRAVEL_STATE_START || state == TravelConstant.TRAVEL_STATE_RESUME)) {
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_start_enable);
 				mSpeedStateSpeedButton.setVisibility(View.GONE);
 				mSpeedStateSpeedText.setVisibility(View.VISIBLE);
-				mSpeedStateTipImg.hideTip();
+				mTravelTip.hideTip();
 			} else if (BlueToothService.ble_state == BlueToothConstants.BLE_STATE_CONNECTED) {// 无，停止，完成，退出
 				mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
 				mSpeedStateSpeedText.setVisibility(View.GONE);
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_start_enable);
-				mSpeedStateTipImg.hideTip();
+				mTravelTip.hideTip();
 			}
 
 		}
@@ -586,15 +587,15 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		mSpeedStateCadenceValue.setText(cadence + "");
 
 		// 电池
-		if (distanUnit == EBConstant.DISTANCE_UNIT_MPH) {
-			mBatteryStateRemaindTip.setText(String.format(getString(R.string.battery_remaind_tip), new String[] { ""
-					+ remaindTravelCapacity })
-					+ getString(R.string.mi));
-		} else {
-			mBatteryStateRemaindTip.setText(String.format(getString(R.string.battery_remaind_tip), new String[] { ""
-					+ remaindTravelCapacity })
-					+ getString(R.string.km));
-		}
+//		if (distanUnit == EBConstant.DISTANCE_UNIT_MPH) {
+//			mBatteryStateRemaindTip.setText(String.format(getString(R.string.battery_remaind_tip), new String[] { ""
+//					+ remaindTravelCapacity })
+//					+ getString(R.string.mi));
+//		} else {
+//			mBatteryStateRemaindTip.setText(String.format(getString(R.string.battery_remaind_tip), new String[] { ""
+//					+ remaindTravelCapacity })
+//					+ getString(R.string.km));
+//		}
 		mBatteryStateBatteryView.onValueChange(batteryResidueCapacity, model, EBikeTravelData.getInstance(this).gear,
 				true);
 		mBatteryStateBatteryPercent.setText(batteryResidueCapacity + "%");
@@ -741,7 +742,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		case R.id.home_ib_profile:
 			onProfile();
 			break;
-		case R.id.speed_state_tip_img:
+		case R.id.home_travel_tip:
 			onClick(mSpeedStateSpeedButton);
 			break;
 		case R.id.speed_state_btn:
@@ -854,7 +855,8 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			mBatteryStateRemaindValue.setTextColor(getResources().getColor(R.color.white));
 			mBatteryStateGearText.setTextColor(getResources().getColor(R.color.white));
 			// 整个view
-			speedModel.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
+			speedModel.setBackgroundResource(R.drawable.speed_state_map_bg_night);
+//			speedModel.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
 			batteryModel.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
 
 		} else {// 由night到day
@@ -890,7 +892,8 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			mBatteryStateGearText.setTextColor(getResources().getColor(R.color.black));
 			mBatteryStateBatteryPercent.setTextColor(getResources().getColor(R.color.white));
 			// 整个view
-			speedModel.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));
+			speedModel.setBackgroundResource(R.drawable.speed_state_map_bg_day);
+//			speedModel.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));
 			batteryModel.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));
 		}
 	}

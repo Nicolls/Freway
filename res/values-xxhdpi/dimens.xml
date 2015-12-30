@@ -82,6 +82,8 @@
     <dimen name="icon_title_spacing">7dp</dimen>
     <dimen name="bike_light_spacing">10dp</dimen>
     <dimen name="title_value_vertical_spacing">10dp</dimen>
+    <dimen name="travel_stop_tip_marginTop">230dp</dimen>
+    <dimen name="travel_stop_tip_text_marginTop">10dp</dimen>
     <!-- home -->
     <!-- bike state -->
     <dimen name="bike_state_paddingHorizontal">20dp</dimen>

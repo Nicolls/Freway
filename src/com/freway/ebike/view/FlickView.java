@@ -16,14 +16,17 @@
 
 package com.freway.ebike.view;
 
+import android.R;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -31,21 +34,22 @@ import android.widget.TextView;
  * 
  * 
  */
-public class FlickImageView extends ImageView {
+public class FlickView extends LinearLayout {
 	private Animation animation;
 	public boolean isAnimating=false;
-	public FlickImageView(Context context) {
+	public FlickView(Context context) {
 		super(context);
 	}
 
-	public FlickImageView(Context context, AttributeSet attrs) {
+	public FlickView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 
-	public FlickImageView(Context context, AttributeSet attrs, int defStyle) {
+	public FlickView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
 
+	
 	private Handler handler=new Handler(){
 
 		@Override
