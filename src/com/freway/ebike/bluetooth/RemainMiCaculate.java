@@ -58,8 +58,14 @@ public class RemainMiCaculate {
 //	int zhuli_lever;//档位
 //	int remainmileage_value;//毫安时
 //	int remaincap;//剩余容量
+//	int remaincap;
 	int remain_mileage_proc(int mileage,int zhuli_lever,int remainmileage_value,int remaincap) //传参：当前读取到的骑行里程值
 	{
+//	  boolean isRecord=false;
+//	  if(remaincap!=this.remaincap){
+//		  isRecord=true;
+//	  }
+//	  this.remaincap=remaincap;
 	  int zhuli_min,zhuli_max; //理论最大值和最小值，防止突变
 	  if(zhuli_lever >1)
 	  {
@@ -335,18 +341,20 @@ public class RemainMiCaculate {
 	      eight_setp = 0;      
 	  }
 	  int result=(int)remaincap*mil_zhuli/8000;
-//	  String text="mileage:"+mileage+" zhuli_lever:"+zhuli_lever+" remainmileage_value:"+remainmileage_value+" remaincap:"+remaincap+"--->剩余里程:"+result+"\n";
-//	  StringBuffer sb=new StringBuffer();
-//	  sb.append(text);
-//	  sb.append("计算完成后Buffer数组是:");
-//	  sb.append("[");
-//	  for(int i=0;i<remain_mil_buffer_zl.length;i++){
-//		  sb.append(remain_mil_buffer_zl[i]+",");
+//	  if(isRecord){
+//		  String text="mileage:"+mileage+" zhuli_lever:"+zhuli_lever+" remainmileage_value:"+remainmileage_value+" remaincap:"+remaincap+"--->剩余里程:"+result+"\n";
+//		  StringBuffer sb=new StringBuffer();
+//		  sb.append(text);
+//		  sb.append("计算完成后Buffer数组是:");
+//		  sb.append("[");
+//		  for(int i=0;i<remain_mil_buffer_zl.length;i++){
+//			  sb.append(remain_mil_buffer_zl[i]+",");
+//		  }
+//		  sb.deleteCharAt(sb.length()-1);
+//		  sb.append("]");
+//		  sb.append("\n");
+//		  LogUtils.writeLogtoFile("剩余里程计算日志", sb.toString());
 //	  }
-//	  sb.deleteCharAt(sb.length()-1);
-//	  sb.append("]");
-//	  sb.append("\n");
-//	  LogUtils.writeLogtoFile("剩余里程计算日志", sb.toString());
 	  return result;
 	  
 	}
