@@ -30,12 +30,17 @@
     <com.freway.ebike.view.FlickView
         android:id="@+id/home_travel_tip"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/black_70_percent"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/travel_stop_tip_marginTop"
         android:gravity="center_horizontal"
         android:visibility="gone" >
-        <include layout="@layout/view_travel_stop_tip" />
+        <include 
+            android:id="@+id/travel_tip_ll" 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/travel_stop_tip_marginTop"
+            layout="@layout/view_travel_stop_tip" />
     </com.freway.ebike.view.FlickView>
 
 </RelativeLayout>

@@ -16,7 +16,8 @@
 
 package com.freway.ebike.view;
 
-import android.R;
+import com.freway.ebike.R;
+
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
@@ -36,19 +37,27 @@ import android.widget.TextView;
  */
 public class FlickView extends LinearLayout {
 	private Animation animation;
+	private Animation alphAnim;
 	public boolean isAnimating=false;
+	private View tipView;
 	public FlickView(Context context) {
 		super(context);
+		initView();
 	}
 
 	public FlickView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		initView();
 	}
 
 	public FlickView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
+		initView();
 	}
 
+	private void initView(){
+		tipView=findViewById(R.id.travel_tip_ll);
+	}
 	
 	private Handler handler=new Handler(){
 
@@ -68,6 +77,15 @@ public class FlickView extends LinearLayout {
 //		handler.sendEmptyMessageDelayed(0, 5000);
 		if(getVisibility()!=View.VISIBLE){
 			setVisibility(View.VISIBLE);
+			if(alphAnim==null){
+				alphAnim=new AlphaAnimation(0, 1);
+				alphAnim.setDuration(500);
+				alphAnim.setFillAfter(false);
+			}
+			startAnimation(alphAnim);
+		}
+		if(tipView==null){
+			tipView=findViewById(R.id.travel_tip_ll);
 		}
 		if(!isAnimating){
 			if (animation == null) {
@@ -77,18 +95,25 @@ public class FlickView extends LinearLayout {
 				animation.setRepeatMode(Animation.REVERSE);
 
 			}
-			clearAnimation();
-			startAnimation(animation);
+			if(tipView!=null){
+				tipView.clearAnimation();
+				tipView.startAnimation(animation);
+			}
 			isAnimating=true;
 		}
 	}
 
 	public void hideTip() {
+		if(tipView==null){
+			tipView=findViewById(R.id.travel_tip_ll);
+		}
 		if(getVisibility()==View.VISIBLE){
 			setVisibility(View.GONE);
 		}
 		if(isAnimating){
-			clearAnimation();
+			if(tipView!=null){
+				tipView.clearAnimation();
+			}
 			isAnimating=false;
 		}
 	}

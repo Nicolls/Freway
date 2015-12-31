@@ -3,7 +3,9 @@ package com.freway.ebike.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.R.color;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,6 +13,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -478,6 +481,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		}
 
 	};
+	
 
 	/** 更新UI的值 */
 	public void updateUiValue() {
