@@ -100,7 +100,7 @@ public class MapService extends Service implements ConnectionCallbacks,
 	private void initData() {
 		if (BaseApplication.travelId> 0) {
 			if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_START
-					|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_RESUME) {
+					|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_RESUME|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {
 				isRecord = true;
 			} else {
 				isRecord = false;
@@ -134,7 +134,7 @@ public class MapService extends Service implements ConnectionCallbacks,
 				} else if (state == TravelConstant.TRAVEL_STATE_PAUSE) {// 暂停
 					pause();
 				} else if (state == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 伪暂停
-					pause();
+					fakePause();
 				}else if (state == TravelConstant.TRAVEL_STATE_RESUME) {// 恢复
 					resume();
 				} else if (state == TravelConstant.TRAVEL_STATE_COMPLETED) {// 完成
@@ -279,6 +279,11 @@ public class MapService extends Service implements ConnectionCallbacks,
 		}
 	}
 
+	/**伪暂停*/
+	public void fakePause(){
+		isRecord = true;
+	}
+	
 	/** 恢复 */
 	public void resume() {
 		isRecord = true;
