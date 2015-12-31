@@ -16,28 +16,8 @@
 
 package com.freway.ebike.map;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-
-import com.freway.ebike.bluetooth.BlueToothConstants;
-import com.freway.ebike.bluetooth.BlueToothService;
-import com.freway.ebike.bluetooth.EBikeTravelData;
-import com.freway.ebike.common.BaseApplication;
-import com.freway.ebike.db.DBHelper;
-import com.freway.ebike.db.Travel;
-import com.freway.ebike.db.TravelLocation;
-import com.freway.ebike.utils.LogUtils;
-import com.freway.ebike.utils.SPUtils;
-import com.freway.ebike.utils.ToastUtils;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.gson.Gson;
+import java.util.Random;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -47,8 +27,21 @@ import android.content.IntentFilter;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.Message;
-import android.text.TextUtils;
+
+import com.freway.ebike.bluetooth.BlueToothConstants;
+import com.freway.ebike.bluetooth.BlueToothService;
+import com.freway.ebike.bluetooth.EBikeTravelData;
+import com.freway.ebike.common.BaseApplication;
+import com.freway.ebike.db.DBHelper;
+import com.freway.ebike.db.TravelLocation;
+import com.freway.ebike.utils.LogUtils;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
 public class MapService extends Service implements ConnectionCallbacks,
 		OnConnectionFailedListener, LocationListener {
@@ -238,12 +231,18 @@ public class MapService extends Service implements ConnectionCallbacks,
 			}
 		}
 	}
-	
+	//test
+	int m=0;
+	Random r=new Random();
 	/** 重新格式化位置为国内坐标 */
 	private TravelLocation formatLocationWithChina(TravelLocation location) {
+		m++;
 		if (location != null ) {
 			location.getLocation().setLatitude(location.getLocation().getLatitude() + LAT_OFFSET);
 			location.getLocation().setLongitude(location.getLocation().getLongitude() + LNG_OFFSET);
+			//test
+//			location.getLocation().setLatitude(location.getLocation().getLatitude() + LAT_OFFSET+0.001f*m);
+//			location.getLocation().setLongitude(location.getLocation().getLongitude() + LNG_OFFSET+0.001*r.nextInt(10));
 		}
 		return location;
 	}

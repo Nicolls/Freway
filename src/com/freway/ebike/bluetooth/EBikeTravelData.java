@@ -628,6 +628,9 @@ public class EBikeTravelData implements Serializable {
 
 	private void simulateData() {
 		insSpeed = (3 + r.nextInt(10) + 1) * 1.0f;
+		if(spendTime>=100){
+			insSpeed=0;
+		}
 		if (insSpeed > 9) {
 			backLed = 0;
 			frontLed = 1;
