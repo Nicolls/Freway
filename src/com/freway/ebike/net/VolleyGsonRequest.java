@@ -13,6 +13,7 @@ import java.util.Map;
 import android.content.Context;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -37,6 +38,7 @@ import com.google.gson.JsonSyntaxException;
  */
 public class VolleyGsonRequest<T> extends Request<T> {
 	private static final String TAG = VolleyGsonRequest.class.getSimpleName();
+	private static final int TIME_OUT = 10*1000;//10秒
 //	private static final String KEY = "eb-token";
 //	private static final String ENCYPT_CONTENT = "123";
 //	private static final String EB_TOKEN = "OzSBLmLbGPXR0kWccMmFLA==";
@@ -75,6 +77,9 @@ public class VolleyGsonRequest<T> extends Request<T> {
 		this.params = bRquest.getReqeustParam();
 		this.listener = listener;
 		this.setTag(bRquest.getReqeustURL());
+		setRetryPolicy(new DefaultRetryPolicy(TIME_OUT, 
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, 
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 	}
 
 	/** 清除cookie */
