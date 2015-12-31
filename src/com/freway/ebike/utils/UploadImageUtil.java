@@ -130,7 +130,7 @@ public class UploadImageUtil {
 			@Override
 			protected void onPostExecute(Message result) {
 				super.onPostExecute(result);
-				sendMessage(result.what, result.obj.toString());
+				sendMessage(result.what, result.obj==null?"":result.obj.toString());
 			}
 		};
 		task.execute();

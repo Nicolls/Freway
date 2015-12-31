@@ -190,7 +190,12 @@ public class EBikeRequestServiceVolleyImpl implements EBikeRequestService {
 					public void onUploadDone(int responseCode, String message) {
 						if(responseCode==UploadImageUtil.UPLOAD_SUCCESS_CODE){
 							Gson gson=new Gson();
-							RspUpLoadTravel rsp=gson.fromJson(message, RspUpLoadTravel.class);
+							RspUpLoadTravel rsp=new RspUpLoadTravel();
+							try {
+								rsp=gson.fromJson(message, RspUpLoadTravel.class);
+							} catch (Exception e) {
+								LogUtils.e("UploadImage", "上传回来的数据解析出错");
+							}
 							dataNotify(EBikeRequestService.ID_UPLOADTRAVEL, rsp);
 						}else{
 							dataNotify(ID_REQUEST_ERROR, null);

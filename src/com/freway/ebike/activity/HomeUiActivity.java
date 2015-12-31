@@ -28,6 +28,8 @@ import com.freway.ebike.bluetooth.EBikeTravelData;
 import com.freway.ebike.common.BaseActivity;
 import com.freway.ebike.common.BaseApplication;
 import com.freway.ebike.common.EBConstant;
+import com.freway.ebike.db.DBHelper;
+import com.freway.ebike.db.TravelLocation;
 import com.freway.ebike.map.MapUtil;
 import com.freway.ebike.map.TravelConstant;
 import com.freway.ebike.utils.AlertUtil;
@@ -442,7 +444,6 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
 			super.handleMessage(msg);
-			bleStateChange(BlueToothService.ble_state);// 先去判断蓝牙链接状态
 			int state = msg.what;// 所有的行程操作都必须是链接上BLE了才能有作用，因为没有链接的话，显示一定是灰色的
 			if (state == TravelConstant.TRAVEL_STATE_PAUSE) {// 暂停
 				mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
@@ -450,6 +451,9 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_pause_enable);
 				mTravelTip.hideTip();
 			} else if (state == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 伪暂停
+				//伪暂停的时候要把地图给缩放到包括所有点的时候。
+				List<TravelLocation> travelList=DBHelper.getInstance(HomeUiActivity.this).listTravelLocation(BaseApplication.travelId);
+				mMapUtil.cameraContainPoint(travelList);
 				mSpeedStateSpeedButton.setVisibility(View.GONE);
 				mSpeedStateSpeedText.setVisibility(View.VISIBLE);
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_pause_enable);
@@ -635,14 +639,13 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	/** BLE stateChange */
 	public void bleStateChange(int state) {
 		if (state == BlueToothConstants.BLE_STATE_CONNECTED) {
-			// mSpeedStateSpeedButton.setClickable(true);
 			mSpeedStateTipText.hideTip();
 			travelStateHandler.sendEmptyMessage(BaseApplication.travelState);
 		} else {
+			mTravelTip.hideTip();
 			LogUtils.i(tag, "ble stateChange==" + state);
 			mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
 			mSpeedStateSpeedText.setVisibility(View.GONE);
-			// mSpeedStateSpeedButton.setClickable(false);
 			if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_PAUSE
 					|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_pause_disable);
@@ -688,10 +691,12 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 					public void handleMessage(Message msg) {
 						super.handleMessage(msg);
 						mMapUtil.clearMap();
-						LogUtils.i(tag, "收到图片路径：" + msg.obj.toString());
-						String photoPath = msg.obj.toString();
-						if (!TextUtils.isEmpty(photoPath)) {// 图片与行程关联
-							EBikeTravelData.getInstance(HomeUiActivity.this).travelPhoto = photoPath;
+						if(msg.obj!=null){
+							LogUtils.i(tag, "收到图片路径：" + msg.obj.toString());
+							String photoPath = msg.obj.toString();
+							if (!TextUtils.isEmpty(photoPath)) {// 图片与行程关联
+								EBikeTravelData.getInstance(HomeUiActivity.this).travelPhoto = photoPath;
+							}
 						}
 						BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
 								TravelConstant.TRAVEL_STATE_COMPLETED);
