@@ -153,6 +153,8 @@ public class EBikeRequestServiceVolleyImpl implements EBikeRequestService {
 	@Override
 	public void upLoadTravel(String token, String type, String stime, String etime, String distance, String time,
 			String cadence, String calories, String speedList, String locationList, String topSpeed, String avgSpeed,String photo) {
+		String text="stime:"+stime+" etime:"+etime+" distance:"+distance+" time:"+time+" cadence:"+cadence+" calories:"+calories+" speedList:"+speedList+" locationList:"+locationList+" topSpeed:"+topSpeed+" avgSpeed:"+avgSpeed+" photo:"+photo;
+		LogUtils.i("upLoadTravel",text);
 		EBRequest ebReq = new EBRequest(EBikeRequestService.METHOD_UPLOADTRAVEL);
 		ebReq.setDataParam("token", token);
 		ebReq.setDataParam("type", type);

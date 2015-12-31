@@ -320,7 +320,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 						public void onClick(View v) {
 							// mi
 							AlertUtil.getInstance(SettingActivity.this).dismiss();
-							SPUtils.setUnitOfDistance(SettingActivity.this, EBConstant.DISTANCE_UNIT_MI);
+							SPUtils.setUnitOfDistance(SettingActivity.this, EBConstant.DISTANCE_UNIT_KM);
 							unitDistanceValue.setText(getString(R.string.distance_unit_mi));
 						}
 					},true);

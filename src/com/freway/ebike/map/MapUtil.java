@@ -181,13 +181,11 @@ public class MapUtil implements OnCameraChangeListener {
 						public void onSnapshotReady(Bitmap arg0) {
 							String name=BaseApplication.travelId+".jpg";
 							String filePath=FileUtils.saveBitmapByUrlOrName(name,arg0);
-							if(!TextUtils.isEmpty(filePath)){
-								LogUtils.i(TAG, "上传地图缩略图的图片路径为："+filePath);
-								//mark 不为空要在这里把图片上传了。
-								Message msg=Message.obtain();
-								msg.obj=filePath;
-								handler.sendMessage(msg);
-							}
+							LogUtils.i(TAG, "上传地图缩略图的图片路径为："+filePath);
+							//mark 不为空要在这里把图片上传了。
+							Message msg=Message.obtain();
+							msg.obj=filePath;
+							handler.sendMessage(msg);
 						}
 					});
 				}
