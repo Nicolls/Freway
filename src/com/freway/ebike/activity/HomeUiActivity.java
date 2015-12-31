@@ -445,6 +445,10 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			// TODO Auto-generated method stub
 			super.handleMessage(msg);
 			int state = msg.what;// 所有的行程操作都必须是链接上BLE了才能有作用，因为没有链接的话，显示一定是灰色的
+			if (BlueToothService.ble_state != BlueToothConstants.BLE_STATE_CONNECTED) {
+				bleStateChange(BlueToothService.ble_state);
+				return;
+			}
 			if (state == TravelConstant.TRAVEL_STATE_PAUSE) {// 暂停
 				mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
 				mSpeedStateSpeedText.setVisibility(View.GONE);
