@@ -132,195 +132,204 @@ public class RemainMiCaculate {
 	      } 
 	      if((first_setp - remaincap >= 1)&&(first_setp >remaincap))
 	      {
-	          first_mil = mileage - first_mil;
-	          first_mil = first_mil/(first_setp - remaincap); 
+	    	  if(mileage>first_mil){
+	    		  first_mil = mileage - first_mil;
+		          first_mil = first_mil/(first_setp - remaincap); 
 
-	          if((first_mil < zhuli_min)||(first_mil > zhuli_max))
-	          {
-	              if(first_mil < zhuli_min)
-	              {
-	                      first_mil = zhuli_min + 50;	
-	              }
-	              else
-	              {
-	                      first_mil = zhuli_max - 50;	
-	              }	
-	          }
-	          //电池曲线以37V为系数1点，电压越大，骑行的里程就越大，存入的数据就需要越小，反之更大
-	          remain_mil_buffer_zl[0] = (int)first_mil*bat_vol[remaincap]/370;
-	          mil_zhuli = remain_mil_buffer_zl[0]+remain_mil_buffer_zl[1]+remain_mil_buffer_zl[2]
-	                                  +remain_mil_buffer_zl[3] + remain_mil_buffer_zl[4]
-	                                  +remain_mil_buffer_zl[5]+remain_mil_buffer_zl[6]+remain_mil_buffer_zl[7];
-	          eeprom_mileage_write(mil_zhuli);//数据存储到EERPOM----自行兑换到APP相应的掉电存储器里.
-
+		          if((first_mil < zhuli_min)||(first_mil > zhuli_max))
+		          {
+		              if(first_mil < zhuli_min)
+		              {
+		                      first_mil = zhuli_min + 50;	
+		              }
+		              else
+		              {
+		                      first_mil = zhuli_max - 50;	
+		              }	
+		          }
+		          //电池曲线以37V为系数1点，电压越大，骑行的里程就越大，存入的数据就需要越小，反之更大
+		          remain_mil_buffer_zl[0] = (int)first_mil*bat_vol[remaincap]/370;
+		          mil_zhuli = remain_mil_buffer_zl[0]+remain_mil_buffer_zl[1]+remain_mil_buffer_zl[2]
+		                                  +remain_mil_buffer_zl[3] + remain_mil_buffer_zl[4]
+		                                  +remain_mil_buffer_zl[5]+remain_mil_buffer_zl[6]+remain_mil_buffer_zl[7];
+		          eeprom_mileage_write(mil_zhuli);//数据存储到EERPOM----自行兑换到APP相应的掉电存储器里.
+	    	  }
 	          first_setp =0;							
 	      }
 	      if((second_setp - remaincap >= 1)&&(second_setp >remaincap))
 	      {
-	          second_mil = mileage - second_mil;
-	          second_mil = second_mil/(second_setp - remaincap); 
+	    	  if(mileage>second_mil){
+	    		  second_mil = mileage - second_mil;
+		          second_mil = second_mil/(second_setp - remaincap); 
 
-	          if((second_mil < zhuli_min)||(second_mil > zhuli_max))
-	          {
-	              if(second_mil < zhuli_min)
-	              {
-	                      first_mil = zhuli_min + 50;	
-	              }
-	              else
-	              {
-	                      second_mil = zhuli_max - 50;	
-	              }	
-	          }
-	          remain_mil_buffer_zl[1] = (int)second_mil*bat_vol[remaincap]/370;
-	          mil_zhuli = remain_mil_buffer_zl[0]+remain_mil_buffer_zl[1]+remain_mil_buffer_zl[2]
-	                                  +remain_mil_buffer_zl[3] + remain_mil_buffer_zl[4]
-	                                  +remain_mil_buffer_zl[5]+remain_mil_buffer_zl[6]+remain_mil_buffer_zl[7];
-	          eeprom_mileage_write(mil_zhuli);
-
+		          if((second_mil < zhuli_min)||(second_mil > zhuli_max))
+		          {
+		              if(second_mil < zhuli_min)
+		              {
+		                      first_mil = zhuli_min + 50;	
+		              }
+		              else
+		              {
+		                      second_mil = zhuli_max - 50;	
+		              }	
+		          }
+		          remain_mil_buffer_zl[1] = (int)second_mil*bat_vol[remaincap]/370;
+		          mil_zhuli = remain_mil_buffer_zl[0]+remain_mil_buffer_zl[1]+remain_mil_buffer_zl[2]
+		                                  +remain_mil_buffer_zl[3] + remain_mil_buffer_zl[4]
+		                                  +remain_mil_buffer_zl[5]+remain_mil_buffer_zl[6]+remain_mil_buffer_zl[7];
+		          eeprom_mileage_write(mil_zhuli);
+	    	  }
 	          second_setp =0;							
 	      }    
 	      if((third_setp - remaincap >= 1)&&(third_setp >remaincap))
 	      {
-	          third_mil = mileage - third_mil;
-	          third_mil = third_mil/(third_setp - remaincap); 
+	    	  if(mileage>third_mil){
+	    		  third_mil = mileage - third_mil;
+		          third_mil = third_mil/(third_setp - remaincap); 
 
-	          if((third_mil < zhuli_min)||(third_mil > zhuli_max))
-	          {
-	              if(third_mil < zhuli_min)
-	              {
-	                      third_mil = zhuli_min + 50;	
-	              }
-	              else
-	              {
-	                      third_mil = zhuli_max - 50;	
-	              }	
-	          }
-	          remain_mil_buffer_zl[2] = (int)third_mil*bat_vol[remaincap]/370;
-	          mil_zhuli = remain_mil_buffer_zl[0]+remain_mil_buffer_zl[1]+remain_mil_buffer_zl[2]
-	                                  +remain_mil_buffer_zl[3] + remain_mil_buffer_zl[4]
-	                                  +remain_mil_buffer_zl[5]+remain_mil_buffer_zl[6]+remain_mil_buffer_zl[7];
-	          eeprom_mileage_write(mil_zhuli);
-
+		          if((third_mil < zhuli_min)||(third_mil > zhuli_max))
+		          {
+		              if(third_mil < zhuli_min)
+		              {
+		                      third_mil = zhuli_min + 50;	
+		              }
+		              else
+		              {
+		                      third_mil = zhuli_max - 50;	
+		              }	
+		          }
+		          remain_mil_buffer_zl[2] = (int)third_mil*bat_vol[remaincap]/370;
+		          mil_zhuli = remain_mil_buffer_zl[0]+remain_mil_buffer_zl[1]+remain_mil_buffer_zl[2]
+		                                  +remain_mil_buffer_zl[3] + remain_mil_buffer_zl[4]
+		                                  +remain_mil_buffer_zl[5]+remain_mil_buffer_zl[6]+remain_mil_buffer_zl[7];
+		          eeprom_mileage_write(mil_zhuli);
+	    	  }
 	          third_setp =0;							
 	      }
 	      if((four_setp - remaincap >= 1)&&(four_setp >remaincap))
 	      {
-	          four_mil = mileage - four_mil;
-	          four_mil = four_mil/(four_setp - remaincap); 
+	    	  if(mileage>four_mil){
+	    		  four_mil = mileage - four_mil;
+		          four_mil = four_mil/(four_setp - remaincap); 
 
-	          if((four_mil < zhuli_min)||(four_mil > zhuli_max))
-	          {
-	              if(four_mil < zhuli_min)
-	              {
-	                      four_mil = zhuli_min + 50;	
-	              }
-	              else
-	              {
-	                      four_mil = zhuli_max - 50;	
-	              }	
-	          }
-	          remain_mil_buffer_zl[3] = (int)four_mil*bat_vol[remaincap]/370;
-	          mil_zhuli = remain_mil_buffer_zl[0]+remain_mil_buffer_zl[1]+remain_mil_buffer_zl[2]
-	                                  +remain_mil_buffer_zl[3] + remain_mil_buffer_zl[4]
-	                                  +remain_mil_buffer_zl[5]+remain_mil_buffer_zl[6]+remain_mil_buffer_zl[7];
-	          eeprom_mileage_write(mil_zhuli);
-
+		          if((four_mil < zhuli_min)||(four_mil > zhuli_max))
+		          {
+		              if(four_mil < zhuli_min)
+		              {
+		                      four_mil = zhuli_min + 50;	
+		              }
+		              else
+		              {
+		                      four_mil = zhuli_max - 50;	
+		              }	
+		          }
+		          remain_mil_buffer_zl[3] = (int)four_mil*bat_vol[remaincap]/370;
+		          mil_zhuli = remain_mil_buffer_zl[0]+remain_mil_buffer_zl[1]+remain_mil_buffer_zl[2]
+		                                  +remain_mil_buffer_zl[3] + remain_mil_buffer_zl[4]
+		                                  +remain_mil_buffer_zl[5]+remain_mil_buffer_zl[6]+remain_mil_buffer_zl[7];
+		          eeprom_mileage_write(mil_zhuli);
+	    	  }
 	          four_setp =0;							
 	      }
 	      if((five_setp - remaincap >= 1)&&(five_setp >remaincap))
 	      {
-	          five_mil = mileage - five_mil;
-	          five_mil = five_mil/(five_setp - remaincap); 
+	    	  if(mileage>five_mil){
+	    		  five_mil = mileage - five_mil;
+		          five_mil = five_mil/(five_setp - remaincap); 
 
-	          if((five_mil < zhuli_min)||(five_mil > zhuli_max))
-	          {
-	              if(five_mil < zhuli_min)
-	              {
-	                      five_mil = zhuli_min + 50;	
-	              }
-	              else
-	              {
-	                      five_mil = zhuli_max - 50;	
-	              }	
-	          }
-	          remain_mil_buffer_zl[4] = (int)five_mil*bat_vol[remaincap]/370;
-	          mil_zhuli = remain_mil_buffer_zl[0]+remain_mil_buffer_zl[1]+remain_mil_buffer_zl[2]
-	                                  +remain_mil_buffer_zl[3] + remain_mil_buffer_zl[4]
-	                                  +remain_mil_buffer_zl[5]+remain_mil_buffer_zl[6]+remain_mil_buffer_zl[7];
-	          eeprom_mileage_write(mil_zhuli);
-
+		          if((five_mil < zhuli_min)||(five_mil > zhuli_max))
+		          {
+		              if(five_mil < zhuli_min)
+		              {
+		                      five_mil = zhuli_min + 50;	
+		              }
+		              else
+		              {
+		                      five_mil = zhuli_max - 50;	
+		              }	
+		          }
+		          remain_mil_buffer_zl[4] = (int)five_mil*bat_vol[remaincap]/370;
+		          mil_zhuli = remain_mil_buffer_zl[0]+remain_mil_buffer_zl[1]+remain_mil_buffer_zl[2]
+		                                  +remain_mil_buffer_zl[3] + remain_mil_buffer_zl[4]
+		                                  +remain_mil_buffer_zl[5]+remain_mil_buffer_zl[6]+remain_mil_buffer_zl[7];
+		          eeprom_mileage_write(mil_zhuli);
+	    	  }
 	          five_setp =0;							
 	      }
 	      if((six_setp - remaincap >= 1)&&(six_setp >remaincap))
 	      {
-	          six_mil = mileage - six_mil;
-	          six_mil = six_mil/(six_setp - remaincap); 
+	    	  if(mileage>six_mil){
+	    		  six_mil = mileage - six_mil;
+		          six_mil = six_mil/(six_setp - remaincap); 
 
-	          if((six_mil < zhuli_min)||(six_mil > zhuli_max))
-	          {
-	              if(six_mil < zhuli_min)
-	              {
-	                      six_mil = zhuli_min + 50;	
-	              }
-	              else
-	              {
-	                      six_mil = zhuli_max - 50;	
-	              }	
-	          }
-	          remain_mil_buffer_zl[5] = (int)six_mil*bat_vol[remaincap]/370;
-	          mil_zhuli = remain_mil_buffer_zl[0]+remain_mil_buffer_zl[1]+remain_mil_buffer_zl[2]
-	                                  +remain_mil_buffer_zl[3] + remain_mil_buffer_zl[4]
-	                                  +remain_mil_buffer_zl[5]+remain_mil_buffer_zl[6]+remain_mil_buffer_zl[7];
-	          eeprom_mileage_write(mil_zhuli);
-
+		          if((six_mil < zhuli_min)||(six_mil > zhuli_max))
+		          {
+		              if(six_mil < zhuli_min)
+		              {
+		                      six_mil = zhuli_min + 50;	
+		              }
+		              else
+		              {
+		                      six_mil = zhuli_max - 50;	
+		              }	
+		          }
+		          remain_mil_buffer_zl[5] = (int)six_mil*bat_vol[remaincap]/370;
+		          mil_zhuli = remain_mil_buffer_zl[0]+remain_mil_buffer_zl[1]+remain_mil_buffer_zl[2]
+		                                  +remain_mil_buffer_zl[3] + remain_mil_buffer_zl[4]
+		                                  +remain_mil_buffer_zl[5]+remain_mil_buffer_zl[6]+remain_mil_buffer_zl[7];
+		          eeprom_mileage_write(mil_zhuli);
+	    	  }
 	          six_setp =0;							
 	      }
 	      if((seven_setp - remaincap >= 1)&&(seven_setp >remaincap))
 	      {
-	          seven_mil = mileage - seven_mil;
-	          seven_mil = seven_mil/(seven_setp - remaincap); 
+	    	  if(mileage>seven_mil){
+	    		  seven_mil = mileage - seven_mil;
+		          seven_mil = seven_mil/(seven_setp - remaincap); 
 
-	          if((seven_mil < zhuli_min)||(seven_mil > zhuli_max))
-	          {
-	              if(seven_mil < zhuli_min)
-	              {
-	                      seven_mil = zhuli_min + 50;	
-	              }
-	              else
-	              {
-	                      seven_mil = zhuli_max - 50;	
-	              }	
-	          }
-	          remain_mil_buffer_zl[6] = (int)seven_mil*bat_vol[remaincap]/370;
-	          mil_zhuli = remain_mil_buffer_zl[0]+remain_mil_buffer_zl[1]+remain_mil_buffer_zl[2]
-	                                  +remain_mil_buffer_zl[3] + remain_mil_buffer_zl[4]
-	                                  +remain_mil_buffer_zl[5]+remain_mil_buffer_zl[6]+remain_mil_buffer_zl[7];
-	          eeprom_mileage_write(mil_zhuli);
-
+		          if((seven_mil < zhuli_min)||(seven_mil > zhuli_max))
+		          {
+		              if(seven_mil < zhuli_min)
+		              {
+		                      seven_mil = zhuli_min + 50;	
+		              }
+		              else
+		              {
+		                      seven_mil = zhuli_max - 50;	
+		              }	
+		          }
+		          remain_mil_buffer_zl[6] = (int)seven_mil*bat_vol[remaincap]/370;
+		          mil_zhuli = remain_mil_buffer_zl[0]+remain_mil_buffer_zl[1]+remain_mil_buffer_zl[2]
+		                                  +remain_mil_buffer_zl[3] + remain_mil_buffer_zl[4]
+		                                  +remain_mil_buffer_zl[5]+remain_mil_buffer_zl[6]+remain_mil_buffer_zl[7];
+		          eeprom_mileage_write(mil_zhuli);
+	    	  }
 	          seven_setp =0;							
 	      }
 	       if((eight_setp - remaincap >= 1)&&(eight_setp >remaincap))
 	      {
-	          eight_mil = mileage - eight_mil;
-	          eight_mil = eight_mil/(eight_setp - remaincap); 
+	    	  if(mileage>eight_mil){
+	    		  eight_mil = mileage - eight_mil;
+		          eight_mil = eight_mil/(eight_setp - remaincap); 
 
-	          if((eight_mil < zhuli_min)||(eight_mil > zhuli_max))
-	          {
-	              if(eight_mil < zhuli_min)
-	              {
-	                      eight_mil = zhuli_min + 50;	
-	              }
-	              else
-	              {
-	                      eight_mil = zhuli_max - 50;	
-	              }	
-	          }
-	          remain_mil_buffer_zl[7] = (int)eight_mil*bat_vol[remaincap]/370;
-	          mil_zhuli = remain_mil_buffer_zl[0]+remain_mil_buffer_zl[1]+remain_mil_buffer_zl[2]
-	                                  +remain_mil_buffer_zl[3] + remain_mil_buffer_zl[4]
-	                                  +remain_mil_buffer_zl[5]+remain_mil_buffer_zl[6]+remain_mil_buffer_zl[7];
-	          eeprom_mileage_write(mil_zhuli);
+		          if((eight_mil < zhuli_min)||(eight_mil > zhuli_max))
+		          {
+		              if(eight_mil < zhuli_min)
+		              {
+		                      eight_mil = zhuli_min + 50;	
+		              }
+		              else
+		              {
+		                      eight_mil = zhuli_max - 50;	
+		              }	
+		          }
+		          remain_mil_buffer_zl[7] = (int)eight_mil*bat_vol[remaincap]/370;
+		          mil_zhuli = remain_mil_buffer_zl[0]+remain_mil_buffer_zl[1]+remain_mil_buffer_zl[2]
+		                                  +remain_mil_buffer_zl[3] + remain_mil_buffer_zl[4]
+		                                  +remain_mil_buffer_zl[5]+remain_mil_buffer_zl[6]+remain_mil_buffer_zl[7];
+		          eeprom_mileage_write(mil_zhuli);
 
+	    	  }
 	          eight_setp =0;							
 	      }
 	    }
