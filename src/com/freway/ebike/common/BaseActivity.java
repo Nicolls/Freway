@@ -129,8 +129,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DataUpda
 		if (loading == null) {
 			loading = new LoadingDialog(this);
 		}
-		loading.setCancelable(canCancel);
-		loading.show();
+		loading.show(canCancel);
 	}
 
 	/** 隐藏加载框 */

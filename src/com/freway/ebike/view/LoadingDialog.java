@@ -19,7 +19,7 @@ import com.freway.ebike.R;
 /***
  * 自定义基类加载进度圈
  * 
- * @author Nicolls
+ * @author mengjk
  *
  *         2015年6月2日
  */
@@ -27,7 +27,7 @@ public class LoadingDialog extends Dialog {
 
 	private Animation rotAnim;
 	private ProgressBar mProgressBar;
-
+	private boolean cancelable=true;
 	/**
 	 * 构造函数
 	 * 
@@ -49,24 +49,28 @@ public class LoadingDialog extends Dialog {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 	}
 
+	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-
+		
 		return true;
 	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			dismiss();
+			if(cancelable){
+				dismiss();
+			}
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
 	}
 
-	@Override
-	public void show() {
+	public void show(boolean canCancel) {
 		super.show();
+		cancelable=canCancel;
+		setCancelable(canCancel);
 		if (rotAnim == null) {
 			rotAnim = new RotateAnimation(0, -359, Animation.RELATIVE_TO_SELF, 0.5f,
 					Animation.RELATIVE_TO_SELF, 0.5f);
