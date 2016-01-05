@@ -677,7 +677,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 						public void onClick(View v) {
 							BaseApplication.travelId = -1;
 							AlertUtil.getInstance(HomeUiActivity.this).dismiss();
-							BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
+							BaseApplication.sendStateChangeBroadCast(getApplicationContext(),
 									TravelConstant.TRAVEL_STATE_STOP);
 							if (mMapUtil != null) {
 								mMapUtil.clearMap();
@@ -706,7 +706,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 								EBikeTravelData.getInstance(HomeUiActivity.this).travelPhoto = photoPath;
 							}
 						}
-						BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
+						BaseApplication.sendStateChangeBroadCast(getApplicationContext(),
 								TravelConstant.TRAVEL_STATE_COMPLETED);
 					}
 
@@ -732,7 +732,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 					public void onClick(View v) {
 						AlertUtil.getInstance(HomeUiActivity.this).dismiss();
 						// test(TravelConstant.TRAVEL_STATE_RESUME);
-						BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this, TravelConstant.TRAVEL_STATE_STOP);
+						BaseApplication.sendStateChangeBroadCast(getApplicationContext(), TravelConstant.TRAVEL_STATE_STOP);
 					}
 				}, new OnClickListener() {
 
@@ -740,7 +740,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 					public void onClick(View v) {// 继续骑行
 						AlertUtil.getInstance(HomeUiActivity.this).dismiss();
 						// test(TravelConstant.TRAVEL_STATE_RESUME);
-						BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
+						BaseApplication.sendStateChangeBroadCast(getApplicationContext(),
 								TravelConstant.TRAVEL_STATE_RESUME);
 					}
 				});
@@ -774,11 +774,11 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 				alertTravelChoice();
 			} else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_START
 					|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_RESUME) {
-				BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this, TravelConstant.TRAVEL_STATE_PAUSE);
+				BaseApplication.sendStateChangeBroadCast(getApplicationContext(), TravelConstant.TRAVEL_STATE_PAUSE);
 
 			} else {
 				// test(TravelConstant.TRAVEL_STATE_START);
-				BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this, TravelConstant.TRAVEL_STATE_START);
+				BaseApplication.sendStateChangeBroadCast(getApplicationContext(), TravelConstant.TRAVEL_STATE_START);
 			}
 			break;
 		case R.id.speed_state_speed_text:// 速度状态下速度值显示text

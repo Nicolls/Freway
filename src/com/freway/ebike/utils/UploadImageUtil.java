@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -144,7 +145,8 @@ public class UploadImageUtil {
 
 		long requestTime = System.currentTimeMillis();
 		long responseTime = 0;
-
+		DataOutputStream dos =null;
+		InputStream is=null;
 		try {
 			URL url = new URL(RequestURL);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -155,16 +157,13 @@ public class UploadImageUtil {
 			conn.setUseCaches(false); // 不允许使用缓存
 			conn.setRequestMethod("POST"); // 请求方式
 			conn.setRequestProperty("Charset", CHARSET); // 设置编码
-			conn.setRequestProperty("connection", "keep-alive");
+			conn.setRequestProperty("Connection", "keep-alive");
 			conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
 			conn.setRequestProperty("Content-Type", CONTENT_TYPE + ";boundary=" + BOUNDARY);
 			// conn.setRequestProperty("Content-Type",
 			// "application/x-www-form-urlencoded");
 
-			/**
-			 * 当文件不为空，把文件包装并且上传
-			 */
-			DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
+			dos = new DataOutputStream(conn.getOutputStream());
 			StringBuffer sb = null;
 			String params = "";
 
@@ -207,8 +206,10 @@ public class UploadImageUtil {
 
 			LogUtils.i(TAG, file.getName() + "=" + params + "##");
 			dos.write(params.getBytes());
-			/** 上传文件 */
-			InputStream is = new FileInputStream(file);
+			/**
+			 * 当文件不为空，把文件包装并且上传
+			 */
+			is = new FileInputStream(file);
 			if(onUploadProcessListener!=null)
 			onUploadProcessListener.initUpload((int) file.length());
 			byte[] bytes = new byte[1024];
@@ -231,6 +232,12 @@ public class UploadImageUtil {
 			/**
 			 * 获取响应码 200=成功 当响应成功，获取响应的流
 			 */
+			try {
+				Thread.sleep(3000);//用3秒是为了能上传成功
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			int res = conn.getResponseCode();
 			responseTime = System.currentTimeMillis();
 			this.requestTime = (int) ((responseTime - requestTime) / 1000);
@@ -247,26 +254,69 @@ public class UploadImageUtil {
 				LogUtils.i(TAG, "result : " + result);
 				msg.what=UPLOAD_SUCCESS_CODE;
 				msg.obj=result;
+				input.close();
+				dos.close();
 				return msg;
 			} else {
 				msg.what=UPLOAD_SERVER_ERROR_CODE;
 				msg.obj="上传失败：code=" + res;
 				LogUtils.e(TAG, "request error");
+				dos.close();
 				return msg;
 			}
 		} catch (MalformedURLException e) {
+			e.printStackTrace();
 			msg.what=UPLOAD_SERVER_ERROR_CODE;
 			msg.obj=e.getMessage();
 			LogUtils.e(TAG, e.getMessage());
+			try {
+				if(dos!=null){
+					dos.close();
+				}
+				if(is!=null){
+					
+						is.close();
+				}
+				} catch (IOException e1) {
+					msg.obj=e1.getMessage();
+					return msg;
+				}
 			return msg;
 		} catch (IOException e) {
+			e.printStackTrace();
 			msg.what=UPLOAD_SERVER_ERROR_CODE;
 			msg.obj=e.getMessage();
 			LogUtils.e(TAG, e.getMessage());
+			try {
+				if(dos!=null){
+					dos.close();
+				}
+				if(is!=null){
+					
+						is.close();
+				}
+				} catch (IOException e1) {
+					msg.obj=e1.getMessage();
+					return msg;
+				}
 			return msg;
+		}finally{
+			try {
+				if(dos!=null){
+					dos.close();
+				}
+				if(is!=null){
+					
+						is.close();
+				}
+				} catch (IOException e1) {
+					msg.obj=e1.getMessage();
+					return msg;
+				}
 		}
 	}
 
+	
 	/**
 	 * 发送上传结果
 	 * 

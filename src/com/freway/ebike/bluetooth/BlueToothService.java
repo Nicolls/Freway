@@ -213,7 +213,16 @@ public class BlueToothService extends BaseService {
 				} else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_STOP) {// 停止
 					stopTravel();
 				} 
-			}else if (TravelConstant.ACTION_UI_SERICE_QUIT_APP
+			}
+		}
+	};
+	
+	/** 监听退出状态改变广播 */
+	private final BroadcastReceiver mQuitReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			if (TravelConstant.ACTION_UI_SERICE_QUIT_APP
 					.equals(action)) {//退出app
 				exitTravel();
 			}
@@ -337,6 +346,7 @@ public class BlueToothService extends BaseService {
 		unregisterReceiver(mReceiver);
 		unregisterReceiver(mHandleReceiver);
 		unregisterReceiver(mStateReceiver);
+		unregisterReceiver(mQuitReceiver);
 	}
 
 	/** 开启服务,如果已经开启，必须调用stopService关闭服务后，才可以再次调用 */
@@ -352,7 +362,7 @@ public class BlueToothService extends BaseService {
 		//退出app监听
 		filter = new IntentFilter(
 				TravelConstant.ACTION_UI_SERICE_QUIT_APP);
-		registerReceiver(mStateReceiver, filter);
+		registerReceiver(mQuitReceiver, filter);
 		// 注册对蓝牙状态改变的广播
 
 		// register for when device bluetooth enable
@@ -700,7 +710,7 @@ public class BlueToothService extends BaseService {
 				// state, false, mStateReceiver);
 				return;
 			} else {// 先发一个回头祯和一个数据
-				EBikeTravelData.getInstance(BlueToothService.this).start(0,TravelConstant.TRAVEL_TYPE_HISTORY);
+				EBikeTravelData.getInstance(BlueToothService.this.getApplicationContext()).start(0,TravelConstant.TRAVEL_TYPE_HISTORY);
 				sendData(CommandCode.HISTORY,
 						new byte[] { EBikeHistoryStatus.setBikeStatus(
 								EBikeHistoryStatus.DATA_INDEX, 0) });// 从头

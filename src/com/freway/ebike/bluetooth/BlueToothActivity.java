@@ -172,12 +172,12 @@ public class BlueToothActivity extends BaseActivity {
 	}
 	/**开始*/
 	public void onStart(View view){
-		BaseApplication.sendStateChangeBroadCast(BlueToothActivity.this, TravelConstant.TRAVEL_STATE_START);
+		BaseApplication.sendStateChangeBroadCast(getApplicationContext(), TravelConstant.TRAVEL_STATE_START);
 	}
 	
 	/**结束*/
 	public void onEnd(View view){
-		BaseApplication.sendStateChangeBroadCast(BlueToothActivity.this, TravelConstant.TRAVEL_STATE_STOP);
+		BaseApplication.sendStateChangeBroadCast(getApplicationContext(), TravelConstant.TRAVEL_STATE_STOP);
 	}
 	
 	public void onTool(View view){
