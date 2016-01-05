@@ -161,7 +161,6 @@ public class EBikeRequestServiceVolleyImpl implements EBikeRequestService {
 		ebReq.setDataParam("stime", stime);
 		ebReq.setDataParam("etime", etime);
 		ebReq.setDataParam("distance", distance);
-		ebReq.setDataParam("distance", token);
 		ebReq.setDataParam("time", time);
 		ebReq.setDataParam("cadence", cadence);
 		ebReq.setDataParam("calories", calories);
