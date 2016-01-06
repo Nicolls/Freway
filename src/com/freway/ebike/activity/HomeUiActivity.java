@@ -452,6 +452,9 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 				bleStateChange(BlueToothService.ble_state);
 				return;
 			}
+			if(state != TravelConstant.TRAVEL_STATE_STOP){
+				mSpeedStateTipText.hideTip();
+			}
 			if (state == TravelConstant.TRAVEL_STATE_PAUSE) {// 暂停
 				mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
 				mSpeedStateSpeedText.setVisibility(View.GONE);
@@ -465,6 +468,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 					if (mMapUtil != null) {
 						mMapUtil.clearMap();
 					}
+					mSpeedStateTipText.showTip(getString(R.string.tip_ebike__stop));
 				}else{
 					//伪暂停的时候要把地图给缩放到包括所有点的时候。
 					List<TravelLocation> travelList=DBHelper.getInstance(HomeUiActivity.this).listTravelLocation(BaseApplication.travelId);

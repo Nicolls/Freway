@@ -72,6 +72,7 @@
     <string name="tip_ebike_setting">eBike Controller setting</string><!-- 蓝牙设置 -->
     <string name="tip_travel_stop">Click the flag or go to the trip</string><!-- 行程停止 提示-->
     <string name="tip_ebike_disconnect">eBike Controller disconnecting</string><!-- 蓝牙断开链接 -->
+    <string name="tip_ebike__stop">Cycling has automatically stopped</string><!-- 行程自动停止 -->
     <string name="unbind_ebike">eBike Controller unbonding</string><!-- 解绑蓝牙 -->
     <string name="tip_unbind_ebike_success">eBike Controller unbonded successfully</string><!-- 解绑蓝牙成功 -->
     <string name="scan_ebike">eBike Controller scanning</string><!-- 扫描蓝牙设备 -->
