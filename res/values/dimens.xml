@@ -118,7 +118,7 @@
     <!-- compass -->
     <dimen name="home_compass_profile_ll_marginHorizontal">20dp</dimen>
     <dimen name="home_compass_profile_ll_marginVertical">5dp</dimen>
-    <dimen name="speed_state_title_value_margin">65dp</dimen>
+    <dimen name="speed_state_title_value_margin">80dp</dimen>
     <!-- profile -->
     <dimen name="profile_pic_width_height">100dp</dimen>
     <dimen name="profile_pic_padding">5dp</dimen>

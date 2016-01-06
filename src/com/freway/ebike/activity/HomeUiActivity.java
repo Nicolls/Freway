@@ -568,22 +568,22 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		mTravelStateCadenceValue.setText(cadence + "");
 		if (distanUnit == EBConstant.DISTANCE_UNIT_MPH) {
 			mSpeedStateSpeedView.onValueChange(speed, SpeedView.MAX_SPEED_MPH);
-			mSpeedStateAvgSpeedUnit.setText(getString(R.string.MPH));
+			mSpeedStateAvgSpeedUnit.setText(getString(R.string.mph));
 			mTravelStateAvgSpeedUnit.setText(getString(R.string.mph));
 			mTravelStateSpeedUnit.setText(getString(R.string.mph));
 			mTravelStateAslUnit.setText(getString(R.string.mi));
 			mTravelStateDistanceUnit.setText(getString(R.string.mi));
-			mSpeedStateAslUnit.setText(getString(R.string.MI));
-			mSpeedStateDistanceUnit.setText(getString(R.string.MI));
+			mSpeedStateAslUnit.setText(getString(R.string.mi));
+			mSpeedStateDistanceUnit.setText(getString(R.string.mi));
 		} else {
 			mSpeedStateSpeedView.onValueChange(speed, SpeedView.MAX_SPEED_KM_H);
-			mSpeedStateAvgSpeedUnit.setText(getString(R.string.KM_H));
+			mSpeedStateAvgSpeedUnit.setText(getString(R.string.km_h));
 			mTravelStateAvgSpeedUnit.setText(getString(R.string.km_h));
 			mTravelStateSpeedUnit.setText(getString(R.string.km_h));
 			mTravelStateAslUnit.setText(getString(R.string.km));
 			mTravelStateDistanceUnit.setText(getString(R.string.km));
-			mSpeedStateAslUnit.setText(getString(R.string.KM));
-			mSpeedStateDistanceUnit.setText(getString(R.string.KM));
+			mSpeedStateAslUnit.setText(getString(R.string.km));
+			mSpeedStateDistanceUnit.setText(getString(R.string.km));
 		}
 
 		mSpeedStateSpeedText.setText(speed + "");

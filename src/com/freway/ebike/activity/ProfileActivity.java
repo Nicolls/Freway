@@ -166,25 +166,25 @@ public class ProfileActivity extends BaseActivity implements OnClickListener {
 	}
 
 	public void onRecord() {
-		Intent intent = new Intent(this, WebViewActivity.class);
+		Intent intent = new Intent(this, EBikeWebViewActivity.class);
 		intent.putExtra("url", formatUrl(EBConstant.HTML5_URL_RECORDS));
 		startActivity(intent);
 	}
 
 	public void onGrade() {
-		Intent intent = new Intent(this, WebViewActivity.class);
+		Intent intent = new Intent(this, EBikeWebViewActivity.class);
 		intent.putExtra("url", formatUrl(EBConstant.HTML5_URL_GRADES));
 		startActivity(intent);
 	}
 
 	public void onNews() {
-		Intent intent = new Intent(this, WebViewActivity.class);
+		Intent intent = new Intent(this, EBikeWebViewActivity.class);
 		intent.putExtra("url",formatUrl( EBConstant.HTML5_URL_NEWS));
 		startActivity(intent);
 	}
 
 	public void onTutorial() {
-		Intent intent = new Intent(this, WebViewActivity.class);
+		Intent intent = new Intent(this, EBikeWebViewActivity.class);
 		intent.putExtra("url", formatUrl(EBConstant.HTML5_URL_TUTORIAL));
 		startActivity(intent);
 	}

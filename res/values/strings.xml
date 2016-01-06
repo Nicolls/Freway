@@ -90,12 +90,6 @@
     <string name="mph">mph</string>
     <string name="km_h">km/h</string>
     <string name="rpm">rpm</string>
-     <string name="MI">/MI</string><!-- 这个单位是迈 -->
-    <string name="M">/M</string><!-- 这个单位是米 -->
-    <string name="KM">/KM</string>
-    <string name="MPH">/MPH</string>
-    <string name="KM_H">/KM/H</string>
-    <string name="RPM">/RPM</string>
     <string name="cal">Kcal</string>
     <string name="gear">GEAR</string>
     <string name="distance_unit_mph">mph</string>

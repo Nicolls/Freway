@@ -99,7 +99,9 @@
         </activity>
         <activity android:name="com.freway.ebike.activity.SettingActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.freway.ebike.activity.WebViewActivity" android:screenOrientation="portrait">
+        <activity android:name="com.freway.ebike.activity.EBikeWebViewActivity" android:screenOrientation="portrait">
+        </activity>
+         <activity android:name="com.freway.ebike.activity.OtherWebViewActivity" android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.freway.ebike.activity.TestActivity"
