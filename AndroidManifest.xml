@@ -168,6 +168,11 @@
             </intent-filter>
         </receiver>
 
+        <!-- crashtis -->
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="685a514291718475ba5003defc2412a2fd6067da" />
+        
         <!-- 服务 -->
         <service
             android:name="com.freway.ebike.service.UpdateAPPService"

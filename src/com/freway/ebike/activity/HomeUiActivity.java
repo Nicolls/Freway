@@ -458,15 +458,24 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_pause_enable);
 				mTravelTip.hideTip();
 			} else if (state == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 伪暂停
-				//伪暂停的时候要把地图给缩放到包括所有点的时候。
-				List<TravelLocation> travelList=DBHelper.getInstance(HomeUiActivity.this).listTravelLocation(BaseApplication.travelId);
-				if(mMapUtil!=null){
-					mMapUtil.cameraContainPoint(travelList);
+				//先判断如果距离为0就说明车子没有动，那么要回到停止状态
+				if(EBikeTravelData.getInstance(getApplicationContext()).distance<=0){
+					BaseApplication.sendStateChangeBroadCast(getApplicationContext(),
+							TravelConstant.TRAVEL_STATE_STOP);
+					if (mMapUtil != null) {
+						mMapUtil.clearMap();
+					}
+				}else{
+					//伪暂停的时候要把地图给缩放到包括所有点的时候。
+					List<TravelLocation> travelList=DBHelper.getInstance(HomeUiActivity.this).listTravelLocation(BaseApplication.travelId);
+					if(mMapUtil!=null){
+						mMapUtil.cameraContainPoint(travelList);
+					}
+					mSpeedStateSpeedButton.setVisibility(View.GONE);
+					mSpeedStateSpeedText.setVisibility(View.VISIBLE);
+					mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_pause_enable);
+					mTravelTip.showTip();
 				}
-				mSpeedStateSpeedButton.setVisibility(View.GONE);
-				mSpeedStateSpeedText.setVisibility(View.VISIBLE);
-				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_pause_enable);
-				mTravelTip.showTip();
 			} else if (BlueToothService.ble_state == BlueToothConstants.BLE_STATE_CONNECTED
 					&& (state == TravelConstant.TRAVEL_STATE_START || state == TravelConstant.TRAVEL_STATE_RESUME)) {
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_start_enable);

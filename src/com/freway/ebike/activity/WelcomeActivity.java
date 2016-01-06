@@ -1,5 +1,6 @@
 package com.freway.ebike.activity;
 
+import io.fabric.sdk.android.Fabric;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.freway.ebike.R;
 import com.freway.ebike.common.BaseActivity;
 import com.freway.ebike.common.EBConstant;
@@ -36,6 +38,7 @@ public class WelcomeActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Fabric.with(this, new Crashlytics());
 		setContentView(R.layout.activity_welcome);
 //		ib=(ImageView) findViewById(R.id.iv_welcome);
 //		Animation anim=AnimationUtils.loadAnimation(this, R.anim.welcome_fade_in_scale);
