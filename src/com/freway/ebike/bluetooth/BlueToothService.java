@@ -258,7 +258,7 @@ public class BlueToothService extends BaseService {
 		if (BaseApplication.travelState == BlueToothConstants.BLE_STATE_NONE
 				|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_COMPLETED
 				|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_STOP) {// travel停了
-			stopService();
+			stopSelf();
 		}
 	}
 
@@ -305,7 +305,7 @@ public class BlueToothService extends BaseService {
 	public void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		stopService();
+		stopBLEService();
 	}
 
 	/** tost一个message */
@@ -323,7 +323,7 @@ public class BlueToothService extends BaseService {
 	}
 
 	/** 停止服务 */
-	private void stopService() {
+	private void stopBLEService() {
 		// Make sure we're not doing discovery anymore
 		if (mBlueToothConnction != null&&mReceiveCharacteristic!=null) {
 			mBlueToothConnction.setCharacteristicNotification(
