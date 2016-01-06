@@ -232,12 +232,6 @@ public class UploadImageUtil {
 			/**
 			 * 获取响应码 200=成功 当响应成功，获取响应的流
 			 */
-			try {
-				Thread.sleep(2000);//用3秒是为了能上传成功
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			int res = conn.getResponseCode();
 			responseTime = System.currentTimeMillis();
 			this.requestTime = (int) ((responseTime - requestTime) / 1000);
