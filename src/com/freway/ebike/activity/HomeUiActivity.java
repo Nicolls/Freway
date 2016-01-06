@@ -460,7 +460,9 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			} else if (state == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 伪暂停
 				//伪暂停的时候要把地图给缩放到包括所有点的时候。
 				List<TravelLocation> travelList=DBHelper.getInstance(HomeUiActivity.this).listTravelLocation(BaseApplication.travelId);
-				mMapUtil.cameraContainPoint(travelList);
+				if(mMapUtil!=null){
+					mMapUtil.cameraContainPoint(travelList);
+				}
 				mSpeedStateSpeedButton.setVisibility(View.GONE);
 				mSpeedStateSpeedText.setVisibility(View.VISIBLE);
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_pause_enable);
@@ -762,8 +764,10 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			bleStateChange(BlueToothService.ble_state);
 			LogUtils.i(tag, "单击" + BaseApplication.travelState);
 			if (BlueToothService.ble_state != BlueToothConstants.BLE_STATE_CONNECTED) {// 未连接
-				mBlueToothUtil.bleConnect(getString(R.string.ble_not_connect), getString(R.string.yes),
-						getString(R.string.no));
+				if(mBlueToothUtil!=null){
+					mBlueToothUtil.bleConnect(getString(R.string.ble_not_connect), getString(R.string.yes),
+							getString(R.string.no));
+				}
 				return;
 			}
 			if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_PAUSE) {// 暂停
