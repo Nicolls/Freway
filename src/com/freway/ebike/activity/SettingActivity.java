@@ -1,11 +1,10 @@
 package com.freway.ebike.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Looper;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -17,7 +16,6 @@ import com.freway.ebike.bluetooth.BLEScanConnectActivity;
 import com.freway.ebike.bluetooth.BlueToothConstants;
 import com.freway.ebike.bluetooth.BlueToothUtil;
 import com.freway.ebike.common.BaseActivity;
-import com.freway.ebike.common.BaseApplication;
 import com.freway.ebike.common.EBConstant;
 import com.freway.ebike.crop.BitmapUtil;
 import com.freway.ebike.crop.CropHandler;
@@ -31,6 +29,7 @@ import com.freway.ebike.net.EBikeRequestService;
 import com.freway.ebike.service.UpdateAPPService;
 import com.freway.ebike.service.UpdateAPPService.UpdateAppListener;
 import com.freway.ebike.utils.AlertUtil;
+import com.freway.ebike.utils.AlertUtil.AlertClick;
 import com.freway.ebike.utils.CommonUtil;
 import com.freway.ebike.utils.EBikeActivityManager;
 import com.freway.ebike.utils.EBikeViewUtils;
@@ -244,24 +243,24 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			break;
 		case R.id.profile_head_view:
 			mCropParams.refreshUri();
-			AlertUtil.getInstance(this).alertChoice(getString(R.string.portrait_settings), getString(R.string.album),
-					getString(R.string.camera), new OnClickListener() {
+			AlertUtil.getInstance().alertChoice(this,getString(R.string.portrait_settings), getString(R.string.album),
+					getString(R.string.camera), new AlertClick() {
 
 						@Override
-						public void onClick(View v) {
+						public void onClick(AlertDialog dialog,View v) {
 							// album
-							AlertUtil.getInstance(SettingActivity.this).dismiss();
+							dialog.dismiss();
 							mCropParams.enable = true;
 							mCropParams.compress = false;
 							Intent intent = CropHelper.buildGalleryIntent(mCropParams);
 							startActivityForResult(intent, CropHelper.REQUEST_CROP);
 						}
-					}, new OnClickListener() {
+					}, new AlertClick() {
 
 						@Override
-						public void onClick(View v) {
+						public void onClick(AlertDialog dialog,View v) {
 							// camera
-							AlertUtil.getInstance(SettingActivity.this).dismiss();
+							dialog.dismiss();
 							mCropParams.enable = true;
 							mCropParams.compress = false;
 							Intent intent = CropHelper.buildCameraIntent(mCropParams);
@@ -274,12 +273,13 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			if (TextUtils.isEmpty(SPUtils.getEBkieAddress(SettingActivity.this))) {
 				BlueToothUtil.toBindBleActivity(this, BLEScanConnectActivity.HANDLE_SCAN);
 			} else {
-				AlertUtil.getInstance(SettingActivity.this).alertChoice(getString(R.string.tip_ebike_setting),
-						getString(R.string.unbind_ebike), getString(R.string.scan_ebike), new OnClickListener() {
+				AlertUtil.getInstance().alertChoice(SettingActivity.this,getString(R.string.tip_ebike_setting),
+						getString(R.string.unbind_ebike), getString(R.string.scan_ebike),
+						new AlertClick() {
 
 							@Override
-							public void onClick(View v) {
-								AlertUtil.getInstance(SettingActivity.this).dismiss();
+							public void onClick(AlertDialog dialog,View v) {
+								dialog.dismiss();
 								SPUtils.setEBikeAddress(SettingActivity.this, "");
 								snValue.setText(getString(R.string.ble_not_bind));
 								Intent intent = new Intent(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER);
@@ -289,11 +289,11 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 								SettingActivity.this.sendBroadcast(intent);
 								ToastUtils.toast(SettingActivity.this, getString(R.string.tip_unbind_ebike_success));
 							}
-						}, new OnClickListener() {
+						}, new AlertClick() {
 
 							@Override
-							public void onClick(View v) {
-								AlertUtil.getInstance(SettingActivity.this).dismiss();
+							public void onClick(AlertDialog dialog,View v) {
+								dialog.dismiss();
 								BlueToothUtil.toBindBleActivity(SettingActivity.this,
 										BLEScanConnectActivity.HANDLE_SCAN);
 							}
@@ -304,22 +304,23 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 
 			break;
 		case R.id.setting_ll_unit_distance:
-			AlertUtil.getInstance(this).alertChoice(getString(R.string.unit_distance_settings),
-					getString(R.string.distance_unit_mph), getString(R.string.distance_unit_mi), new OnClickListener() {
+			AlertUtil.getInstance().alertChoice(this,getString(R.string.unit_distance_settings),
+					getString(R.string.distance_unit_mph), getString(R.string.distance_unit_mi),
+					new AlertClick() {
 
 						@Override
-						public void onClick(View v) {
+						public void onClick(AlertDialog dialog,View v) {
 							// mph
-							AlertUtil.getInstance(SettingActivity.this).dismiss();
+							dialog.dismiss();
 							SPUtils.setUnitOfDistance(SettingActivity.this, EBConstant.DISTANCE_UNIT_MPH);
 							unitDistanceValue.setText(getString(R.string.distance_unit_mph));
 						}
-					}, new OnClickListener() {
+					}, new AlertClick() {
 
 						@Override
-						public void onClick(View v) {
+						public void onClick(AlertDialog dialog,View v) {
 							// mi
-							AlertUtil.getInstance(SettingActivity.this).dismiss();
+							dialog.dismiss();
 							SPUtils.setUnitOfDistance(SettingActivity.this, EBConstant.DISTANCE_UNIT_KM);
 							unitDistanceValue.setText(getString(R.string.distance_unit_mi));
 						}
@@ -452,12 +453,12 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			boolean isForceUpdate = (m == 0 ? false : true);
 			if (!TextUtils.isEmpty(newest)) {
 				if (!isDownloading) {
-					AlertUtil.getInstance(this).alertConfirm(getString(R.string.app_update_tip),
-							getString(R.string.confirm), new OnClickListener() {
+					AlertUtil.getInstance().alertConfirm(this,getString(R.string.app_update_tip),
+							getString(R.string.confirm), new AlertClick() {
 
 								@Override
-								public void onClick(View v) {
-									AlertUtil.getInstance(SettingActivity.this).dismiss();
+								public void onClick(AlertDialog dialog,View v) {
+									dialog.dismiss();
 									updateApk(url);
 								}
 							});

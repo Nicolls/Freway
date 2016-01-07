@@ -1,16 +1,25 @@
 package com.freway.ebike.bluetooth;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
+import android.bluetooth.BluetoothDevice;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+
 import com.freway.ebike.R;
-import com.freway.ebike.activity.HomeUiActivity;
 import com.freway.ebike.adapter.BleScanAdapter;
 import com.freway.ebike.common.BaseActivity;
 import com.freway.ebike.common.BaseApplication;
 import com.freway.ebike.map.TravelConstant;
-import com.freway.ebike.protocol.CommandCode;
 import com.freway.ebike.protocol.Protocol;
 import com.freway.ebike.protocol.ProtocolByteHandler;
 import com.freway.ebike.protocol.ProtocolTool;
@@ -18,26 +27,6 @@ import com.freway.ebike.utils.CommonUtil;
 import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.SPUtils;
 import com.freway.ebike.utils.ToastUtils;
-
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
-import android.view.TextureView;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class BlueToothActivity extends BaseActivity {
 
@@ -172,12 +161,12 @@ public class BlueToothActivity extends BaseActivity {
 	}
 	/**开始*/
 	public void onStart(View view){
-		BaseApplication.sendStateChangeBroadCast(getApplicationContext(), TravelConstant.TRAVEL_STATE_START);
+		BaseApplication.sendStateChangeBroadCast(BlueToothActivity.this, TravelConstant.TRAVEL_STATE_START);
 	}
 	
 	/**结束*/
 	public void onEnd(View view){
-		BaseApplication.sendStateChangeBroadCast(getApplicationContext(), TravelConstant.TRAVEL_STATE_STOP);
+		BaseApplication.sendStateChangeBroadCast(BlueToothActivity.this, TravelConstant.TRAVEL_STATE_STOP);
 	}
 	
 	public void onTool(View view){

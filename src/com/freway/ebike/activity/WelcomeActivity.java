@@ -1,34 +1,21 @@
 package com.freway.ebike.activity;
 
 import io.fabric.sdk.android.Fabric;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.freway.ebike.R;
 import com.freway.ebike.common.BaseActivity;
-import com.freway.ebike.common.EBConstant;
-import com.freway.ebike.facebook.FacebookUtil;
-import com.freway.ebike.model.RspLogin;
 import com.freway.ebike.model.RspVersion;
-import com.freway.ebike.model.User;
 import com.freway.ebike.net.EBikeRequestService;
 import com.freway.ebike.service.UpdateAPPService;
-import com.freway.ebike.twitter.TwitterUtils;
 import com.freway.ebike.utils.AlertUtil;
+import com.freway.ebike.utils.AlertUtil.AlertClick;
 import com.freway.ebike.utils.CommonUtil;
-import com.freway.ebike.utils.FontUtil;
-import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.SPUtils;
 import com.freway.ebike.utils.ToastUtils;
 
@@ -74,30 +61,30 @@ public class WelcomeActivity extends BaseActivity {
 			int m = Integer.parseInt(version.getData().getForce_update());
 			boolean isForceUpdate = (m == 0 ? false : true);
 			if(isForceUpdate){//强制
-				AlertUtil.getInstance(this).alertChoice(getString(R.string.app_update_force_tip), getString(R.string.yes), getString(R.string.no),
-						new OnClickListener() {
+				AlertUtil.getInstance().alertChoice(this,getString(R.string.app_update_force_tip), getString(R.string.yes), getString(R.string.no),
+						new AlertClick() {
 							
 							@Override
-							public void onClick(View v) {
-								AlertUtil.getInstance(WelcomeActivity.this).dismiss();
+							public void onClick(AlertDialog dialog,View v) {
+								dialog.dismiss();
 								updateApk(url,true);
 							}
 						},
-						new OnClickListener() {
+						new AlertClick() {
 							
 							@Override
-							public void onClick(View v) {
-								AlertUtil.getInstance(WelcomeActivity.this).dismiss();
+							public void onClick(AlertDialog dialog,View v) {
+								dialog.dismiss();
 								finish();
 							}
 						},false);
 			}else if (!TextUtils.isEmpty(newest)) {
-					AlertUtil.getInstance(this).alertConfirm(getString(R.string.app_update_tip),
-							getString(R.string.confirm), new OnClickListener() {
+					AlertUtil.getInstance().alertConfirm(this,getString(R.string.app_update_tip),
+							getString(R.string.confirm), new AlertClick() {
 
 								@Override
-								public void onClick(View v) {
-									AlertUtil.getInstance(WelcomeActivity.this).dismiss();
+								public void onClick(AlertDialog dialog,View v) {
+									dialog.dismiss();
 									updateApk(url,false);
 									initData();
 								}

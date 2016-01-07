@@ -1,17 +1,16 @@
 package com.freway.ebike.common;
 
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Application;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
-import android.os.Handler;
-import android.os.Message;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.facebook.FacebookSdk;
+import com.freway.ebike.R;
 import com.freway.ebike.bluetooth.BLEScanConnectActivity;
 import com.freway.ebike.bluetooth.BlueToothConstants;
 import com.freway.ebike.bluetooth.BlueToothService;
@@ -20,6 +19,8 @@ import com.freway.ebike.bluetooth.EBikeTravelData;
 import com.freway.ebike.db.DBHelper;
 import com.freway.ebike.db.Travel;
 import com.freway.ebike.map.TravelConstant;
+import com.freway.ebike.utils.AlertUtil;
+import com.freway.ebike.utils.AlertUtil.AlertClick;
 import com.freway.ebike.utils.SPUtils;
 
 /**
@@ -89,30 +90,33 @@ public class BaseApplication extends MultiDexApplication{
 	}
 	
 	/** 判断定位是否打开 */
-	public static boolean checkGpsEnable(Context context) {
-		final LocationManager manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-		if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-			buildAlertMessageNoGps(context);
-			return false;
-		} else {
+	public static boolean checkGpsEnable(final Context context) {
+		if(context instanceof Activity){
+			final LocationManager manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+			if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+				AlertUtil.getInstance().alertChoice((Activity)context,context.getString(R.string.gps_not_open), context.getString(R.string.yes), context.getString(R.string.no), 
+						new AlertClick() {
+							
+							@Override
+							public void onClick(AlertDialog dialog,View v) {
+								dialog.dismiss();
+								context.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+							}
+						}, 
+						new AlertClick() {
+							
+							@Override
+							public void onClick(AlertDialog dialog,View v) {
+								dialog.dismiss();
+							}
+						},
+						true);
+				return false;
+			} else {
+				return true;
+			}
+		}else{
 			return true;
 		}
-	}
-	/** 弹出确认打开Gps对话框 */
-	private static void buildAlertMessageNoGps(final Context context) {
-		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setMessage("Your GPS seems to be disabled, do you want to enable it?").setCancelable(false)
-				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-					public void onClick(@SuppressWarnings("unused") final DialogInterface dialog,
-							@SuppressWarnings("unused") final int id) {
-						context.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-					}
-				}).setNegativeButton("No", new DialogInterface.OnClickListener() {
-					public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-						dialog.cancel();
-					}
-				});
-		final AlertDialog alert = builder.create();
-		alert.show();
 	}
 }

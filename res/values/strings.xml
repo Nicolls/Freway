@@ -6,6 +6,7 @@
     <string name="app_id">1668278680085158</string>
     <string name="call_back_url">app.ifreway.com/index.php</string>
     <!-- toast提示，弹出框 -->
+    <string name="gps_not_open">Your GPS seems to be disabled, do you want to enable it?</string><!-- 你的手机不支持蓝牙-->
     <string name="not_support_bluetooth">Your phone has no Bluetooth</string><!-- 你的手机不支持蓝牙-->
     <string name="not_supported_ble">Your phone has no Bluetooth low enengy</string><!-- 你的手机不支持低功耗蓝牙 -->
     <string name="bluetooth_not_connect">eBike Controller is disconnected</string><!--蓝牙没有链接  -->

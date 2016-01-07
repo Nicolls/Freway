@@ -220,7 +220,7 @@ public class EBikeTravelData implements Serializable {
 	private long cal_endTime;
 
 	private EBikeTravelData(Context context) {
-		this.context = context;
+		this.context = context.getApplicationContext();
 	}
 
 	public static EBikeTravelData getInstance(Context context) {

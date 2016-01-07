@@ -1,14 +1,7 @@
 package com.freway.ebike.bluetooth;
 
-import java.util.HashMap;
-
-import com.freway.ebike.R;
-import com.freway.ebike.map.TravelConstant;
-import com.freway.ebike.utils.AlertUtil;
-import com.freway.ebike.utils.SPUtils;
-import com.freway.ebike.utils.ToastUtils;
-import com.google.gson.Gson;
-
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -20,7 +13,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.View.OnClickListener;
+
+import com.freway.ebike.R;
+import com.freway.ebike.map.TravelConstant;
+import com.freway.ebike.utils.AlertUtil;
+import com.freway.ebike.utils.AlertUtil.AlertClick;
+import com.freway.ebike.utils.SPUtils;
+import com.freway.ebike.utils.ToastUtils;
+import com.google.gson.Gson;
 
 public class BlueToothUtil {
 	private static final String TAG = BlueToothUtil.class.getSimpleName();
@@ -62,10 +62,10 @@ public class BlueToothUtil {
 	}
 
 	/** 初始化 */
-	public void initBle(final Handler updateUiHandler) {
+	public void initBle(Activity activity,final Handler updateUiHandler) {
 		receiveSendData(updateUiHandler);
-		if (TextUtils.isEmpty(SPUtils.getEBkieAddress(context))) {// 未绑定
-			bleConnect(context.getString(R.string.ble_not_bind),context.getString(R.string.yes),context.getString(R.string.no));
+		if (TextUtils.isEmpty(SPUtils.getEBkieAddress(activity))) {// 未绑定
+			bleConnect(activity,activity.getString(R.string.ble_not_bind),context.getString(R.string.yes),context.getString(R.string.no));
 		}
 //		else if (EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_STOP
 //				|| EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_COMPLETED
@@ -76,20 +76,21 @@ public class BlueToothUtil {
 	}
 
 	/** 判断Ble是否链接 */
-	public void bleConnect(String message ,String leftText,String rightText) {
+	public void bleConnect(final Activity activity,String message ,String leftText,String rightText) {
 		if (BlueToothService.ble_state != BlueToothConstants.BLE_STATE_CONNECTED) {// 未绑定
-			AlertUtil.getInstance(context).alertChoice( message,leftText,rightText, new OnClickListener() {
+			AlertUtil.getInstance().alertChoice(activity,message,leftText,rightText, 
+				new AlertClick() {
 
 				@Override
-				public void onClick(View v) {
-					AlertUtil.getInstance(context).dismiss();
-					toBindBleActivity(context,BLEScanConnectActivity.HANDLE_SCAN);
+				public void onClick(AlertDialog dialog,View v) {
+					dialog.dismiss();
+					toBindBleActivity(activity,BLEScanConnectActivity.HANDLE_SCAN);
 				}
-			}, new OnClickListener() {
+			}, new AlertClick() {
 
 				@Override
-				public void onClick(View v) {
-					AlertUtil.getInstance(context).dismiss();
+				public void onClick(AlertDialog dialog,View v) {
+					dialog.dismiss();
 				}
 			},true);
 
