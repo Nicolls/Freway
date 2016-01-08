@@ -54,12 +54,13 @@ public class RemainMiCaculate {
 	//controller_flags.remaincap//剩余容量
 
 //	//传进来的值 
-//	int mileage;//读到到的里程值
+//	int cadence;//读到到的里程值
+//	int mileage;//计算后行驶的里程值
 //	int zhuli_lever;//档位
 //	int remainmileage_value;//毫安时
 //	int remaincap;//剩余容量
 //	int remaincap;
-	int remain_mileage_proc(int mileage,int zhuli_lever,int remainmileage_value,int remaincap) //传参：当前读取到的骑行里程值
+	int remain_mileage_proc(int cadence,int mileage,int zhuli_lever,int remainmileage_value,int remaincap) //传参：当前读取到的骑行里程值
 	{
 //	  boolean isRecord=false;
 //	  if(remaincap!=this.remaincap){
@@ -351,7 +352,7 @@ public class RemainMiCaculate {
 	  }
 	  int result=(int)remaincap*mil_zhuli/8000;
 //	  if(isRecord){
-//		  String text="mileage:"+mileage+" zhuli_lever:"+zhuli_lever+" remainmileage_value:"+remainmileage_value+" remaincap:"+remaincap+"--->剩余里程:"+result+"\n";
+//		  String text="cadence:"+cadence+" mileage:"+mileage+" zhuli_lever:"+zhuli_lever+" remainmileage_value:"+remainmileage_value+" remaincap:"+remaincap+"--->剩余里程:"+result+"\n";
 //		  StringBuffer sb=new StringBuffer();
 //		  sb.append(text);
 //		  sb.append("计算完成后Buffer数组是:");
