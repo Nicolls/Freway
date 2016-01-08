@@ -98,11 +98,11 @@ public class LogUtils {
         Date nowtime = new Date();  
         String needWriteFiel = logfile.format(nowtime);  
         String needWriteMessage = myLogSdf.format(nowtime) + " " + tag + "\n" + text;  
-        File dir=new File(Environment.getExternalStorageDirectory()+"/freway/log");
+        File dir=new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/freway/log");
         if(!dir.exists()){
         	dir.mkdirs();
         }
-        File file = new File(Environment.getExternalStorageDirectory()+"/freway/log", needWriteFiel  
+        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/freway/log", needWriteFiel  
                 + MYLOGFILEName);  
         if(!file.exists()){
         	try {
@@ -128,7 +128,7 @@ public class LogUtils {
      * */  
     public static void delFile() {// 删除日志文件  
         String needDelFiel = logfile.format(getDateBefore());  
-        File file = new File(Environment.getExternalStorageDirectory()+"/freway/log", needDelFiel + MYLOGFILEName);  
+        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/freway/log", needDelFiel + MYLOGFILEName);  
         if (file.exists()) {  
             file.delete();  
         }  
