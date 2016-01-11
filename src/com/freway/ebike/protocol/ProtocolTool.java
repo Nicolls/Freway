@@ -154,7 +154,7 @@ public class ProtocolTool {
 			}else if(temp.length()>2){
 				temp=temp.substring(temp.length()-2,temp.length());
 			}
-			stringBuilder.append(temp);
+			stringBuilder.append(temp+" ");
 		}
 		return stringBuilder.toString();
 	}
