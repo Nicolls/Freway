@@ -69,7 +69,7 @@ public class RemainMiCaculate {
 		if (remaincap != this.remaincap) {
 			isRecord = true;
 		}
-//		isRecord = false;//不存储日志
+		isRecord = false;//不存储日志
 		
 		this.remaincap = remaincap;
 		int zhuli_min, zhuli_max; // 理论最大值和最小值，防止突变
