@@ -40,6 +40,7 @@ import com.freway.ebike.utils.FontUtil;
 import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.SPUtils;
 import com.freway.ebike.utils.TimeUtils;
+import com.freway.ebike.utils.ToastUtils;
 import com.freway.ebike.view.BatteryView;
 import com.freway.ebike.view.FlickTextView;
 import com.freway.ebike.view.FlickView;
@@ -723,6 +724,9 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 					}
 
 				});
+			}else{//如果maputil为空
+				BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
+						TravelConstant.TRAVEL_STATE_COMPLETED);
 			}
 		}
 

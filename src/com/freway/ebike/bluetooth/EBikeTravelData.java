@@ -343,31 +343,33 @@ public class EBikeTravelData implements Serializable {
 			testTemp=0;
 		}
 		testTemp+=1;
-		if (data != null && data.length >= 2) {
-			//控制器
-			data[0]=0;
-			data[1]=3;
-			//车
-			//踏频率 每次+2；
-			tempByte=ProtocolTool.intToByteArray(testTemp, 2);
-			data[2]=tempByte[0];
-			data[3]=tempByte[1];
-			//车速度
-			tempByte=ProtocolTool.intToByteArray(r.nextInt(10)+1, 2);
-			data[4]=tempByte[0];
-			data[5]=tempByte[1];
-			//距离
-			tempByte=ProtocolTool.intToByteArray(testTemp+1, 2);
-			data[6]=tempByte[0];
-			data[7]=tempByte[1];
-			//毫安
-			data[8]=58;
-			//档位
-			data[9]=2;
-			//剩余容量
-			data[10]=80;
-			//温度
-			data[11]=50;
+		if(spendTime<25){//测试25秒内都有值，之后为0
+			if (data != null && data.length >= 2) {
+				//控制器
+				data[0]=0;
+				data[1]=3;
+				//车
+				//踏频率 每次+2；
+				tempByte=ProtocolTool.intToByteArray(testTemp, 2);
+				data[2]=tempByte[0];
+				data[3]=tempByte[1];
+				//车速度
+				tempByte=ProtocolTool.intToByteArray(r.nextInt(10)+1, 2);
+				data[4]=tempByte[0];
+				data[5]=tempByte[1];
+				//距离
+				tempByte=ProtocolTool.intToByteArray(testTemp+1, 2);
+				data[6]=tempByte[0];
+				data[7]=tempByte[1];
+				//毫安
+				data[8]=58;
+				//档位
+				data[9]=2;
+				//剩余容量
+				data[10]=80;
+				//温度
+				data[11]=50;
+			}
 		}
 		return data;
 	}
