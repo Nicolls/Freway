@@ -334,12 +334,50 @@ public class EBikeTravelData implements Serializable {
 		}
 	}
 
+	/** 数据模拟 */
+	Random r = new Random();
+	int testTemp=0;
+	private byte[] simulateData(byte[]data) {
+		byte[]tempByte=null;
+		if(isReInitCaculate){
+			testTemp=0;
+		}
+		testTemp+=1;
+		if (data != null && data.length >= 2) {
+			//控制器
+			data[0]=0;
+			data[1]=3;
+			//车
+			//踏频率 每次+2；
+			tempByte=ProtocolTool.intToByteArray(testTemp, 2);
+			data[2]=tempByte[0];
+			data[3]=tempByte[1];
+			//车速度
+			tempByte=ProtocolTool.intToByteArray(r.nextInt(10)+1, 2);
+			data[4]=tempByte[0];
+			data[5]=tempByte[1];
+			//距离
+			tempByte=ProtocolTool.intToByteArray(testTemp+1, 2);
+			data[6]=tempByte[0];
+			data[7]=tempByte[1];
+			//毫安
+			data[8]=58;
+			//档位
+			data[9]=2;
+			//剩余容量
+			data[10]=80;
+			//温度
+			data[11]=50;
+		}
+		return data;
+	}
 	/**
 	 * @param controlState
 	 * @param data
 	 * @Description 格式化数据
 	 */
 	public synchronized void parseBikeData(byte[] data) {
+//		data=simulateData(data);// 模拟数据
 		if (data != null && data.length >= 2) {
 			byte[] controlState = new byte[2];
 			byte[] bikeData = new byte[data.length - 2];
@@ -427,7 +465,6 @@ public class EBikeTravelData implements Serializable {
 			if (batteryAh <= 20) {
 				batteryAh = 78;
 			}
-//			simulateData();// 模拟数据
 			if (insSpeed != 0 && BaseApplication.travelState == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 当前是伪暂停，就resume
 				BaseApplication.sendStateChangeBroadCast(context, TravelConstant.TRAVEL_STATE_RESUME);
 			}
@@ -621,31 +658,6 @@ public class EBikeTravelData implements Serializable {
 				+ " -travel_spendTime:" + spendTime + " -travel_distance:" + distance + " -travel_calorie:" + calorie
 				+ " -travel_cadence:" + cadence + " -travel_altitude:" + altitude;
 		return value;
-	}
-
-	/** 数据模拟 */
-	Random r = new Random();
-
-	private void simulateData() {
-		insSpeed = (3 + r.nextInt(10) + 1) * 1.0f;
-		if(spendTime>=30){
-			insSpeed=0;
-		}
-		if (insSpeed > 9) {
-			backLed = 0;
-			frontLed = 1;
-			gear = 1;
-			batteryResidueCapacity = 50;
-		} else {
-			backLed = 1;
-			frontLed = 0;
-			gear = 0;
-			batteryResidueCapacity = 35;
-		}
-		cal_tempCadence = r.nextInt(3) + 1 + cal_startCadence;// 一次n圈
-		cal_tempDistance = (r.nextInt(5) + 1) / 1000f + cal_startDistance;// km
-		cal_tempCalorie = cal_tempCadence / 10 * WHEEL_VALUE * 655 / 21000000f;// cal
-
 	}
 
 	/** 分段显示速度法 ，在取得控制器的值后，要先调用一次用来格式化值 */
