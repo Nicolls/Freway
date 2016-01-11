@@ -84,7 +84,9 @@ public class MapUtil implements OnCameraChangeListener {
 	}
 	/** 清空地图 */
 	public void clearMap() {
-		mGoogleMap.clear();
+		if(mGoogleMap!=null){
+			mGoogleMap.clear();
+		}
 	}
 
 	/** 注册广播 */
@@ -128,7 +130,9 @@ public class MapUtil implements OnCameraChangeListener {
 			}else{
 				poly.add(from, to).width(POLY_LINE_WIDTH).color(Color.parseColor("#e10019"));
 			}
-			mGoogleMap.addPolyline(poly);
+			if(mGoogleMap!=null){
+				mGoogleMap.addPolyline(poly);
+			}
 //		}
 	}
 	
@@ -136,13 +140,16 @@ public class MapUtil implements OnCameraChangeListener {
 	public Polyline drawPolyLine(LatLng from, LatLng to) {
 		// ToastUtils.toast(this, "paint");
 //		if (!paintFromLocation.isPause()) {
+		Polyline polyline=null;
 			PolylineOptions poly = new PolylineOptions();
 			from = new LatLng(from.latitude- ANGLE_OFFSET,
 					from.longitude - ANGLE_OFFSET);
 			to = new LatLng(to.latitude- ANGLE_OFFSET,
 					to.longitude - ANGLE_OFFSET);
 			poly.add(from, to).width(POLY_LINE_WIDTH).color(Color.parseColor("#e10019"));
-			Polyline polyline=mGoogleMap.addPolyline(poly);
+			if(mGoogleMap!=null){
+				polyline=mGoogleMap.addPolyline(poly);
+			}
 			return polyline;
 //		}
 	}
@@ -182,6 +189,10 @@ public class MapUtil implements OnCameraChangeListener {
 					handler.sendMessage(msg);
 				}
 			});
+		}else{
+			Message msg=Message.obtain();
+			msg.obj="";
+			handler.sendMessage(msg);
 		}
 		
 	}
@@ -247,52 +258,56 @@ public class MapUtil implements OnCameraChangeListener {
 
 	/** 根据travelId显示地图轨迹记录 */
 	public void showRoute(long travelId) {
-		mGoogleMap.clear();
-		// mGoogleMap.getUiSettings().setScrollGesturesEnabled(false);
-		Travel travel = DBHelper.getInstance(context).findTravelById(travelId);
-		List<TravelLocation> routes = DBHelper.getInstance(context).listTravelLocation(travelId);
-		LogUtils.i("Freway", "开始时间：" + travel.getStartTime() + "--结束时间：" + travel.getEndTime() + "-花费时间"
-				+ travel.getSpendTime() + "距离：" + travel.getDistance());
-				// List<LatLng> list = new ArrayList<LatLng>();
+		if(mGoogleMap!=null){
+			mGoogleMap.clear();
+			// mGoogleMap.getUiSettings().setScrollGesturesEnabled(false);
+			Travel travel = DBHelper.getInstance(context).findTravelById(travelId);
+			List<TravelLocation> routes = DBHelper.getInstance(context).listTravelLocation(travelId);
+			LogUtils.i("Freway", "开始时间：" + travel.getStartTime() + "--结束时间：" + travel.getEndTime() + "-花费时间"
+					+ travel.getSpendTime() + "距离：" + travel.getDistance());
+					// List<LatLng> list = new ArrayList<LatLng>();
 
-		// 画一个遮罩层
-		mGoogleMap.setOnMapLoadedCallback(new OnMapLoadedCallback() {
+			// 画一个遮罩层
+			mGoogleMap.setOnMapLoadedCallback(new OnMapLoadedCallback() {
 
-			@Override
-			public void onMapLoaded() {
-				LogUtils.i(TAG, "地图加载完成了");
-				drawScreenPolygon();
-				mGoogleMap.setOnCameraChangeListener(historyCameraChange);
+				@Override
+				public void onMapLoaded() {
+					LogUtils.i(TAG, "地图加载完成了");
+					drawScreenPolygon();
+					mGoogleMap.setOnCameraChangeListener(historyCameraChange);
+				}
+			});
+			// 画轨迹
+			for (int i = 0; i < routes.size(); i++) {
+				TravelLocation travelStart = routes.get(i);
+				if ((i + 1) < routes.size()) {// 有两个点可以画
+					TravelLocation travelEnd = routes.get(i + 1);
+					drawPolyLine(travelStart, travelEnd, true);
+				}
 			}
-		});
-		// 画轨迹
-		for (int i = 0; i < routes.size(); i++) {
-			TravelLocation travelStart = routes.get(i);
-			if ((i + 1) < routes.size()) {// 有两个点可以画
-				TravelLocation travelEnd = routes.get(i + 1);
-				drawPolyLine(travelStart, travelEnd, true);
+			// 画起终点标识
+			if (routes.size() > 1) {
+				markStartEndPoint(routes.get(0), routes.get(routes.size() - 1));
 			}
+			// 移动到包含所有点的位置
+			cameraContainPoint(routes);
 		}
-		// 画起终点标识
-		if (routes.size() > 1) {
-			markStartEndPoint(routes.get(0), routes.get(routes.size() - 1));
-		}
-		// 移动到包含所有点的位置
-		cameraContainPoint(routes);
 	}
 
 	/** 画起始点跟终点 */
 	private void markStartEndPoint(TravelLocation start, TravelLocation end) {
-		MarkerOptions optionsStart = new MarkerOptions();
-		LatLng startLatLng = new LatLng(start.getLocation().getLatitude(), start.getLocation().getLongitude());
-		optionsStart.position(startLatLng).title("起始位置")
-				.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-		mGoogleMap.addMarker(optionsStart);
-		MarkerOptions optionsEnd = new MarkerOptions();
-		LatLng endLatLng = new LatLng(end.getLocation().getLatitude(), end.getLocation().getLongitude());
-		optionsEnd.position(endLatLng).title("终点位置")
-				.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-		mGoogleMap.addMarker(optionsEnd);
+		if(mGoogleMap!=null){
+			MarkerOptions optionsStart = new MarkerOptions();
+			LatLng startLatLng = new LatLng(start.getLocation().getLatitude(), start.getLocation().getLongitude());
+			optionsStart.position(startLatLng).title("起始位置")
+					.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+			mGoogleMap.addMarker(optionsStart);
+			MarkerOptions optionsEnd = new MarkerOptions();
+			LatLng endLatLng = new LatLng(end.getLocation().getLatitude(), end.getLocation().getLongitude());
+			optionsEnd.position(endLatLng).title("终点位置")
+					.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+			mGoogleMap.addMarker(optionsEnd);
+		}
 	}
 
 	/** 将地图移动到包含所有点的地方 */
@@ -307,6 +322,7 @@ public class MapUtil implements OnCameraChangeListener {
 				boundsBuilder.include(latlng);
 			}
 			// Move camera to show all markers and locations
+			if(mGoogleMap!=null)
 			mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(),ScreenUtils.getScreenWidth(context),
 					ScreenUtils.getScreenHeight(context),170));
 		}
@@ -314,19 +330,21 @@ public class MapUtil implements OnCameraChangeListener {
 
 	/** 画一个填满地图的polygon */
 	private void drawScreenPolygon() {
-		if (polygon != null) {
-			polygon.remove();
+		if(mGoogleMap!=null){
+			if (polygon != null) {
+				polygon.remove();
+			}
+			LatLngBounds bounds = mGoogleMap.getProjection().getVisibleRegion().latLngBounds;
+			LatLng nothEast = bounds.northeast;
+			LatLng southWest = bounds.southwest;
+			LatLng leftTop = new LatLng(nothEast.latitude, southWest.longitude);
+			LatLng rightTop = nothEast;
+			LatLng rightBottom = new LatLng(southWest.latitude, nothEast.longitude);
+			LatLng leftBottom = southWest;
+			PolygonOptions options = new PolygonOptions().add(leftTop, rightTop, rightBottom, leftBottom).strokeWidth(0)
+					.fillColor(Color.argb(100, 0, 0, 0));
+			polygon = mGoogleMap.addPolygon(options);
 		}
-		LatLngBounds bounds = mGoogleMap.getProjection().getVisibleRegion().latLngBounds;
-		LatLng nothEast = bounds.northeast;
-		LatLng southWest = bounds.southwest;
-		LatLng leftTop = new LatLng(nothEast.latitude, southWest.longitude);
-		LatLng rightTop = nothEast;
-		LatLng rightBottom = new LatLng(southWest.latitude, nothEast.longitude);
-		LatLng leftBottom = southWest;
-		PolygonOptions options = new PolygonOptions().add(leftTop, rightTop, rightBottom, leftBottom).strokeWidth(0)
-				.fillColor(Color.argb(100, 0, 0, 0));
-		polygon = mGoogleMap.addPolygon(options);
 	}
 
 	/**
