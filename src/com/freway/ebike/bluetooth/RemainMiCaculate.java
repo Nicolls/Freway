@@ -64,6 +64,7 @@ public class RemainMiCaculate {
 	// int remainmileage_value;//毫安时
 	// int remaincap;//剩余容量
 	int remainMi=-1;//剩余里程
+	int cap=-1;//剩余容量
 	int remain_mileage_proc(byte[]res,int cadence,int mileage, int zhuli_lever, int remainmileage_value, int remaincap) // 传参：当前读取到的骑行里程值
 	{
 		int zhuli_min, zhuli_max; // 理论最大值和最小值，防止突变
@@ -301,7 +302,8 @@ public class RemainMiCaculate {
 		}
 		int result = (int) remaincap * mil_zhuli / 8000;
 		remainMi=result;//不记录数据，要记录数据，把此行代码注释掉
-		if(remainMi!=result){//剩余里程改变的时候记录数据
+		cap=remaincap;//不记录数据，要记录数据，把此行代码注释掉
+		if(remainMi!=result||cap!=remaincap){//剩余里程或者剩余容量改变的时候记录数据
 			int batteryResidueCapacity=remaincap;
 			if (batteryResidueCapacity > 2) {//对电量百分比进行数据调整
 				batteryResidueCapacity = (batteryResidueCapacity - 3) * 100 / 97;
@@ -329,6 +331,7 @@ public class RemainMiCaculate {
 			LogUtils.writeLogtoFile("剩余里程计算日志", sb.toString());
 		}
 		remainMi=result;
+		cap=remaincap;
 		return result;
 
 	}
