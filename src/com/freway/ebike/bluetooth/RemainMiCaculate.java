@@ -1,6 +1,7 @@
 package com.freway.ebike.bluetooth;
 
 import com.freway.ebike.protocol.ProtocolTool;
+import com.freway.ebike.utils.CommonUtil;
 import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.SPUtils;
 
@@ -62,16 +63,9 @@ public class RemainMiCaculate {
 	// int zhuli_lever;//档位
 	// int remainmileage_value;//毫安时
 	// int remaincap;//剩余容量
-	int remaincap;
+	int remainMi=-1;//剩余里程
 	int remain_mileage_proc(byte[]res,int cadence,int mileage, int zhuli_lever, int remainmileage_value, int remaincap) // 传参：当前读取到的骑行里程值
 	{
-		boolean isRecord = false;
-		if (remaincap != this.remaincap) {
-			isRecord = true;
-		}
-		isRecord = false;//不存储日志
-		
-		this.remaincap = remaincap;
 		int zhuli_min, zhuli_max; // 理论最大值和最小值，防止突变
 		if (zhuli_lever > 1) {
 			if (remaincap < volume_zhuli) {
@@ -306,9 +300,20 @@ public class RemainMiCaculate {
 			eight_setp = 0;
 		}
 		int result = (int) remaincap * mil_zhuli / 8000;
-		if (isRecord) {
+		remainMi=result;//不记录数据，要记录数据，把此行代码注释掉
+		if(remainMi!=result){//剩余里程改变的时候记录数据
+			int batteryResidueCapacity=remaincap;
+			if (batteryResidueCapacity > 2) {//对电量百分比进行数据调整
+				batteryResidueCapacity = (batteryResidueCapacity - 3) * 100 / 97;
+			} else {
+				batteryResidueCapacity = 0;
+			}
+			int batteryAh=remainmileage_value;
+			if (batteryAh <= 20) {
+				batteryAh = 78;
+			}
 			String text = "cadence:" + cadence + " mileage:" + mileage + " zhuli_lever:" + zhuli_lever
-					+ " remainmileage_value:" + remainmileage_value + " remaincap:" + remaincap + "--->剩余里程:" + result
+					+ " remainmileage_value:" + remainmileage_value +" remaincap:" + remaincap +" 显示"+batteryResidueCapacity+ "%--->剩余里程:" + result+"km 迈显示"+CommonUtil.formatFloatAccuracy(result*0.6f, 1)+"mi"
 					+ "\n";
 			StringBuffer sb = new StringBuffer();
 			sb.append("接收到的蓝牙数据byte[]:"+ProtocolTool.bytesToHexString(res)+"\n");
@@ -323,6 +328,7 @@ public class RemainMiCaculate {
 			sb.append("\n");
 			LogUtils.writeLogtoFile("剩余里程计算日志", sb.toString());
 		}
+		remainMi=result;
 		return result;
 
 	}
