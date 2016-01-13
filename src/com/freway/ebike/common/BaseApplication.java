@@ -119,4 +119,19 @@ public class BaseApplication extends MultiDexApplication{
 			return true;
 		}
 	}
+	/*
+	 * project.properties
+	 * #This project.properties file is being managed by Fabric.
+#Manifest merger has been enabled to pull in kit resources.
+#Wed Jan 06 15:21:29 CST 2016
+manifestmerger.enabled=true
+proguard.config=proguard.cfg
+android.library.reference.4=..\\facebook
+android.library.reference.3=..\\appcompat_v7
+target=android-22
+android.library.reference.2=..\\google-play-services_lib
+android.library.reference.1=kit-libs/com-crashlytics-sdk-android_crashlytics_2
+	 * 
+	 * 
+	 * */
 }
