@@ -388,6 +388,9 @@ public class BlueToothService extends BaseService {
 
 	/** 判断当前蓝牙是否可用并打开状态，如果是则开启connection,默认开启服务，反之则打开蓝牙 */
 	private boolean stateEnableStep() {
+		if(mBluetoothAdapter==null){
+			return false;
+		}
 		boolean enable = mBluetoothAdapter.isEnabled();
 		if (!enable) {
 			mBluetoothAdapter.enable();
@@ -431,7 +434,9 @@ public class BlueToothService extends BaseService {
 		if (isScanning) {
 			printlnMessage("停止扫描");
 			isScanning = false;
-			mBluetoothAdapter.stopLeScan(bleScanCallback);
+			if(mBluetoothAdapter!=null&&bleScanCallback!=null){
+				mBluetoothAdapter.stopLeScan(bleScanCallback);
+			}
 		}
 	}
 
