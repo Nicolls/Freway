@@ -456,7 +456,7 @@ public class BlueToothService extends BaseService {
 				stopScanBluetoothDevice();// 停止扫描
 				connectDevice(device.getAddress());
 			} else {// 如果address为空，则返回广播到的设备
-				if(!TextUtils.isEmpty(device.getAddress())){
+				if(!TextUtils.isEmpty(device.getAddress())&&!TextUtils.isEmpty(device.getName())){
 					printlnMessage("返回扫描到的设备：" + device.getName());
 					broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SCAN_DEVICE,BlueToothConstants.RESULT_SUCCESS, device);
 				}
