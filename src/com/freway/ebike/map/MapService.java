@@ -51,9 +51,9 @@ public class MapService extends Service implements ConnectionCallbacks,
 	/** 国内定位精度偏差 */
 	private static final double LNG_OFFSET = 0.0061154366;
 	private static final LocationRequest REQUEST = LocationRequest.create()
-			.setInterval(5 * 1000) // 5
+			.setInterval(2000) // 5
 									// seconds
-			.setFastestInterval(16) // 16ms = 60fps
+			.setFastestInterval(100) // 16ms = 60fps
 			.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 	private GoogleApiClient mGoogleApiClient;
 	private static final float RECORD_MIN_DISTANCE = 2;// 达到记录的最短距离2米，但是实时 是不管多少都要画在地图上
