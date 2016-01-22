@@ -521,6 +521,7 @@ public class BlueToothService extends BaseService {
 
 				case TelephonyManager.CALL_STATE_IDLE:
 					printlnMessage("拨打");
+					EBikeStatus.getInstance(context).setBikeStatus(EBikeStatus.PHONE_CALL, EBConstant.OFF);
 					break;
 				}
 			}
