@@ -186,7 +186,7 @@ public class MapService extends Service implements ConnectionCallbacks,
 //		LogUtils.i(TAG, "onLocationChanged" + location.getLatitude() + "--"
 //				+ location.getLongitude());
 		TravelLocation travelLocation = new TravelLocation(location);
-		travelLocation=formatLocationWithChina(travelLocation);
+//		travelLocation=formatLocationWithChina(travelLocation);//纠正经纬度。发布的时候要去掉
 		travelLocation.setTravelId(BaseApplication.travelId);
 		travelLocation.setSpeed(EBikeTravelData.getInstance(this).insSpeed);
 		travelLocation.setAltitude(location.getAltitude());
