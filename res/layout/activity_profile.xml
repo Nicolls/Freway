@@ -74,7 +74,7 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        style="@style/ProfileTotalUnit"
-	        android:text="@string/total_miles"
+	        android:text="@string/total_km"
 	        />
 	</RelativeLayout>
 	 <RelativeLayout 

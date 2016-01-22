@@ -106,6 +106,7 @@
     <string name="profile">Profile</string>
     <string name="name">Name</string>
     <string name="total_miles">TOTAL MILES</string>
+    <string name="total_km">TOTAL KILOMETER</string>
     <string name="total_ride_time">TOTAL RIDE TIME</string>
     <string name="records">Records</string>
     <string name="grades">Grades</string>

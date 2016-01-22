@@ -124,10 +124,16 @@ public class ProfileActivity extends BaseActivity implements OnClickListener {
 		}
 		try {
 			float distance=Float.parseFloat(user.getTotal_distance());//km
+			if (SPUtils.getUnitOfDistance(this) == EBConstant.DISTANCE_UNIT_MPH) {//迈
+				distance = distance * 0.6f;// km->mi
+				mileageTitleTv.setText(R.string.total_miles);
+			}else{
+				mileageTitleTv.setText(R.string.total_km);
+			}
+			
 			float time=Float.parseFloat(user.getTotal_time());//秒
-			distance=distance*0.6f;//km->mi
-			mileageValueTv.setText((int)CommonUtil.formatFloatAccuracy(distance, 1)+"");
-			timeValueTv.setText((int)CommonUtil.formatFloatAccuracy(time/3600,0)+"h");
+			mileageValueTv.setText(CommonUtil.formatFloatAccuracy(distance, 1)+"");
+			timeValueTv.setText(CommonUtil.formatFloatAccuracy(time/3600,1)+"h");
 		} catch (Exception e) {
 			LogUtils.e(tag, "parsefloat error"+e.getMessage());
 		}
