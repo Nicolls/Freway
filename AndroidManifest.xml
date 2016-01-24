@@ -46,10 +46,10 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
-        <!-- 地图  api_key mac:AIzaSyCdOmLibSAIvOIw5PNAaewKJa3xndMjXAI  windows:AIzaSyD5min8wElQ-_VUQcmmcUIWVVsFyOdG0I0 -->
+        <!-- 地图  api_key release:AIzaSyAFbZ56gtxokZq7x0ysaJoMNNQB-R-MCe0  mac:AIzaSyCdOmLibSAIvOIw5PNAaewKJa3xndMjXAI  windows:AIzaSyD5min8wElQ-_VUQcmmcUIWVVsFyOdG0I0 -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD5min8wElQ-_VUQcmmcUIWVVsFyOdG0I0" />
+            android:value="AIzaSyAFbZ56gtxokZq7x0ysaJoMNNQB-R-MCe0" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -149,7 +149,7 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <!-- company_key: 1668278680085158 mac_key:748116458653988 -->
+        <!-- company_key: 1668278680085158 mac_key:748116458653988 release_key:965428893549865-->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/app_id" />
