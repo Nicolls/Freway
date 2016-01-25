@@ -795,6 +795,9 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 
 			} else {
 				// test(TravelConstant.TRAVEL_STATE_START);
+				if (mMapUtil != null) {
+					mMapUtil.clearMap();
+				}
 				BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this, TravelConstant.TRAVEL_STATE_START);
 			}
 			break;

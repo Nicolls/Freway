@@ -3,7 +3,7 @@
 
     <string name="app_name">Freway</string><!-- app名称 -->
     <!-- 第三方sdk -->
-    <string name="app_id">1668278680085158</string>
+    <string name="app_id">965428893549865</string>
     <string name="call_back_url">app.ifreway.com/index.php</string>
     <!-- toast提示，弹出框 -->
     <string name="gps_not_open">Your GPS seems to be disabled, do you want to enable it?</string><!-- 你的手机不支持蓝牙-->
@@ -125,6 +125,8 @@
     <string name="version">Version</string>
     <string name="exit">EXIT</string>
     <string name="unit_distance_settings">Unit Distance Settings</string>
+    <string name="unbind_ble_will_abandon">unbind eBike Controller will end the current trip</string>
+    <string name="unbind">unbind</string>
     <string name="portrait_settings">Portrait Settings</string>
     <string name="album">Album</string>
     <string name="camera">Camera</string>

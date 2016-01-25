@@ -16,11 +16,13 @@ import com.freway.ebike.bluetooth.BLEScanConnectActivity;
 import com.freway.ebike.bluetooth.BlueToothConstants;
 import com.freway.ebike.bluetooth.BlueToothUtil;
 import com.freway.ebike.common.BaseActivity;
+import com.freway.ebike.common.BaseApplication;
 import com.freway.ebike.common.EBConstant;
 import com.freway.ebike.crop.BitmapUtil;
 import com.freway.ebike.crop.CropHandler;
 import com.freway.ebike.crop.CropHelper;
 import com.freway.ebike.crop.CropParams;
+import com.freway.ebike.map.TravelConstant;
 import com.freway.ebike.model.RspUpdatePhoto;
 import com.freway.ebike.model.RspUserInfo;
 import com.freway.ebike.model.RspVersion;
@@ -280,14 +282,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 							@Override
 							public void onClick(AlertDialog dialog,View v) {
 								dialog.dismiss();
-								SPUtils.setEBikeAddress(SettingActivity.this, "");
-								snValue.setText(getString(R.string.ble_not_bind));
-								Intent intent = new Intent(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER);
-								intent.putExtra(BlueToothConstants.EXTRA_HANDLE_TYPE,
-										BlueToothConstants.HANDLE_SERVER_DISCONNECT);
-								intent.putExtra(BlueToothConstants.EXTRA_DATA, "");
-								SettingActivity.this.sendBroadcast(intent);
-								ToastUtils.toast(SettingActivity.this, getString(R.string.tip_unbind_ebike_success));
+								unbindBleCharge();
 							}
 						}, new AlertClick() {
 
@@ -336,7 +331,47 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			break;
 		}
 	}
+	/**解绑判断*/
+	private void unbindBleCharge(){
+		if(BaseApplication.travelState==TravelConstant.TRAVEL_STATE_COMPLETED||
+				BaseApplication.travelState==TravelConstant.TRAVEL_STATE_NONE||
+				BaseApplication.travelState==TravelConstant.TRAVEL_STATE_STOP){//没有在行程中
+			unbindBle();
+		}else{//如果正在行程中，则提示
+			AlertUtil.getInstance().alertChoice(this,getString(R.string.unbind_ble_will_abandon),
+					getString(R.string.unbind), getString(R.string.cancel),
+					new AlertClick() {
 
+						@Override
+						public void onClick(AlertDialog dialog,View v) {
+							// mph
+							dialog.dismiss();
+							unbindBle();
+						}
+					}, new AlertClick() {
+
+						@Override
+						public void onClick(AlertDialog dialog,View v) {
+							// mi
+							dialog.dismiss();
+						}
+					},true);
+		}
+	}
+	/**解绑蓝牙*/
+	private void unbindBle(){
+		SPUtils.setEBikeAddress(SettingActivity.this, "");
+		snValue.setText(getString(R.string.ble_not_bind));
+		BaseApplication.sendStateChangeBroadCast(SettingActivity.this,
+				TravelConstant.TRAVEL_STATE_STOP);
+		Intent intent = new Intent(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER);
+		intent.putExtra(BlueToothConstants.EXTRA_HANDLE_TYPE,
+				BlueToothConstants.HANDLE_SERVER_DISCONNECT);
+		intent.putExtra(BlueToothConstants.EXTRA_DATA, "");
+		SettingActivity.this.sendBroadcast(intent);
+		ToastUtils.toast(SettingActivity.this, getString(R.string.tip_unbind_ebike_success));
+	}
+	
 	/** 版本更新 */
 	private void updateApk(String downloadUrl) {
 		isDownloading = true;

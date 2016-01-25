@@ -264,23 +264,29 @@ public class BluetoothConnection {
      */
     public void setCharacteristicNotification(BluetoothGattCharacteristic characteristic,
                                               boolean enabled) {
-        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-            Log.w(TAG, "BluetoothAdapter not initialized");
-            return;
-        }
-        mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
+    	try {
+    		if (mBluetoothAdapter == null || mBluetoothGatt == null) {
+                Log.w(TAG, "BluetoothAdapter not initialized");
+                return;
+            }
+            mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
 
-        // This is specific to Heart Rate Measurement.
-        byte[]arr=null;
-        if(enabled){
-        	arr=BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE;
-        }else{
-        	arr=BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE;
-        }
-        BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
-                UUID.fromString("00002902-0000-1000-8000-00805F9B34FB"));
-        descriptor.setValue(arr);
-        mBluetoothGatt.writeDescriptor(descriptor);
+            // This is specific to Heart Rate Measurement.
+            byte[]arr=null;
+            if(enabled){
+            	arr=BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE;
+            }else{
+            	arr=BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE;
+            }
+            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
+                    UUID.fromString("00002902-0000-1000-8000-00805F9B34FB"));
+            descriptor.setValue(arr);
+            if(descriptor!=null&&arr!=null){
+            	mBluetoothGatt.writeDescriptor(descriptor);
+            }
+		} catch (Exception e) {
+			LogUtils.i(TAG, "设置setCharacteristicNotification出错");
+		}
     }
 
     /**
