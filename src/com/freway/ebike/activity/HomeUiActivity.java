@@ -462,12 +462,16 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 				mTravelTip.hideTip();
 			} else if (state == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 伪暂停
 				//先判断如果距离为0就说明车子没有动，那么要回到停止状态
-				if(EBikeTravelData.getInstance(getApplicationContext()).distance<=0){
-					BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
-							TravelConstant.TRAVEL_STATE_STOP);
-					if (mMapUtil != null) {
-						mMapUtil.clearMap();
-					}
+				if(EBikeTravelData.getInstance(getApplicationContext()).distance<=0){//只是显示为一个自动停止的状态
+//					BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
+//							TravelConstant.TRAVEL_STATE_STOP);
+//					if (mMapUtil != null) {
+//						mMapUtil.clearMap();
+//					}
+					mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
+					mSpeedStateSpeedText.setVisibility(View.GONE);
+					mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_start_enable);
+					mTravelTip.hideTip();
 					mSpeedStateTipText.showTip(getString(R.string.tip_ebike_stop));
 				}else{
 					//伪暂停的时候要把地图给缩放到包括所有点的时候。
@@ -788,7 +792,12 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			} else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 如果是伪暂停,要先设置为暂停状态
 			// BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
 			// TravelConstant.TRAVEL_STATE_PAUSE);
-				alertTravelChoice();
+				if(mSpeedStateSpeedButton.getVisibility()==View.VISIBLE){//自动停止的伪暂停
+					 BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
+					 TravelConstant.TRAVEL_STATE_RESUME);
+				}else{//已经骑行过的伪暂停 
+					alertTravelChoice();
+				}
 			} else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_START
 					|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_RESUME) {
 				BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this, TravelConstant.TRAVEL_STATE_PAUSE);
