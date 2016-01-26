@@ -1,4 +1,4 @@
-package com.freway.ebike.db;
+package com.freway.ebike.model;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

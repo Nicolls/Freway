@@ -18,8 +18,8 @@ import android.text.TextUtils;
 
 import com.freway.ebike.common.BaseApplication;
 import com.freway.ebike.db.DBHelper;
-import com.freway.ebike.db.Travel;
-import com.freway.ebike.db.TravelLocation;
+import com.freway.ebike.model.Travel;
+import com.freway.ebike.model.TravelLocation;
 import com.freway.ebike.utils.FileUtils;
 import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.ScreenUtils;

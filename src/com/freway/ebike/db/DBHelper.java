@@ -10,6 +10,9 @@ import com.freway.ebike.db.EBikeTable.TravelEntry;
 import com.freway.ebike.db.EBikeTable.TravelLocationEntry;
 import com.freway.ebike.db.EBikeTable.TravelSpeedEntry;
 import com.freway.ebike.map.TravelConstant;
+import com.freway.ebike.model.Travel;
+import com.freway.ebike.model.TravelLocation;
+import com.freway.ebike.model.TravelSpeed;
 import com.freway.ebike.utils.LogUtils;
 import com.google.gson.Gson;
 

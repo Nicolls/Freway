@@ -6,12 +6,12 @@ import java.util.List;
 
 import com.freway.ebike.R;
 import com.freway.ebike.db.DBHelper;
-import com.freway.ebike.db.Travel;
-import com.freway.ebike.db.TravelLocation;
-import com.freway.ebike.db.TravelSpeed;
 import com.freway.ebike.map.TravelConstant;
 import com.freway.ebike.model.EBErrorResponse;
 import com.freway.ebike.model.EBResponse;
+import com.freway.ebike.model.Travel;
+import com.freway.ebike.model.TravelLocation;
+import com.freway.ebike.model.TravelSpeed;
 import com.freway.ebike.net.DataUpdateListener;
 import com.freway.ebike.net.EBikeRequestService;
 import com.freway.ebike.net.EBikeRequestServiceFactory;

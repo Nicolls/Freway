@@ -1,4 +1,4 @@
-package com.freway.ebike.db;
+package com.freway.ebike.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

@@ -33,7 +33,7 @@ import com.freway.ebike.bluetooth.BlueToothService;
 import com.freway.ebike.bluetooth.EBikeTravelData;
 import com.freway.ebike.common.BaseApplication;
 import com.freway.ebike.db.DBHelper;
-import com.freway.ebike.db.TravelLocation;
+import com.freway.ebike.model.TravelLocation;
 import com.freway.ebike.utils.LogUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
