@@ -192,6 +192,6 @@
             android:exported="true"
             android:permission="com.freway.ebike.bluetooth.BlueToothService.FREWAY_BLUETOOTH" />
     </application>
-    <!-- keytool -exportcert -alias androiddebugkey -keystore C:\Users\Nicolls\.android\debug.keystore | openssl sha1 -binary | openssl base64 -->
+    <!-- keytool -exportcert -alias freway -keystore C:\android_ide\keystore\freway.keystore | openssl sha1 -binary | openssl base64 -->
 
 </manifest>
