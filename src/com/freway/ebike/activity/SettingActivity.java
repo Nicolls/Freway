@@ -339,7 +339,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			unbindBle();
 		}else{//如果正在行程中，则提示
 			AlertUtil.getInstance().alertChoice(this,getString(R.string.unbind_ble_will_abandon),
-					getString(R.string.unbind), getString(R.string.cancel),
+					getString(R.string.yes), getString(R.string.no),
 					new AlertClick() {
 
 						@Override
