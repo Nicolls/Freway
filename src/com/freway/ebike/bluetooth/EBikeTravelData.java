@@ -251,6 +251,12 @@ public class EBikeTravelData implements Serializable {
 		endTime = startTime;
 		isCalUiTime = true;
 		isPauseTime = false;
+		//刚刚开始行程的时候要插入一个速度为0的点
+		TravelSpeed travelSpeed = new TravelSpeed();
+		travelSpeed.setTravelId(travelId);
+		travelSpeed.setSpeed(0);
+		DBHelper.getInstance(context).insertTravelSpeed(travelSpeed);
+		
 		if (spendTimeThread == null) {
 			if (type == TravelConstant.TRAVEL_TYPE_IM) {
 				spendTimeThread = new SpendTimeThread();
@@ -750,12 +756,6 @@ public class EBikeTravelData implements Serializable {
 						zeroSpeedCount = 0;
 					}
 					if (spendTime != 0 && (spendTime % RECORD_TIME_FRE) == 0) {// 每10秒存储一个瞬时速度
-						if(spendTime==1){//第1秒的时候记录一个为0的速度值
-							TravelSpeed travelSpeed = new TravelSpeed();
-							travelSpeed.setTravelId(travelId);
-							travelSpeed.setSpeed(0f);
-							DBHelper.getInstance(context).insertTravelSpeed(travelSpeed);
-						}
 						TravelSpeed travelSpeed = new TravelSpeed();
 						travelSpeed.setTravelId(travelId);
 						travelSpeed.setSpeed(CommonUtil.formatFloatAccuracy(insSpeed, 1));
