@@ -749,8 +749,13 @@ public class EBikeTravelData implements Serializable {
 					} else {
 						zeroSpeedCount = 0;
 					}
-					
 					if (spendTime != 0 && (spendTime % RECORD_TIME_FRE) == 0) {// 每10秒存储一个瞬时速度
+						if(spendTime==1){//第1秒的时候记录一个为0的速度值
+							TravelSpeed travelSpeed = new TravelSpeed();
+							travelSpeed.setTravelId(travelId);
+							travelSpeed.setSpeed(0f);
+							DBHelper.getInstance(context).insertTravelSpeed(travelSpeed);
+						}
 						TravelSpeed travelSpeed = new TravelSpeed();
 						travelSpeed.setTravelId(travelId);
 						travelSpeed.setSpeed(CommonUtil.formatFloatAccuracy(insSpeed, 1));
