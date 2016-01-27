@@ -572,4 +572,18 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 	public CropParams getCropParams() {
 		return mCropParams;
 	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if(snValue!=null){
+			if (!TextUtils.isEmpty(SPUtils.getEBkieAddress(this))) {
+				snValue.setText(SPUtils.getEBkieName(this));
+			} else {
+				snValue.setText(getString(R.string.ble_not_bind));
+			}
+		}
+	}
+	
+	
 }
