@@ -24,6 +24,7 @@ public final class EBikeTable {
         public static final String TABLE_NAME = "travel_speed";
         public static final String COLUMN_TRAVEL_ID = "travelId";
         public static final String COLUMN_SPEED = "speed";
+        public static final String COLUMN_DISTANCE = "distance";
     }
  	/**蓝牙数据表*/
     public static abstract class TravelBluetoothEntry implements BaseColumns {

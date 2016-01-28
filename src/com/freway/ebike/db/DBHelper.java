@@ -54,9 +54,11 @@ public class DBHelper extends SQLiteOpenHelper {
 						+ " INTEGER PRIMARY KEY AUTOINCREMENT," + TravelLocationEntry.COLUMN_TRAVEL_ID + " INTEGER,"
 						+ TravelLocationEntry.COLUMN_ISPAUSE + " INTEGER," + TravelLocationEntry.COLUMN_DESCRIPTION
 						+ " TEXT," + TravelLocationEntry.COLUMN_LOCATION + " TEXT," + TravelLocationEntry.COLUMN_SPEED + " REAL"+");");
-		// 平均速度表
+		// 速度表
 		sqliteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TravelSpeedEntry.TABLE_NAME + " (" + TravelSpeedEntry._ID
-				+ " INTEGER PRIMARY KEY AUTOINCREMENT," + TravelSpeedEntry.COLUMN_TRAVEL_ID + " INTEGER,"+ TravelSpeedEntry.COLUMN_SPEED + " REAL"+");");
+				+ " INTEGER PRIMARY KEY AUTOINCREMENT," + TravelSpeedEntry.COLUMN_TRAVEL_ID + " INTEGER,"
+				+ TravelSpeedEntry.COLUMN_SPEED + " REAL,"
+				+ TravelSpeedEntry.COLUMN_DISTANCE + " REAL"+");");
 
 		// 蓝牙数据表
 		sqliteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TravelBluetoothEntry.TABLE_NAME + " ("
@@ -315,6 +317,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(TravelSpeedEntry.COLUMN_TRAVEL_ID, travelSpeed.getTravelId());
 		contentValues.put(TravelSpeedEntry.COLUMN_SPEED, travelSpeed.getSpeed());
+		contentValues.put(TravelSpeedEntry.COLUMN_DISTANCE, travelSpeed.getDistance());
 		long id = sqliteDatabase.insert(TravelSpeedEntry.TABLE_NAME, null, contentValues);
 		travelSpeed.setId(id);
 		LogUtils.i(TAG, "insertTravelSpeed" + id);
@@ -326,6 +329,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(TravelSpeedEntry.COLUMN_TRAVEL_ID, travelSpeed.getTravelId());
 		contentValues.put(TravelSpeedEntry.COLUMN_SPEED, travelSpeed.getSpeed());
+		contentValues.put(TravelSpeedEntry.COLUMN_DISTANCE, travelSpeed.getDistance());
 		int row = sqliteDatabase.update(TravelSpeedEntry.TABLE_NAME, contentValues, TravelSpeedEntry._ID + "=?",
 				new String[] { travelSpeed.getId() + "" });
 		LogUtils.i(TAG, "updateTravelSpeed" + row);
@@ -341,7 +345,8 @@ public class DBHelper extends SQLiteOpenHelper {
 			TravelSpeed travel = new TravelSpeed();
 			travel.setId(result.getLong(result.getColumnIndex(TravelSpeedEntry._ID)));
 			travel.setTravelId(result.getInt(result.getColumnIndex(TravelSpeedEntry.COLUMN_TRAVEL_ID)));
-			travel.setSpeed(result.getInt(result.getColumnIndex(TravelSpeedEntry.COLUMN_SPEED)));
+			travel.setSpeed(result.getFloat(result.getColumnIndex(TravelSpeedEntry.COLUMN_SPEED)));
+			travel.setDistance(result.getFloat(result.getColumnIndex(TravelSpeedEntry.COLUMN_DISTANCE)));
 			list.add(travel);
 		}
 		LogUtils.i(TAG, "listTravelSpeed" + list.size());

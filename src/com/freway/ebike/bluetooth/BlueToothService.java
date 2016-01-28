@@ -716,7 +716,7 @@ public class BlueToothService extends BaseService {
 				// state, false, mStateReceiver);
 				return;
 			} else {// 先发一个回头祯和一个数据
-				EBikeTravelData.getInstance(BlueToothService.this).start(0,TravelConstant.TRAVEL_TYPE_HISTORY);
+				EBikeTravelData.getInstance(BlueToothService.this).start(-1,TravelConstant.TRAVEL_TYPE_HISTORY);
 				sendData(CommandCode.HISTORY,
 						new byte[] { EBikeHistoryStatus.setBikeStatus(
 								EBikeHistoryStatus.DATA_INDEX, 0) });// 从头

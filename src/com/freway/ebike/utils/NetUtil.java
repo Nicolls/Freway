@@ -46,6 +46,7 @@ public class NetUtil implements DataUpdateListener{
 			Travel travel=travelList.get(index);
 			List<TravelLocation> locations=DBHelper.getInstance(context).listTravelLocation(travel.getId());
 			List<TravelSpeed> speeds=DBHelper.getInstance(context).listTravelSpeed(travel.getId());
+			//坐标
 			List<String[]> loList=new ArrayList<String[]>();
 			for(TravelLocation location:locations){
 				//[["x1","y1"],["x2","y2"],["x3","y3"]]
@@ -55,9 +56,20 @@ public class NetUtil implements DataUpdateListener{
 				loList.add(temp);
 			}
 			String locationList=gson.toJson(loList);
-			float[]spList=new float[speeds.size()];
-			for(int i=0;i<speeds.size();i++){
-				spList[i]=speeds.get(i).getSpeed();
+			//速度  原来只传速度值，现在要传速度跟距离一起组成的值
+//			float[]spList=new float[speeds.size()];
+//			for(int i=0;i<speeds.size();i++){
+//				spList[i]=speeds.get(i).getSpeed();
+//			}
+//			String speedList=gson.toJson(spList);
+			
+			List<String[]> spList=new ArrayList<String[]>();
+			for(TravelSpeed speed:speeds){
+				//[["x1","y1"],["x2","y2"],["x3","y3"]]
+				String[] temp=new String[2];
+				temp[0]=speed.getDistance()+"";
+				temp[1]=speed.getSpeed()+"";
+				spList.add(temp);
 			}
 			String speedList=gson.toJson(spList);
 			LogUtils.i(TAG, "要上传的行程是："+travel.toString());

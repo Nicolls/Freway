@@ -251,12 +251,14 @@ public class EBikeTravelData implements Serializable {
 		endTime = startTime;
 		isCalUiTime = true;
 		isPauseTime = false;
-		//刚刚开始行程的时候要插入一个速度为0的点
-		TravelSpeed travelSpeed = new TravelSpeed();
-		travelSpeed.setTravelId(travelId);
-		travelSpeed.setSpeed(0);
-		DBHelper.getInstance(context).insertTravelSpeed(travelSpeed);
-		
+		//刚刚开始行程的时候要插入一个速度为0的点,在实时行程下
+		if(travelId>-1){
+			TravelSpeed travelSpeed = new TravelSpeed();
+			travelSpeed.setTravelId(travelId);
+			travelSpeed.setSpeed(0);
+			travelSpeed.setDistance(0);
+			DBHelper.getInstance(context).insertTravelSpeed(travelSpeed);
+		}
 		if (spendTimeThread == null) {
 			if (type == TravelConstant.TRAVEL_TYPE_IM) {
 				spendTimeThread = new SpendTimeThread();
@@ -563,6 +565,13 @@ public class EBikeTravelData implements Serializable {
 					travel.setSync(0);
 					DBHelper.getInstance(context).insertTravel(travel);
 					travelId = travel.getId();
+					//插入一个为0的初始值
+					TravelSpeed travelSpeed = new TravelSpeed();
+					travelSpeed.setTravelId(travelId);
+					travelSpeed.setSpeed(0);
+					travelSpeed.setDistance(0);
+					DBHelper.getInstance(context).insertTravelSpeed(travelSpeed);
+					
 					avgSpeed = 0;
 					maxSpeed = 0;
 					spendTime = 0;
@@ -613,6 +622,7 @@ public class EBikeTravelData implements Serializable {
 				TravelSpeed travelSpeed = new TravelSpeed();
 				travelSpeed.setTravelId(travelId);
 				travelSpeed.setSpeed(CommonUtil.formatFloatAccuracy(avgSpeed, 1));
+				travelSpeed.setDistance(CommonUtil.formatFloatAccuracy(distance, 3));
 				DBHelper.getInstance(context).insertTravelSpeed(travelSpeed);
 			} else {
 				formatFloat2OneAccuracy();
@@ -759,6 +769,7 @@ public class EBikeTravelData implements Serializable {
 						TravelSpeed travelSpeed = new TravelSpeed();
 						travelSpeed.setTravelId(travelId);
 						travelSpeed.setSpeed(CommonUtil.formatFloatAccuracy(insSpeed, 1));
+						travelSpeed.setDistance(CommonUtil.formatFloatAccuracy(distance, 3));
 						DBHelper.getInstance(context).insertTravelSpeed(travelSpeed);
 					}
 				}
