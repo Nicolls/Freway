@@ -280,8 +280,8 @@ public class BluetoothConnection {
             }
             BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
                     UUID.fromString("00002902-0000-1000-8000-00805F9B34FB"));
-            descriptor.setValue(arr);
             if(descriptor!=null&&arr!=null){
+            	descriptor.setValue(arr);
             	mBluetoothGatt.writeDescriptor(descriptor);
             }
 		} catch (Exception e) {
