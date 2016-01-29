@@ -42,6 +42,7 @@ public class WelcomeActivity extends BaseActivity {
 //		Animation anim=AnimationUtils.loadAnimation(this, R.anim.welcome_fade_in_scale);
 //		ib.startAnimation(anim);
 		mEBikeRequestService.version("Android", CommonUtil.getAppVersion(this));//新版本检查
+		
 	}
 
 
