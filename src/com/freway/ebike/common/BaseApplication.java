@@ -2,10 +2,10 @@ package com.freway.ebike.common;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
-import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -26,7 +26,7 @@ import com.freway.ebike.utils.SPUtils;
 /**
  * Application基类
  * */
-public class BaseApplication extends MultiDexApplication{
+public class BaseApplication extends Application{
 
 	public static long travelId=-1;
 	public static int travelState=TravelConstant.TRAVEL_STATE_NONE;
