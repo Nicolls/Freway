@@ -1,9 +1,13 @@
 package com.freway.ebike.view;
 
-import com.freway.ebike.R;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -11,6 +15,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+
+import com.freway.ebike.R;
 
 public class CompassView extends ImageView {
 	private SensorManager sm = null;
@@ -25,16 +31,12 @@ public class CompassView extends ImageView {
 	private Drawable compass;// 图片资源
 	public CompassView(Context context) {
 		super(context);
-		if(!isInEditMode()){
-			init();
-		}
+		init();
 	}
 
 	public CompassView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		if(!isInEditMode()){
-			init();
-		}
+		init();
 	}
 
 	final SensorEventListener myListener = new SensorEventListener() {
@@ -81,13 +83,14 @@ public class CompassView extends ImageView {
 		sm.unregisterListener(myListener);
 	}
 
+	@SuppressLint("NewApi")
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		if (compass == null) {
-			compass = getResources().getDrawable(R.drawable.daymabiao_compass_view);
+		if(compass == null){
+			Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.daymabiao_compass_view);
+			compass=new BitmapDrawable(getResources(),bitmap);
 			compass.setBounds(0, 0, getWidth(), getHeight());// 图片资源在view的位置，此处相当于充满view
-			setImageResource(0);
 		}
 		canvas.save();
 		canvas.scale(0.9f, 0.9f,getWidth() / 2, getHeight() / 2);
