@@ -11,6 +11,7 @@ import com.freway.ebike.utils.CommonUtil;
 import com.freway.ebike.utils.LogUtils;
 import com.google.android.gms.maps.SupportMapFragment;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -92,6 +93,12 @@ public class HomeActivity extends HomeUiActivity implements OnClickListener {
 		if(mBlueToothUtil!=null){
 			mBlueToothUtil.exit();
 		}
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		outState.setClassLoader(getClassLoader());
+		super.onSaveInstanceState(outState);
 	}
 
 }
