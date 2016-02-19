@@ -125,7 +125,7 @@ public class BlueToothService extends BaseService {
 				case BlueToothConstants.HANDLE_SERVER_SYNC:// 同步
 					// 默认只有链接上蓝牙才去同步
 					if(mBlueToothConnction.getState()==BluetoothConnection.STATE_CONNECTED){
-//						syncHistory();//mark  如果想同步历史记录，则打开此处
+						syncHistory();//mark  如果想同步历史记录，则打开此处
 					}else{//没有连接就去扫描，并连接
 						startScanBluetoothDevice();
 					}

@@ -31,9 +31,10 @@ public class BlueToothUtil {
 	private Handler bleStateHandler;
 
 	private Handler travelStateHandler;
-	public BlueToothUtil(Context context, Handler bleStateHandler,Handler travelStateHandler) {
+
+	public BlueToothUtil(Context context, Handler bleStateHandler, Handler travelStateHandler) {
 		this.bleStateHandler = bleStateHandler;
-		this.travelStateHandler=travelStateHandler;
+		this.travelStateHandler = travelStateHandler;
 		this.context = context;
 		startService();
 	}
@@ -62,37 +63,40 @@ public class BlueToothUtil {
 	}
 
 	/** 初始化 */
-	public void initBle(Activity activity,final Handler updateUiHandler) {
+	public void initBle(Activity activity, final Handler updateUiHandler) {
 		receiveSendData(updateUiHandler);
 		if (TextUtils.isEmpty(SPUtils.getEBkieAddress(activity))) {// 未绑定
-			bleConnect(activity,activity.getString(R.string.ble_not_bind),context.getString(R.string.yes),context.getString(R.string.no));
+			bleConnect(activity, activity.getString(R.string.ble_not_bind), context.getString(R.string.yes),
+					context.getString(R.string.no));
 		}
-//		else if (EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_STOP
-//				|| EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_COMPLETED
-//				|| EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_NONE) {
-//			// 开始同步
-//			syncData(syncHandler);
-//		}
+		// else if (EBikeTravelData.travel_state ==
+		// TravelConstant.TRAVEL_STATE_STOP
+		// || EBikeTravelData.travel_state ==
+		// TravelConstant.TRAVEL_STATE_COMPLETED
+		// || EBikeTravelData.travel_state == TravelConstant.TRAVEL_STATE_NONE)
+		// {
+		// // 开始同步
+		// syncData(syncHandler);
+		// }
 	}
 
 	/** 判断Ble是否链接 */
-	public void bleConnect(final Activity activity,String message ,String leftText,String rightText) {
+	public void bleConnect(final Activity activity, String message, String leftText, String rightText) {
 		if (BlueToothService.ble_state != BlueToothConstants.BLE_STATE_CONNECTED) {// 未绑定
-			AlertUtil.getInstance().alertChoice(activity,message,leftText,rightText, 
-				new AlertClick() {
+			AlertUtil.getInstance().alertChoice(activity, message, leftText, rightText, new AlertClick() {
 
 				@Override
-				public void onClick(AlertDialog dialog,View v) {
+				public void onClick(AlertDialog dialog, View v) {
 					dialog.dismiss();
-					toBindBleActivity(activity,BLEScanConnectActivity.HANDLE_SCAN);
+					toBindBleActivity(activity, BLEScanConnectActivity.HANDLE_SCAN);
 				}
 			}, new AlertClick() {
 
 				@Override
-				public void onClick(AlertDialog dialog,View v) {
+				public void onClick(AlertDialog dialog, View v) {
 					dialog.dismiss();
 				}
-			},true);
+			}, true);
 
 		}
 	}
@@ -157,20 +161,21 @@ public class BlueToothUtil {
 		handleService(BlueToothConstants.HANDLE_SERVER_SCAN, null);
 	}
 
-	/**发送数据*/
+	/** 发送数据 */
 	public void sendData(byte[] packData) {
-		Gson gson=new Gson();
-		String mapString=gson.toJson(packData);
+		Gson gson = new Gson();
+		String mapString = gson.toJson(packData);
 		handleService(BlueToothConstants.HANDLE_SERVER_SEND_DATA, mapString);
 	}
+
 	/** 同步数据 */
-	/*
-	 * public void syncData(Handler syncHandler) { this.syncHandler =
-	 * syncHandler; IntentFilter filter = new IntentFilter(
-	 * BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SYNC_DATA);
-	 * context.registerReceiver(mSyncReceiver, filter);
-	 * handleService(BlueToothConstants.HANDLE_SERVER_SYNC, null); }
-	 */
+
+	public void syncData() {
+//		this.syncHandler = syncHandler;
+//		IntentFilter filter = new IntentFilter(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SYNC_DATA);
+//		context.registerReceiver(mSyncReceiver, filter);
+		handleService(BlueToothConstants.HANDLE_SERVER_SYNC, null);
+	}
 
 	/** 链接蓝牙服务 */
 	public void connectBLE(String address) {
@@ -190,7 +195,7 @@ public class BlueToothUtil {
 				if (bleStateHandler != null) {
 					bleStateHandler.sendEmptyMessage(state);
 				}
-			}else if (TravelConstant.ACTION_UI_SERICE_TRAVEL_STATE_CHANGE.equals(action)) {// 状态改变
+			} else if (TravelConstant.ACTION_UI_SERICE_TRAVEL_STATE_CHANGE.equals(action)) {// 状态改变
 				if (travelStateHandler != null) {
 					travelStateHandler.sendEmptyMessage(state);
 				}

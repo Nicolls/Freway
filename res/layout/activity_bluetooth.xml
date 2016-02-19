@@ -5,6 +5,16 @@
     android:orientation="vertical" >
 
 
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textSize="22sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:text="实时行程"
+        />
+    
     <TextView
         android:id="@+id/ble_tv_state"
         android:layout_width="match_parent"
