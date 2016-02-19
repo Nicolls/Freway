@@ -1,0 +1,221 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+ <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textSize="22sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:text="历史行程记录"
+        />
+    <TextView
+        android:id="@+id/ble_tv_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="蓝牙状态" />
+
+    <LinearLayout
+        android:id="@+id/ble_ll_init"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onSearch"
+            android:text="搜索" />
+
+        <ListView
+            android:id="@+id/ble_listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/model_night_view_background" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/ble_ll_ready"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/ble_ll_tool"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <EditText
+                    android:id="@+id/ble_et_tool"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="在这里输入要检验的原始数据，以,隔开。如fe,fe,03,bb检验成功会解析出数据位中的数据，" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/ble_tv_tool"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="检验解析得出的数据位：" />
+
+                    <Button
+                        android:id="@+id/ble_btn_tool"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onTool"
+                        android:text="校验数据" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="请在下方输入框中输入命令字和参数，每个字节以,隔开，不用输入0x，如0xFE只要输入FE。输入完成后点击生成要发送的数据。如：31,00  31表示命令，00表示参数" />
+
+            <EditText
+                android:id="@+id/ble_et_send"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="51,00" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onCreateData"
+                android:text="生成要发送的数据" />
+
+            <TextView 
+                android:id="@+id/ble_his_tip"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="指针回置：从头开始读取数据\n下一项：指针往下移动一个位置\n结束：发送结束标志\n开始的时候必须先点击一次指针回置使指针处于开始处"
+                />
+            <LinearLayout
+                android:id="@+id/ble_control"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone" >
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onHisStart"
+                    android:text="指针回置" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onHisNext"
+                    android:text="下一项" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onHisEnd"
+                    android:text="结束" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/ble_tv_send"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="要发送出去的数据" />
+
+            <Button
+                android:id="@+id/ble_single_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onSend"
+                android:text="单次发送数据，用于测试回应"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/ble_ll_receive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone" >
+
+                <TextView
+                    android:id="@+id/ble_tv_receive"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="收到的数据：要多点击发送几下，有时候数据有可能 不回来。" />
+
+                <Button
+                    android:id="@+id/ble_btn_clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onClearReceive"
+                    android:text="清空" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ble_ll_travel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone" >
+
+                <Button
+                    android:id="@+id/ble_btn_start"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onStart"
+                    android:text="一次性读取历史记录" />
+
+                <Button
+                    android:id="@+id/ble_btn_end"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onEnd"
+                    android:visibility="gone"
+                    android:text="结束骑行" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ble_ll_format"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone" >
+
+                <TextView
+                    android:id="@+id/ble_tv_receive_format"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="骑行数据：需要生成要放送的数据。" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onClearFormat"
+                    android:text="清空" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
