@@ -61,6 +61,8 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 	private HeadPicView mHeadView;
 	private TextView myEbike;
 	private TextView snValue;
+	private TextView wheelTitle;
+	private TextView wheelValue;
 	private TextView languageTitle;
 	private TextView languageValue;
 	private TextView unitDistanceTitle;
@@ -70,6 +72,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 	private TextView exitTitle;
 
 	private View snLL;
+	private View wheelLL;
 	private View languageLL;
 	private View unitDistanceLL;
 	private View versionLL;
@@ -112,6 +115,8 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 		mHeadView = (HeadPicView) findViewById(R.id.profile_head_view);
 		myEbike = (TextView) findViewById(R.id.setting_my_ebike);
 		snValue = (TextView) findViewById(R.id.setting_sn);
+		wheelTitle = (TextView) findViewById(R.id.setting_wheel_title);
+		wheelValue = (TextView) findViewById(R.id.setting_unit_wheel_value);
 		languageTitle = (TextView) findViewById(R.id.setting_language_title);
 		languageValue = (TextView) findViewById(R.id.setting_language_value);
 		unitDistanceTitle = (TextView) findViewById(R.id.setting_unit_distance_title);
@@ -121,6 +126,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 		exitTitle = (TextView) findViewById(R.id.setting_tv_exit);
 
 		snLL = findViewById(R.id.setting_ll_sn);
+		wheelLL = findViewById(R.id.setting_ll_wheel);
 		languageLL = findViewById(R.id.setting_ll_language);
 		unitDistanceLL = findViewById(R.id.setting_ll_unit_distance);
 		versionLL = findViewById(R.id.setting_ll_version);
@@ -144,6 +150,8 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 		weightValue.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
 		myEbike.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
 		snValue.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
+		wheelTitle.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
+		wheelValue.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
 		languageTitle.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
 		languageValue.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
 		unitDistanceTitle.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
@@ -160,6 +168,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 		genderView.setOnClickListener(this);
 		mHeadView.setOnClickListener(this);
 		snLL.setOnClickListener(this);
+		wheelLL.setOnClickListener(this);
 		languageLL.setOnClickListener(this);
 		unitDistanceLL.setOnClickListener(this);
 		versionLL.setOnClickListener(this);
@@ -200,7 +209,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			} else {
 				snValue.setText(getString(R.string.ble_not_bind));
 			}
-
+			wheelValue.setText(SPUtils.getWheel(this)+"");
 			// languageValue = (TextView)
 			// findViewById(R.id.setting_language_value);
 			if (SPUtils.getUnitOfDistance(this) == EBConstant.DISTANCE_UNIT_MPH) {
@@ -295,6 +304,9 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 						},true);
 			}
 			break;
+		case R.id.setting_ll_wheel:
+			changeWheelCharge();
+			break;
 		case R.id.setting_ll_language:
 
 			break;
@@ -331,6 +343,60 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			break;
 		}
 	}
+	/**更换轮径判断*/
+	private void changeWheelCharge(){
+		if(BaseApplication.travelState==TravelConstant.TRAVEL_STATE_COMPLETED||
+				BaseApplication.travelState==TravelConstant.TRAVEL_STATE_NONE||
+				BaseApplication.travelState==TravelConstant.TRAVEL_STATE_STOP){//没有在行程中
+			changeWheel();
+		}else{//如果正在行程中，则提示
+			AlertUtil.getInstance().alertChoice(this,getString(R.string.change_wheel_will_abandon),
+					getString(R.string.yes), getString(R.string.no),
+					new AlertClick() {
+
+						@Override
+						public void onClick(AlertDialog dialog,View v) {
+							// mph
+							dialog.dismiss();
+							BaseApplication.sendStateChangeBroadCast(SettingActivity.this,
+									TravelConstant.TRAVEL_STATE_STOP);
+							changeWheel();
+						}
+					}, new AlertClick() {
+
+						@Override
+						public void onClick(AlertDialog dialog,View v) {
+							// mi
+							dialog.dismiss();
+						}
+					},true);
+		}
+	}
+	
+	/**更换轮径*/
+	private void changeWheel(){
+		AlertUtil.getInstance().alertInputConfirm(SettingActivity.this,getString(R.string.tip_wheel_value),
+				getString(R.string.confirm), 
+				new AlertClick() {
+
+					@Override
+					public void onClick(AlertDialog dialog,View v) {
+						try {
+							String value=v.getTag().toString();
+							if(CommonUtil.isNumber(value)){
+								int wheel=Integer.parseInt(value);
+								SPUtils.setWheel(SettingActivity.this, wheel);
+								wheelValue.setText(wheel+"");
+							}else{//请输入整数
+								ToastUtils.toast(getApplicationContext(), getString(R.string.integer_limit));
+							}
+						} catch (Exception e) {//输入有错误
+							ToastUtils.toast(getApplicationContext(), getString(R.string.input_not_valid));
+						}
+						dialog.dismiss();
+					}
+				});
+	}
 	/**解绑判断*/
 	private void unbindBleCharge(){
 		if(BaseApplication.travelState==TravelConstant.TRAVEL_STATE_COMPLETED||
@@ -358,6 +424,8 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 					},true);
 		}
 	}
+	
+	
 	/**解绑蓝牙*/
 	private void unbindBle(){
 		SPUtils.setEBikeAddress(SettingActivity.this, "");

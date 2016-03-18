@@ -17,6 +17,7 @@ import com.freway.ebike.protocol.ProtocolTool;
 import com.freway.ebike.utils.CommonUtil;
 import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.NetUtil;
+import com.freway.ebike.utils.SPUtils;
 import com.freway.ebike.utils.ToastUtils;
 
 public class EBikeTravelData implements Serializable {
@@ -28,7 +29,8 @@ public class EBikeTravelData implements Serializable {
 	/**
 	 * @Fields WHEEL_VALUE 轮径
 	 */
-	public static final int WHEEL_VALUE = 2180;
+	private static int wheelValue=EBConstant.WHEEL_VALUE;
+//	public static final int WHEEL_VALUE = 2180;
 	/**
 	 * @Fields RECORD_TIME_FRE 每一百秒记录一次平均速度点用于描绘速度曲线
 	 */
@@ -226,12 +228,18 @@ public class EBikeTravelData implements Serializable {
 	public static EBikeTravelData getInstance(Context context) {
 		if (mEBikeTravelData == null) {
 			mEBikeTravelData = new EBikeTravelData(context);
+			if(context!=null){
+				wheelValue=SPUtils.getWheel(context);
+			}
 		}
 		return mEBikeTravelData;
 	}
 
 	public void start(long id, int type) {
 		this.type = type;
+		if(context!=null){
+			wheelValue=SPUtils.getWheel(context);
+		}
 		cal_CadenceArray=null;
 		kcalCacul=new KcalCaculate();
 		zeroSpeedCount = 0;
@@ -467,11 +475,11 @@ public class EBikeTravelData implements Serializable {
 			if(kcalCacul==null){
 				kcalCacul=new KcalCaculate();
 			}
-			cal_tempCalorie=kcalCacul.Kcale_Proc((long)cal_tempCadence,(long)speedTemp*1000,(byte)gearTemp);// 卡路里
-			remaindTravelCapacity = RemainMiCaculate.getInstance(context).remain_mileage_proc(data,(int)cal_tempDistance, (int) (cal_tempDistance * (WHEEL_VALUE / 1000f)), gearTemp, batteryAh, batteryResidueCapacity);//batteryResidueCapacity * batteryAh * 12 / 780;// 公里（千米）
-			speedTemp = speedTemp * 1200f * WHEEL_VALUE / 1000 / 1000;// 单位：km/h
+			cal_tempCalorie=kcalCacul.Kcale_Proc(wheelValue,(long)cal_tempCadence,(long)speedTemp*1000,(byte)gearTemp);// 卡路里
+			remaindTravelCapacity = RemainMiCaculate.getInstance(context).remain_mileage_proc(data,(int)cal_tempDistance, (int) (cal_tempDistance * (wheelValue / 1000f)), gearTemp, batteryAh, batteryResidueCapacity);//batteryResidueCapacity * batteryAh * 12 / 780;// 公里（千米）
+			speedTemp = speedTemp * 1200f * wheelValue / 1000 / 1000;// 单位：km/h
 			insSpeed = formatInsSpeed(speedTemp);// 在计算值之前，先用分段法处理一下得到的速度
-			cal_tempDistance = cal_tempDistance * WHEEL_VALUE / 1000 / 1000; // 单位：km
+			cal_tempDistance = cal_tempDistance * wheelValue / 1000 / 1000; // 单位：km
 			if (batteryAh <= 20) {
 				batteryAh = 78;
 			}
@@ -558,7 +566,7 @@ public class EBikeTravelData implements Serializable {
 					kcalCacul=new KcalCaculate();
 				}
 				
-				cal_tempDistance = cal_tempDistance * WHEEL_VALUE / 1000 / 1000; // 单位：km
+				cal_tempDistance = cal_tempDistance * wheelValue / 1000 / 1000; // 单位：km
 				if (isReInitCaculate) {// 新的骑行
 					Travel travel = new Travel();
 					travel.setType(TravelConstant.TRAVEL_TYPE_HISTORY);
@@ -605,7 +613,7 @@ public class EBikeTravelData implements Serializable {
 						maxSpeed = avgSpeed;
 					}
 					
-					cal_tempCalorie=kcalCacul.Kcale_Proc((long)cal_tempCadence,(long)avgSpeed*1000,(byte)0);// 卡路里
+					cal_tempCalorie=kcalCacul.Kcale_Proc(wheelValue,(long)cal_tempCadence,(long)avgSpeed*1000,(byte)0);// 卡路里
 					cal_endCalorie = cal_tempCalorie;
 					if(cal_endCalorie - cal_startCalorie<0){
 						cal_startCalorie=cal_endCalorie;//我们只要把上一次置为这次就可以了

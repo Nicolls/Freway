@@ -14,7 +14,7 @@ public class KcalCaculate {
 	long speed_tmp;//用于显示速度的值
 	long last_kcal_val;//累积值,骑行卡路里 = last_kcal_val+更新值
 	long kcal_ov_val;//溢出值,代表着溢出几次,在通信处大于65500并且之后小于100产生,出现一次累积1
-	final long wheel_value=2180;
+//	final long wheel_value=2180;
 	//
 	//======================卡路里计算公式============================================
 	//以3.4为中心踏频,也就是21km/h，单车1小时21公里 655卡，单车1小时16公里415卡，单车1小时9公里245卡
@@ -26,7 +26,7 @@ public class KcalCaculate {
 
 
 
-	float Kcale_Proc(long kcal_num,long speedTemp,byte mode)
+	float Kcale_Proc(int wheel_value,long kcal_num,long speedTemp,byte mode)
 	{
 		float result=0;
 		set_mode_flag=mode;

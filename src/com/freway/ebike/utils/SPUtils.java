@@ -46,6 +46,7 @@ public class SPUtils {
 	public static final String SP_USER_DATA = "SP_USER_DATA";
 	public static final String SP_USER_UNIT_OF_DISTANCE = "SP_USER_UNIT_OF_DISTANCE";
 	public static final String SP_USER_TRAVEL_MAP = "SP_USER_TRAVEL_MAP";//地图行程数据
+	public static final String SP_USER_WHEEL = "SP_USER_WHEEL";//轮径
 
 	
 
@@ -285,7 +286,19 @@ public class SPUtils {
 		boolean isOk = sp.edit().putInt(SP_APP_EBIKE_MILE, mile).commit();
 		return isOk;
 	}
-	
+	/** 获取轮径值 */
+	public static int getWheel(Context context) {
+		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+		int wheel = sp.getInt(SP_USER_WHEEL,EBConstant.WHEEL_VALUE);
+		return wheel;
+	}
+
+	/** 保存轮径值 */
+	public static boolean setWheel(Context context, int wheel) {
+		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+		boolean isOk = sp.edit().putInt(SP_USER_WHEEL, wheel).commit();
+		return isOk;
+	}
 	/** 获取last travel*/
 //	public static String getTravelLast(Context context) {
 //		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);

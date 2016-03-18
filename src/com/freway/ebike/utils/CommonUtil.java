@@ -243,4 +243,12 @@ public class CommonUtil {
 		}
 		return isNeed;
 	}
+	
+	/**判断字符串是否为整数*/
+	public static boolean isNumber(String input){
+		boolean isNumber=true;
+		Matcher mer = Pattern.compile("^[0-9]+$").matcher(input);  
+		isNumber=mer.find();  
+		return isNumber;
+	}
 }

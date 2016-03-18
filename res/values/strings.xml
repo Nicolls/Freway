@@ -6,6 +6,8 @@
     <string name="app_id">965428893549865</string>
     <string name="call_back_url">app.ifreway.com/index.php</string>
     <!-- toast提示，弹出框 -->
+    <string name="input_not_valid">Input is not valid</string><!-- 输入不合法 -->
+    <string name="integer_limit">please enter an integer</string><!-- 只允许输入整数 -->
     <string name="gps_not_open">Your GPS seems to be disabled, do you want to enable it?</string><!-- 你的手机不支持蓝牙-->
     <string name="not_support_bluetooth">Your phone has no Bluetooth</string><!-- 你的手机不支持蓝牙-->
     <string name="not_supported_ble">Your phone has no Bluetooth low enengy</string><!-- 你的手机不支持低功耗蓝牙 -->
@@ -70,6 +72,7 @@
     <string name="test_value_time">00:00:00</string>
     <!-- ui -->
     <string name="welcome_title">Your intelligent riding assistant</string> <!-- freway标题 -->
+    <string name="tip_wheel_value">wheel value setting</string><!-- 蓝牙设置 -->
     <string name="tip_ebike_setting">eBike Controller setting</string><!-- 蓝牙设置 -->
     <string name="tip_travel_stop">Click the flag or go to the trip</string><!-- 行程停止 提示-->
     <string name="tip_ebike_disconnect">eBike Controller disconnecting</string><!-- 蓝牙断开链接 -->
@@ -120,12 +123,14 @@
     <string name="height_cm">HEIGHT/CM</string>
     <string name="weight_kg">WEIGHT/KG</string>
     <string name="my_ebike">My eBike</string>
+    <string name="wheel_value">Wheel</string>
     <string name="language">Language</string>
     <string name="unit_of_distance">Unit of Distance</string>
     <string name="version">Version</string>
     <string name="exit">EXIT</string>
     <string name="unit_distance_settings">Unit Distance Settings</string>
     <string name="unbind_ble_will_abandon">Cycling record will not be saved if you unbind the ebike, sure to unbind?</string>
+    <string name="change_wheel_will_abandon">Cycling record will not be saved if you change the wheel, sure to change?</string>
     <string name="unbind">unbind</string>
     <string name="portrait_settings">Portrait Settings</string>
     <string name="album">Album</string>

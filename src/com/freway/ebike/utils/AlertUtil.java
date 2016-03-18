@@ -7,6 +7,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.freway.ebike.R;
@@ -115,6 +116,30 @@ public class AlertUtil {
 			
 			@Override
 			public void onClick(View v) {
+				confirmClick.onClick(dialog,v);
+			}
+		});
+		dialog=builder.setView(view).create();
+		dialog.show();
+	}
+	/**弹出一个可输入的确认按钮的对话框，输入的值在返回的view的tag中，字符串*/
+	public void alertInputConfirm(Activity context,String message,String confirmText,final AlertClick confirmClick){
+		if(dialog!=null){
+			dialog.dismiss();
+		}
+		AlertDialog.Builder builder=new Builder(context);
+		View view=LayoutInflater.from(context).inflate(R.layout.layout_dilog_input_confirm, null);
+		TextView title=(TextView) view.findViewById(R.id.dialog_title);
+		TextView textView=(TextView) view.findViewById(R.id.dialog_text);
+		final EditText etView=(EditText) view.findViewById(R.id.dialog_et);
+		title.setText(message);
+		textView.setText(confirmText);
+		textView.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				String data=etView.getText().toString();
+				v.setTag(data);
 				confirmClick.onClick(dialog,v);
 			}
 		});
