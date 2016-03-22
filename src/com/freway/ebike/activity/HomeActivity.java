@@ -145,6 +145,7 @@ public class HomeActivity extends HomeUiActivity implements OnClickListener {
 		if(mBlueToothUtil!=null){
 			mBlueToothUtil.exit();
 		}
+		
 	}
 
 	@Override
