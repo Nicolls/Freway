@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.TextureView;
 
 import com.freway.ebike.R;
+import com.freway.ebike.activity.HomeActivity;
 import com.freway.ebike.common.BaseApplication;
 import com.freway.ebike.common.BaseService;
 import com.freway.ebike.common.EBConstant;
@@ -77,7 +78,7 @@ public class BlueToothService extends BaseService {
 
 	// 获取历史数据线程
 	private RequestHistoryDataThread mRequestHistoryDataThread;// 每隔一段时间去获取数据
-	private static final int REQUESTHISTORYDATA_SPACING = 1 * 1000;// 间隔时间，毫秒
+	private static final int REQUESTHISTORYDATA_SPACING = 1 * 300;// 间隔时间，毫秒
 	private boolean isRequestHistoryDataRunning = true;// 开启获取数据
 	// bluetooth gat
 	private static BluetoothGattCharacteristic mReceiveCharacteristic; // 接收数据
@@ -347,6 +348,7 @@ public class BlueToothService extends BaseService {
 		unregisterReceiver(mHandleReceiver);
 		unregisterReceiver(mStateReceiver);
 		unregisterReceiver(mQuitReceiver);
+		unregisterReceiver(mHistoryReceiver);
 	}
 
 	/** 开启服务,如果已经开启，必须调用stopService关闭服务后，才可以再次调用 */
@@ -374,6 +376,10 @@ public class BlueToothService extends BaseService {
 		registerReceiver(mReceiver, filter);
 		filter = new IntentFilter(ACTION_PHONE);
 		registerReceiver(mReceiver, filter);
+		
+		//历史记录读取 
+		filter = new IntentFilter(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SYNC_DATA);
+		registerReceiver(mHistoryReceiver, filter);
 
 	}
 
@@ -595,7 +601,11 @@ public class BlueToothService extends BaseService {
 				HashMap<String, Object> map = ProtocolByteHandler
 						.parseData(BlueToothService.this,receiveData);
 				if(map!=null){//说明本次接收到的数据没有问题
-					broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA,BlueToothConstants.RESULT_SUCCESS,null);// 提示UI更新   //mark 现改成，发送数据的时候就提示UI更新，因为需要流畅的时间显示
+					//历史记录不用发送到UI上面
+					int cmd=(int) map.get(ProtocolByteHandler.EXTRA_CMD);
+					if(cmd!=CommandCode.HISTORY){
+						broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA,BlueToothConstants.RESULT_SUCCESS,null);// 提示UI更新   //mark 现改成，发送数据的时候就提示UI更新，因为需要流畅的时间显示
+					}
 //					if(!isRequestData){//由于最后一次暂停 了，可能是没有发送出去。所以要把最后一次更新到UI上
 //						broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA,BlueToothConstants.RESULT_SUCCESS,null);
 //					}//mark 再次打开上面的广播UI，是因为如果是手动发送数据，就会出现，这次数据返回前，先更新UI，而数据回到这里后，没有更新UI，之前考虑到会耗性能，不过现在觉得一秒内发2，到3次广播，也是可以的。
@@ -646,7 +656,7 @@ public class BlueToothService extends BaseService {
 							|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_RESUME|| BaseApplication.travelState == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 说明在运行中
 						startTravel();
 					}else if(BaseApplication.travelState != TravelConstant.TRAVEL_STATE_PAUSE){
-//						syncHistory();//mark 同步历史数据
+						syncHistory();//mark 同步历史数据
 					}
 				} else {
 					mBlueToothConnction
@@ -703,6 +713,31 @@ public class BlueToothService extends BaseService {
 	}
 
 	/**
+	 * 接收向控制器发送读取下一条历史数据的命令
+	 */
+
+	private final BroadcastReceiver mHistoryReceiver = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) { // 同步完成
+			int state=intent.getIntExtra(BlueToothConstants.EXTRA_STATUS, 0);
+			switch(state){
+			case BlueToothConstants.SYNC_START:
+				
+				break;
+			case BlueToothConstants.SYNC_END:
+				//记录读完了，要结束同步线程
+				break;
+			case BlueToothConstants.SYNC_ERROR:
+				
+				break;
+				default:
+					break;
+			}
+		}
+	};
+	
+	/**
 	 * This thread runs while server is connect ,for to get bluetooth's data
 	 */
 	private class RequestHistoryDataThread extends Thread {
@@ -715,16 +750,20 @@ public class BlueToothService extends BaseService {
 				// BaseApplication.sendStateChangeBroadCast(BlueToothService.this,
 				// state, false, mStateReceiver);
 				return;
-			} else {// 先发一个回头祯和一个数据
+			} else {// 先发一个回头祯
 				EBikeTravelData.getInstance(BlueToothService.this).start(-1,TravelConstant.TRAVEL_TYPE_HISTORY);
 				sendData(CommandCode.HISTORY,
 						new byte[] { EBikeHistoryStatus.setBikeStatus(
 								EBikeHistoryStatus.DATA_INDEX, 0) });// 从头
-				sendData(CommandCode.HISTORY,
-						new byte[] { EBikeHistoryStatus.setBikeStatus(
-								EBikeHistoryStatus.DATA_NEXT, 0) });// 下一条
+				try {
+					Thread.sleep(1000);//休眠一秒再发
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			setName("RequestHistoryDataThread");
+			
 			while (isRequestHistoryDataRunning
 					&& BluetoothConnection.STATE_CONNECTED == mBlueToothConnction
 							.getState()) {
@@ -740,25 +779,42 @@ public class BlueToothService extends BaseService {
 						+ " 格式化8位是："
 						+ ProtocolTool.byteToBitString(new byte[] { EBikeHistoryStatus
 								.getBikeStatus() }));
-				if (EBikeTravelData.dataId>0) {//没发完
-					LogUtils.i(tag, "记录没有读取完");
+				if (!EBikeTravelData.isDataEnd) {//没发完
 					sendData(CommandCode.HISTORY,
 							new byte[] { EBikeHistoryStatus.setBikeStatus(
 									EBikeHistoryStatus.DATA_NEXT, 0) });// 下一条
 				}else{
-					LogUtils.i(tag, "记录读取完了");
-					isRequestHistoryDataRunning=false;
 					sendData(CommandCode.HISTORY,
-							new byte[] { EBikeHistoryStatus.setBikeStatus(
-									EBikeHistoryStatus.DATA_END, 0) });// 设置为读完了
-					break;
+					new byte[] { EBikeHistoryStatus.setBikeStatus(
+							EBikeHistoryStatus.DATA_END, 0) });// 设置为读完了
+					break;//说明同步数据读取完了
 				}
+//				if (EBikeTravelData.dataId>0) {//没发完
+//					//说明有数据，开始同步历史记录
+//					broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SYNC_DATA, BlueToothConstants.SYNC_START, null);
+//
+//					LogUtils.i(tag, "记录没有读取完");
+//					sendData(CommandCode.HISTORY,
+//							new byte[] { EBikeHistoryStatus.setBikeStatus(
+//									EBikeHistoryStatus.DATA_NEXT, 0) });// 下一条
+//				}else{
+//					//同步历史记录完成
+//					broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SYNC_DATA, BlueToothConstants.SYNC_END, null);
+//					LogUtils.i(tag, "记录读取完了");
+//					isRequestHistoryDataRunning=false;
+//					sendData(CommandCode.HISTORY,
+//							new byte[] { EBikeHistoryStatus.setBikeStatus(
+//									EBikeHistoryStatus.DATA_END, 0) });// 设置为读完了
+//					break;
+//				}
 			}
 			// Reset the ConnectThread because we're done
 			synchronized (BlueToothService.this) {
 				mRequestHistoryDataThread = null;
 			}
+			
 		}
+		
 
 		public void cancel() {
 			isRequestHistoryDataRunning = false;

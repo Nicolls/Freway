@@ -57,6 +57,8 @@
     <!-- dialog -->
     <dimen name="dialog_btn_left_right">10dp</dimen>
     <dimen name="twitter_web_progress_marginRight">20dp</dimen>
+    <dimen name="dialog_sync_tv_marginLeft">15dp</dimen>
+    <dimen name="dialog_sync_padding">15dp</dimen>
     <!-- welcome -->
     <dimen name="welcome_logo_marginBottom">130dp</dimen>
     <dimen name="welcome_tv_marginBottom">20dp</dimen>

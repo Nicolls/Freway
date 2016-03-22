@@ -60,7 +60,7 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 		pb=(ProgressBar) findViewById(R.id.scan_progress);
 		address=SPUtils.getEBkieAddress(this);
 		handle = getIntent().getIntExtra(HANDLE_EXTRA, HANDLE_CONNECT);
-		mBlueToothUtil = new BlueToothUtil(this, blueHandler,null);
+		mBlueToothUtil = new BlueToothUtil(this, blueHandler,null,null);
 		mBtnScan=(Button) findViewById(R.id.ble_bnt_scan);
 		mBtnManual=(Button) findViewById(R.id.ble_bnt_manual);
 		mBtnConfirm=(Button) findViewById(R.id.ble_bnt_confirm);

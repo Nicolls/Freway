@@ -27,14 +27,15 @@ public class BlueToothUtil {
 	private Context context;
 	private Handler scanHandler;
 	private Handler sendDataHandler;
-	// private Handler syncHandler;
+	private Handler syncHandler;
 	private Handler bleStateHandler;
 
 	private Handler travelStateHandler;
 
-	public BlueToothUtil(Context context, Handler bleStateHandler, Handler travelStateHandler) {
+	public BlueToothUtil(Context context, Handler bleStateHandler, Handler travelStateHandler, Handler syncHandler) {
 		this.bleStateHandler = bleStateHandler;
 		this.travelStateHandler = travelStateHandler;
+		this.syncHandler = syncHandler;
 		this.context = context;
 		startService();
 	}
@@ -58,6 +59,11 @@ public class BlueToothUtil {
 		context.registerReceiver(mStateReceiver, filter);
 		filter = new IntentFilter(TravelConstant.ACTION_UI_SERICE_TRAVEL_STATE_CHANGE);
 		context.registerReceiver(mStateReceiver, filter);
+		//同步
+		if(syncHandler!=null){
+			IntentFilter syncfilter = new IntentFilter(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SYNC_DATA);
+			context.registerReceiver(mSyncReceiver, syncfilter);
+		}
 		Intent service = new Intent(context, BlueToothService.class);
 		context.startService(service);
 	}
@@ -110,6 +116,9 @@ public class BlueToothUtil {
 			context.unregisterReceiver(mSendDataReceiver);
 		}
 		context.unregisterReceiver(mStateReceiver);
+		if(syncHandler!=null){
+			context.unregisterReceiver(mSyncReceiver);
+		}
 	}
 
 	/** 停止服务，一般不需要调用 */
@@ -171,9 +180,10 @@ public class BlueToothUtil {
 	/** 同步数据 */
 
 	public void syncData() {
-//		this.syncHandler = syncHandler;
-//		IntentFilter filter = new IntentFilter(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SYNC_DATA);
-//		context.registerReceiver(mSyncReceiver, filter);
+		// this.syncHandler = syncHandler;
+		// IntentFilter filter = new
+		// IntentFilter(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SYNC_DATA);
+		// context.registerReceiver(mSyncReceiver, filter);
 		handleService(BlueToothConstants.HANDLE_SERVER_SYNC, null);
 	}
 
@@ -220,33 +230,25 @@ public class BlueToothUtil {
 	/**
 	 * 同步数据返回
 	 */
-	/*
-	 * private final BroadcastReceiver mSyncReceiver = new BroadcastReceiver() {
-	 * 
-	 * @Override public void onReceive(Context context, Intent intent) { // 同步完成
-	 * LogUtils.i(TAG, "sync completed---" + EBikeHistoryData.data_id); if
-	 * (scanHandler == null && EBikeHistoryData.data_id > 0) {// 说明有读到数据 Travel
-	 * travel = new Travel();
-	 * travel.setAltitude(EBikeHistoryData.travel_altitude);
-	 * travel.setAvgSpeed(EBikeHistoryData.travel_avgSpeed);
-	 * travel.setCadence(EBikeHistoryData.travel_cadence);
-	 * travel.setCalorie(EBikeHistoryData.travel_calorie);
-	 * travel.setDistance(EBikeHistoryData.travel_distance);
-	 * travel.setEndTime(EBikeHistoryData.travel_endTime);
-	 * travel.setMaxSpeed(EBikeHistoryData.travel_maxSpeed);
-	 * travel.setSpendTime(EBikeHistoryData.travel_spendTime);
-	 * travel.setStartTime(EBikeHistoryData.travel_startTime);
-	 * DBHelper.getInstance(context).insertTravel(travel); if (syncHandler !=
-	 * null) { syncHandler
-	 * .sendEmptyMessage(BlueToothConstants.RESULT_SUCCESS);// 1完成。0同步失败 } } }
-	 * };
-	 */
+
+	private final BroadcastReceiver mSyncReceiver = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) { // 同步完成
+			if(syncHandler!=null){
+				int status=intent.getIntExtra(BlueToothConstants.EXTRA_STATUS, 0);
+				syncHandler.sendEmptyMessage(status);
+			}
+		}
+	};
+
 	/**
 	 * 发送数据返回
 	 */
 	private final BroadcastReceiver mSendDataReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+//			System.out.println("UI数据变化变化");
 			if (sendDataHandler != null) {
 				sendDataHandler.sendEmptyMessage(BlueToothConstants.RESULT_SUCCESS);// 更新
 			}

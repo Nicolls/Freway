@@ -73,10 +73,14 @@ public interface BlueToothConstants {
     public static final String BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA="BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA";
     /**
      * @Fields BLUETOOTH_ACTION_HANDLE_SERVER 控制服务同步数据结果返回
-     * 已经没有用了，有服务中实现这个action,后期要记得去掉这个同步action。
      */
     public static final String BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SYNC_DATA="BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SYNC_DATA";
     
+    public static final int SYNC_START = 0;//同步开始
+    public static final int SYNC_END = 1;//同步结束
+    public static final int SYNC_ERROR = -1;//同步出问题
+    /**读取下一条历史数据action*/
+    public static final String BLUETOOTH_ACTION_HISTORY_DATA_NEXT="BLUETOOTH_ACTION_HISTORY_DATA_NEXT";
     
     /**蓝牙状态改变*/
     public static final String BLE_SERVER_STATE_CHANAGE="BLUETOOTH_SERVER_STATE_CHANAGE";
@@ -85,4 +89,6 @@ public interface BlueToothConstants {
 	public static final int BLE_STATE_CONNECTTING = 1;
 	public static final int BLE_STATE_CONNECTED = 2;
 	public static final int BLE_STATE_DISCONNECTED = 3;
+	
+	
 }

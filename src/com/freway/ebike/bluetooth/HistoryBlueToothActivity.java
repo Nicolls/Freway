@@ -79,7 +79,7 @@ public class HistoryBlueToothActivity extends BaseActivity {
 		adapter = new BleScanAdapter(this);
 		adapter.setData(data);
 		listView.setAdapter(adapter);
-		mBlueToothUtil = new BlueToothUtil(this, stateHandler, null);
+		mBlueToothUtil = new BlueToothUtil(this, stateHandler, null,null);
 		mBlueToothUtil.receiveSendData(sendDataHandler);
 		name = SPUtils.getEBkieName(this);
 		address = SPUtils.getEBkieAddress(this);

@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Random;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Parcelable;
 
 import com.freway.ebike.R;
 import com.freway.ebike.common.BaseApplication;
@@ -217,6 +219,7 @@ public class EBikeTravelData implements Serializable {
 	 * @Fields data_id 控制器data
 	 */
 	public static int dataId = 0;
+	public static boolean isDataEnd=false;//用来判断历史记录数据 读完了没有
 	private long cal_startTime;
 	private long cal_tempSpendTime;
 	private long cal_endTime;
@@ -255,6 +258,7 @@ public class EBikeTravelData implements Serializable {
 		
 		travelId = id;
 		isReInitCaculate = true;
+		isDataEnd=false;
 		startTime = Calendar.getInstance().getTimeInMillis();
 		endTime = startTime;
 		isCalUiTime = true;
@@ -348,6 +352,19 @@ public class EBikeTravelData implements Serializable {
 			}
 			netUtil.uploadLocalRecord();// 更新数据后，上传
 		}
+	}
+	/**重置UI上的骑行数据*/
+	public void clearTravelData(){
+		zeroSpeedCount = 0;
+		spendTime = 0;
+		insSpeed = 0;
+		avgSpeed = 0;
+		maxSpeed = 0;
+		distance = 0;
+		calorie = 0;
+		cadence = 0;
+		altitude = 0;
+		cal_recordCadence=0;
 	}
 
 	/** 数据模拟 */
@@ -546,18 +563,22 @@ public class EBikeTravelData implements Serializable {
 	 * @param data
 	 * @Description 格式化数据
 	 */
-	public void parseHistoryData(byte[] data) {
+	public synchronized void parseHistoryData(byte[] data) {
 		// mark 历史的，怕数组越界还没有处理
 		if (data != null && data.length >= 8) {
-			byte[] id = { data[0], data[1] };
-			byte[] time = { data[2], data[3] };
-			byte[] step = { data[4], data[5] };
-			byte[] mileage = { data[6], data[7] };
+			byte[] id = { data[0], data[1] };//数据ID
+			byte[] time = { data[2], data[3] };//记录时间S
+			byte[] step = { data[4], data[5] };//踏频量（圈）
+			byte[] mileage = { data[6], data[7] };//骑行里程km
 
 			// 在这里要判断是不是有可能是从头数据，他回来的是不是dataId=0如果是，后面要加判断
 
 			dataId = ProtocolTool.byteArrayToInt(id);
+			System.out.println("dataID=="+dataId+"--travelId=="+travelId);
 			if (dataId > 0) {
+				if(isReInitCaculate){//说明有历史数据，现在开始通过UI，要同步数据了
+					broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SYNC_DATA, BlueToothConstants.SYNC_START, null);
+				}
 				cal_tempDistance = ProtocolTool.byteArrayToInt(mileage);
 				cal_tempCadence = ProtocolTool.byteArrayToInt(step);
 				spendTime = ProtocolTool.byteArrayToInt(time);
@@ -634,7 +655,8 @@ public class EBikeTravelData implements Serializable {
 				DBHelper.getInstance(context).insertTravelSpeed(travelSpeed);
 			} else {
 				formatFloat2OneAccuracy();
-				if (!isReInitCaculate) {// 说明有数据 //dataId为0说明读完了，保存起来
+				isDataEnd=true;
+				if (!isReInitCaculate&&travelId>0&&distance>MUST_MIN_TRAVEL) {// 说明有数据 //dataId为0说明读完了，保存起来
 					Travel travel = new Travel();
 					travel.setId(travelId);
 					travel.setAvgSpeed(avgSpeed);
@@ -643,15 +665,30 @@ public class EBikeTravelData implements Serializable {
 					travel.setDistance(distance);
 					travel.setMaxSpeed(maxSpeed);
 					travel.setSpendTime(spendTime);
+					travel.setStartTime(startTime);//设置开始读取历史记录的时间为行程开始时间
 					DBHelper.getInstance(context).updateTravel(travel);
 					if (netUtil == null) {
 						netUtil = new NetUtil(context);
 					}
 					netUtil.uploadLocalRecord();// 插入数据后，上传
+					isReInitCaculate=true;//重新置是为了防止再接收到历史记录回置的消息
+					travelId=-1;
 				}
+				clearTravelData();
+				broadCastData2UI(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SYNC_DATA, BlueToothConstants.SYNC_END, null);
 			}
 		} else {
 			dataId = 0;
+		}
+	}
+	
+	/** 发送广播 */
+	private void broadCastData2UI(String action,int status,Parcelable data) {
+		Intent intent = new Intent(action);
+		intent.putExtra(BlueToothConstants.EXTRA_STATUS,status);
+		intent.putExtra(BlueToothConstants.EXTRA_DATA,data);
+		if(context!=null){
+			context.sendBroadcast(intent);
 		}
 	}
 
