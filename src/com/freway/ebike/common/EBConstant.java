@@ -33,6 +33,10 @@ public class EBConstant {
 	public static final int SIGN_FACE_BOOK=1;
 	public static final int SIGN_TWITTER=2;
 
+	
+	/**工作模式*/
+	public static final int WORK_BLUETOOTH=0;//工作模式为蓝牙控制器，默认
+	public static final int WORK_MAP=1;//工作模式为地图，由地图来提供数据
 	/** 客户端类型 */
 	public static final String CLIENT_TYPE = "EB Android";
 	

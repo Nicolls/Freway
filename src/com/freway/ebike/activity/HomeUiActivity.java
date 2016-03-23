@@ -38,6 +38,7 @@ import com.freway.ebike.utils.AlertUtil.AlertClick;
 import com.freway.ebike.utils.CommonUtil;
 import com.freway.ebike.utils.FontUtil;
 import com.freway.ebike.utils.LogUtils;
+import com.freway.ebike.utils.NetUtil;
 import com.freway.ebike.utils.SPUtils;
 import com.freway.ebike.utils.TimeUtils;
 import com.freway.ebike.utils.ToastUtils;
@@ -74,7 +75,8 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	private View lineTravelStateView;
 	/** 分隔线用于显示速度view */
 	private View lineBatteryStateView;
-	private ImageButton mModelBtn;
+	private ImageButton mUiModelBtn;
+	private ImageButton mWorkModelBtn;
 	private ImageView mProfileView;
 	private ImageView mLogo;
 	// 车况
@@ -153,7 +155,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	private ImageView mProfile;
 
 	// 内存中要保存的值
-	private int model = EBConstant.MODEL_DAY;// 模式
+	private int uiModel = EBConstant.MODEL_DAY;// 模式
 	private int distanUnit = EBConstant.DISTANCE_UNIT_MPH;
 
 	// view
@@ -162,11 +164,16 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	private LinearLayout batteryModel;
 	private ViewPagerAdapter<View> adapter;
 	private int selectItem = 1;
+	
+	//工作模式
+	private TextView mWorkTv;
 
+	private NetUtil netUtil;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+		uploadData();
 		initView();
 		initFontStyle();
 		intClick();
@@ -174,7 +181,16 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		uiInitCompleted(mapContentView);
 	}
 
+	private void uploadData(){
+		if (netUtil == null) {
+			netUtil = new NetUtil(this);
+		}
+		netUtil.uploadLocalRecord();// 如果本地有未上传的行程，则上传
+	}
+	
 	private void initView() {
+		mWorkTv=(TextView) findViewById(R.id.home_tv_work_model);
+		
 		mTravelTip = (FlickView) findViewById(R.id.home_travel_tip);
 
 		ebikeHomePager = (DirectionalViewPager) findViewById(R.id.home_ebike_pager);
@@ -192,7 +208,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		speedModel.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		speedModel.setOrientation(LinearLayout.VERTICAL);
 		speedModel.setBackgroundResource(R.drawable.speed_state_map_bg_day);
-		
+
 		batteryModel = new LinearLayout(this);
 		batteryModel.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		batteryModel.setOrientation(LinearLayout.VERTICAL);
@@ -264,7 +280,8 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		// 导航条
 		topBarView = findViewById(R.id.home_top_bar);
 		mProfileView = (ImageView) findViewById(R.id.home_ib_profile);
-		mModelBtn = (ImageButton) findViewById(R.id.home_top_bar_model);
+		mUiModelBtn = (ImageButton) findViewById(R.id.home_top_bar_model);
+		mWorkModelBtn = (ImageButton) findViewById(R.id.home_ib_work_model);
 		mLogo = (ImageView) findViewById(R.id.home_top_bar_logo);
 		// 车况
 		mBikeStateBatteryView = (BatteryView) bikeStateView.findViewById(R.id.bike_state_battery_view);
@@ -402,7 +419,8 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	}
 
 	private void intClick() {
-		mModelBtn.setOnClickListener(this);
+		mUiModelBtn.setOnClickListener(this);
+		mWorkModelBtn.setOnClickListener(this);
 		mProfileView.setOnClickListener(this);
 		lineBikeStateView.setOnClickListener(this);
 		lineTravelStateView.setOnClickListener(this);
@@ -425,13 +443,21 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			mSpeedStateCicleHolder.setImageResource(R.drawable.speed_state_view_cicle_mi);
 		}
 		// 模式
-		model = SPUtils.getUiModel(this);
+		uiModel = SPUtils.getUiModel(this);
 		if (SPUtils.getUiModel(this) == EBConstant.MODEL_DAY) {
-			mModelBtn.setSelected(false);
+			mUiModelBtn.setSelected(false);
 		} else {
-			mModelBtn.setSelected(true);
+			mUiModelBtn.setSelected(true);
 		}
-		modelChange();
+		uiModelChange();
+		BaseApplication.workModel = SPUtils.getWorkModel(this);
+		if (SPUtils.getWorkModel(this) == EBConstant.WORK_BLUETOOTH) {
+			mWorkModelBtn.setSelected(false);
+			mWorkTv.setText("控制器");
+		} else {
+			mWorkModelBtn.setSelected(true);
+			mWorkTv.setText("地图");
+		}
 		// 骑行状态
 		travelStateHandler.sendEmptyMessage(BaseApplication.travelState);
 		// 蓝牙状态
@@ -448,11 +474,12 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			// TODO Auto-generated method stub
 			super.handleMessage(msg);
 			int state = msg.what;// 所有的行程操作都必须是链接上BLE了才能有作用，因为没有链接的话，显示一定是灰色的
-			if (BlueToothService.ble_state != BlueToothConstants.BLE_STATE_CONNECTED) {
+			if (BaseApplication.workModel != EBConstant.WORK_MAP
+					&& BlueToothService.ble_state != BlueToothConstants.BLE_STATE_CONNECTED) {
 				bleStateChange(BlueToothService.ble_state);
 				return;
 			}
-			if(state != TravelConstant.TRAVEL_STATE_STOP){
+			if (state != TravelConstant.TRAVEL_STATE_STOP) {
 				mSpeedStateTipText.hideTip();
 			}
 			if (state == TravelConstant.TRAVEL_STATE_PAUSE) {// 暂停
@@ -461,22 +488,23 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_pause_enable);
 				mTravelTip.hideTip();
 			} else if (state == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 伪暂停
-				//先判断如果距离为0就说明车子没有动，那么要回到停止状态
-				if(EBikeTravelData.getInstance(getApplicationContext()).distance<=0){//只是显示为一个自动停止的状态
-//					BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
-//							TravelConstant.TRAVEL_STATE_STOP);
-//					if (mMapUtil != null) {
-//						mMapUtil.clearMap();
-//					}
+				// 先判断如果距离为0就说明车子没有动，那么要回到停止状态
+				if (EBikeTravelData.getInstance(getApplicationContext()).distance <= 0) {// 只是显示为一个自动停止的状态
+					// BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
+					// TravelConstant.TRAVEL_STATE_STOP);
+					// if (mMapUtil != null) {
+					// mMapUtil.clearMap();
+					// }
 					mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
 					mSpeedStateSpeedText.setVisibility(View.GONE);
 					mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_start_enable);
 					mTravelTip.hideTip();
 					mSpeedStateTipText.showTip(getString(R.string.tip_ebike_stop));
-				}else{
-					//伪暂停的时候要把地图给缩放到包括所有点的时候。
-					List<TravelLocation> travelList=DBHelper.getInstance(HomeUiActivity.this).listTravelLocation(BaseApplication.travelId);
-					if(mMapUtil!=null){
+				} else {
+					// 伪暂停的时候要把地图给缩放到包括所有点的时候。
+					List<TravelLocation> travelList = DBHelper.getInstance(HomeUiActivity.this).listTravelLocation(
+							BaseApplication.travelId);
+					if (mMapUtil != null) {
 						mMapUtil.cameraContainPoint(travelList);
 					}
 					mSpeedStateSpeedButton.setVisibility(View.GONE);
@@ -484,13 +512,14 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 					mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_pause_enable);
 					mTravelTip.showTip();
 				}
-			} else if (BlueToothService.ble_state == BlueToothConstants.BLE_STATE_CONNECTED
+			} else if ((BlueToothService.ble_state == BlueToothConstants.BLE_STATE_CONNECTED || BaseApplication.workModel == EBConstant.WORK_MAP)
 					&& (state == TravelConstant.TRAVEL_STATE_START || state == TravelConstant.TRAVEL_STATE_RESUME)) {
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_start_enable);
 				mSpeedStateSpeedButton.setVisibility(View.GONE);
 				mSpeedStateSpeedText.setVisibility(View.VISIBLE);
 				mTravelTip.hideTip();
-			} else if (BlueToothService.ble_state == BlueToothConstants.BLE_STATE_CONNECTED) {// 无，停止，完成，退出
+			} else if (BlueToothService.ble_state == BlueToothConstants.BLE_STATE_CONNECTED
+					|| BaseApplication.workModel == EBConstant.WORK_MAP) {// 无，停止，完成，退出
 				mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
 				mSpeedStateSpeedText.setVisibility(View.GONE);
 				mSpeedStateSpeedButton.setImageResource(R.drawable.speed_state_view_btn_start_enable);
@@ -500,7 +529,6 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		}
 
 	};
-	
 
 	/** 更新UI的值 */
 	public void updateUiValue() {
@@ -522,7 +550,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			remaindTravelCapacity = remaindTravelCapacity * 0.6f;// km->mi
 		}
 
-		if (batteryResidueCapacity > 2) {//对电量进行数据调整
+		if (batteryResidueCapacity > 2) {// 对电量进行数据调整
 			batteryResidueCapacity = (batteryResidueCapacity - 3) * 100 / 97;
 		} else {
 			batteryResidueCapacity = 0;
@@ -555,7 +583,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			mBikeStateGearIcon.setImageResource(R.drawable.bike_state_gear0);
 			break;
 		}
-		mBikeStateBatteryView.onValueChange(batteryResidueCapacity, model, EBikeTravelData.getInstance(this).gear,
+		mBikeStateBatteryView.onValueChange(batteryResidueCapacity, uiModel, EBikeTravelData.getInstance(this).gear,
 				false);
 		mBikeStateBatteryPercent.setText(batteryResidueCapacity + "%");
 		if (distanUnit == EBConstant.DISTANCE_UNIT_MPH) {
@@ -618,16 +646,18 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		mSpeedStateCadenceValue.setText(cadence + "");
 
 		// 电池
-//		if (distanUnit == EBConstant.DISTANCE_UNIT_MPH) {
-//			mBatteryStateRemaindTip.setText(String.format(getString(R.string.battery_remaind_tip), new String[] { ""
-//					+ remaindTravelCapacity })
-//					+ getString(R.string.mi));
-//		} else {
-//			mBatteryStateRemaindTip.setText(String.format(getString(R.string.battery_remaind_tip), new String[] { ""
-//					+ remaindTravelCapacity })
-//					+ getString(R.string.km));
-//		}
-		mBatteryStateBatteryView.onValueChange(batteryResidueCapacity, model, EBikeTravelData.getInstance(this).gear,
+		// if (distanUnit == EBConstant.DISTANCE_UNIT_MPH) {
+		// mBatteryStateRemaindTip.setText(String.format(getString(R.string.battery_remaind_tip),
+		// new String[] { ""
+		// + remaindTravelCapacity })
+		// + getString(R.string.mi));
+		// } else {
+		// mBatteryStateRemaindTip.setText(String.format(getString(R.string.battery_remaind_tip),
+		// new String[] { ""
+		// + remaindTravelCapacity })
+		// + getString(R.string.km));
+		// }
+		mBatteryStateBatteryView.onValueChange(batteryResidueCapacity, uiModel, EBikeTravelData.getInstance(this).gear,
 				true);
 		mBatteryStateBatteryPercent.setText(batteryResidueCapacity + "%");
 		mBatteryStateRemaindValue.setText(remaindTravelCapacity + "");
@@ -668,7 +698,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		if (state == BlueToothConstants.BLE_STATE_CONNECTED) {
 			mSpeedStateTipText.hideTip();
 			travelStateHandler.sendEmptyMessage(BaseApplication.travelState);
-		} else {
+		} else if (BaseApplication.workModel != EBConstant.WORK_MAP) {
 			mTravelTip.hideTip();
 			LogUtils.i(tag, "ble stateChange==" + state);
 			mSpeedStateSpeedButton.setVisibility(View.VISIBLE);
@@ -689,10 +719,10 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		LogUtils.i(tag, "保存travel" + BaseApplication.travelState);
 		if (EBikeTravelData.getInstance(HomeUiActivity.this).distance < EBikeTravelData.MUST_MIN_TRAVEL) {
 			// 数据少，不存储
-			AlertUtil.getInstance().alertChoice(HomeUiActivity.this,getString(R.string.travel_too_short_not_save),
+			AlertUtil.getInstance().alertChoice(HomeUiActivity.this, getString(R.string.travel_too_short_not_save),
 					getString(R.string.yes), getString(R.string.no), new AlertClick() {
 
-						public void onClick(AlertDialog dialog,View v) {
+						public void onClick(AlertDialog dialog, View v) {
 							BaseApplication.travelId = -1;
 							dialog.dismiss();
 							BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
@@ -704,19 +734,19 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 						}
 					}, new AlertClick() {
 
-						public void onClick(AlertDialog dialog,View v) {
+						public void onClick(AlertDialog dialog, View v) {
 							dialog.dismiss();
 						}
 					}, true);
 		} else {
 			if (mMapUtil != null) {
-				mMapUtil.snapshot(BaseApplication.travelId,new Handler() {
+				mMapUtil.snapshot(BaseApplication.travelId, new Handler() {
 
 					@Override
 					public void handleMessage(Message msg) {
 						super.handleMessage(msg);
 						mMapUtil.clearMap();
-						if(msg.obj!=null){
+						if (msg.obj != null) {
 							LogUtils.i(tag, "收到图片路径：" + msg.obj.toString());
 							String photoPath = msg.obj.toString();
 							if (!TextUtils.isEmpty(photoPath)) {// 图片与行程关联
@@ -728,9 +758,8 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 					}
 
 				});
-			}else{//如果maputil为空
-				BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
-						TravelConstant.TRAVEL_STATE_COMPLETED);
+			} else {// 如果maputil为空
+				BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this, TravelConstant.TRAVEL_STATE_COMPLETED);
 			}
 		}
 
@@ -738,25 +767,24 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 
 	/** 弹出行程 选择 */
 	private void alertTravelChoice() {
-		AlertUtil.getInstance().alertThree(this,getString(R.string.travel_save), getString(R.string.end_and_save),
-				getString(R.string.end_and_discard), getString(R.string.cancel), 
-				new AlertClick() {
+		AlertUtil.getInstance().alertThree(this, getString(R.string.travel_save), getString(R.string.end_and_save),
+				getString(R.string.end_and_discard), getString(R.string.cancel), new AlertClick() {
 
 					@Override
-					public void onClick(AlertDialog dialog,View v) {
+					public void onClick(AlertDialog dialog, View v) {
 						dialog.dismiss();
 						saveTravel();
 					}
 				}, new AlertClick() {
 
 					@Override
-					public void onClick(AlertDialog dialog,View v) {
+					public void onClick(AlertDialog dialog, View v) {
 						dialog.dismiss();
 						// test(TravelConstant.TRAVEL_STATE_RESUME);
 						BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this, TravelConstant.TRAVEL_STATE_STOP);
 					}
 				}, new AlertClick() {
-					public void onClick(AlertDialog dialog,View v) {// 继续骑行
+					public void onClick(AlertDialog dialog, View v) {// 继续骑行
 						dialog.dismiss();
 						// test(TravelConstant.TRAVEL_STATE_RESUME);
 						BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
@@ -769,7 +797,10 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.home_top_bar_model:
-			onModel(v);
+			onUiModel(v);
+			break;
+		case R.id.home_ib_work_model:
+			onWorkModel(v);
 			break;
 		case R.id.home_ib_profile:
 			onProfile();
@@ -780,9 +811,10 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		case R.id.speed_state_btn:
 			bleStateChange(BlueToothService.ble_state);
 			LogUtils.i(tag, "单击" + BaseApplication.travelState);
-			if (BlueToothService.ble_state != BlueToothConstants.BLE_STATE_CONNECTED) {// 未连接
-				if(mBlueToothUtil!=null){
-					mBlueToothUtil.bleConnect(this,getString(R.string.ble_not_connect), getString(R.string.yes),
+			if (BlueToothService.ble_state != BlueToothConstants.BLE_STATE_CONNECTED
+					&& BaseApplication.workModel == EBConstant.WORK_BLUETOOTH) {// 未连接
+				if (mBlueToothUtil != null) {
+					mBlueToothUtil.bleConnect(this, getString(R.string.ble_not_connect), getString(R.string.yes),
 							getString(R.string.no));
 				}
 				return;
@@ -790,12 +822,11 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_PAUSE) {// 暂停
 				alertTravelChoice();
 			} else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 如果是伪暂停,要先设置为暂停状态
-			// BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
-			// TravelConstant.TRAVEL_STATE_PAUSE);
-				if(mSpeedStateSpeedButton.getVisibility()==View.VISIBLE){//自动停止的伪暂停
-					 BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
-					 TravelConstant.TRAVEL_STATE_RESUME);
-				}else{//已经骑行过的伪暂停 
+				// BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
+				// TravelConstant.TRAVEL_STATE_PAUSE);
+				if (mSpeedStateSpeedButton.getVisibility() == View.VISIBLE) {// 自动停止的伪暂停
+					BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this, TravelConstant.TRAVEL_STATE_RESUME);
+				} else {// 已经骑行过的伪暂停
 					alertTravelChoice();
 				}
 			} else if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_START
@@ -844,20 +875,20 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 		}
 	}
 
-	public void onModel(View view) {
+	public void onUiModel(View view) {
 		view.setSelected(!view.isSelected());
 		if (SPUtils.getUiModel(this) == EBConstant.MODEL_DAY) {// 由day到night
 			SPUtils.setUiModel(this, EBConstant.MODEL_NIGHT);
 		} else {
 			SPUtils.setUiModel(this, EBConstant.MODEL_DAY);
 		}
-		model = SPUtils.getUiModel(this);
-		modelChange();
+		uiModel = SPUtils.getUiModel(this);
+		uiModelChange();
 	}
 
-	private void modelChange() {
+	private void uiModelChange() {
 		int batteryResidueCapacity = EBikeTravelData.getInstance(this).batteryResidueCapacity;
-		if (batteryResidueCapacity > 2) {//对电量进行数据调整
+		if (batteryResidueCapacity > 2) {// 对电量进行数据调整
 			batteryResidueCapacity = (batteryResidueCapacity - 3) * 100 / 97;
 		} else {
 			batteryResidueCapacity = 0;
@@ -898,7 +929,7 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			mBatteryStateGearText.setTextColor(getResources().getColor(R.color.white));
 			// 整个view
 			speedModel.setBackgroundResource(R.drawable.speed_state_map_bg_night);
-//			speedModel.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
+			// speedModel.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
 			batteryModel.setBackgroundColor(getResources().getColor(R.color.model_night_view_background));
 
 		} else {// 由night到day
@@ -935,9 +966,64 @@ public abstract class HomeUiActivity extends BaseActivity implements OnClickList
 			mBatteryStateBatteryPercent.setTextColor(getResources().getColor(R.color.white));
 			// 整个view
 			speedModel.setBackgroundResource(R.drawable.speed_state_map_bg_day);
-//			speedModel.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));
+			// speedModel.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));
 			batteryModel.setBackgroundColor(getResources().getColor(R.color.model_day_view_background));
 		}
+	}
+
+	public void onWorkModel(View view) {
+		//判断骑行状态，切换模式会丢弃当前骑行
+		workModelChangeCharge();
+	}
+
+	/**更换模式判断*/
+	private void workModelChangeCharge(){
+		if(BaseApplication.travelState==TravelConstant.TRAVEL_STATE_COMPLETED||
+				BaseApplication.travelState==TravelConstant.TRAVEL_STATE_NONE||
+				BaseApplication.travelState==TravelConstant.TRAVEL_STATE_STOP){//没有在行程中
+			workModelChange();
+		}else{//如果正在行程中，则提示
+			AlertUtil.getInstance().alertChoice(this,getString(R.string.change_model_will_abandon),
+					getString(R.string.yes), getString(R.string.no),
+					new AlertClick() {
+
+						@Override
+						public void onClick(AlertDialog dialog,View v) {
+							// mph
+							dialog.dismiss();
+							BaseApplication.sendStateChangeBroadCast(HomeUiActivity.this,
+									TravelConstant.TRAVEL_STATE_STOP);
+							workModelChange();
+						}
+					}, new AlertClick() {
+
+						@Override
+						public void onClick(AlertDialog dialog,View v) {
+							// mi
+							dialog.dismiss();
+						}
+					},true);
+		}
+	}
+	
+	
+	
+	/** 工作模式改变 */
+	private void workModelChange() {
+		mWorkModelBtn.setSelected(!mWorkModelBtn.isSelected());
+		if (SPUtils.getWorkModel(this) == EBConstant.WORK_BLUETOOTH) {// 由day到night
+			SPUtils.setWorkModel(this, EBConstant.WORK_MAP);
+			mWorkTv.setText("地图");
+		} else {
+			SPUtils.setWorkModel(this, EBConstant.WORK_BLUETOOTH);
+			mWorkTv.setText("控制器");
+		}
+		BaseApplication.workModel = SPUtils.getWorkModel(this);
+		
+		// 骑行状态
+		travelStateHandler.sendEmptyMessage(BaseApplication.travelState);
+		// 蓝牙状态
+		bleStateChange(BlueToothService.ble_state);
 	}
 
 	public void onProfile() {

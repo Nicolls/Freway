@@ -43,8 +43,8 @@ public class HomeActivity extends HomeUiActivity implements OnClickListener {
 			mMapUtil=new MapUtil(this, supportMapFragment);
 			mMapUtil.startMapService();
 		}
-		mBlueToothUtil=new BlueToothUtil(this,blueHandler,travelStateHandler,syncHandler);
-		mBlueToothUtil.initBle(this,updateUiHandler);
+		mBlueToothUtil=new BlueToothUtil(this,blueHandler,travelStateHandler,updateUiHandler,syncHandler);
+		mBlueToothUtil.initBle(this);
 	}
 	
 	/**更新UI*/

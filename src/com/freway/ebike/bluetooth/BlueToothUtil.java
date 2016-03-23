@@ -15,6 +15,8 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.freway.ebike.R;
+import com.freway.ebike.common.BaseApplication;
+import com.freway.ebike.common.EBConstant;
 import com.freway.ebike.map.TravelConstant;
 import com.freway.ebike.utils.AlertUtil;
 import com.freway.ebike.utils.AlertUtil.AlertClick;
@@ -26,16 +28,17 @@ public class BlueToothUtil {
 	private static final String TAG = BlueToothUtil.class.getSimpleName();
 	private Context context;
 	private Handler scanHandler;
-	private Handler sendDataHandler;
+	private Handler updateUiDataHandler;
 	private Handler syncHandler;
 	private Handler bleStateHandler;
 
 	private Handler travelStateHandler;
 
-	public BlueToothUtil(Context context, Handler bleStateHandler, Handler travelStateHandler, Handler syncHandler) {
+	public BlueToothUtil(Context context, Handler bleStateHandler, Handler travelStateHandler,Handler updateUiDataHandler, Handler syncHandler) {
 		this.bleStateHandler = bleStateHandler;
 		this.travelStateHandler = travelStateHandler;
 		this.syncHandler = syncHandler;
+		this.updateUiDataHandler=updateUiDataHandler;
 		this.context = context;
 		startService();
 	}
@@ -54,7 +57,7 @@ public class BlueToothUtil {
 		return isOk;
 	}
 
-	private void startService() {
+	public void startService() {
 		IntentFilter filter = new IntentFilter(BlueToothConstants.BLE_SERVER_STATE_CHANAGE);
 		context.registerReceiver(mStateReceiver, filter);
 		filter = new IntentFilter(TravelConstant.ACTION_UI_SERICE_TRAVEL_STATE_CHANGE);
@@ -66,12 +69,16 @@ public class BlueToothUtil {
 		}
 		Intent service = new Intent(context, BlueToothService.class);
 		context.startService(service);
+		//监听收到控制器的数据
+		if(updateUiDataHandler!=null){
+			filter = new IntentFilter(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA);
+			context.registerReceiver(mSendDataReceiver, filter);
+		}
 	}
 
 	/** 初始化 */
-	public void initBle(Activity activity, final Handler updateUiHandler) {
-		receiveSendData(updateUiHandler);
-		if (TextUtils.isEmpty(SPUtils.getEBkieAddress(activity))) {// 未绑定
+	public void initBle(Activity activity) {
+		if (TextUtils.isEmpty(SPUtils.getEBkieAddress(activity))&&BaseApplication.workModel==EBConstant.WORK_BLUETOOTH) {// 未绑定
 			bleConnect(activity, activity.getString(R.string.ble_not_bind), context.getString(R.string.yes),
 					context.getString(R.string.no));
 		}
@@ -88,7 +95,7 @@ public class BlueToothUtil {
 
 	/** 判断Ble是否链接 */
 	public void bleConnect(final Activity activity, String message, String leftText, String rightText) {
-		if (BlueToothService.ble_state != BlueToothConstants.BLE_STATE_CONNECTED) {// 未绑定
+		if (BaseApplication.workModel==EBConstant.WORK_BLUETOOTH&&BlueToothService.ble_state != BlueToothConstants.BLE_STATE_CONNECTED) {// 未绑定
 			AlertUtil.getInstance().alertChoice(activity, message, leftText, rightText, new AlertClick() {
 
 				@Override
@@ -112,7 +119,7 @@ public class BlueToothUtil {
 		if (scanHandler != null) {
 			context.unregisterReceiver(mScanReceiver);
 		}
-		if (sendDataHandler != null) {
+		if (updateUiDataHandler != null) {
 			context.unregisterReceiver(mSendDataReceiver);
 		}
 		context.unregisterReceiver(mStateReceiver);
@@ -154,13 +161,6 @@ public class BlueToothUtil {
 		EBikeStatus.getInstance(context).setBikeStatus(control, flag);
 	}
 
-	/** 接收发送数据返回 */
-	public void receiveSendData(Handler sendDataHandler) {
-		this.sendDataHandler = sendDataHandler;
-		IntentFilter filter = new IntentFilter(BlueToothConstants.BLUETOOTH_ACTION_HANDLE_SERVER_RESULT_SEND_DATA);
-		context.registerReceiver(mSendDataReceiver, filter);
-		handleService(BlueToothConstants.HANDLE_SERVER_SEND_DATA, null);
-	}
 
 	/** 接收扫描设备返回 */
 	public void scanDevice(Handler scanHandler) {
@@ -249,8 +249,8 @@ public class BlueToothUtil {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 //			System.out.println("UI数据变化变化");
-			if (sendDataHandler != null) {
-				sendDataHandler.sendEmptyMessage(BlueToothConstants.RESULT_SUCCESS);// 更新
+			if (updateUiDataHandler != null) {
+				updateUiDataHandler.sendEmptyMessage(BlueToothConstants.RESULT_SUCCESS);// 更新
 			}
 		}
 	};

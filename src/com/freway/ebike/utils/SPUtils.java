@@ -43,6 +43,7 @@ public class SPUtils {
 
 	public static final String SP_USER_SIGNIN_TYPE = "SP_USER_SIGNIN_TYPE";
 	public static final String SP_USER_UI_MODEL = "SP_USER_UI_MODEL";
+	public static final String SP_USER_WORK_MODEL = "SP_USER_WORK_MODEL";
 	public static final String SP_USER_DATA = "SP_USER_DATA";
 	public static final String SP_USER_UNIT_OF_DISTANCE = "SP_USER_UNIT_OF_DISTANCE";
 	public static final String SP_USER_TRAVEL_MAP = "SP_USER_TRAVEL_MAP";//地图行程数据
@@ -246,6 +247,20 @@ public class SPUtils {
 	public static boolean setUiModel(Context context, int model) {
 		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
 		boolean isOk = sp.edit().putInt(SP_USER_UI_MODEL, model).commit();
+		return isOk;
+	}
+	
+	/** 获取工作模式 */
+	public static int getWorkModel(Context context) {
+		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+		int model = sp.getInt(SP_USER_WORK_MODEL, EBConstant.WORK_BLUETOOTH);
+		return model;
+	}
+
+	/** 保存工作模式 */
+	public static boolean setWorkModel(Context context, int model) {
+		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+		boolean isOk = sp.edit().putInt(SP_USER_WORK_MODEL, model).commit();
 		return isOk;
 	}
 	

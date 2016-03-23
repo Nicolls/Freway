@@ -32,5 +32,26 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:src="@drawable/daymabiao_icon_profile" />
+    
+    <ImageButton
+        android:id="@+id/home_ib_work_model"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/home_ib_profile"
+        android:layout_marginRight="15dp"
+        android:layout_centerVertical="true"
+        android:background="@null"
+        android:src="@drawable/home_model_btn_selector"
+         />
+    
+    <TextView 
+        android:id="@+id/home_tv_work_model"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/home_ib_work_model"
+        android:layout_marginRight="15dp"
+        android:layout_centerVertical="true"
+        android:text="地图"
+        />
 
 </RelativeLayout>

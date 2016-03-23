@@ -197,7 +197,7 @@ public class BlueToothService extends BaseService {
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
 			if (TravelConstant.ACTION_UI_SERICE_TRAVEL_STATE_CHANGE
-					.equals(action)) {
+					.equals(action)&&BaseApplication.workModel==EBConstant.WORK_BLUETOOTH) {
 				if (BaseApplication.travelState == TravelConstant.TRAVEL_STATE_START) {// 开始
 					if(mRequestHistoryDataThread!=null){
 						mRequestHistoryDataThread.cancel();
@@ -836,7 +836,7 @@ public class BlueToothService extends BaseService {
 				return;
 			}
 			setName("RequestDataThread");
-			while (isRequestDataRunning
+			while (BaseApplication.workModel==EBConstant.WORK_BLUETOOTH&&isRequestDataRunning
 					&& BluetoothConnection.STATE_CONNECTED == mBlueToothConnction
 							.getState()) {
 				printlnMessage("要发送出去的数据进进制值是："

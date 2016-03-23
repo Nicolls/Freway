@@ -36,9 +36,12 @@ public class NetUtil implements DataUpdateListener{
 	}
 	/**上传本地行程记录*/
 	public void uploadLocalRecord(){
+		LogUtils.i(TAG, "同步数据");
 		index=0;
 		travelList=DBHelper.getInstance(context).listTravelUnSync();
-		upLoadTravel();
+		if(travelList!=null&&travelList.size()>0){
+			upLoadTravel();
+		}
 	}
 	//上传
 	private void upLoadTravel(){

@@ -132,6 +132,7 @@
     <string name="unit_distance_settings">Unit Distance Settings</string>
     <string name="unbind_ble_will_abandon">Cycling record will not be saved if you unbind the ebike, sure to unbind?</string>
     <string name="change_wheel_will_abandon">Cycling record will not be saved if you change the wheel, sure to change?</string>
+    <string name="change_model_will_abandon">Cycling record will not be saved if you change the model, sure to change?</string>
     <string name="unbind">unbind</string>
     <string name="portrait_settings">Portrait Settings</string>
     <string name="album">Album</string>

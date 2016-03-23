@@ -30,9 +30,11 @@ public class BaseApplication extends Application{
 
 	public static long travelId=-1;
 	public static int travelState=TravelConstant.TRAVEL_STATE_NONE;
+	public static int workModel=EBConstant.WORK_MAP;//工作模式
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		workModel=SPUtils.getWorkModel(this);//工作模式
 		initSdk();
 	}
 	/**初始化第三方sdk*/
@@ -50,7 +52,7 @@ public class BaseApplication extends Application{
 	 */
 	public static void sendStateChangeBroadCast(final Context context,int state){
 		if(state==TravelConstant.TRAVEL_STATE_START||state==TravelConstant.TRAVEL_STATE_RESUME){//要去检查蓝牙有没有断线
-			if(BlueToothService.ble_state!=BlueToothConstants.BLE_STATE_CONNECTED){//未链接，则要提示用户去链接
+			if(workModel==EBConstant.WORK_BLUETOOTH&&BlueToothService.ble_state!=BlueToothConstants.BLE_STATE_CONNECTED){//未链接，则要提示用户去链接
 				if(TextUtils.isEmpty(SPUtils.getEBkieAddress(context))){
 					BlueToothUtil.toBindBleActivity(context,BLEScanConnectActivity.HANDLE_SCAN);
 				}else{
