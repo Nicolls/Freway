@@ -31,6 +31,7 @@ public class BaseApplication extends Application{
 	public static long travelId=-1;
 	public static int travelState=TravelConstant.TRAVEL_STATE_NONE;
 	public static int workModel=EBConstant.WORK_BLUETOOTH;//工作模式默认为蓝牙
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
