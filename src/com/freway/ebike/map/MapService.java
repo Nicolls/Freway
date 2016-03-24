@@ -189,7 +189,7 @@ public class MapService extends Service implements ConnectionCallbacks, OnConnec
 
 	@Override
 	public void onLocationChanged(Location location) {
-		LogUtils.i(TAG, "onLocationChanged" + location.getLatitude() + "--" + location.getLongitude());
+//		LogUtils.i(TAG, "onLocationChanged" + location.getLatitude() + "--" + location.getLongitude());
 		TravelLocation travelLocation = new TravelLocation(location);
 		// travelLocation=formatLocationWithChina(travelLocation);//纠正经纬度。发布的时候要去掉
 		travelLocation.setTravelId(BaseApplication.travelId);

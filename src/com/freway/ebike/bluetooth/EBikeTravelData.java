@@ -411,7 +411,7 @@ public class EBikeTravelData implements Serializable {
 		// 距离，distance 时间time 平均速度avgSpeed 瞬时速度insSpeed 最大速度 maxSpeed 海拔 asl
 		// 踏频量cadence 卡路里 calorie 。
 		// simulateMapData();// 模拟数据
-		LogUtils.i(TAG, "接收到地图数据：");
+//		LogUtils.i(TAG, "接收到地图数据：");
 		// Location fromL = from.getLocation();
 		// Location toL = to.getLocation();
 		// LogUtils.i(
