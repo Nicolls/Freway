@@ -1,6 +1,6 @@
 package com.freway.ebike.bluetooth;
 
-public class KcalCaculate {
+public class ControllerKcalCaculate {
 	
 	// 传参 踏的圈数
 	// 返回 无,直接计算为全局变量

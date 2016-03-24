@@ -28,6 +28,8 @@ public class EBConstant {
 	public static final int OFF=0;
 	
 	public static final int WHEEL_VALUE = 2180;
+	
+	public static final int USER_DEFAULT_WEIGHT_VALUE = 70;//kg
 	//登录类型
 	public static final int SIGN_NORMAL=0;
 	public static final int SIGN_FACE_BOOK=1;

@@ -19,6 +19,7 @@ import com.freway.ebike.map.TravelConstant;
 import com.freway.ebike.model.Travel;
 import com.freway.ebike.model.TravelLocation;
 import com.freway.ebike.model.TravelSpeed;
+import com.freway.ebike.model.User;
 import com.freway.ebike.protocol.ProtocolTool;
 import com.freway.ebike.utils.CommonUtil;
 import com.freway.ebike.utils.LogUtils;
@@ -187,7 +188,7 @@ public class EBikeTravelData implements Serializable {
 	 */
 	public int cycle_times;
 
-	private static KcalCaculate kcalCacul;// 卡路里计算
+	private static ControllerKcalCaculate kcalCacul;// 卡路里计算
 	// 用于计算当前行程
 	// private long cal_startTime;
 	// private long cal_tempTime;
@@ -248,7 +249,7 @@ public class EBikeTravelData implements Serializable {
 			wheelValue = SPUtils.getWheel(context);
 		}
 		cal_CadenceArray = null;
-		kcalCacul = new KcalCaculate();
+		kcalCacul = new ControllerKcalCaculate();
 		zeroSpeedCount = 0;
 		spendTime = 0;
 		insSpeed = 0;
@@ -411,18 +412,23 @@ public class EBikeTravelData implements Serializable {
 		// 踏频量cadence 卡路里 calorie 。
 		// simulateMapData();// 模拟数据
 		LogUtils.i(TAG, "接收到地图数据：");
-//		Location fromL = from.getLocation();
-//		Location toL = to.getLocation();
-//		LogUtils.i(
-//				TAG,
-//				"from：" + fromL.getAltitude() + "-" + fromL.getSpeed() + "-" + fromL.getTime() + "-"
-//						+ fromL.distanceTo(toL));
-//		LogUtils.i(TAG,
-//				"to：" + toL.getAltitude() + "-" + toL.getSpeed() + "-" + toL.getTime() + "-" + toL.distanceTo(fromL));
+		// Location fromL = from.getLocation();
+		// Location toL = to.getLocation();
+		// LogUtils.i(
+		// TAG,
+		// "from：" + fromL.getAltitude() + "-" + fromL.getSpeed() + "-" +
+		// fromL.getTime() + "-"
+		// + fromL.distanceTo(toL));
+		// LogUtils.i(TAG,
+		// "to：" + toL.getAltitude() + "-" + toL.getSpeed() + "-" +
+		// toL.getTime() + "-" + toL.distanceTo(fromL));
 
+		// 时间
+		long t = to.getLocation().getTime() - from.getLocation().getTime();
+		float time = t / 1000;//s
 		// 距离
 		float mile = to.getLocation().distanceTo(from.getLocation());// 单位米
-		if(mile>50){//用来去除地图可能会跳跃的误差
+		if (mile > 50) {// 用来去除地图可能会跳跃的误差
 			return;
 		}
 		mile = mile / 1000;// 由m变为km
@@ -432,21 +438,50 @@ public class EBikeTravelData implements Serializable {
 			avgSpeed = distance / spendTime * 60 * 60;// 平均 km/h
 		}
 		// 瞬时速度
-		float tempSpeed = to.getLocation().getSpeed();// 单位m/s
-		insSpeed = tempSpeed * 3.6f;// 由m/s转成km/h
+		float speedTemp = to.getLocation().getSpeed();// 单位m/s
+		speedTemp = speedTemp * 3.6f;// 由m/s转成km/h
+		insSpeed = formatInsSpeed(speedTemp);// 在计算值之前，先用分段法处理一下得到的速度
 		// 最大速度
 		if (insSpeed > maxSpeed) {
 			maxSpeed = insSpeed;
 		}
 		// 海拔
 		altitude = to.getLocation().getAltitude();
-		// 踏频 
-//		cadence=(insSpeed*60*1000/2.19f)/1.81f;
+		// 踏频
+		// cadence=(insSpeed*60*1000/2.19f)/1.81f;
 		// 总踏频
-		
-		// 卡路里//http://www.docin.com/p-84610806.html
-		//卡路里(kcal)消耗=骑车时速(km/h)*体重(kg)*9.7*运动时间(h)；
-//		calorie=(int)insSpeed*60*9.7f*(spendTime/3600);
+
+		// 卡路里
+		float value = 0;
+		if (insSpeed == 0) {
+			value = 0;
+		} else if (insSpeed <= 10) {
+			value = MapKcalCaculate.TYPE_BIKE_0_10_VALUE;
+		} else if (insSpeed <= 13) {
+			value = MapKcalCaculate.TYPE_BIKE_11_13_VALUE;
+		} else if (insSpeed <= 25) {
+			value = MapKcalCaculate.TYPE_BIKE_14_25_VALUE;
+		} else if (insSpeed <= 31) {
+			value = MapKcalCaculate.TYPE_BIKE_26_31;
+		} else {
+			value = MapKcalCaculate.TYPE_BIKE_31_MAX;
+		}
+		float minutes = time / 60f;
+		int weight = EBConstant.USER_DEFAULT_WEIGHT_VALUE * 2;// kg-斤
+		if (context != null) {
+			try {
+				User u = SPUtils.getUser(context);
+				String wstr = u.getWeight();
+				int w = Integer.parseInt(wstr);
+				if (w > 30) {
+					weight = w;
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+		float c = MapKcalCaculate.getInstance().caculate(minutes, weight, value);
+		calorie += c;
 	}
 
 	/** 数据模拟 */
@@ -496,7 +531,7 @@ public class EBikeTravelData implements Serializable {
 	 * @Description 接收控制器信息格式化数据
 	 */
 	public synchronized void parseBikeData(byte[] data) {
-//		 data=simulateBikeData(data);// 模拟数据
+		// data=simulateBikeData(data);// 模拟数据
 		if (data != null && data.length >= 2) {
 			byte[] controlState = new byte[2];
 			byte[] bikeData = new byte[data.length - 2];
@@ -574,7 +609,7 @@ public class EBikeTravelData implements Serializable {
 				}
 			}
 			if (kcalCacul == null) {
-				kcalCacul = new KcalCaculate();
+				kcalCacul = new ControllerKcalCaculate();
 			}
 			cal_tempCalorie = kcalCacul.Kcale_Proc(wheelValue, (long) cal_tempCadence, (long) speedTemp * 1000,
 					(byte) gearTemp);// 卡路里
@@ -674,7 +709,7 @@ public class EBikeTravelData implements Serializable {
 				spendTime = ProtocolTool.byteArrayToInt(time);
 
 				if (kcalCacul == null) {
-					kcalCacul = new KcalCaculate();
+					kcalCacul = new ControllerKcalCaculate();
 				}
 
 				cal_tempDistance = cal_tempDistance * wheelValue / 1000 / 1000; // 单位：km
