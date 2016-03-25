@@ -400,6 +400,9 @@ public class EBikeTravelData implements Serializable {
 		}
 		// 海拔
 		altitude = location.getLocation().getAltitude();
+		if (insSpeed != 0 && BaseApplication.travelState == TravelConstant.TRAVEL_STATE_FAKE_PAUSE) {// 当前是伪暂停，就resume
+			BaseApplication.sendStateChangeBroadCast(context, TravelConstant.TRAVEL_STATE_RESUME);
+		}
 	}
 
 	/**
