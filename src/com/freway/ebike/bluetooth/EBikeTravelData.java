@@ -795,7 +795,10 @@ public class EBikeTravelData implements Serializable {
 					travel.setDistance(distance);
 					travel.setMaxSpeed(maxSpeed);
 					travel.setSpendTime(spendTime);
-					travel.setStartTime(startTime);// 设置开始读取历史记录的时间为行程开始时间
+					if(context!=null){
+						travel.setStartTime(SPUtils.getEbikeDisconnectTime(context));// 设置开始读取历史记录的时间为上次蓝牙断开的时间
+						travel.setEndTime(SPUtils.getEbikeDisconnectTime(context)+spendTime*1000);//结束时间等于花的时间+开始时间
+					}
 					DBHelper.getInstance(context).updateTravel(travel);
 					if (netUtil == null) {
 						netUtil = new NetUtil(context);

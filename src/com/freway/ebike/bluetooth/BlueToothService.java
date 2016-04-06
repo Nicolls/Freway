@@ -616,6 +616,8 @@ public class BlueToothService extends BaseService {
 					mRequestDataThread.cancel();
 				}
 				printlnMessage("蓝牙服务链接断开");
+				//保存当前断开的时间
+				SPUtils.setEbikeDisconnectTime(BlueToothService.this);
 				sendBleState(BlueToothConstants.BLE_STATE_DISCONNECTED);
 				break;
 			case BluetoothConnection.ACTION_GATT_SERVICES_DISCOVERED:

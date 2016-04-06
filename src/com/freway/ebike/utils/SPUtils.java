@@ -3,6 +3,8 @@
  */
 package com.freway.ebike.utils;
 
+import java.util.Calendar;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
@@ -32,6 +34,8 @@ public class SPUtils {
 	public static final String SP_APP_EBIKE_ADDRESS = "SP_APP_EBIKE_ADDRESS";
 	public static final String SP_APP_EBIKE_NAME = "SP_APP_EBIKE_NAME";
 	public static final String SP_APP_EBIKE_MILE = "SP_APP_EBIKE_MILE";//保存剩余里程计算的缓存
+	public static final String SP_APP_EBIKE_DISCONNECT_TIME = "SP_APP_EBIKE_DISCONNECT_TIME";//与控制器断开的时间
+	
 	
 	// 用户相关
 	public static final String SP_USER = "SP_USER";
@@ -312,6 +316,19 @@ public class SPUtils {
 	public static boolean setWheel(Context context, int wheel) {
 		SharedPreferences sp = context.getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
 		boolean isOk = sp.edit().putInt(SP_USER_WHEEL, wheel).commit();
+		return isOk;
+	}
+	/** 获取控制器断开链接的时间,单位毫秒，默认为当前时间 */
+	public static long getEbikeDisconnectTime(Context context) {
+		SharedPreferences sp = context.getSharedPreferences(SP_APP, Context.MODE_PRIVATE);
+		long time = sp.getLong(SP_APP_EBIKE_DISCONNECT_TIME,Calendar.getInstance().getTimeInMillis());
+		return time;
+	}
+
+	/** 保存当前控制器断开链接的时间，单位毫秒 */
+	public static boolean setEbikeDisconnectTime(Context context) {
+		SharedPreferences sp = context.getSharedPreferences(SP_APP, Context.MODE_PRIVATE);
+		boolean isOk = sp.edit().putLong(SP_APP_EBIKE_DISCONNECT_TIME, Calendar.getInstance().getTimeInMillis()).commit();
 		return isOk;
 	}
 	/** 获取last travel*/
