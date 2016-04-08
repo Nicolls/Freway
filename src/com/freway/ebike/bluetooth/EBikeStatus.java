@@ -65,7 +65,7 @@ public class EBikeStatus {
 	public  byte getBikeStatus() {
 		//在这里判断，如果是接收到短信，那么要发送三次
 		if(sendMessageTime>=SEND_MESSAGE_MAX_TIMES){
-			bit_6=EBConstant.OFF;
+			setBikeStatus(RECEIVE_MESSAGE,EBConstant.OFF);
 			sendMessageTime=0;
 		}else if(bit_6==EBConstant.ON){
 			sendMessageTime++;
