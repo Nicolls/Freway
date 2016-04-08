@@ -45,7 +45,7 @@ public class EBikeStatus {
 	/**短信*/
 	public final static int RECEIVE_MESSAGE = 8;
 	/**发送短信的次数*/
-	private int sendMessageTime=0;
+	private static int sendMessageTime=0;
 	private static final int SEND_MESSAGE_MAX_TIMES=3;
 	private Context context;
 	private static EBikeStatus mEBikeStatus;
@@ -67,8 +67,7 @@ public class EBikeStatus {
 		if(sendMessageTime>=SEND_MESSAGE_MAX_TIMES){
 			bit_6=EBConstant.OFF;
 			sendMessageTime=0;
-		}
-		if(bit_6==EBConstant.ON){
+		}else if(bit_6==EBConstant.ON){
 			sendMessageTime++;
 		}
 		return bikeStatus;

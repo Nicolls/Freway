@@ -507,7 +507,7 @@ public class BlueToothService extends BaseService {
 			} else if (ACTION_SMS.equals(action)) {// 短信
 				sendData = "接收到短信";
 				printlnMessage(sendData);
-				EBikeStatus.getInstance(context).setBikeStatus(EBikeStatus.RECEIVE_MESSAGE, 1);
+				EBikeStatus.getInstance(context).setBikeStatus(EBikeStatus.RECEIVE_MESSAGE, EBConstant.ON);
 
 			} else if (ACTION_PHONE.equals(action)) {// 电话
 				sendData = "接收到电话";
