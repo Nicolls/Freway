@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.freway.ebike"
+    android:versionCode="1"
+    android:versionName="0.9.1" >
+
+    <!-- 蓝牙 -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <!-- 电话 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 短信 -->
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <!-- 网络 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 存储SD卡 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 地图 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- 定义地图权限声明 -->
+    <permission
+        android:name="com.freway.ebike.map.MapService.FREWAY_MAP"
+        android:label="mapservice"
+        android:permissionGroup="string"
+        android:protectionLevel="signature" />
+    <!-- 定义蓝牙权限声明 -->
+    <permission
+        android:name="com.freway.ebike.bluetooth.BlueToothService.FREWAY_BLUETOOTH"
+        android:label="mapservice"
+        android:permissionGroup="string"
+        android:protectionLevel="signature" />
+
+    <!-- 这个权限用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- 这个权限用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 获取网络状态，根据网络状态切换进行数据请求网络转换 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 写外置存储。如果开发者使用了离线地图，并且数据写在外置存储区域，则需要申请该权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 读取外置存储。如果开发者使用了so动态加载功能并且把so文件放在了外置存储区域，则需要申请该权限，否则不需要 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- 访问网络，进行地图相关业务数据请求，包括地图数据，路线规划，POI检索等 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 调用相机，用于实现扫描二维码，预览个性化地图编辑器生成的个性化地图样式（开发者实际开发中地图SDK不需要该权限）-->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="false"
+        android:resizeable="true"
+        android:smallScreens="true" />
+
+    <!-- OpenGLES 2.0 -->
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <application
+        android:name="com.freway.ebike.common.BaseApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:hardwareAccelerated="true"
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="a9sLXrHDkmQpCnGyXtBkNDkXHGtS5CpS" />
+
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
+
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote"></service>
+
+         <activity
+            android:name="com.freway.ebike.activity.WelcomeActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter> 
+        </activity>
+
+        <activity
+            android:name="com.freway.ebike.activity.SignInActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+        </activity>
+        <activity android:name="com.freway.ebike.activity.SignUpActivity" android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="com.freway.ebike.activity.HomeActivity" android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="com.freway.ebike.activity.ProfileActivity" android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="com.freway.ebike.activity.SettingActivity" android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="com.freway.ebike.activity.EBikeWebViewActivity" android:screenOrientation="portrait">
+        </activity>
+         <activity android:name="com.freway.ebike.activity.OtherWebViewActivity" android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="com.freway.ebike.activity.TestActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+           <!--  <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter> -->
+        </activity>
+         <activity
+            android:name="com.freway.ebike.bluetooth.BlueToothActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+             >
+   <!--  <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>  -->
+        </activity>
+        <activity
+            android:name="com.freway.ebike.bluetooth.HistoryBlueToothActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+             >
+
+            <!--
+         <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
+
+        </activity>
+        <activity
+            android:name="com.freway.ebike.bluetooth.BLEScanConnectActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/DialogNoTitleNoActionBar" >
+
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
+        </activity>
+
+        <!-- 服务 -->
+        <service
+            android:name="com.freway.ebike.service.UpdateAPPService"
+            android:enabled="true" >
+            <intent-filter>
+                <action android:name="com.freway.ebike.service.UpdateAPPService" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.freway.ebike.map.MapService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="com.freway.ebike.map.MapService.FREWAY_MAP" />
+        <service
+            android:name="com.freway.ebike.bluetooth.BlueToothService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="com.freway.ebike.bluetooth.BlueToothService.FREWAY_BLUETOOTH" />
+    </application>
+    <!-- keytool -exportcert -alias freway -keystore C:\android_ide\keystore\freway.keystore | openssl sha1 -binary | openssl base64 -->
+
+</manifest>

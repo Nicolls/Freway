@@ -1,0 +1,1019 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="78f95432-5ec1-4b3b-bc24-8ab0c225ae5f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/crashlytics-build.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/font/DIN-Light.otf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/font/DIN-Medium.otf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/font/DINCond-Bold.otf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fabric.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ic_launcher-web.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_answers_2/.classpath" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_answers_2/.project" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_answers_2/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_answers_2/aapt/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_answers_2/bin/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_answers_2/bin/classes/com/crashlytics/android/answers/BuildConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_answers_2/bin/com-crashlytics-sdk-android_answers_2.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_answers_2/bin/jarlist.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_answers_2/build.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_answers_2/gen/com/crashlytics/android/answers/BuildConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_answers_2/kit-version.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_answers_2/libs/com-crashlytics-sdk-android_answers-classes.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_answers_2/project.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_beta_2/.classpath" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_beta_2/.project" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_beta_2/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_beta_2/aapt/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_beta_2/bin/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_beta_2/bin/classes/com/crashlytics/android/beta/BuildConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_beta_2/bin/com-crashlytics-sdk-android_beta_2.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_beta_2/build.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_beta_2/gen/com/crashlytics/android/beta/BuildConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_beta_2/kit-version.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_beta_2/libs/com-crashlytics-sdk-android_beta-classes.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_beta_2/project.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics-core_2/.classpath" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics-core_2/.project" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics-core_2/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics-core_2/aapt/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics-core_2/bin/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics-core_2/bin/classes/com/crashlytics/android/core/BuildConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics-core_2/bin/com-crashlytics-sdk-android_crashlytics-core_2.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics-core_2/bin/jarlist.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics-core_2/build.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics-core_2/gen/com/crashlytics/android/core/BuildConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics-core_2/kit-version.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics-core_2/libs/com-crashlytics-sdk-android_crashlytics-core-classes.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics-core_2/project.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics_2/.classpath" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics_2/.project" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics_2/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics_2/aapt/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics_2/bin/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics_2/bin/classes/com/crashlytics/android/BuildConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics_2/bin/com-crashlytics-sdk-android_crashlytics_2.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics_2/bin/jarlist.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics_2/build.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics_2/gen/com/crashlytics/android/BuildConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics_2/kit-version.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics_2/libs/com-crashlytics-sdk-android_crashlytics-classes.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/com-crashlytics-sdk-android_crashlytics_2/project.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/io-fabric-sdk-android_fabric_2/.classpath" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/io-fabric-sdk-android_fabric_2/.project" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/io-fabric-sdk-android_fabric_2/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/io-fabric-sdk-android_fabric_2/aapt/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/io-fabric-sdk-android_fabric_2/bin/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/io-fabric-sdk-android_fabric_2/bin/classes/io/fabric/sdk/android/BuildConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/io-fabric-sdk-android_fabric_2/bin/io-fabric-sdk-android_fabric_2.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/io-fabric-sdk-android_fabric_2/build.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/io-fabric-sdk-android_fabric_2/gen/io/fabric/sdk/android/BuildConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/io-fabric-sdk-android_fabric_2/kit-version.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/io-fabric-sdk-android_fabric_2/libs/io-fabric-sdk-android_fabric-classes.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/io-fabric-sdk-android_fabric_2/proguard.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kit-libs/io-fabric-sdk-android_fabric_2/project.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kits.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/proguard.cfg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/anim/appear.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/anim/bottom_in.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/anim/bottom_out.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/anim/disappear.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/anim/left_in.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/anim/left_out.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/anim/popup_enter.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/anim/popup_exit.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/anim/reverse_anim.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/anim/right_in.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/anim/right_out.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/anim/rotating.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/anim/scale_in.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/anim/scale_out.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/anim/top_in.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/anim/top_out.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/anim/undevelop_popup_enter.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/anim/undevelop_popup_exit.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/anim/welcome_fade_in_scale.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/battery_state_percent_bg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/daymabiao_battery_gear0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/daymabiao_battery_gear1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/daymabiao_battery_gear2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/daymabiao_battery_gear3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/mabiao_flag_end.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/nightmabiao_battery_gear0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/nightmabiao_battery_gear1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/nightmabiao_battery_gear2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/nightmabiao_battery_gear3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/profile_icon_ellipse.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/profile_pic_temp.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/profile_rectangle.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/profile_rectangle_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/profile_rectangle_pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/settings_button_rectangle.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/settings_exitbutton.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/sign_btn_fb.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/sign_btn_twitter.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/sign_et_long_bg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/sign_title_line.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/speed_state_ll_param.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/speed_state_view_btn_pause_disable.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/speed_state_view_btn_pause_enable.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/speed_state_view_btn_start_disable.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/speed_state_view_btn_start_enable.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/speed_state_view_cicle_mi.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/speed_state_view_cicle_mph.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/speed_state_view_holder.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-hdpi/speed_view_cicle_point.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/battery_pic_day.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/battery_pic_night.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/battery_state_percent_bg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/bike_state_battery_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/bike_state_gear0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/bike_state_gear1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/bike_state_gear2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/bike_state_gear3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/bike_state_gear_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/ble_btn.9.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/ble_scan_device_item.9.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/day_icon_asl.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/day_icon_cadence.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/day_icon_distance.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/day_icon_speed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/daymabiao_battery_gear0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/daymabiao_battery_gear1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/daymabiao_battery_gear2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/daymabiao_battery_gear3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/daymabiao_compass_bg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/daymabiao_compass_view.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/daymabiao_compass_view_holder.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/daymabiao_icon_profile.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/dialog_confirm.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/dialog_left_middle_right.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/dialog_left_right.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/dialog_loading.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/freway_logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/home_bike_state_bike_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/home_freway_logo_day.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/home_freway_logo_night.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/home_speed_view_ll_line.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/icon_arrow_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/icon_arrow_pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/icon_back.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/icon_grades_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/icon_grades_pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/icon_news_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/icon_news_pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/icon_records_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/icon_records_pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/icon_settings.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/icon_tutorial_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/icon_tutorial_pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/light_back_off.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/light_back_on.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/light_front_off.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/light_front_on.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/login_bg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/mabiao_flag_end.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/model_day.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/model_night.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/night_icon_asl.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/night_icon_cadence.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/night_icon_distance.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/night_icon_speed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/nightmabiao_battery_gear0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/nightmabiao_battery_gear1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/nightmabiao_battery_gear2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/nightmabiao_battery_gear3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/profile_icon_ellipse.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/profile_icon_man.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/profile_icon_woman.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/profile_pic_temp.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/profile_rectangle.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/profile_rectangle_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/profile_rectangle_pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/records_icon_share.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/settings_button_arrow.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/settings_button_choose_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/settings_button_choose_pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/settings_button_rectangle.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/settings_confirm_red.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/settings_exitbutton.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/settings_gender_man.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/settings_gender_woman.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/settings_icon_bike.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/sign_btn_bg.9.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/sign_btn_fb.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/sign_btn_twitter.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/sign_et_long_bg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/sign_et_pic_email.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/sign_et_pic_key.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/sign_input_layout_bg.9.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/sign_title_line.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/speed_state_ll_param.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/speed_state_map_bg_day.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/speed_state_map_bg_night.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/speed_state_view_arrow_alpha.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/speed_state_view_arrow_bottom_day.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/speed_state_view_arrow_bottom_night.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/speed_state_view_btn_pause_disable.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/speed_state_view_btn_pause_enable.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/speed_state_view_btn_start_disable.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/speed_state_view_btn_start_enable.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/speed_state_view_cicle_mi.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/speed_state_view_cicle_mph.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/speed_state_view_holder.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/speed_view_cicle_point.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/state_cal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/view_line_pic.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/welcome_bg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xhdpi/welcome_logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable-xxhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable/bike_state_light_back_selector.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable/bike_state_light_front_selector.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable/home_model_btn_selector.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable/item_ble_scan_selector.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable/light_back_selector.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable/light_front_selector.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable/profile_icon_arrow_selector.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable/profile_icon_grades_selector.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable/profile_icon_news_selector.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable/profile_icon_records_selector.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable/profile_icon_tutorial_selector.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable/profile_rectangle_selector.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable/setting_icon_gender_selector.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable/speed_state_icon_asl_selector.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable/speed_state_icon_avgspeed_selector.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable/speed_state_icon_cadence_selector.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/drawable/speed_state_icon_distance_selector.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/activity_ble_scan_connect.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/activity_bluetooth.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/activity_history_bluetooth.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/activity_home.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/activity_profile.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/activity_setting.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/activity_signin.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/activity_signup.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/activity_test.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/activity_test_map.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/activity_twitter_web.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/activity_webview.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/activity_welcome.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/common_loading.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/item_bluetooth_device.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/layout_dilog_btn_left_middle_right.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/layout_dilog_btn_left_right.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/layout_dilog_confirm.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/layout_dilog_input_confirm.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/layout_dilog_sync_history.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/layout_home_battery_state.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/layout_home_bike_state.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/layout_home_compass.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/layout_home_map.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/layout_home_speed_state.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/layout_home_travel_state.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/view_line_space.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/view_top_bar_custom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/view_top_bar_home.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/view_travel_stop_tip.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/layout/view_update_app_notify_remote.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/menu/main.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/values-hdpi/dimens.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/values-v11/styles.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/values-v14/styles.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/values-w820dp/dimens.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/values-xxhdpi/dimens.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/values/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/values/color.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/values/com_crashlytics_export_strings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/values/dimens.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/values/strings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/values/styles.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/activity/EBikeWebViewActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/activity/HomeActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/activity/HomeUiActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/activity/MapTestActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/activity/OtherWebViewActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/activity/ProfileActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/activity/SettingActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/activity/SignInActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/activity/SignUpActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/activity/TestActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/activity/WelcomeActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/adapter/BleScanAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/adapter/DoubleLineListAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/adapter/EBBaseAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/adapter/EBFragmentPagerAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/adapter/EBViewPagerAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/adapter/GridAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/adapter/GuidePagerAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/adapter/JobListAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/adapter/ViewPagerAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/bluetooth/BLEScanConnectActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/bluetooth/BlueToothActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/bluetooth/BlueToothConstants.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/bluetooth/BlueToothService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/bluetooth/BlueToothTools.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/bluetooth/BlueToothUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/bluetooth/BluetoothConnection.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/bluetooth/ControllerKcalCaculate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/bluetooth/EBikeHistoryStatus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/bluetooth/EBikeStatus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/bluetooth/EBikeTravelData.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/bluetooth/HistoryBlueToothActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/bluetooth/MapKcalCaculate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/bluetooth/RemainMiCaculate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/common/BaseActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/common/BaseApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/common/BaseBroadcastReceiver.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/common/BaseFragment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/common/BaseIntentService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/common/BaseService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/common/EBConstant.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/common/LoginInfo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/crop/BitmapUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/crop/CompressImageUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/crop/CropFileUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/crop/CropHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/crop/CropHelper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/crop/CropParams.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/db/DBHelper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/db/DBManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/db/EBikeTable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/facebook/FacebookUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/facebook/FrewayFacebookBroadcastReceiver.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/listener/OpenActivityResultListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/map/CustomerLocationSource.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/map/MapService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/map/MapUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/map/TravelConstant.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/model/EBErrorResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/model/EBRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/model/EBResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/model/Job.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/model/ListJob.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/model/RspLogin.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/model/RspRegister.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/model/RspUpLoadTravel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/model/RspUpdatePhoto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/model/RspUpdateUserInfo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/model/RspUserInfo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/model/RspVersion.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/model/Travel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/model/TravelLocation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/model/TravelSpeed.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/model/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/net/BaseRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/net/BaseResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/net/DataUpdateListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/net/EBikeRequestService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/net/EBikeRequestServiceFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/net/EBikeRequestServiceVolleyImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/net/VolleyGsonRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/net/VolleyRequestQueue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/protocol/CommandCode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/protocol/Protocol.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/protocol/ProtocolByteHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/protocol/ProtocolTool.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/service/UpdateAPPService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/twitter/TwitterSp.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/twitter/TwitterUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/twitter/TwitterWebActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/utils/AlertUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/utils/CommonUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/utils/DesUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/utils/EBikeActivityManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/utils/EBikeDownLoadAsyncTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/utils/EBikeViewUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/utils/EncryptUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/utils/ErrorUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/utils/FileUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/utils/FontUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/utils/JsonUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/utils/LogUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/utils/MD5Tool.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/utils/NetUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/utils/PushUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/utils/SPUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/utils/ScreenUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/utils/TimeUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/utils/ToastUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/utils/Typefaces.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/utils/UploadImageUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/view/BatteryView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/view/ClickImageButton.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/view/CompassView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/view/FlickTextView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/view/FlickView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/view/HeadPicView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/view/LoadingDialog.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/view/NestedListView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/view/SpeedView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/view/directionalviewpager/DirectionalViewPager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/freway/ebike/view/directionalviewpager/VerticalViewPagerCompat.java" beforeDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DefaultGradleProjectSettings">
+    <option name="isMigrated" value="true" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="711KPTM0664849" />
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view />
+      </state>
+    </system>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>onSignInTwitter</find>
+      <find>twi</find>
+      <find>map</find>
+      <find>activity_test</find>
+      <find>mMarker</find>
+      <find>bitmapA</find>
+      <find>layout_home_map</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/activity/WelcomeActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/adapter/BleScanAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/adapter/EBViewPagerAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/adapter/ViewPagerAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/bluetooth/BlueToothService.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/bluetooth/BlueToothUtil.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/bluetooth/EBikeTravelData.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/bluetooth/MapKcalCaculate.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/net/VolleyGsonRequest.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/protocol/ProtocolTool.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_signin.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/utils/AlertUtil.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/utils/CommonUtil.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/utils/DesUtil.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/utils/EBikeDownLoadAsyncTask.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/view/BatteryView.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/view/ClickImageButton.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/view/CompassView.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/view/FlickTextView.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/view/HeadPicView.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_test_map.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/layout_home_map.xml" />
+        <option value="$PROJECT_DIR$/app/build.gradle" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/common/BaseApplication.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/activity/LocationCustomDemo.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/map/MapUtil.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/map/MapService.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/activity/SignInActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/activity/HomeActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/freway/ebike/view/SpeedView.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="90" />
+    <option name="y" value="25" />
+    <option name="width" value="1440" />
+    <option name="height" value="821" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Freway" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Freway" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="Freway" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Freway" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="gradle" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Freway" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Freway" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="gradle" type="462c0819:PsiDirectoryNode" />
+              <item name="wrapper" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="android.project.structure.last.selected" value="SDK Location" />
+    <property name="android.project.structure.proportion" value="0.15" />
+    <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.freway.ebike.activity" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
+      <module name="app" />
+      <option name="DEPLOY" value="true" />
+      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+      <option name="DEPLOY_AS_INSTANT" value="false" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+      <option name="DEBUGGER_TYPE" value="Auto" />
+      <Auto>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Auto>
+      <Hybrid>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Hybrid>
+      <Java />
+      <Native>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Native>
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Sample Java Methods" />
+      </Profilers>
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="78f95432-5ec1-4b3b-bc24-8ab0c225ae5f" name="Default Changelist" comment="" />
+      <created>1585637144328</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1585637144328</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="90" y="25" width="1440" height="821" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.3299712" />
+      <window_info id="Structure" order="2" side_tool="true" />
+      <window_info id="Favorites" order="3" side_tool="true" />
+      <window_info id="Build Variants" order="4" side_tool="true" />
+      <window_info id="Image Layers" order="5" />
+      <window_info id="Designer" order="6" />
+      <window_info id="Resources Explorer" order="7" />
+      <window_info id="Capture Tool" order="8" />
+      <window_info anchor="bottom" id="Run" order="0" />
+      <window_info anchor="bottom" id="Logcat" order="1" weight="0.7183099" />
+      <window_info anchor="bottom" id="TODO" order="2" />
+      <window_info anchor="bottom" id="Find" order="3" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="4" visible="true" weight="0.4338028" />
+      <window_info anchor="bottom" id="Event Log" order="5" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="6" />
+      <window_info anchor="bottom" id="Build" order="7" weight="0.38169014" />
+      <window_info anchor="bottom" id="Debug" order="8" />
+      <window_info anchor="bottom" id="Android Profiler" order="9" show_stripe_button="false" />
+      <window_info anchor="right" id="Device File Explorer" order="0" side_tool="true" />
+      <window_info anchor="right" id="Capture Analysis" order="1" />
+      <window_info anchor="right" id="Gradle" order="2" />
+      <window_info anchor="right" id="Theme Preview" order="3" />
+      <window_info anchor="right" id="PlantUML" order="4" />
+      <window_info anchor="right" id="Preview" order="5" />
+      <window_info anchor="right" id="Palette&#9;" order="6" />
+    </layout>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/utils/LogUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/utils/MD5Tool.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/utils/NetUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/utils/PushUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/utils/ScreenUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/utils/TimeUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/utils/ToastUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/utils/Typefaces.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/utils/UploadImageUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/view/directionalviewpager/DirectionalViewPager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="51" column="13" selection-start-line="51" selection-start-column="13" selection-end-line="51" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/view/directionalviewpager/VerticalViewPagerCompat.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="5" column="19" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/view/ClickImageButton.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="11" column="79" selection-start-line="11" selection-start-column="79" selection-end-line="11" selection-end-column="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/view/CompassView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="20" column="72" selection-start-line="20" selection-start-column="72" selection-end-line="20" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/view/FlickTextView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="32" column="74" selection-start-line="32" selection-start-column="74" selection-end-line="32" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/view/FlickView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="37" column="13" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/view/HeadPicView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="10" column="72" lean-forward="true" selection-start-line="10" selection-start-column="72" selection-end-line="10" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/view/LoadingDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/view/NestedListView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/activity/OtherWebViewActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/activity/MapTestActivity.java" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/activity/TestActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="236">
+          <caret line="31" column="32" selection-start-line="31" selection-start-column="32" selection-end-line="31" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_test.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_test_map.xml" />
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="70" column="60" selection-start-line="70" selection-start-column="60" selection-end-line="70" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/app/libs/BaiduLBS_Android.jar!/com/baidu/mapapi/map/MapView.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="42" column="19" selection-start-line="42" selection-start-column="19" selection-end-line="42" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/app/libs/BaiduLBS_Android.jar!/com/baidu/mapapi/map/BaiduMap.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="49" column="13" selection-start-line="49" selection-start-column="13" selection-end-line="49" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/map/TravelConstant.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/map/CustomerLocationSource.java" />
+    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-28/android/location/Location.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="40" column="13" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/model/TravelLocation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="9" column="14" lean-forward="true" selection-start-line="9" selection-start-column="14" selection-end-line="9" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/map/MapService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="475">
+          <caret line="182" column="6" selection-start-line="181" selection-end-line="184" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/activity/LocationCustomDemo.java" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/map/MapUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="117" column="38" lean-forward="true" selection-start-line="117" selection-start-column="38" selection-end-line="117" selection-end-column="38" />
+          <folding>
+            <element signature="e#12391#12399#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/model/RspLogin.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="164">
+          <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
+          <folding>
+            <element signature="e#413#414#0" expanded="true" />
+            <element signature="e#431#432#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/utils/CommonUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="166">
+          <caret line="221" column="34" lean-forward="true" selection-start-line="221" selection-start-column="23" selection-end-line="221" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/activity/SettingActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="438">
+          <caret line="526" column="34" selection-start-line="526" selection-start-column="34" selection-end-line="526" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/net/EBikeRequestServiceVolleyImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10">
+          <caret line="85" column="52" selection-start-line="85" selection-start-column="44" selection-end-line="85" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/net/EBikeRequestService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="68" column="12" selection-start-line="68" selection-start-column="9" selection-end-line="68" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/utils/SPUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="257" column="22" selection-start-line="257" selection-start-column="22" selection-end-line="257" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/common/BaseApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="143">
+          <caret line="38" column="31" lean-forward="true" selection-start-line="38" selection-start-column="31" selection-end-line="38" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="75" column="59" selection-start-line="75" selection-start-column="59" selection-end-line="75" selection-end-column="59" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-manifest" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/view_top_bar_home.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-31" />
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/view/SpeedView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2108">
+          <caret line="148" column="21" selection-start-line="148" selection-start-column="21" selection-end-line="148" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/activity/SignInActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1513">
+          <caret line="113" column="30" selection-start-line="113" selection-start-column="30" selection-end-line="113" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/activity/WelcomeActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="45" column="17" selection-start-line="45" selection-start-column="17" selection-end-line="45" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/layout_home_map.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1207">
+          <caret line="71" column="24" selection-start-line="71" selection-start-column="24" selection-end-line="71" selection-end-column="24" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/activity/HomeUiActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2635">
+          <caret line="201" column="22" selection-start-line="201" selection-start-column="8" selection-end-line="201" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="36" selection-start-line="11" selection-start-column="36" selection-end-line="11" selection-end-column="36" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/view/BatteryView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="17" column="73" selection-start-line="17" selection-start-column="73" selection-end-line="17" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/freway/ebike/activity/HomeActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="111">
+          <caret line="269" column="10" selection-start-line="269" selection-start-column="10" selection-end-line="269" selection-end-column="10" />
+          <folding>
+            <element signature="e#1741#1742#0" expanded="true" />
+            <element signature="e#1770#1771#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+  </component>
+</project>

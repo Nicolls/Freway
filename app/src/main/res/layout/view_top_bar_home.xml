@@ -1,0 +1,26 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/view_top_bar_padding"
+    android:background="@color/model_day_bar_background"
+     >
+    <ImageView
+        android:id="@+id/home_top_bar_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/home_freway_logo_day"
+         />
+    <ImageButton
+        android:id="@+id/home_top_bar_model"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:background="@null"
+        android:src="@drawable/home_model_btn_selector"
+        android:layout_centerVertical="true"
+         />
+</RelativeLayout>

@@ -1,0 +1,160 @@
+<resources>
+
+    <!-- text size -->
+    <dimen name="text_size_WelcomeTitleTv">14sp</dimen>
+    <dimen name="text_size_SignTitleTv">18sp</dimen>
+    <dimen name="text_size_SignInput">18sp</dimen>
+    <dimen name="text_size_SignButton">18sp</dimen>
+    <dimen name="text_size_TopBarTitleText">22sp</dimen>
+    <dimen name="text_size_TopBarRightText">18sp</dimen>
+    <dimen name="text_size_BikeStateBatteryValueText">22sp</dimen>
+    <dimen name="text_size_BikeStateBoldText">22sp</dimen>
+    <dimen name="text_size_BikeStateNormalText">12sp</dimen>
+    <dimen name="text_size_BikeStateThinText">8sp</dimen>
+    <dimen name="text_size_TravelStateCalValue">14sp</dimen>
+    <dimen name="text_size_TravelStateCalUnit">12sp</dimen>
+    <dimen name="text_size_TravelStateSpendTimeValue">14sp</dimen>
+    <dimen name="text_size_TravelStateSpeedValue">60sp</dimen>
+    <dimen name="text_size_TravelStateSpeedUnit">18sp</dimen>
+    <dimen name="text_size_TravelStateTitleText">7sp</dimen>
+    <dimen name="text_size_TravelStateValueText">18sp</dimen>
+    <dimen name="text_size_TravelStateUnitText">9sp</dimen>
+    <dimen name="text_size_BatteryStateTipText">22sp</dimen>
+    <dimen name="text_size_BatteryStateValueText">40sp</dimen>
+    <dimen name="text_size_BatteryStateUnitText">14sp</dimen>
+    <dimen name="text_size_BatteryStatePercentText">52sp</dimen>
+    <dimen name="text_size_BatteryStateGearText">22sp</dimen>
+    <dimen name="text_size_SpeedStateTipText">13sp</dimen>
+    <dimen name="text_size_SpeedStateSpeedText">72sp</dimen>
+    <dimen name="text_size_SpeedStateCalValue">17sp</dimen>
+    <dimen name="text_size_SpeedStateCalUnit">12sp</dimen>
+    <dimen name="text_size_SpeedStateSpendTimeText">19sp</dimen>
+    <dimen name="text_size_SpeedStateTitleText">10sp</dimen>
+    <dimen name="text_size_SpeedStateValueText">22sp</dimen>
+    <dimen name="text_size_SpeedStateUnitText">14sp</dimen>
+    <dimen name="text_size_ProfileName">18sp</dimen>
+    <dimen name="text_size_ProfileTotalValue">45sp</dimen>
+    <dimen name="text_size_ProfileTotalUnit">14sp</dimen>
+    <dimen name="text_size_ProfileNavText">18sp</dimen>
+    <dimen name="text_size_SettingProfileText">14sp</dimen>
+    <dimen name="text_size_SettingMyEbike">14sp</dimen>
+    <dimen name="text_size_SettingBtnText">14sp</dimen>
+    <dimen name="text_size_BleItemText">14sp</dimen>
+    <dimen name="text_size_BleButton">12sp</dimen>
+    <dimen name="text_size_DialogText">14sp</dimen>
+    <!-- 导航条返回图片的padding大小 -->
+    <dimen name="nav_top_bar_btn_horizontal_padding">13dp</dimen>
+    <dimen name="nav_top_bar_btn_vertical_padding">10dp</dimen>
+    <dimen name="nav_top_bar_btn_drawablePadding">8dp</dimen>
+    <!-- 页面加载圆圈大小 -->
+    <dimen name="common_loading_size">70dp</dimen>
+    <dimen name="common_update_app_nodify_ll_padding">10dp</dimen>
+    <!-- 蓝牙绑定弹框padding -->
+    <dimen name="ble_connect_ll_paddingHorizontal">25dp</dimen>
+    <dimen name="ble_connect_ll_paddingVertical">25dp</dimen>
+    <dimen name="ble_connect_item_padding">5dp</dimen>
+    <dimen name="ble_btn_marginLeft">5dp</dimen>
+    <!-- dialog -->
+    <dimen name="dialog_btn_left_right">10dp</dimen>
+    <dimen name="twitter_web_progress_marginRight">20dp</dimen>
+    <dimen name="dialog_sync_tv_marginLeft">15dp</dimen>
+    <dimen name="dialog_sync_padding">15dp</dimen>
+    <!-- welcome -->
+    <dimen name="welcome_logo_marginBottom">120dp</dimen>
+    <dimen name="welcome_tv_marginBottom">20dp</dimen>
+    <!-- sign in -->
+    <dimen name="sign_logo_marginTop">90dp</dimen>
+    <dimen name="sign_input_layout_margin">25dp</dimen>
+    <dimen name="sign_input_layout_paddingHorizontal">30dp</dimen>
+    <dimen name="sign_input_layout_paddingVertical">25dp</dimen>
+    <dimen name="sign_et_spacing">20dp</dimen>
+    <dimen name="sign_et_paddingHorizontal">8dp</dimen>
+    <dimen name="sign_et_drawable_padding">8dp</dimen>
+    <dimen name="sign_tip_maringVertical">10dp</dimen>
+    <dimen name="sign_btn_spacing">24dp</dimen>
+    <dimen name="sign_btn_fb_twitter_spacing">20dp</dimen>
+    <dimen name="sign_btn_third_margin_right">33dp</dimen>
+    <dimen name="sign_btn_third_margin_bottom">24dp</dimen>
+    <dimen name="sign_btn_sign_up_marginHorizontal">50dp</dimen>
+    <dimen name="sign_btn_sign_up_marginTop">15dp</dimen>
+
+    <!-- custom -->
+    <dimen name="view_line_marginTop">3dp</dimen>
+    <dimen name="view_top_bar_padding">13dp</dimen>
+    <dimen name="icon_title_spacing">7dp</dimen>
+    <dimen name="bike_light_spacing">10dp</dimen>
+    <dimen name="title_value_vertical_spacing">10dp</dimen>
+    <dimen name="travel_stop_tip_marginTop">250dp</dimen>
+    <dimen name="travel_stop_tip_text_marginTop">10dp</dimen>
+    <!-- home -->
+    <!-- bike state -->
+    <dimen name="bike_state_paddingHorizontal">20dp</dimen>
+    <dimen name="bike_state_paddingTop">15dp</dimen>
+    <dimen name="bike_state_paddingBottom">3dp</dimen>
+
+    <!-- travel state -->
+
+    <dimen name="travel_state_paddingHorizontal">20dp</dimen>
+    <dimen name="travel_state_paddingTop">15dp</dimen>
+    <dimen name="travel_state_paddingBottom">3dp</dimen>
+    <dimen name="travel_state_speedMarginLeft">65dp</dimen>
+    <dimen name="travel_state_speedClearPadding">0dp</dimen>
+ <!-- 用于字体本身有padding未解决 -->
+    <dimen name="travel_state_grid_spacing">10dp</dimen>
+    <!-- battery state -->
+    <dimen name="battery_state_paddingHorizontal">20dp</dimen>
+    <dimen name="battery_state_paddingTop">15dp</dimen>
+    <dimen name="battery_state_paddingBottom">3dp</dimen>
+
+    <!-- speed state -->
+    <dimen name="speed_state_arrow_top_marginTop">5dp</dimen>
+    <dimen name="speed_state_speed_view_marginTop">30dp</dimen>
+    <dimen name="speed_state_speed_marginTop">75dp</dimen>
+    <dimen name="speed_state_speed_tip_text_marginTop">125dp</dimen>
+    <dimen name="speed_state_speed_tip_img_marginTop">105dp</dimen>
+    <dimen name="speed_state_speed_tip_padding">3dp</dimen>
+    <dimen name="speed_state_tv_value_marginLeft">2dp</dimen>
+    <dimen name="speed_state_cal_time_marginTop">30dp</dimen>
+    <dimen name="speed_state_ll_param_marginTop">20dp</dimen>
+    <dimen name="speed_state_param_grid_padding">11dp</dimen>
+    <!-- compass -->
+    <dimen name="home_compass_profile_ll_marginHorizontal">20dp</dimen>
+    <dimen name="home_compass_profile_ll_marginVertical">5dp</dimen>
+    <dimen name="speed_state_title_value_margin">80dp</dimen>
+    <!-- profile -->
+    <dimen name="profile_pic_width_height">100dp</dimen>
+    <dimen name="profile_pic_padding">5dp</dimen>
+    <dimen name="profile_pic_margin">30dp</dimen>
+    <dimen name="profile_name_margin">10dp</dimen>
+    <dimen name="profile_total_time_ver_spacing">5dp</dimen>
+    <dimen name="profile_total_time_hor_spacing">1dp</dimen>
+    <dimen name="profile_pic_text_padding">5dp</dimen>
+    <dimen name="profile_imagebutton_ll_paddingHorizontal">25dp</dimen>
+    <dimen name="profile_imagebutton_ll_paddingVertical">5dp</dimen>
+    <dimen name="profile_imagebutton_tv_marginLeft">50dp</dimen>
+    <!-- setting -->
+    <dimen name="setting_pic_width_height">80dp</dimen>
+    <dimen name="setting_ll_padding_horizontal">30dp</dimen>
+    <dimen name="setting_ll_paddingTop">18dp</dimen>
+    <dimen name="setting_ll_paddingBottom">8dp</dimen>
+    <dimen name="setting_pic_margin">10dp</dimen>
+    <dimen name="setting_cicle_btn_marginTop">10dp</dimen>
+    <dimen name="setting_cicle_btn_marginHorizontal">5dp</dimen>
+    <dimen name="setting_cicle_btn_padding">16dp</dimen>
+    <dimen name="setting_et_paddingRight">10dp</dimen>
+    <!-- 上拉加载，下拉刷新 -->
+    <dimen name="pull2refresh_layout_height">60dp</dimen>
+    <dimen name="pull2refresh_layout_text_size">16sp</dimen>
+    <dimen name="pull2refresh_layout_verticalPadding">20dp</dimen>
+    <dimen name="pull2refresh_pull_load_icon_marginLeft">60dp</dimen>
+    <dimen name="pull2refresh_state_icon_marginRight">8dp</dimen>
+    <dimen name="pull2refresh_time_text_padding_vertical">23dp</dimen>
+    <dimen name="pull2refresh_time_text_paddingHorizontal">20dp</dimen>
+    <!-- 弹出框 -->
+    <dimen name="popup_confirm_button_margin">40dp</dimen>
+    <!-- 没有更多数据 -->
+    <dimen name="no_more_data_text_padding">10dp</dimen>
+    <!-- 更新APP -->
+    <dimen name="app_update_nofity_item_margin">5dp</dimen>
+
+</resources>

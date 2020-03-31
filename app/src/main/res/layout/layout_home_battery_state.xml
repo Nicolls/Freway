@@ -1,0 +1,108 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_battery_state"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        style="@style/BatteryStatePadding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:id="@+id/battery_state_light_ll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:id="@+id/battery_state_light_front"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/light_front_selector" />
+
+                <ImageView
+                    android:id="@+id/battery_state_light_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/bike_light_spacing"
+                    android:src="@drawable/light_back_selector" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/battery_state_remaind_tip"
+                style="@style/BatteryStateTipText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/battery_state_light_ll"
+                android:layout_alignTop="@id/battery_state_light_ll"
+                android:text="@string/battery_remaind_tip" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" >
+
+            <TextView
+                android:id="@+id/battery_state_remaind_value"
+                style="@style/BatteryStateValueText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/test_value_2" />
+
+            <TextView
+                android:id="@+id/battery_state_remaind_unit"
+                style="@style/BatteryStateUnitText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/battery_state_remaind_value"
+                android:layout_toRightOf="@id/battery_state_remaind_value"
+                android:text="@string/km" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" >
+
+            <com.freway.ebike.view.BatteryView
+                android:id="@+id/battery_state_battery_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/daymabiao_battery_gear0" />
+
+            <TextView
+                android:id="@+id/battery_state_battery_percent"
+                style="@style/BatteryStatePercentText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0%" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/battery_state_gear"
+            style="@style/BatteryStateGearText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/gear" />
+    </LinearLayout>
+
+    <include
+        android:id="@+id/home_view_line_battery_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/view_line_space" />
+
+</LinearLayout>

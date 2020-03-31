@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/common_update_app_nodify_ll_padding"
+     >
+     <ImageView 
+         android:id="@+id/update_app_icon"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentLeft="true"
+         android:layout_margin="@dimen/app_update_nofity_item_margin"
+         android:adjustViewBounds="true"
+         android:src="@drawable/ic_launcher"
+         />
+     <TextView 
+         android:id="@+id/update_app_remote_tv"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="完成90%"
+         android:layout_margin="@dimen/app_update_nofity_item_margin"
+         android:layout_toRightOf="@id/update_app_icon"
+         />
+    <ProgressBar
+        android:layout_marginLeft="@dimen/app_update_nofity_item_margin"
+        android:id="@+id/update_app_remote_progressbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/update_app_icon"
+        android:layout_toRightOf="@id/update_app_icon"
+        android:layout_below="@id/update_app_remote_tv"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:max="100"
+        />
+
+</RelativeLayout>

@@ -1,0 +1,75 @@
+apply plugin: 'com.android.application'
+repositories {
+    flatDir {
+        dir 'libs'
+    }
+}
+android {
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
+
+    defaultConfig {
+        applicationId "com.freway.ebike"
+        minSdkVersion 23
+        targetSdkVersion 28
+    }
+
+    signingConfigs {
+        // your debug keystore
+        debug {
+//            storeFile file("/Users/mengjiankang/.android/debug.keystore")
+        }
+
+        release {
+//            keyAlias "baidumapsdk"
+//            keyPassword "baidumapsdk"
+//            storeFile file('release.keystore')
+//            storePassword "baidumapsdk"
+        }
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            signingConfig signingConfigs.debug
+        }
+        release {
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+    // start
+
+    sourceSets {
+        main {
+            jniLibs.srcDir 'libs'
+        }
+
+        // Move the tests to tests/java, tests/res, etc...
+        androidTest.setRoot('tests')
+
+        // Move the build types to build-types/<type>
+        // For instance, build-types/debug/java, build-types/debug/AndroidManifest.xml, ...
+        // This moves them out of them default location under src/<type>/... which would
+        // conflict with src/ being used by the main source set.
+        // Adding new build types or product flavors should be accompanied
+        // by a similar customization.
+        debug.setRoot('build-types/debug')
+        release.setRoot('build-types/release')
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.android.volley:volley:1.1.1'
+}

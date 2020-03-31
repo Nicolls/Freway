@@ -1,0 +1,365 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/model_night_view_background"
+    android:orientation="vertical" >
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/view_top_bar_custom" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                style="@style/SettingLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/setting_name_title"
+                    style="@style/SettingProfileTextLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/nick_name" />
+
+                <EditText
+                    android:id="@+id/setting_name_value"
+                    style="@style/SettingProfileEditRight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/nick_name" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/view_line_color" />
+
+            <LinearLayout
+                style="@style/SettingLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/setting_email_title"
+                    style="@style/SettingProfileTextLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/email" />
+
+                <EditText
+                    android:id="@+id/setting_email_value"
+                    style="@style/SettingProfileEditRight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/email" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/view_line_color" />
+            <!-- gender -->
+
+            <LinearLayout
+                style="@style/SettingLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="0dp"
+                android:paddingTop="0dp" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/setting_pic_margin"
+                    android:layout_weight="1"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        style="@style/SettingLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="0dp"
+                        android:paddingRight="0dp" >
+
+                        <TextView
+                            android:id="@+id/setting_gender_title"
+                            style="@style/SettingProfileTextLeft"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|left"
+                            android:text="@string/gender" />
+
+                        <ImageView
+                            android:id="@+id/setting_gender_view"
+                            style="@style/SettingProfileTextRight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/setting_icon_gender_selector" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="@color/view_line_color" />
+
+                    <LinearLayout
+                        style="@style/SettingLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="0dp"
+                        android:paddingRight="0dp" >
+
+                        <TextView
+                            android:id="@+id/setting_age_title"
+                            style="@style/SettingProfileTextLeft"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/age" />
+
+                        <EditText
+                            android:id="@+id/setting_age_value"
+                            style="@style/SettingProfileEditRight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/age" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="@color/view_line_color" />
+
+                    <LinearLayout
+                        style="@style/SettingLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="0dp"
+                        android:paddingRight="0dp" >
+
+                        <TextView
+                            android:id="@+id/setting_height_title"
+                            style="@style/SettingProfileTextLeft"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/height_cm" />
+
+                        <EditText
+                            android:id="@+id/setting_height_value"
+                            style="@style/SettingProfileEditRight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/height_cm" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="@color/view_line_color" />
+
+                    <LinearLayout
+                        style="@style/SettingLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="0dp"
+                        android:paddingRight="0dp" >
+
+                        <TextView
+                            android:id="@+id/setting_weight_title"
+                            style="@style/SettingProfileTextLeft"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/weight_kg" />
+
+                        <EditText
+                            android:id="@+id/setting_weight_value"
+                            style="@style/SettingProfileEditRight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/weight_kg" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="@dimen/setting_pic_width_height"
+                    android:layout_height="@dimen/setting_pic_width_height"
+                    android:layout_gravity="center"
+                    android:background="@drawable/profile_icon_ellipse"
+                    android:gravity="center_horizontal"
+                    android:padding="@dimen/profile_pic_padding" >
+
+                    <com.freway.ebike.view.HeadPicView
+                        android:id="@+id/profile_head_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/profile_pic_temp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/view_line_color" />
+
+            <LinearLayout
+                style="@style/SettingLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/setting_my_ebike"
+                    style="@style/SettingMyEbike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/my_ebike" />
+
+                <LinearLayout
+                    android:id="@+id/setting_ll_sn"
+                    style="@style/SettingBtnLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/setting_sn"
+                        style="@style/SettingBtnTextLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/test_text" />
+
+                    <TextView
+                        style="@style/SettingBtnTextRight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableRight="@drawable/settings_button_arrow" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/setting_ll_wheel"
+                    style="@style/SettingBtnLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/setting_wheel_title"
+                        style="@style/SettingBtnTextLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/wheel_value" />
+
+                    <TextView
+                        android:id="@+id/setting_unit_wheel_value"
+                        style="@style/SettingBtnTextRight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableRight="@drawable/settings_button_arrow" />
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:id="@+id/setting_ll_language"
+                    style="@style/SettingBtnLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/setting_language_title"
+                        style="@style/SettingBtnTextLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/language" />
+
+                    <TextView
+                        android:id="@+id/setting_language_value"
+                        style="@style/SettingBtnTextRight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/english" />
+                </LinearLayout>
+
+                 <LinearLayout
+                    android:id="@+id/setting_ll_unit_distance"
+                    style="@style/SettingBtnLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/setting_unit_distance_title"
+                        style="@style/SettingBtnTextLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/unit_of_distance" />
+
+                    <TextView
+                        android:id="@+id/setting_unit_distance_value"
+                        style="@style/SettingBtnTextRight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableRight="@drawable/settings_button_arrow"
+                        android:text="@string/test_text" />
+                </LinearLayout>
+            </LinearLayout> 
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/view_line_color" />
+            <!-- about -->
+
+            <LinearLayout
+                android:id="@+id/setting_ll_version"
+                style="@style/SettingLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    style="@style/SettingBtnLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/setting_version_title"
+                        style="@style/SettingBtnTextLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/version" />
+
+                    <TextView
+                        android:id="@+id/setting_version_value"
+                        style="@style/SettingBtnTextRight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableRight="@drawable/settings_button_arrow"
+                        android:text="@string/test_text" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/setting_ll_exit"
+                    style="@style/SettingBtnLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/settings_exitbutton" >
+
+                    <TextView
+                        android:id="@+id/setting_tv_exit"
+                        style="@style/SettingBtnText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

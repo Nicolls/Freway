@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true" >
+
+    <include
+        android:id="@+id/home_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/view_top_bar_home" />
+
+    <com.freway.ebike.view.directionalviewpager.DirectionalViewPager
+        android:id="@+id/home_ebike_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/home_top_bar" />
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/home_compass_profile_ll_marginVertical"
+        android:layout_marginLeft="@dimen/home_compass_profile_ll_marginHorizontal"
+        android:layout_marginRight="@dimen/home_compass_profile_ll_marginHorizontal"
+        android:layout_marginTop="@dimen/home_compass_profile_ll_marginVertical"
+        layout="@layout/layout_home_compass" />
+
+    <com.freway.ebike.view.FlickView
+        android:id="@+id/home_travel_tip"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_70_percent"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:visibility="gone" >
+        <include 
+            android:id="@+id/travel_tip_ll" 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/travel_stop_tip_marginTop"
+            layout="@layout/view_travel_stop_tip" />
+    </com.freway.ebike.view.FlickView>
+
+</RelativeLayout>
