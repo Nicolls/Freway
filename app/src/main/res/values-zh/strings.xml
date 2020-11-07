@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">自由骑士</string><!-- app名称 -->
+    <string name="app_name">Freway</string><!-- app名称 -->
     <!-- 第三方sdk -->
     <string name="app_id">965428893549865</string>
     <string name="call_back_url">app.ifreway.com/index.php</string>
