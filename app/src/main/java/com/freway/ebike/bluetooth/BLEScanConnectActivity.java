@@ -80,14 +80,14 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 		mTvMessage.setText(message);
 		pb.setVisibility(View.VISIBLE);
 		if (handle == HANDLE_SCAN) {
-			mTvTitle.setText("ebikie not bind ,search your ebike...");
+			mTvTitle.setText(R.string.ble_not_bind_title);
 			listView.setVisibility(View.VISIBLE);
 			mBtnScan.setVisibility(View.GONE);
 			mBtnManual.setVisibility(View.GONE);
 			mBtnConfirm.setVisibility(View.VISIBLE);
 			mBlueToothUtil.scanDevice(searchHandler);
 		}else if(handle==HANDLE_CONNECT){
-			mTvTitle.setText("Not been bind ble ,start connectting");
+			mTvTitle.setText(R.string.ble_start_connect);
 			listView.setVisibility(View.GONE);
 			mBtnScan.setVisibility(View.GONE);
 			mBtnManual.setVisibility(View.VISIBLE);
@@ -95,7 +95,7 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 			mBlueToothUtil.connectBLE(address);
 		}else if(handle==HANDLE_NOT_FOUND){
 			pb.setVisibility(View.GONE);
-			mTvTitle.setText("your ble not found");
+			mTvTitle.setText(R.string.ble_not_found);
 			listView.setVisibility(View.GONE);
 			mBtnScan.setVisibility(View.VISIBLE);
 			mBtnManual.setVisibility(View.GONE);

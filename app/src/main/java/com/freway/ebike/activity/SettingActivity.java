@@ -63,8 +63,6 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 	private TextView snValue;
 	private TextView wheelTitle;
 	private TextView wheelValue;
-	private TextView languageTitle;
-	private TextView languageValue;
 	private TextView unitDistanceTitle;
 	private TextView unitDistanceValue;
 	private TextView versionTitle;
@@ -73,7 +71,6 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 
 	private View snLL;
 	private View wheelLL;
-	private View languageLL;
 	private View unitDistanceLL;
 	private View versionLL;
 	private View exitLL;
@@ -117,8 +114,6 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 		snValue = (TextView) findViewById(R.id.setting_sn);
 		wheelTitle = (TextView) findViewById(R.id.setting_wheel_title);
 		wheelValue = (TextView) findViewById(R.id.setting_unit_wheel_value);
-		languageTitle = (TextView) findViewById(R.id.setting_language_title);
-		languageValue = (TextView) findViewById(R.id.setting_language_value);
 		unitDistanceTitle = (TextView) findViewById(R.id.setting_unit_distance_title);
 		unitDistanceValue = (TextView) findViewById(R.id.setting_unit_distance_value);
 		versionTitle = (TextView) findViewById(R.id.setting_version_title);
@@ -127,7 +122,6 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 
 		snLL = findViewById(R.id.setting_ll_sn);
 		wheelLL = findViewById(R.id.setting_ll_wheel);
-		languageLL = findViewById(R.id.setting_ll_language);
 		unitDistanceLL = findViewById(R.id.setting_ll_unit_distance);
 		versionLL = findViewById(R.id.setting_ll_version);
 		exitLL = findViewById(R.id.setting_ll_exit);
@@ -152,8 +146,6 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 		snValue.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
 		wheelTitle.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
 		wheelValue.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
-		languageTitle.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
-		languageValue.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
 		unitDistanceTitle.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
 		unitDistanceValue.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
 		versionTitle.setTypeface(FontUtil.get(this, FontUtil.STYLE_DIN_LIGHT));
@@ -169,7 +161,6 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 		mHeadView.setOnClickListener(this);
 		snLL.setOnClickListener(this);
 		wheelLL.setOnClickListener(this);
-		languageLL.setOnClickListener(this);
 		unitDistanceLL.setOnClickListener(this);
 		versionLL.setOnClickListener(this);
 		exitLL.setOnClickListener(this);
@@ -306,9 +297,6 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Up
 			break;
 		case R.id.setting_ll_wheel:
 			changeWheelCharge();
-			break;
-		case R.id.setting_ll_language:
-
 			break;
 		case R.id.setting_ll_unit_distance:
 			AlertUtil.getInstance().alertChoice(this,getString(R.string.unit_distance_settings),

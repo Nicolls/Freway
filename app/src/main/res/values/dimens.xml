@@ -63,7 +63,7 @@
     <dimen name="welcome_logo_marginBottom">120dp</dimen>
     <dimen name="welcome_tv_marginBottom">20dp</dimen>
     <!-- sign in -->
-    <dimen name="sign_logo_marginTop">90dp</dimen>
+    <dimen name="sign_logo_marginTop">120dp</dimen>
     <dimen name="sign_input_layout_margin">25dp</dimen>
     <dimen name="sign_input_layout_paddingHorizontal">30dp</dimen>
     <dimen name="sign_input_layout_paddingVertical">25dp</dimen>

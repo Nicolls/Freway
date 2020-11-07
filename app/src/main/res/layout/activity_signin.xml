@@ -81,24 +81,4 @@
                 style="@style/SignButtonShort"  />
         </LinearLayout>
     </LinearLayout>
-
-    <ImageButton
-        android:id="@+id/sign_btn_twitter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/sign_btn_third_margin_right"
-        android:src="@drawable/sign_btn_twitter"
-        style="@style/SignButtonThird"
-        />
-
-    <ImageButton
-        android:id="@+id/sign_btn_facebook"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/sign_btn_fb_twitter_spacing"
-        android:layout_toLeftOf="@id/sign_btn_twitter"
-        android:src="@drawable/sign_btn_fb"
-        style="@style/SignButtonThird"
-         />
 </RelativeLayout>

@@ -34,10 +34,13 @@
     <string name="manul">Manual</string><!-- 手动 -->
     <string name="ble_connected">eBike Controller is connected</string><!-- 蓝牙已链接 -->
     <string name="ble_scan_compledted">eBike Controller scanning is complete</string><!--蓝牙扫描完成  -->
+    <string name="ble_not_bind_title">eBike Controller is unbonded, searching</string>
+    <string name="ble_start_connect">eBike Controller start to connect</string>
     <string name="ble_not_bind">eBike Controller is unbonded,check for bonding now?</string><!-- 蓝牙未绑定，现在要去绑定吗？ -->
     <string name="ble_not_connect">eBike Controller is disconnected,check for connecting now?</string><!-- 蓝牙未链接，现在要去链接蓝牙吗？ -->
     <string name="ble_lose">eBike Controller is disconnected,reconnecting now</string><!-- 蓝牙断开链接，正在重新链接中 -->
     <string name="ble_scan">eBike Controller scanning</string><!-- 扫描蓝牙 -->
+    <string name="ble_not_found">eBike not found</string><!-- 未知 -->
     <!-- 通用 -->
     <string name="in_development">Under development</string><!-- 正在开发中 -->
     <string name="upload_travel_success">Distance uploaded successfully</string><!--  上传行程成功-->
