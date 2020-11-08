@@ -73,7 +73,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="a9sLXrHDkmQpCnGyXtBkNDkXHGtS5CpS" />
+            android:value="DDF1huKPPO9BhQxWHVfxk8pGuUEdEvcm" />
 
         <meta-data
             android:name="android.max_aspect"
@@ -112,6 +112,16 @@
         <activity android:name="com.freway.ebike.activity.EBikeWebViewActivity" android:screenOrientation="portrait">
         </activity>
          <activity android:name="com.freway.ebike.activity.OtherWebViewActivity" android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="com.freway.ebike.activity.RecordActivity" android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="com.freway.ebike.activity.TutorialActivity" android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="com.freway.ebike.activity.NewsActivity" android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="com.freway.ebike.activity.GradesActivity" android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="com.freway.ebike.activity.RecordDetailActivity" android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.freway.ebike.activity.TestActivity"

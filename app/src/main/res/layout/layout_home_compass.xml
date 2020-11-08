@@ -8,6 +8,7 @@
 
     <RelativeLayout
         android:id="@+id/home_compass_ll"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
@@ -22,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:visibility="gone"
             android:src="@drawable/daymabiao_compass_view_holder" />
     </RelativeLayout>
 
@@ -41,6 +43,7 @@
         android:layout_marginRight="15dp"
         android:layout_centerVertical="true"
         android:background="@null"
+        android:visibility="gone"
         android:src="@drawable/home_model_btn_selector"
          />
     
@@ -52,6 +55,7 @@
         android:layout_marginRight="15dp"
         android:layout_centerVertical="true"
         android:text="地图"
+        android:visibility="gone"
         />
 
 </RelativeLayout>

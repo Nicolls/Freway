@@ -529,7 +529,7 @@ public class EBikeTravelData implements Serializable {
 	 * @Description 接收控制器信息格式化数据
 	 */
 	public synchronized void parseBikeData(byte[] data) {
-		// data=simulateBikeData(data);// 模拟数据
+		 data=simulateBikeData(data);// 模拟数据
 		if (data != null && data.length >= 2) {
 			byte[] controlState = new byte[2];
 			byte[] bikeData = new byte[data.length - 2];

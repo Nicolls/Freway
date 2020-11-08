@@ -1,0 +1,17 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+	<include
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		layout="@layout/view_top_bar_custom" />
+	<ImageView
+		android:id="@+id/data_img"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@drawable/record_detail"
+		/>
+
+</LinearLayout>

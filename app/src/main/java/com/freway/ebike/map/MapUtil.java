@@ -144,7 +144,7 @@ public class MapUtil  {
 
 	/** 退出服务 */
 	public void exit() {
-		context.unregisterReceiver(mReceiver);
+//		context.unregisterReceiver(mReceiver);
 	}
 	
 	/** 停止服务，一般不需要调用 */

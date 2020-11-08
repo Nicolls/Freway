@@ -134,6 +134,9 @@ public class ProfileActivity extends BaseActivity implements OnClickListener {
 			float time=Float.parseFloat(user.getTotal_time());//秒
 			mileageValueTv.setText(CommonUtil.formatFloatAccuracy(distance, 1)+"");
 			timeValueTv.setText(CommonUtil.formatFloatAccuracy(time/3600,1)+"h");
+
+			mileageValueTv.setText("120.0");
+			timeValueTv.setText("5h");
 		} catch (Exception e) {
 			LogUtils.e(tag, "parsefloat error"+e.getMessage());
 		}
@@ -172,26 +175,37 @@ public class ProfileActivity extends BaseActivity implements OnClickListener {
 	}
 
 	public void onRecord() {
-		Intent intent = new Intent(this, EBikeWebViewActivity.class);
-		intent.putExtra("url", formatUrl(EBConstant.HTML5_URL_RECORDS));
+//		Intent intent = new Intent(this, EBikeWebViewActivity.class);
+//		intent.putExtra("url", formatUrl(EBConstant.HTML5_URL_RECORDS));
+//		startActivity(intent);
+
+		Intent intent = new Intent(this, RecordActivity.class);
 		startActivity(intent);
 	}
 
 	public void onGrade() {
-		Intent intent = new Intent(this, EBikeWebViewActivity.class);
-		intent.putExtra("url", formatUrl(EBConstant.HTML5_URL_GRADES));
+//		Intent intent = new Intent(this, EBikeWebViewActivity.class);
+//		intent.putExtra("url", formatUrl(EBConstant.HTML5_URL_GRADES));
+//		startActivity(intent);
+
+		Intent intent = new Intent(this, GradesActivity.class);
 		startActivity(intent);
 	}
 
 	public void onNews() {
-		Intent intent = new Intent(this, EBikeWebViewActivity.class);
-		intent.putExtra("url",formatUrl( EBConstant.HTML5_URL_NEWS));
+//		Intent intent = new Intent(this, EBikeWebViewActivity.class);
+//		intent.putExtra("url",formatUrl( EBConstant.HTML5_URL_NEWS));
+//		startActivity(intent);
+
+		Intent intent = new Intent(this, NewsActivity.class);
 		startActivity(intent);
 	}
 
 	public void onTutorial() {
-		Intent intent = new Intent(this, EBikeWebViewActivity.class);
-		intent.putExtra("url", formatUrl(EBConstant.HTML5_URL_TUTORIAL));
+//		Intent intent = new Intent(this, EBikeWebViewActivity.class);
+//		intent.putExtra("url", formatUrl(EBConstant.HTML5_URL_TUTORIAL));
+//		startActivity(intent);
+		Intent intent = new Intent(this, TutorialActivity.class);
 		startActivity(intent);
 	}
 
