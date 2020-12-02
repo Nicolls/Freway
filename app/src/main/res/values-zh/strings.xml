@@ -106,8 +106,8 @@
     <string name="distance_unit_mi">km/h</string>
     <string name="distance">路程</string>
     <string name="avg_speed">平均速度</string>
-    <string name="asl">海拔</string>
-    <string name="cadence">爬坡</string>
+    <string name="asl">爬坡</string>
+    <string name="cadence">踏频</string>
     <string name="day">日间</string>
     <string name="night">夜晚</string>
     <string name="battery_remaind_tip">剩余续航</string>
