@@ -91,6 +91,7 @@
     <string name="username">Username</string><!--用户名 -->
     <string name="sign_in">SIGN IN</string><!--登录 -->
     <string name="sign_up">SIGN UP</string><!--注册 -->
+    <string name="sign_in_forgot_pwd">Forgot password</string><!--忘记密码 -->
     <string name="sign_in_tip">Forgot password? or create an account</string>
     <string name="battery_left">LEFT</string><!-- 剩余-->
     <string name="mi">mi</string><!-- 这个单位是迈 -->
