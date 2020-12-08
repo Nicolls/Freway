@@ -78,7 +78,7 @@ public class SignInActivity extends BaseActivity {
 			openActivity(HomeActivity.class, null, true);
 		}else{
 			user=SPUtils.getUser(this);
-			user.setEmail("851778509@qq.com");
+			user.setEmail("htq@126.com");
 			user.setPassword("111111");
 			SPUtils.setUser(this, user);
 			mEtEmail.setText(user.getEmail());
