@@ -15,15 +15,14 @@
   <component name="ChangeListManager">
     <list default="true" id="78f95432-5ec1-4b3b-bc24-8ab0c225ae5f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/news.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/news.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/tuorial.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/tuorial.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/record_detail.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/record_detail.jpg" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[711KPTM0664849]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -57,7 +56,7 @@
     <property name="ExportApk.SignV1" value="true" />
     <property name="ExportApk.SignV2" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="ScreenshotViewer.SavePath" value="$USER_HOME$/Desktop/论文/稿子" />
+    <property name="ScreenshotViewer.SavePath" value="$USER_HOME$/Desktop" />
     <property name="android.project.structure.last.selected" value="SDK Location" />
     <property name="android.project.structure.proportion" value="0.15" />
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
@@ -74,6 +73,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi" />
       <recent name="$PROJECT_DIR$/app/src/main/res/drawable-hdpi" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -171,46 +171,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="121" y="90" key="#PSD" timestamp="1604757566929">
+    <state x="0" y="23" key="ScreenshotViewer.Dimensions" timestamp="1615257688603">
       <screen x="0" y="23" width="1440" height="821" />
     </state>
-    <state x="121" y="90" key="#PSD/0.23.1440.821@0.23.1440.821" timestamp="1604757566929" />
-    <state x="573" y="60" key="#com.intellij.ide.util.MemberChooser" timestamp="1604848420922">
-      <screen x="0" y="23" width="1440" height="821" />
-    </state>
-    <state x="573" y="60" key="#com.intellij.ide.util.MemberChooser/0.23.1440.821@0.23.1440.821" timestamp="1604848420922" />
-    <state x="508" y="234" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1604850170745">
-      <screen x="0" y="23" width="1440" height="821" />
-    </state>
-    <state x="508" y="234" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.1440.821@0.23.1440.821" timestamp="1604850170745" />
-    <state width="1362" height="-1" key="GridCell.Tab.0.bottom" timestamp="1607441524841">
-      <screen x="0" y="23" width="1440" height="827" />
-    </state>
-    <state width="1362" height="321" key="GridCell.Tab.0.bottom/0.23.1440.821@0.23.1440.821" timestamp="1604847418960" />
-    <state width="1362" height="-1" key="GridCell.Tab.0.bottom/0.23.1440.827@0.23.1440.827" timestamp="1607441524841" />
-    <state width="1362" height="-1" key="GridCell.Tab.0.center" timestamp="1607441524841">
-      <screen x="0" y="23" width="1440" height="827" />
-    </state>
-    <state width="1362" height="321" key="GridCell.Tab.0.center/0.23.1440.821@0.23.1440.821" timestamp="1604847418957" />
-    <state width="1362" height="-1" key="GridCell.Tab.0.center/0.23.1440.827@0.23.1440.827" timestamp="1607441524841" />
-    <state width="1362" height="-1" key="GridCell.Tab.0.left" timestamp="1607441524838">
-      <screen x="0" y="23" width="1440" height="827" />
-    </state>
-    <state width="1362" height="321" key="GridCell.Tab.0.left/0.23.1440.821@0.23.1440.821" timestamp="1604847418957" />
-    <state width="1362" height="-1" key="GridCell.Tab.0.left/0.23.1440.827@0.23.1440.827" timestamp="1607441524838" />
-    <state width="1362" height="-1" key="GridCell.Tab.0.right" timestamp="1607441524841">
-      <screen x="0" y="23" width="1440" height="827" />
-    </state>
-    <state width="1362" height="321" key="GridCell.Tab.0.right/0.23.1440.821@0.23.1440.821" timestamp="1604847418958" />
-    <state width="1362" height="-1" key="GridCell.Tab.0.right/0.23.1440.827@0.23.1440.827" timestamp="1607441524841" />
-    <state x="92" y="23" key="SettingsEditor" timestamp="1604840307412">
-      <screen x="0" y="23" width="1440" height="821" />
-    </state>
-    <state x="92" y="23" key="SettingsEditor/0.23.1440.821@0.23.1440.821" timestamp="1604840307412" />
-    <state x="348" y="125" width="744" height="616" key="find.popup" timestamp="1604738505239">
-      <screen x="0" y="23" width="1440" height="821" />
-    </state>
-    <state x="348" y="125" width="744" height="616" key="find.popup/0.23.1440.821@0.23.1440.821" timestamp="1604738505239" />
+    <state x="0" y="23" key="ScreenshotViewer.Dimensions/0.23.1440.821@0.23.1440.821" timestamp="1615257688603" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
