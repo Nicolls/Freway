@@ -109,7 +109,6 @@ public class ProfileActivity extends BaseActivity implements OnClickListener {
 		rightButton.setText("");
 		rightButton.setVisibility(View.GONE);
 		iconButton.setImageResource(R.drawable.icon_settings);
-		mEBikeRequestService.userInfo(SPUtils.getToken(this));
 	}
 	//更新profile
 	private void initProfile(User user){

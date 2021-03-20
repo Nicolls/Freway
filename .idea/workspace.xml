@@ -6,23 +6,38 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="error" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
   </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="NONE" />
   </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="78f95432-5ec1-4b3b-bc24-8ab0c225ae5f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/record_detail.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/record_detail.jpg" afterDir="false" />
-    </list>
+    <list default="true" id="78f95432-5ec1-4b3b-bc24-8ab0c225ae5f" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[711KPTM0664849]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -31,9 +46,21 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
-        <projects_view />
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
       </state>
     </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="GenerateSignedApkSettings">
     <option name="KEY_STORE_PATH" value="$USER_HOME$/Desktop/developer/keystore/nicolls.jks" />
@@ -51,16 +78,22 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ApkExportedModule" value="Freway.app" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="Pixel_API_26" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2021-03-27T03:01:37.341Z" />
     <property name="ExportApk.ApkPath" value="$PROJECT_DIR$/app" />
     <property name="ExportApk.BuildVariants" value="release" />
     <property name="ExportApk.SignV1" value="true" />
     <property name="ExportApk.SignV2" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="ScreenshotViewer.SavePath" value="$USER_HOME$/Desktop" />
+    <property name="android-custom-view/Users/mengjiankang/AndroidStudioProjects/Freway/app/src/main/java/com/freway/ebike/view/FlickTextView.java_SELECTED" value="FlickTextView" />
+    <property name="android-custom-view/Users/mengjiankang/AndroidStudioProjects/Freway/app/src/main/java/com/freway/ebike/view/FlickView.java_SELECTED" value="FlickView" />
     <property name="android.project.structure.last.selected" value="SDK Location" />
     <property name="android.project.structure.proportion" value="0.15" />
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi" />
+    <property name="multi-representation-preview/Users/mengjiankang/AndroidStudioProjects/Freway/app/src/main/java/com/freway/ebike/view/FlickTextView.java_selected" value="Custom views" />
+    <property name="multi-representation-preview/Users/mengjiankang/AndroidStudioProjects/Freway/app/src/main/java/com/freway/ebike/view/FlickView.java_selected" value="Custom views" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -72,20 +105,20 @@
     <option name="LAST_EDITED_BUILD_TYPE" value="debug" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi" />
-      <recent name="$PROJECT_DIR$/app/src/main/res/drawable-hdpi" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.freway.ebike.activity" />
-      <recent name="com.freway.ebike.utils" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi" />
       <recent name="$PROJECT_DIR$/app/src/main/res/layout" />
       <recent name="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi" />
       <recent name="$PROJECT_DIR$/app/src/main/res/drawable-hdpi" />
       <recent name="$PROJECT_DIR$/app/libs" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.freway.ebike.activity" />
+      <recent name="com.freway.ebike.utils" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi" />
+      <recent name="$PROJECT_DIR$/app/src/main/res/drawable-hdpi" />
     </key>
   </component>
   <component name="RunManager">
@@ -168,13 +201,62 @@
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="486" y="80" key="#com.intellij.ide.util.MemberChooser" timestamp="1616814900524">
+      <screen x="0" y="23" width="1440" height="821" />
+    </state>
+    <state x="486" y="80" key="#com.intellij.ide.util.MemberChooser/0.23.1440.821@0.23.1440.821" timestamp="1616814900524" />
+    <state x="206" y="23" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1616219318022">
+      <screen x="0" y="23" width="1440" height="821" />
+    </state>
+    <state x="206" y="23" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.23.1440.821@0.23.1440.821" timestamp="1616219318022" />
+    <state x="392" y="128" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1616168169626">
+      <screen x="0" y="23" width="1440" height="821" />
+    </state>
+    <state x="392" y="128" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.1440.821@0.23.1440.821" timestamp="1616168169626" />
+    <state x="100" y="123" width="1240" height="621" key="DiffContextDialog" timestamp="1616220783284">
+      <screen x="0" y="23" width="1440" height="821" />
+    </state>
+    <state x="100" y="123" width="1240" height="621" key="DiffContextDialog/0.23.1440.821@0.23.1440.821" timestamp="1616220783284" />
+    <state width="1388" height="135" key="GridCell.Tab.0.bottom" timestamp="1616220977221">
+      <screen x="0" y="23" width="1440" height="821" />
+    </state>
+    <state width="1388" height="135" key="GridCell.Tab.0.bottom/0.23.1440.821@0.23.1440.821" timestamp="1616220977221" />
+    <state width="1388" height="135" key="GridCell.Tab.0.center" timestamp="1616220977220">
+      <screen x="0" y="23" width="1440" height="821" />
+    </state>
+    <state width="1388" height="135" key="GridCell.Tab.0.center/0.23.1440.821@0.23.1440.821" timestamp="1616220977220" />
+    <state width="1388" height="135" key="GridCell.Tab.0.left" timestamp="1616220977220">
+      <screen x="0" y="23" width="1440" height="821" />
+    </state>
+    <state width="1388" height="135" key="GridCell.Tab.0.left/0.23.1440.821@0.23.1440.821" timestamp="1616220977220" />
+    <state width="1388" height="135" key="GridCell.Tab.0.right" timestamp="1616220977221">
+      <screen x="0" y="23" width="1440" height="821" />
+    </state>
+    <state width="1388" height="135" key="GridCell.Tab.0.right/0.23.1440.821@0.23.1440.821" timestamp="1616220977221" />
     <state x="0" y="23" key="ScreenshotViewer.Dimensions" timestamp="1615257688603">
       <screen x="0" y="23" width="1440" height="821" />
     </state>
     <state x="0" y="23" key="ScreenshotViewer.Dimensions/0.23.1440.821@0.23.1440.821" timestamp="1615257688603" />
+    <state x="348" y="125" width="744" height="616" key="find.popup" timestamp="1616210204076">
+      <screen x="0" y="23" width="1440" height="821" />
+    </state>
+    <state x="348" y="125" width="744" height="616" key="find.popup/0.23.1440.821@0.23.1440.821" timestamp="1616210204076" />
+    <state x="301" y="23" key="search.everywhere.popup" timestamp="1616213708828">
+      <screen x="0" y="23" width="1440" height="821" />
+    </state>
+    <state x="301" y="23" key="search.everywhere.popup/0.23.1440.821@0.23.1440.821" timestamp="1616213708828" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

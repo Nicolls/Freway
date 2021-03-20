@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.freway.ebike.R;
 import com.freway.ebike.adapter.BleScanAdapter;
+import com.freway.ebike.adapter.ScanDevice;
 import com.freway.ebike.common.BaseActivity;
 import com.freway.ebike.common.BaseApplication;
 import com.freway.ebike.map.TravelConstant;
@@ -41,7 +42,7 @@ public class HistoryBlueToothActivity extends BaseActivity {
 	private ListView listView;
 	private EditText etTool;
 	private BleScanAdapter adapter;
-	private List<BluetoothDevice> data = new ArrayList<BluetoothDevice>();
+	private List<ScanDevice> data = new ArrayList<ScanDevice>();
 	private BlueToothUtil mBlueToothUtil;
 	private String address;
 	private String name;
@@ -69,8 +70,8 @@ public class HistoryBlueToothActivity extends BaseActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				if (position < data.size()) {
-					address = data.get(position).getAddress();
-					name = data.get(position).getName();
+					address = data.get(position).address;
+					name = data.get(position).name;
 					tv_state.setText("正在连接到：" + name + "--地址：" + address);
 					mBlueToothUtil.connectBLE(address);
 				}
@@ -131,7 +132,7 @@ public class HistoryBlueToothActivity extends BaseActivity {
 			} else if (msg.what == BlueToothConstants.RESULT_SUCCESS) {
 				BluetoothDevice device = (BluetoothDevice) msg.obj;
 				if (device != null) {
-					data.add(device);
+					data.add(new ScanDevice(device.getName(),device.getAddress()));
 					adapter.notifyDataSetChanged();
 				}
 			}
@@ -249,6 +250,9 @@ public class HistoryBlueToothActivity extends BaseActivity {
 	protected void onDestroy() {
 		mBlueToothUtil.exit();
 		super.onDestroy();
+		searchHandler.removeCallbacksAndMessages(null);
+		sendDataHandler.removeCallbacksAndMessages(null);
+		stateHandler.removeCallbacksAndMessages(null);
 	}
 
 	@Override

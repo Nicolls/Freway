@@ -19,7 +19,7 @@ import com.freway.ebike.R;
  *
  *         2015年6月15日
  */
-public  class BleScanAdapter extends EBBaseAdapter<BluetoothDevice> {
+public  class BleScanAdapter extends EBBaseAdapter<ScanDevice> {
 	private LayoutInflater inflater;
 	private Context context;
 	/**
@@ -43,13 +43,13 @@ public  class BleScanAdapter extends EBBaseAdapter<BluetoothDevice> {
 		ImageView icon = (ImageView) convertView.findViewById(R.id.device_select);
 		TextView title = (TextView) convertView.findViewById(R.id.device_title);
 		TextView address = (TextView) convertView.findViewById(R.id.device_address);
-		BluetoothDevice device=dataList.get(position);
-		if(TextUtils.isEmpty(device.getName())){
+		ScanDevice device=dataList.get(position);
+		if(TextUtils.isEmpty(device.name)){
 			title.setText(context.getText(R.string.unknown));
 		}else{
-			title.setText(device.getName());
+			title.setText(device.name);
 		}
-		address.setText(device.getAddress());
+		address.setText(device.address);
 		address.setVisibility(View.GONE);//mark 当用于蓝牙模块测试时，把它设置为visble，这样方便调试，发布时应该设置为gone
 		convertView.setTag(dataList.get(position));
 		return convertView;

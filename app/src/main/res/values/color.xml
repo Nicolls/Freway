@@ -18,6 +18,7 @@
 	<color name="hint_color">#66251E</color>
 	<color name="red_deep">#e10019</color>
 	<color name="black_70_percent">#80000000</color>
+	<color name="black_80_percent">#99000000</color>
 	<color name="speed_state_tip_text_bg">#70000000</color>
   	
 	<color name="text_gray_shallow">#909090</color><!-- 浅灰 -->

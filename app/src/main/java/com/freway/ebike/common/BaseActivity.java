@@ -140,7 +140,9 @@ public abstract class BaseActivity extends AppCompatActivity implements DataUpda
 	}
 
 	/** 抽象方法，用来通知activity数据已请求回来 */
-	public abstract void dateUpdate(int id, Object obj);
+	public  void dateUpdate(int id, Object obj){
+
+	}
 
 	/** 菜单左按键点击 */
 	public void onNavLeft(View view) {

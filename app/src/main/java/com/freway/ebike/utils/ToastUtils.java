@@ -4,7 +4,10 @@
 package com.freway.ebike.utils;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.Toast;
+
+import com.freway.ebike.R;
 
 /**
  * 自定义Toast工具类

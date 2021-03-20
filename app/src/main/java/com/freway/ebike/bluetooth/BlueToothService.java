@@ -1,10 +1,7 @@
 package com.freway.ebike.bluetooth;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
@@ -16,34 +13,24 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.TextureView;
 
 import com.freway.ebike.R;
-import com.freway.ebike.activity.HomeActivity;
 import com.freway.ebike.common.BaseApplication;
 import com.freway.ebike.common.BaseService;
 import com.freway.ebike.common.EBConstant;
-import com.freway.ebike.db.DBHelper;
 import com.freway.ebike.map.TravelConstant;
-import com.freway.ebike.model.Travel;
 import com.freway.ebike.protocol.CommandCode;
-import com.freway.ebike.protocol.Protocol;
 import com.freway.ebike.protocol.ProtocolByteHandler;
 import com.freway.ebike.protocol.ProtocolTool;
-import com.freway.ebike.utils.CommonUtil;
-import com.freway.ebike.utils.JsonUtils;
 import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.SPUtils;
 import com.freway.ebike.utils.ToastUtils;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 public class BlueToothService extends BaseService {
 	/**蓝牙状态*/

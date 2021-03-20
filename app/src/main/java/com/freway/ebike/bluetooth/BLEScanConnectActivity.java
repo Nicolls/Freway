@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.freway.ebike.R;
+import com.freway.ebike.activity.TravelDataModel;
 import com.freway.ebike.adapter.BleScanAdapter;
+import com.freway.ebike.adapter.ScanDevice;
 import com.freway.ebike.common.BaseActivity;
 import com.freway.ebike.utils.LogUtils;
 import com.freway.ebike.utils.SPUtils;
@@ -34,7 +36,7 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 	private static final int HANDLE_NOT_FOUND = 3;
 	private ListView listView;
 	private BleScanAdapter adapter;
-	private List<BluetoothDevice> data = new ArrayList<BluetoothDevice>();
+	private List<ScanDevice> data = new ArrayList<ScanDevice>();
 	private BlueToothUtil mBlueToothUtil;
 	private Button mBtnScan;
 	private Button mBtnManual;
@@ -45,6 +47,7 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 	private int bleState=BlueToothConstants.BLE_STATE_NONE;
 	private String address;
 	private ProgressBar pb;
+	private ScanDevice defaultDevice = new ScanDevice("Freway ble device","10086");
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -86,6 +89,9 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 			mBtnManual.setVisibility(View.GONE);
 			mBtnConfirm.setVisibility(View.VISIBLE);
 			mBlueToothUtil.scanDevice(searchHandler);
+			if(!data.contains(defaultDevice)){
+				data.add(defaultDevice);
+			}
 		}else if(handle==HANDLE_CONNECT){
 			mTvTitle.setText(R.string.ble_start_connect);
 			listView.setVisibility(View.GONE);
@@ -141,15 +147,16 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 				BluetoothDevice device = (BluetoothDevice) msg.obj;
 				LogUtils.i("Blescanconnect", "看我扫到了什么－－"+device.getName());
 				if (device!=null) {
+					ScanDevice scanDevice = new ScanDevice(device.getName(),device.getAddress());
 					boolean isExit=false;
-					for(BluetoothDevice d:data){
-						if(TextUtils.equals(d.getAddress(), device.getAddress())){
+					for(ScanDevice d:data){
+						if(TextUtils.equals(d.address, device.getAddress())){
 							isExit=true;
 							break;
 						}
 					}
 					if(!isExit){
-						data.add(device);
+						data.add(scanDevice);
 						adapter.notifyDataSetChanged();
 					}
 				}
@@ -157,8 +164,8 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 		}
 
 	};
-	
-	
+
+
 
 	private Handler blueHandler = new Handler() {
 
@@ -169,7 +176,7 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 			if(bleState==BlueToothConstants.BLE_STATE_CONNECTED){
 				pb.setVisibility(View.GONE);
 				blueHandler.postDelayed(new Runnable() {//2秒之后如果还是链接状态，那就真正链接上了
-					
+
 					@Override
 					public void run() {
 						if(bleState==BlueToothConstants.BLE_STATE_CONNECTED){
@@ -189,19 +196,25 @@ public class BLEScanConnectActivity extends BaseActivity implements OnItemClickL
 		if(mBlueToothUtil!=null){
 			mBlueToothUtil.exit();
 		}
+		searchHandler.removeCallbacksAndMessages(null);
+		blueHandler.removeCallbacksAndMessages(null);
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		if(position<data.size()){
-			String address = data.get(position).getAddress();
+			String address = data.get(position).address;
 			this.address=address;
 			SPUtils.setEBikeName(getApplicationContext(),
-					data.get(position).getName());
+					data.get(position).name);
 			handle=HANDLE_CONNECT;
-			handle("");
+			TravelDataModel.getInstance().setBlueToothConnect(true);
+			ToastUtils.toast(getApplicationContext(),"连接成功");
+			finish();
 		}
 	}
+
+
 
 }
